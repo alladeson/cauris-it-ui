@@ -1,0 +1,81 @@
+{% extends "admin/layout/global-layout.html.twig" %}
+
+{% block page_stylesheets %}
+	<!-- DataTables -->
+	<link
+	href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
+	<!-- Responsive datatable examples -->
+	<link
+	href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css')}}" rel="stylesheet" type="text/css"/>
+	<!-- choices css -->
+	<link
+	href="{{ asset('assets/libs/choices.js/public/assets/styles/choices.min.css')}}" rel="stylesheet" type="text/css"/>
+	<!-- color picker css -->
+	<link
+	href="{{ asset('assets/libs/@simonwep/pickr/themes/classic.min.css')}}" rel="stylesheet" type="text/css"/>
+	<!-- 'classic' theme -->
+	<link
+	href="{{ asset('assets/libs/@simonwep/pickr/themes/monolith.min.css')}}" rel="stylesheet" type="text/css"/>
+	<!-- 'monolith' theme -->
+	<link href="{{ asset('assets/libs/@simonwep/pickr/themes/nano.min.css')}}" rel="stylesheet" type="text/css"/>
+	<!-- 'nano' theme -->
+
+	<!-- datepicker css -->
+	<link
+	href="{{ asset('assets/libs/flatpickr/flatpickr.min.css')}}" rel="stylesheet" type="text/css"/> <!-- Sweet Alert-->
+	<link href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block page_content %}{% endblock %}
+
+{% block page_javascripts %}
+	<script>
+		/* GLOBAL Constants */
+		// URL global request
+		const URL_GLOBAL_REQUEST = "{{ path('global_request_api') }}";
+		/* url GRUD Item */
+		{% if url_list_item is defined %}
+			const URL_LIST_ITEM = "{{url_list_item}}";
+		{% endif %}
+		{% if url_post_item is defined %}
+			const URL_POST_ITEM = "{{url_post_item}}";
+		{% endif %}
+		{% if url_put_item is defined %}
+			const URL_PUT_ITEM = "{{url_put_item}}";
+		{% endif %}
+		{% if url_get_item is defined %}
+			const URL_GET_ITEM = "{{url_get_item}}";
+		{% endif %}
+		{% if url_delete_item is defined %}
+			const URL_DELETE_ITEM = "{{url_delete_item}}";
+		{% endif %}
+		/* **** */
+		
+	</script>
+	{# Les javascripts spécifiques à une page #}
+	<!-- Required datatable js -->
+	<script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+	<!-- Responsive examples -->
+	<script src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+	<!-- pristine js -->
+	<script src="{{ asset('assets/libs/pristinejs/pristine.min.js') }}"></script>
+	<!-- form validation -->
+	<script src="{{ asset('assets/js/pages/form-validation.init.js') }}"></script>
+	<!-- choices js -->
+	<script src="{{ asset('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}"></script>
+	<!-- color picker js -->
+	<script src="{{ asset('assets/libs/@simonwep/pickr/pickr.min.js') }}"></script>
+	<script src="{{ asset('assets/libs/@simonwep/pickr/pickr.es5.min.js') }}"></script>
+	<!-- datepicker js -->
+	<script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
+	<!-- Sweet Alerts js -->
+	<script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+	{# <!-- init js -->
+	<script src="{{ asset('assets/js/pages/datatable-pages.init.js') }}"></script>
+	<!-- init js -->
+	<script src="{{ asset('assets/js/pages/form-advanced.init.js') }}"></script>
+	<!-- Sweet alert init js-->
+	<script src="{{ asset('assets/js/pages/sweetalert.init.js') }}"></script> #}
+{% endblock %}

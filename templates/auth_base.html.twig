@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}
+                E-Hôtel App
+			{% endblock %}
+		</title>
+		{# <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"> #}
+		<link rel="shortcut icon" href="assets/images/favicon.ico">
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+		{% block stylesheets %}
+			{# {{ encore_entry_link_tags('app') }} #}
+
+            {% block page_stylesheets %}
+                {# Les css spécifiques à une page #}
+            {% endblock %}
+
+            <!-- preloader css -->
+            <link rel="stylesheet" href="assets/css/preloader.min.css" type="text/css" />
+
+            <!-- Bootstrap Css -->
+            <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+            <!-- Icons Css -->
+            <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+            <!-- App Css-->
+            <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+		{% endblock %}
+
+	</head>
+	<body>
+		{% block body %}{% endblock %}
+
+		{% block javascripts %}
+			{# {{ encore_entry_script_tags('app') }} #}
+            <!-- JAVASCRIPT -->
+            <script src="assets/libs/jquery/jquery.min.js"></script>
+            <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <script src="assets/libs/metismenu/metisMenu.min.js"></script>
+            <script src="assets/libs/simplebar/simplebar.min.js"></script>
+            <script src="assets/libs/node-waves/waves.min.js"></script>
+            <script src="assets/libs/feather-icons/feather.min.js"></script>
+
+            {% block page_javascripts %}
+                {# Les sripts spécifiques à une page #}
+            {% endblock %}
+		{% endblock %}
+	</body>
+</html>

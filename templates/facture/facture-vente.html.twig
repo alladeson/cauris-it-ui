@@ -1,0 +1,407 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- Facturation
+{% endblock %}
+
+{% block page_content %}
+
+	<div class="accordion accordion-flush" id="facturationForm">
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="flush-headingOne">
+				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
+					Formulaire de facturation
+				</button>
+			</h2>
+			<div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#facturationForm">
+				<div class="accordion-body text-muted">
+					<form method="post" class="" onsubmit="facturation.submitFormData(event)">
+						<div class="row">
+							<div class="col-lg-4 col-md-4">
+								<div class="mb-3 position-relative">
+									<label class="form-label font-size-13 text-muted" for="debut">Date</label>
+									<input type="hidden" id="item-id" name="item-id" value="">
+									<input
+									type="datetime-local" class="form-control" id="date" name="date" placeholder="" value="" required>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4">
+								<div class="mb-3">
+									<label for="client" class="form-label font-size-13 text-muted">Client</label>
+									<select {{ facture_id ? "disabled": "" }} {#onchange="facturation.reloadDatatable(event)"#} required class="form-control form-select" data-trigger name="client" id="client" placeholder="chercher...">
+										{# <option value="">Sélectionner</option> #}
+										<option value="1">Darlene Smith</option>
+										<option value="2">James Nix</option>
+										<option value="3">Phyllis Gatlin</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4">
+								<div class="mb-3">
+									<label for="taxe" class="form-label font-size-13 text-muted">Taxe</label>
+									<select required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher...">
+										<option value="0" selected>Exonéré(0%)</option>
+										<option value="18">Taxable(18%)</option>
+										<option value="5">5%</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-3 col-md-3">
+								<div class="mb-3">
+									<label for="article" class="form-label font-size-13 text-muted">Article</label>
+									<select {#onchange="facturation.getArticle(event)"#} required class="form-control form-select" data-trigger name="article" id="article" placeholder="chercher...">
+										<option value="">Sélectionner</option>
+										<option value="1">Champagne</option>
+										<option value="2">Poulet Rôti</option>
+										<option value="3">Déjeuner</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="mb-3 position-relative">
+									<label class="form-label font-size-13 text-muted" for="prix_u">Prix Unitaire</label>
+									<input onchange="facturation.setMontant(event)"
+									type="number" step="0.001" min="0" class="form-control" id="prix_u" name="prix_u" placeholder="" value="" required>
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="mb-3 position-relative">
+									<label class="form-label font-size-13 text-muted" for="quantite">Quantité</label>
+									<input onchange="facturation.setMontant(event)"
+									type="number" step="1" min="1" class="form-control" id="quantite" name="quantite" placeholder="" value="1" required>
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-3">
+								<div class="mb-3 position-relative">
+									<label class="form-label font-size-13 text-muted" for="montant">Montant HT</label>
+									<input
+									type="number" step="0.001" min="1" class="form-control" id="montant" name="montant" placeholder="" value="" required>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer d-flex justify-content-center">
+							<button type="submit" class="btn btn-outline-info waves-effect waves-light">Ajouter</button>
+							<button type="reset" class="btn btn-outline-danger waves-effect waves-light btn-sm" data-bs-dismiss="modal">Annuler</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end accordion -->
+	<div class="row align-items-center">
+		<div class="col-md-6">
+			<div class="mb-3">
+				<h5 class="card-title">Détails de la facture
+					<span class="text-muted fw-normal ms-2"></span>
+				</h5>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+				{# <div>
+					<ul class="nav nav-pills">
+						<li class="nav-item">
+							<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
+								<i class="bx bx-list-ul"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
+								<i class="bx bx-grid-alt"></i>
+							</a>
+						</li>
+					</ul>
+				</div> #}
+				<div>
+					<a href="javascript:void(0);" class="btn btn-outline-success waves-effect waves-light validate-facture">
+						<i class="bx bx-list-check me-1"></i>
+						Valider</a>
+				</div>
+
+				{# <div class="dropdown">
+					<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bx bx-dots-horizontal-rounded"></i>
+					</a>
+
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Actualiser</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
+						</li>
+					</ul>
+				</div> #}
+			</div>
+
+		</div>
+	</div>
+	<!-- end row -->
+
+	<div class="table-responsive mb-4">
+		<table class="table align-middle datatable dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+			<thead>
+				<tr>
+					<th scope="col" style="width: 50px;">
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="checkAll">
+							<label class="form-check-label" for="checkAll"></label>
+						</div>
+					</th>
+					<th scope="col">Réf.</th>
+					{# <th scope="col">N° Article</th> #}
+					<th scope="col">Désignation</th>
+					<th scope="col">Quantité</th>
+					<th scope="col">Prix U</th>
+					<th scope="col">Taxe</th>
+					<th scope="col">Mt HT</th>
+					<th scope="col">Mt TVA</th>
+					<th scope="col">Mt TTC</th>
+					<th style="width: 80px; min-width: 80px;">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{# <tr>
+					<th scope="row">
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="contacusercheck1">
+							<label class="form-check-label" for="contacusercheck1"></label>
+						</div>
+					</th>
+					<td>156</td>
+					<td>Champagne</td>
+					<td>CH14782155</td>
+					<td>5</td>
+					<td>25000</td>
+					<td>0%</td>
+					<td>75000</td>
+					<td>0</td>
+					<td>75000</td>
+					<td>
+						<div class="dropdown">
+							<button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="bx bx-dots-horizontal-rounded"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-end">
+								<li>
+									<a class="dropdown-item show-item" href="javascript:void(0);">Afficher</a>
+								</li>
+								<li>
+									<a class="dropdown-item edit-item" href="javascript:void(0);">Modifier</a>
+								</li>
+								<li>
+									<a class="dropdown-item validate-item" href="javascript:void(0);">Valider</a>
+								</li>
+								<li>
+									<a class="dropdown-item remove-item" href="javascript:void(0);">Supprimer</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="contacusercheck2">
+							<label class="form-check-label" for="contacusercheck2"></label>
+						</div>
+					</th>
+					<td>156</td>
+					<td>Champagne</td>
+					<td>CH14782155</td>
+					<td>5</td>
+					<td>25000</td>
+					<td>0%</td>
+					<td>75000</td>
+					<td>0</td>
+					<td>75000</td>
+					<td>
+						<div class="dropdown">
+							<button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="bx bx-dots-horizontal-rounded"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-end">
+								<li>
+									<a class="dropdown-item show-item" href="javascript:void(0);">Afficher</a>
+								</li>
+								<li>
+									<a class="dropdown-item edit-item" href="javascript:void(0);">Modifier</a>
+								</li>
+								<li>
+									<a class="dropdown-item validate-item" href="javascript:void(0);">Valider</a>
+								</li>
+								<li>
+									<a class="dropdown-item remove-item" href="javascript:void(0);">Supprimer</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="contacusercheck3">
+							<label class="form-check-label" for="contacusercheck3"></label>
+						</div>
+					</th>
+					<td>156</td>
+					<td>Champagne</td>
+					<td>CH14782155</td>
+					<td>5</td>
+					<td>25000</td>
+					<td>0%</td>
+					<td>75000</td>
+					<td>0</td>
+					<td>75000</td>
+					<td>
+						<div class="dropdown">
+							<button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="bx bx-dots-horizontal-rounded"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-end">
+								<li>
+									<a class="dropdown-item show-item" href="javascript:void(0);">Afficher</a>
+								</li>
+								<li>
+									<a class="dropdown-item edit-item" href="javascript:void(0);">Modifier</a>
+								</li>
+								<li>
+									<a class="dropdown-item validate-item" href="javascript:void(0);">Valider</a>
+								</li>
+								<li>
+									<a class="dropdown-item remove-item" href="javascript:void(0);">Supprimer</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr> #}
+			</tbody>
+		</table>
+		<!-- end table -->
+	</div>
+	<!-- end table responsive -->
+
+	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Affichage</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="table-responsive">
+						<table
+							class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
+							{# <thead>
+							    <tr>
+							        <th scope="col" style="width: 50%;">
+							            Sweet Alert Type
+							        </th>
+							        <th scope="col" class="text-center">
+							            Sweet Alert Examples
+							        </th>
+							    </tr>
+							</thead> #}
+							<tbody>
+								<tr>
+									<th scope="row">
+										Référence
+									</th>
+									<td class="text-center td-reference">
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">
+										Désignation
+									</th>
+									<td class="text-center td-designation">
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">
+										Quantité
+									</th>
+									<td class="text-center td-quantite">
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">
+										Prix Unitaire
+									</th>
+									<td class="text-center td-prixUnitaire">
+									</td>
+								</tr>
+								<tr>
+									<th scope="row">
+										Taxe
+									</th>
+									<td class="text-center td-taxe">
+									</td>
+								</tr>
+								<tr>
+                                    <th scope="row">
+                                        Montant HT
+                                    </th>
+                                    <td class="text-center td-montantHt">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Montant TVA
+                                    </th>
+                                    <td class="text-center td-montantTva">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Montant TTC
+                                    </th>
+                                    <td class="text-center td-montantTtc">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Statut
+                                    </th>
+                                    <td class="text-center text-warning td-statut">
+                                    </td>
+                                </tr>   
+							</tbody>
+						</table>
+						<!-- end table -->
+					</div>
+				</div>
+				<div class="modal-footer d-flex justify-content-center">
+					<button type="button" class="btn btn-info" data-bs-dismiss="modal">Fermer</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+{% endblock %}
+
+{% block page_custom_scripts %}
+	<script>
+		{# const URL_LIST_CLIENT = "{{url_list_client}}";
+		const URL_GET_FACTURE_CLIENT = "{{url_get_facture_client}}";
+		const URL_GET_CLIENT = "{{url_get_client}}";
+		const URL_LIST_SERVICE_INTERNE = "{{url_list_service_interne}}";
+		const URL_GET_SERVICE_INTERNE = "{{url_get_service_interne}}";
+		const URL_GET_DETAIL_FACTURE = "{{url_get_detail_facture}}";
+		const URL_VALIDER_DETAIL_FACTURE = "{{url_valider_detail_facture}}";
+		const URL_VALIDER_FACTURE = "{{url_valider_facture}}"; #}
+		let FACTURE_ID = "{{facture_id}}";
+	</script>
+	<!-- init js -->
+	<script src="{{ asset('assets/js/custom/facture/facturation.init.js') }}"></script>
+{% endblock %}

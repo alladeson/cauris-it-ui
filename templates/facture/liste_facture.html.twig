@@ -1,0 +1,321 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- Liste Factures
+{% endblock %}
+
+{% block page_content %}
+
+	{# Filtre #}
+	<div class="mt-2">
+		<h5 class="font-size-14 mb-2">
+			<i class="mdi mdi-arrow-right text-primary me-1"></i>
+			Filtre : </h5>
+
+		<form class="row gx-3 gy-2 align-items-center">
+			<div class="col-sm-2">
+				<label class="form-label font-size-13 text-muted" for="date-debut">Début</label>
+				<input type="datetime-local" class="form-control" id="date-debut" name="date-debut" placeholder="" value="2019-08-19T07:45:00" required>
+			</div>
+			<div class="col-sm-2">
+				<label class="form-label font-size-13 text-muted" for="date-fin">Fin</label>
+				<input type="datetime-local" class="form-control" id="date-fin" name="date-fin" placeholder="" value="2022-08-19T10:15:00" required>
+			</div>
+			<div class="col-sm-3">
+				<label class="form-label font-size-13 text-muted" for="client">Client</label>
+				<select required class="form-control form-select" data-trigger name="client" id="client" placeholder="chercher...">
+					<option value="">Sélectionner</option>
+					<option value="1">Darlene Smith</option>
+					<option value="2">James Nix</option>
+					<option value="3">Phyllis Gatlin</option>
+				</select>			
+			</div>
+			<div class="col-auto ">
+				<button type="submit" class="btn btn-primary mt-4">
+					<i class="bx bx-search-alt align-middle"></i>
+				</button>
+			</div>
+		</form>
+	</div>
+	<br>
+	{# End Filtre #}
+
+	<div class="row align-items-center">
+		<div class="col-md-6">
+			<div class="mb-3">
+				<h5 class="card-title">Liste des factures
+					<span class="text-muted fw-normal ms-2"></span>
+				</h5>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+				<div>
+					<ul class="nav nav-pills">
+						<li class="nav-item">
+							<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
+								<i class="bx bx-list-ul"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
+								<i class="bx bx-grid-alt"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+				{# <div>
+					<a href="javascript:void(0);" class="btn btn-light" data-bs-toggle="modal" data-bs-target=".add-new-modal">
+						<i class="bx bx-plus me-1"></i>
+						Nouvel Ajout</a>
+				</div> #}
+
+				<div class="dropdown">
+					<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bx bx-dots-horizontal-rounded"></i>
+					</a>
+
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li>
+							<a class="dropdown-item" onclick="listeFacture.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- end row -->
+
+	<div class="table-responsive mb-4">
+		<table data-order='[[1, "desc"]]' class="table align-middle datatable dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+			<thead>
+				<tr>
+					<th scope="col" style="width: 50px;">
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="checkAll">
+							<label class="form-check-label" for="checkAll"></label>
+						</div>
+					</th>
+					<th scope="col">Réf.</th>
+					<th scope="col">Date</th>
+					<th scope="col">Client</th>
+					{# <th scope="col">Objet</th> #}
+					<th scope="col">Montant TTC</th>
+					<th scope="col">Statut</th>
+					<th style="width: 80px; min-width: 80px;">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{# <tr>
+					<th scope="row">
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="contacusercheck1">
+							<label class="form-check-label" for="contacusercheck1"></label>
+						</div>
+					</th>
+					<td>156</td>
+					<td>10 janv. 2022 à 10h</td>
+					<td>Phyllis Gatlin</td>
+					<td>Réservation</td>
+					<td>315000</td>
+					<td class="text-warning">En attente</td>
+					<td>
+						<div class="dropdown">
+							<button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="bx bx-dots-horizontal-rounded"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-end">
+								<li>
+									<a class="dropdown-item show-item" href="javascript:void(0);">Afficher</a>
+								</li>
+								<li>
+									<a class="dropdown-item edit-item" href="javascript:void(0);">Modifier</a>
+								</li>
+								<li>
+									<a class="dropdown-item remove-item" href="javascript:void(0);">Supprimer</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="contacusercheck2">
+							<label class="form-check-label" for="contacusercheck2"></label>
+						</div>
+					</th>
+					<td>354</td>
+					<td>15 févr. 2022 à 17h</td>
+					<td>James Nix</td>
+					<td>Référence</td>
+					<td>15000</td>
+					<td class="text-success">Traité</td>
+					<td>
+						<div class="dropdown">
+							<button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="bx bx-dots-horizontal-rounded"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-end">
+								<li>
+									<a class="dropdown-item show-item" href="javascript:void(0);">Afficher</a>
+								</li>
+								<li>
+									<a class="dropdown-item edit-item" href="javascript:void(0);">Modifier</a>
+								</li>
+								<li>
+									<a class="dropdown-item remove-item" href="javascript:void(0);">Supprimer</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="contacusercheck3">
+							<label class="form-check-label" for="contacusercheck3"></label>
+						</div>
+					</th>
+					<td>780</td>
+					<td>12 mars 2022 à 08h</td>
+					<td>Darlene Smith</td>
+					<td>Réservation</td>
+					<td>45000</td>
+					<td class="text-warning">En attente</td>
+					<td>
+						<div class="dropdown">
+							<button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="bx bx-dots-horizontal-rounded"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-end">
+								<li>
+									<a class="dropdown-item show-item" href="javascript:void(0);">Afficher</a>
+								</li>
+								<li>
+									<a class="dropdown-item edit-item" href="javascript:void(0);">Modifier</a>
+								</li>
+								<li>
+									<a class="dropdown-item remove-item" href="javascript:void(0);">Supprimer</a>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr> #}
+			</tbody>
+		</table>
+		<!-- end table -->
+	</div>
+	<!-- end table responsive -->
+
+	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Affichage</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="table-responsive">
+                        <table class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
+                            {# <thead>
+                                <tr>
+                                    <th scope="col" style="width: 50%;">
+                                        Sweet Alert Type
+                                    </th>
+                                    <th scope="col" class="text-center">
+                                        Sweet Alert Examples
+                                    </th>
+                                </tr>
+                            </thead> #}
+                            <tbody>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Référence
+                                    </th>
+                                    <td class="text-center td-reference">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Date
+                                    </th>
+                                    <td class="text-center td-date">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Client
+                                    </th>
+                                    <td class="text-center td-client">
+                                    </td>
+                                </tr>                                                    
+                                {# <tr>
+                                    <th scope="row">
+                                        Objet
+                                    </th>
+                                    <td class="text-center">
+										<a href="#" class="badge badge-soft-primary">Réservation</a>
+                                    </td>
+                                </tr> #}
+                                <tr>
+                                    <th scope="row">
+                                        Montant HT
+                                    </th>
+                                    <td class="text-center td-montantHt">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Montant TVA
+                                    </th>
+                                    <td class="text-center td-montantTva">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Montant TTC
+                                    </th>
+                                    <td class="text-center td-montantTtc">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Statut
+                                    </th>
+                                    <td class="text-center text-warning td-statut">
+                                    </td>
+                                </tr>                                                    
+                            </tbody>
+                        </table>
+                        <!-- end table -->
+                    </div>
+				</div>
+				<div class="modal-footer d-flex justify-content-center">
+					<button type="button" class="btn btn-warning btn-sm" data-bs-dismiss="modal">Fermer</button>
+					<a href="javascript:void(0);" class="detail_link" data-uri="{{path('facturation')}}">
+						<button type="button" class="btn btn-info" data-bs-dismiss="modal">Detail</button>
+					</a>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+{% endblock %}
+
+{% block page_custom_scripts %}
+	<!-- init js -->
+	<script src="{{ asset('assets/js/custom/caisse/liste-facture.init.js') }}"></script>
+{% endblock %}

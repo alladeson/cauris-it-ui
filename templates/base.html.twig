@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+			{% block title %}
+                Cauris-iT
+			{% endblock %}
+		</title>
+        {% block metas %}        
+		    <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% endblock %}
+        {% block favicon %}
+			{# Générer, en fonction du logo dans assets/media/logos/001.png, depuis https://favicon.io/favicon-converter/ #}
+			{# <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/media/logos/favicon_io/apple-touch-icon.png') }}">
+			<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/media/logos/favicon_io/favicon-32x32.png') }}">
+			<link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/media/logos/favicon_io/favicon-16x16.png') }}">
+			<link rel="manifest" href="{{ asset('assets/media/logos/favicon_io/site.webmanifest') }}"> #}
+            {# <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>"> #}
+            <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+		{% endblock %}
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            {# {{ encore_entry_link_tags('app') }} #}
+
+            {% block page_stylesheets %}
+                {# Les css spécifiques à une page #}
+            {% endblock %}
+
+             <!-- alertifyjs Css -->
+            <link rel="stylesheet" href="{{ asset('assets/libs/alertifyjs/build/css/alertify.min.css') }}" type="text/css" />
+
+            <!-- alertifyjs default themes  Css -->
+            <link rel="stylesheet" href="{{ asset('assets/libs/alertifyjs/build/css/themes/default.min.css') }}" type="text/css" />
+
+            <!-- preloader css -->
+            <link rel="stylesheet" href="{{ asset('assets/css/preloader.min.css') }}" type="text/css" />
+
+            <!-- Bootstrap Css -->
+            <link href="{{ asset('assets/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+            <!-- Icons Css -->
+            <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+            <!-- App Css-->
+            <link href="{{ asset('assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+		    <!-- CSS Just for waitMe jquery plugin -->
+			<link href="{{ asset('assets/js/plugins/waitMe-31.10.17/waitMe.min.css') }}" rel="stylesheet">
+        {% endblock %}
+    </head>
+    <body data-layout="horizontal">
+        {% block body %}{% endblock %}
+
+        {% block javascripts %}
+            {# {{ encore_entry_script_tags('app') }} #}
+            <!-- JAVASCRIPT -->
+            <script src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/metismenu/metisMenu.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
+            <script src="{{ asset('assets/libs/feather-icons/feather.min.js') }}"></script>
+            <!-- pace js -->
+            <script src="{{ asset('assets/libs/pace-js/pace.min.js') }}"></script>
+
+            <!-- alertifyjs js -->
+            <script src="{{ asset('assets/libs/alertifyjs/build/alertify.min.js') }}"></script>
+
+            {# <!-- notification init -->
+            <script src="{{ asset('assets/js/pages/notification.init.js') }}"></script> #}
+
+            <!-- Intégration waitMe jquery plugin -->
+			<script src="{{ asset('assets/js/plugins/waitMe-31.10.17/waitMe.min.js') }}"></script>
+
+			<script src="{{ asset('assets/js/custom/global/global-custum.init.js') }}"></script>
+
+            {% block page_javascripts %}
+                {# Les javascripts spécifiques à une page #}
+            {% endblock %}
+
+            {% block global_scripts %}
+                {# Les scripts globales à toutes les pages #}
+            {% endblock %}
+            
+            {% block page_custom_scripts %}
+                {# Les scripts spécifiques à une page #}
+            {% endblock %}
+
+            <script src="{{ asset('assets/js/app.js') }}"></script>
+
+        {% endblock %}
+    </body>
+</html>

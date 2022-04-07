@@ -1,0 +1,120 @@
+<div data-simplebar class="h-100">
+
+    <!--- Sidemenu -->
+    <div id="sidebar-menu">
+        <!-- Left Menu Start -->
+        <ul class="metismenu list-unstyled" id="side-menu">
+            <li class="menu-title" data-key="t-menu">Menu</li>
+
+            {% for menu in menus %}
+                <li class="{{menu.active ? 'mm-active' : ''}}">
+                    <a href="{{ menu.children ? 'javascript:void(0);' : path(menu.pathName)}}" class=" {{menu.children ? 'has-arrow' : ''}} {{menu.active ? 'mm-active' : ''}}">
+                        <i data-feather="{{menu.icon}}"></i>
+                        <span data-key="{{menu.dataKey}}">{{menu.title}}</span>
+                    </a>
+                    {% if menu.children %}
+                        <ul class="sub-menu mm-collapse {{menu.active ? 'mm-show' : ''}}" aria-expanded="false">                           
+                            {% for child in menu.children %}
+                                <li class="{{child.active ? 'mm-active' : ''}}">
+                                    <a href="{{ child.children ? 'javascript:void(0);' : path(child.pathName)}}" class="{{child.children ? 'has-arrow' : ''}} {{child.active ? 'mm-active' : ''}}">
+                                        <span data-key="{{child.dataKey}}">{{child.title}}</span>
+                                    </a>
+                                    {% if child.children %}
+                                        <ul class="sub-menu mm-collapse {{child.active ? 'mm-show' : ''}}" aria-expanded="false">
+                                             {% for child2 in child.children %}
+                                                <li class="{{child2.active ? 'mm-active' : ''}}">
+                                                    <a href="{{ child2.children ? 'javascript:void(0);' : path(child2.pathName)}}" data-key="{{child2.dataKey}}">{{child2.title}}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </li>     
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+
+            <!-- <li>
+                <a href="javascript: void(0);" class="has-arrow">
+                    <i data-feather="grid"></i>
+                    <span data-key="t-apps">Apps</span>
+                </a>
+                <ul class="sub-menu" aria-expanded="false">
+                    <li>
+                        <a href="apps-calendar.html">
+                            <span data-key="t-calendar">Calendar</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="apps-chat.html">
+                            <span data-key="t-chat">Chat</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <span data-key="t-email">Email</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="apps-email-inbox.html" data-key="t-inbox">Inbox</a></li>
+                            <li><a href="apps-email-read.html" data-key="t-read-email">Read Email</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <span data-key="t-invoices">Invoices</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="apps-invoices-list.html" data-key="t-invoice-list">Invoice List</a></li>
+                            <li><a href="apps-invoices-detail.html" data-key="t-invoice-detail">Invoice Detail</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow">
+                            <span data-key="t-contacts">Contacts</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="false">
+                            <li><a href="apps-contacts-grid.html" data-key="t-user-grid">User Grid</a></li>
+                            <li><a href="apps-contacts-list.html" data-key="t-user-list">User List</a></li>
+                            <li><a href="apps-contacts-profile.html" data-key="t-profile">Profile</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li> -->
+
+            <!-- <li class="menu-title mt-2" data-key="t-components">Elements</li>
+
+            <li>
+                <a href="javascript: void(0);" class="has-arrow">
+                    <i data-feather="share-2"></i>
+                    <span data-key="t-multi-level">Multi Level</span>
+                </a>
+                <ul class="sub-menu" aria-expanded="true">
+                    <li><a href="javascript: void(0);" data-key="t-level-1-1">Level 1.1</a></li>
+                    <li>
+                        <a href="javascript: void(0);" class="has-arrow" data-key="t-level-1-2">Level 1.2</a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            <li><a href="javascript: void(0);" data-key="t-level-2-1">Level 2.1</a></li>
+                            <li><a href="javascript: void(0);" data-key="t-level-2-2">Level 2.2</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li> -->
+
+        </ul>
+
+        <!-- <div class="card sidebar-alert border-0 text-center mx-4 mb-0 mt-5">
+            <div class="card-body">
+                <img src="{{ asset('assets/images/giftbox.png') }}" alt="">
+                <div class="mt-4">
+                    <h5 class="alertcard-title font-size-16">Unlimited Access</h5>
+                    <p class="font-size-13">Upgrade your plan from a Free trial, to select ‘Business Plan’.</p>
+                    <a href="#!" class="btn btn-primary mt-2">Upgrade Now</a>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    <!-- Sidebar -->
+</div>

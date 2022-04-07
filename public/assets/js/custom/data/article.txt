@@ -1,0 +1,44 @@
+{
+    "data": [
+        {
+            "id": "1",
+            "designation": "Article1",
+            "prix": 2500,
+            "stock": 200,
+            "stockSecurite": 20,
+            "description": ""
+        },
+        {
+            "id": "2",
+            "designation": "Article2",
+            "prix": 155000,
+            "stock": 10,
+            "stockSecurite": 5,
+            "description": ""
+        },
+        {
+            "id": "3",
+            "designation": "Article3",
+            "prix": 37500,
+            "stock": 5,
+            "stockSecurite": 20,
+            "description": ""
+        },
+        {
+            "id": "4",
+            "designation": "Article4",
+            "prix": 1500,
+            "stock": 200,
+            "stockSecurite": 20,
+            "description": ""
+        },
+        {
+            "id": "5",
+            "designation": "Article5",
+            "prix": 6500,
+            "stock": 52,
+            "stockSecurite": 25,
+            "description": ""
+        }
+    ]
+}

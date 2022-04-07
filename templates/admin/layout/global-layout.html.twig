@@ -1,0 +1,124 @@
+{% extends "base.html.twig" %}
+{% set appName = 'Cauris-iT' %}
+{# Menu format #}
+{% set menus = [
+	{
+		id: "topnav-dashboard",
+		pathName: "dashboard",
+		title: "Tableau de bord",
+		icon: "home",
+		dataKey: "t-dashboard",
+		active: sidebar_code[0] == "TB" ? true : false,
+		children: [],
+	},
+	{
+		id: "gestion-stock",
+		pathName: "",
+		title: "Gestion de Stock",
+		icon: "box",
+		dataKey: "t-gestion-stock",
+		active: sidebar_code[0] == "GSTK" ? true : false,
+		children: [
+			{
+				id: "gstk-categorie-article",
+				pathName: "gstk_categorie_article",
+				title: "Catégorie Articles/Produits",
+				dataKey: "t-categorie-rticles",
+				active: sidebar_code[1] == "CAP" ? true : false,
+				children: [],
+			},                            
+			{
+				id: "gstk-article",
+				pathName: "gstk_article",
+				title: "Articles/Produits",
+				dataKey: "t-articles",
+				active: sidebar_code[1] == "A/P" ? true : false,
+				children: [],
+			},                            
+			{
+				id: "gstk-approvisionnement",
+				pathName: "gstk_approvisionnement",
+				title: "Approvisionnement",
+				dataKey: "t-approvisionnement",
+				active: sidebar_code[1] == "APPR" ? true : false,
+				children: [],
+			},                            
+		],
+	},
+	{
+		id: "facture",
+		pathName: "",
+		title: "Factures",
+		icon: "dollar-circle",
+		dataKey: "t-facture",
+		active: sidebar_code[0] == "FACT" ? true : false,
+		children: [
+			{
+				id: "facture-vente",
+				pathName: "facture_vente",
+				title: "Facture Ventes",
+				dataKey: "t-facture-vente",
+				active: sidebar_code[1] == "FACTV" ? true : false,
+				children: [],
+			},                           
+		],
+	},
+] %}
+{% block body %}
+	{# <!-- Begin page --> #}
+	<div id="layout-wrapper"> 
+		<header id="page-topbar">
+			{% block header %}
+				{{ include('admin/layout/components/header.html.twig') }}
+			{% endblock %}
+		</header>
+
+		<div class="topnav">
+			{% block left_sidebar %}
+				{{ include('admin/layout/components/topnav.html.twig') }}
+			{% endblock %}
+		</div>
+		<!-- Topnav End -->
+
+		{# <!-- ============================================================== -->
+		<!-- Start right Content here -->
+		<!-- ============================================================== --> #}
+		<div class="main-content">
+			<div class="page-content">
+				<div
+					class="container-fluid">
+					<!-- start page title -->
+					{% block page_title %}
+						{{ include('admin/layout/components/page-title.html.twig') }}
+					{% endblock %}
+					<!-- end page title -->
+					<!-- start page content -->
+					{% block page_content %}{% endblock %}
+					<!-- end page content -->
+				</div>
+			</div>
+			{# <!-- End Page-content --> #}
+
+
+			<footer class="footer">
+				{{ include('admin/layout/components/footer.html.twig') }}
+			</footer>
+		</div>
+		{# <!-- end main content--> #}
+
+	</div>
+	{# <!-- END layout-wrapper --> #}
+
+
+	{# <!-- Right Sidebar --> #}
+	<div class="right-bar"></div>
+	{# <!-- /Right-bar --> #}
+
+	{# <!-- Right bar overlay--> #}
+	<div class="rightbar-overlay"></div>
+
+{% endblock %}
+
+{% block global_scripts %}
+	{# Les scripts globales à toutes les pages #}	
+{% endblock %}

@@ -1,0 +1,24 @@
+{
+    "data": [
+        {
+        "id": "1",
+        "libelle": "Categorie1"
+        },
+        {
+            "id": "2",
+            "libelle": "Categorie2"
+        },
+        {
+            "id": "3",
+            "libelle": "Categorie3"
+        },
+        {
+            "id": "4",
+            "libelle": "Categorie4"
+        },
+        {
+            "id": "5",
+            "libelle": "Categorie5"
+        }
+    ]
+}    

@@ -1,0 +1,54 @@
+{
+    "data": [
+        {
+            "id": "1",
+            "refArticle": "1",
+            "designation": "Article1",
+            "quantite": 10,
+            "prix": 2500,
+            "taxe": 18,
+            "montantHt": 25000,
+            "montantTtc": 29500
+        },
+        {
+            "id": "2",
+            "refArticle": "2",
+            "designation": "Article2",
+            "quantite": 15,
+            "prix": 155000,
+            "taxe": 5,
+            "montantHt": 2325000,
+            "montantTtc": 2441250
+        },
+        {
+            "id": "3",
+            "refArticle": "3",
+            "designation": "Article3",
+            "quantite": 37,
+            "prix": 37500,
+            "taxe": 18,
+            "montantHt": 1387500,
+            "montantTtc": 1637250
+        },
+        {
+            "id": "4",
+            "refArticle": "4",
+            "designation": "Article4",
+            "quantite": 15,
+            "prix": 1500,
+            "taxe": 18,
+            "montantHt": 22500,
+            "montantTtc": 26550
+        },
+        {
+            "id": "5",
+            "refArticle": "5",
+            "designation": "Article5",
+            "quantite": 65,
+            "prix": 6500,
+            "taxe": 52,
+            "montantHt": 422500,
+            "montantTtc": 498550
+        }
+    ]
+}

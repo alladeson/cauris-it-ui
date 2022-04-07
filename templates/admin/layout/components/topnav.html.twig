@@ -1,0 +1,99 @@
+<div class="container-fluid">
+	<nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+
+		<div class="collapse navbar-collapse" id="topnav-menu-content">
+			<ul class="navbar-nav">
+                {% for menu in menus %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle arrow-none {{menu.active ? 'active' : ''}}" href="{{ menu.children ? '#' : path(menu.pathName)}}" id="{{menu.id}}" role="button">
+                            <i data-feather="{{menu.icon}}"></i>
+                            <span data-key="{{menu.dataKey}}">{{menu.title}}</span>
+                            {{menu.children ? '<div class="arrow-down"></div>' : ''}}
+                        </a>
+                        {% if menu.children %}
+                            <div class="dropdown-menu" aria-labelledby="{{menu.id}}">
+                                {% for child in menu.children %}
+                                    {% if child.children %}
+                                        <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none {{child.active ? 'active' : ''}}" href="#" id="{{child.id}}" role="button">
+                                                <span data-key="{{child.dataKey}}">{{child.title}}</span>
+                                                <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="{{child.id}}">
+                                                {% for child2 in child.children %}
+                                                    <a href="{{ child2.children ? '#' : path(child2.pathName)}}" class="dropdown-item {{child2.active ? 'active' : ''}}" data-key="{{child2.dataKey}}">{{child2.title}}</a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% else %}                                        
+                                        <a href="{{ child.children ? '#' : path(child.pathName)}}" class="dropdown-item {{child.active ? 'active' : ''}}" data-key="{{child.dataKey}}">{{child.title}}</a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+
+				{# <li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-uielement" role="button">
+						<i data-feather="briefcase"></i>
+						<span data-key="t-elements">Elements</span>
+						<div class="arrow-down"></div>
+					</a>
+
+					<div class="dropdown-menu mega-dropdown-menu px-2 dropdown-mega-menu-xl" aria-labelledby="topnav-uielement">
+						<div class="ps-2 p-lg-0">
+							<div class="row">
+								<div class="col-lg-8">
+									<div>
+										<div class="menu-title">Elements</div>
+										<div class="row g-0">
+											<div class="col-lg-5">
+												<div>
+													<a href="ui-alerts.html" class="dropdown-item" data-key="t-alerts">Alerts</a>
+													<a href="ui-buttons.html" class="dropdown-item" data-key="t-buttons">Buttons</a>
+													<a href="ui-cards.html" class="dropdown-item" data-key="t-cards">Cards</a>
+													<a href="ui-carousel.html" class="dropdown-item" data-key="t-carousel">Carousel</a>
+													<a href="ui-dropdowns.html" class="dropdown-item" data-key="t-dropdowns">Dropdowns</a>
+													<a href="ui-grid.html" class="dropdown-item" data-key="t-grid">Grid</a>
+													<a href="ui-images.html" class="dropdown-item" data-key="t-images">Images</a>
+													<a href="ui-modals.html" class="dropdown-item" data-key="t-modals">Modals</a>
+												</div>
+											</div>
+											<div class="col-lg-5">
+												<div>
+													<a href="ui-offcanvas.html" class="dropdown-item" data-key="t-offcanvas">Offcanvas</a>
+													<a href="ui-progressbars.html" class="dropdown-item" data-key="t-progress-bars">Progress Bars</a>
+													<a href="ui-placeholders.html" class="dropdown-item" data-key="t-progress-bars">Placeholders</a>
+													<a href="ui-tabs-accordions.html" class="dropdown-item" data-key="t-tabs-accordions">Tabs & Accordions</a>
+													<a href="ui-typography.html" class="dropdown-item" data-key="t-typography">Typography</a>
+													<a href="ui-video.html" class="dropdown-item" data-key="t-video">Video</a>
+													<a href="ui-general.html" class="dropdown-item" data-key="t-general">General</a>
+													<a href="ui-colors.html" class="dropdown-item" data-key="t-colors">Colors</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-lg-4">
+									<div>
+										<div class="menu-title">Extended</div>
+										<div>
+											<a href="extended-lightbox.html" class="dropdown-item" data-key="t-lightbox">Lightbox</a>
+											<a href="extended-rangeslider.html" class="dropdown-item" data-key="t-range-slider">Range Slider</a>
+											<a href="extended-sweet-alert.html" class="dropdown-item" data-key="t-sweet-alert">SweetAlert 2</a>
+											<a href="extended-session-timeout.html" class="dropdown-item" data-key="t-session-timeout">Session Timeout</a>
+											<a href="extended-rating.html" class="dropdown-item" data-key="t-rating">Rating</a>
+											<a href="extended-notifications.html" class="dropdown-item" data-key="t-notifications">Notifications</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li> #}
+			</ul>
+		</div>
+	</nav>
+</div>
