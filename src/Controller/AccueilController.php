@@ -15,7 +15,6 @@ class AccueilController extends AbstractController
     public function __construct(UrlGeneratorInterface $urlGenerator)
     {
         $this->urlGenerator = $urlGenerator;
-                 
     }
     
     #[Route('/', name: 'app_home')]

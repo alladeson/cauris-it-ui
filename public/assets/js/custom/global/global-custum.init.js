@@ -76,6 +76,7 @@ let GlobalScript = {
             $.ajax({
                 url: URL_GLOBAL_REQUEST,
                 method: "POST",
+                dataType: "json",
                 data: {
                     "url": url,
                     "method": method,
@@ -103,5 +104,41 @@ let GlobalScript = {
      **/
     scrollToTop: function() {
         $("html, body").animate({ scrollTop: 0 }, 1500);
+    },
+    // Récupération de la liste des objets en clé étrangère
+    /**
+     * 
+     * @param {String} url le lien de récupération de la lise des objets 
+     * @param {Array<String>} selectData Le tableau contenant les champ de l'objet à utiliser pour le champ de selection, en priori 2 : l'identifiant et le libelle. Ce tableau contient également le nom de l'entité
+     * @param {Number} choicePosition la position du champ de sélection sur la vue
+     * @param {Number} itemId L'identifiant de l'objet à sélectionner si existant
+     */
+    getForeignsData: function(url, selectData = [], choicePosition, itemId) {
+        GlobalScript.request(url, 'GET', null).then(function(data) {
+            // Run this when your request was successful
+            dataJon = data;
+            console.log(dataJon);
+            choices[choicePosition].clearChoices();
+            choices[choicePosition].setChoices(dataJon, selectData[1], selectData[2]);
+            if (itemId) choices[choicePosition].setChoiceByValue(itemId);
+            return true;
+        }).catch(function(err) {
+            // Run this when promise was rejected via reject()
+            console.log(err)
+            alertify.error(err.status == 403 ? `Récupération de la liste des ${selectData[0]} : Accès réfusé` : `Une erreur s'est produite lors de la récupération des ${selectData[0]}`);
+            return false;
+        });
+    },
+    /**
+     * Remplacement de plusieurs caractères dans un texte
+     * @param {String} text Le texte dans lequel le remplacement sera fait
+     * @param {Objetct} obj Objet JSON contenant les caractères à remplacer et leur remplaçant : {"_x_": "y", "_z_": "w"}
+     * @returns String Retourne le texte formaté
+     */
+    textMultipleReplace: function(text, obj) {
+        for (var x in obj) {
+            text = text.replace(new RegExp(x, 'g'), obj[x]);
+        }
+        return text;
     }
 }

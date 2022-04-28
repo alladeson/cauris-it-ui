@@ -1,5 +1,7 @@
 let datatable;
-let choices;
+let choices = [];
+let categories = [];
+let taxes = [];
 let article = {
     listInitalizer: function() {
         // $(".datatable").DataTable({ responsive: !1 }),
@@ -8,23 +10,23 @@ let article = {
                     //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
                     "url": "/assets/i18n/French.json"
                 },
-                // "ajax": {
-                //     "type": "POST",
-                //     "url": URL_GLOBAL_REQUEST,
-                //     data: function() {
-                //         return data = {
-                //             "url": URL_LIST_ITEM,
-                //             "method": "GET",
-                //         };
-                //     },
-                //     "dataSrc": "",
-                //     error: function(xhr, status, error) {
-                //         (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
-                //         alertify.error(status == 403 ? "Accès réfusé" : "Une erreur s'est produite lors de la connexion au serveur");
-                //         $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
-                //     }
-                // },
-                "ajax": "/assets/js/custom/data/article.txt",
+                "ajax": {
+                    "type": "POST",
+                    "url": URL_GLOBAL_REQUEST,
+                    data: function() {
+                        return data = {
+                            "url": URL_LIST_ITEM,
+                            "method": "GET",
+                        };
+                    },
+                    "dataSrc": "",
+                    error: function(xhr, status, error) {
+                        (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
+                        alertify.error(status == 403 ? "Accès réfusé" : "Une erreur s'est produite lors de la connexion au serveur");
+                        $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
+                    }
+                },
+                // "ajax": "/assets/js/custom/data/article.txt",
                 columns: [{
                         data: 'id',
                         "class": "",
@@ -39,8 +41,31 @@ let article = {
                         }
                     },
                     { data: 'id' },
+                    {
+                        data: 'categorie',
+                        "render": function(data, type, row, meta) {
+                            return data.libelle;
+                        }
+                    },
                     { data: 'designation' },
-                    { data: 'prix' },
+                    {
+                        data: 'prix',
+                        render: function(data, type, row, meta) {
+                            return data + " fcfa";
+                        }
+                    },
+                    {
+                        data: 'taxe',
+                        "render": function(data, type, row, meta) {
+                            return data.string;
+                        }
+                    },
+                    {
+                        data: 'taxeSpecifique',
+                        render: function(data, type, row, meta) {
+                            return data ? data : "-";
+                        }
+                    },
                     { data: 'stock' },
                     { data: 'stockSecurite' },
                     // { data: 'montant' },
@@ -72,6 +97,21 @@ let article = {
                 ],
             }),
             $(".dataTables_length select").addClass("form-select form-select-sm");
+    },
+    choicesJsInit: function() {
+        var e = document.querySelectorAll("[data-trigger]");
+        for (i = 0; i < e.length; ++i) {
+            var a = e[i];
+            choices[i] = new Choices(a, {
+                loadingText: 'Chargement...',
+                noResultsText: 'Aucun résultat trouvé',
+                noChoicesText: 'Pas de choix à effectuer',
+                itemSelectText: 'Appuyez pour sélectionner',
+                position: "bottom",
+                removeItemButton: true,
+                duplicateItemsAllowed: !1,
+            });
+        }
     },
     saSucces: function(title, text) {
         Swal.fire({
@@ -129,14 +169,21 @@ let article = {
         event.preventDefault();
         var form = $("div.add-new-modal").find('form');
         var data = article.dataFormat(form)
+        let dataId = form.find("#item-id").val();
         console.log(data)
-        article.request((data.id ? URL_PUT_ITEM.replace("__id__", data.id) : URL_POST_ITEM), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
+        var categorieId = form.find("#categorie").val();
+        var taxeId = form.find("#taxe").val();
+        var obj = { '__id__': data.id, '__cId__': categorieId, '__tId__': taxeId }
+        var submitUrl = data.id ? GlobalScript.textMultipleReplace(URL_PUT_ITEM, obj) : GlobalScript.textMultipleReplace(URL_POST_ITEM, obj);
+        GlobalScript.request(submitUrl, (data.id ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
+            console.log(data)
             datatable.ajax.reload();
-            article.saSucces("Succès !", "Enregistrement effectué avec succès.")
-            $("div.add-new-modal").modal('hide')
-            form[0].reset()
+            // article.saSucces("Succès !", "Enregistrement effectué avec succès.")
+            alertify.success("Enregistrement effectué avec succès")
+            if (dataId) $("div.add-new-modal").modal('hide')
+                // form[0].reset()
+            article.resetFormData(form);
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
@@ -147,10 +194,10 @@ let article = {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         //console.log(id);
-        article.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
+        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
-            var itemObj = JSON.parse(data);
+            console.log(data)
+            var itemObj = data;
             article.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
 
@@ -164,13 +211,15 @@ let article = {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         //console.log(id);
-        //var response = article.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
-        article.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
+        //var response = GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
+        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
-            var itemObj = JSON.parse(data);
+            console.log(data)
+            var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
             article.setformData($("div.add-new-modal").find('form'), itemObj);
+            GlobalScript.getForeignsData(URL_LIST_CATEGORIE_ARTICLE, ['catégories', 'id', 'libelle'], 0, itemObj.categorie.id);
+            GlobalScript.getForeignsData(URL_LIST_TAXE, ['taxes', 'id', 'string'], 1, itemObj.taxe.id);
             $(".add-new-modal").modal('show');
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
@@ -182,10 +231,11 @@ let article = {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         // console.log(id);
-        article.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
+        GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
-            article.saSucces(oktitle, oktext);
+            console.log(data)
+                // article.saSucces(oktitle, oktext);
+            alertify.success(oktext)
             datatable.ajax.reload();
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
@@ -193,40 +243,28 @@ let article = {
             article.saError("Erreur !", "Une erreur s'est produite lors de la suppression.")
         });
     },
-    request: function(url, method, sendData) {
-        return new Promise(function(resolve, reject) {
-            $.ajax({
-                url: URL_GLOBAL_REQUEST,
-                method: "POST",
-                data: {
-                    "url": url,
-                    "method": method,
-                    "data": sendData,
-                },
-                success: function(data) {
-                    resolve(data) // Resolve promise and go to then()
-                },
-                error: function(err) {
-                    reject(err) // Reject the promise and go to catch()
-                },
-            });
-        });
-    },
     setformData: function(form, item) {
         if (form.length) {
             form.find("#item-id").val(item.id)
                 //form.find("#reference").val(item.id)
-            form.find("#libelle").val(item.libelle)
-            form.find("#montant").val(item.montant)
+            form.find("#designation").val(item.designation)
+            form.find("#prix").val(item.prix)
+            form.find("#taxe-specifique").val(item.taxeSpecifique)
+            form.find("#stock").val(item.stock)
+            form.find("#stock-securite").val(item.stockSecurite)
         }
     },
     dataFormat: function(form) {
         if (form.length) {
-            return {
+            data = {
                 'id': form.find("#item-id").val(),
-                'libelle': form.find("#libelle").val(),
-                'montant': form.find("#montant").val(),
+                'designation': form.find("#designation").val(),
+                'prix': form.find("#prix").val(),
+                'taxeSpecifique': form.find("#taxe-specifique").val(),
+                'stock': form.find("#stock").val(),
+                'stockSecurite': form.find("#stock-securite").val(),
             };
+            return JSON.stringify(data);
         }
         return null;
     },
@@ -236,6 +274,8 @@ let article = {
         var form = $("div.add-new-modal").find('form');
         form[0].reset();
         form.find("#item-id").val("");
+        GlobalScript.getForeignsData(URL_LIST_CATEGORIE_ARTICLE, ['catégories', 'id', 'libelle'], 0, null);
+        GlobalScript.getForeignsData(URL_LIST_TAXE, ['taxes', 'id', 'string'], 1, null);
     },
     reloadDatatable: function(event) {
         event.preventDefault();
@@ -244,12 +284,32 @@ let article = {
     setShowingTable: function(itemObj) {
         var $showClasseTable = $('table.item-show-table');
         $showClasseTable.find('.td-reference').text(itemObj.id);
-        $showClasseTable.find('.td-libelle').find('a').text(itemObj.libelle);
-        $showClasseTable.find('.td-montant').text(itemObj.montant ? itemObj.montant : '');
+        $showClasseTable.find('.td-categorie').text(itemObj.categorie.libelle);
+        $showClasseTable.find('.td-designation').text(itemObj.designation);
+        $showClasseTable.find('.td-prix').text(itemObj.prix);
+        $showClasseTable.find('.td-taxe').text(itemObj.taxe.string);
+        $showClasseTable.find('.td-ts').text(itemObj.taxeSpecifique ? itemObj.taxeSpecifique : "-");
+        $showClasseTable.find('.td-stock').text(itemObj.stock);
+        $showClasseTable.find('.td-stock-securite').text(itemObj.stockSecurite);
     },
+    /**
+     * Réinitialiser le formulaire après un ajout, ceci permet à l'utilisateur de faire plusieurs ajout sans fermer le formulaire
+     * @param {Object} form Le formulaire d'ajout d'un article
+     */
+    resetFormData: function(form) {
+        form.find("#item-id").val("")
+        form.find("#designation").val("")
+        form.find("#prix").val("")
+        form.find("#taxe-specifique").val("")
+        form.find("#stock").val("")
+        form.find("#stock-securite").val("")
+        choices[0].setChoiceByValue("")
+        choices[1].setChoiceByValue("")
+    }
 };
 $(document).ready(function() {
     article.listInitalizer();
+    article.choicesJsInit();
     // Edit record
     datatable.on('click', '.edit-item', function(e) {
         e.preventDefault();
@@ -260,7 +320,7 @@ $(document).ready(function() {
     datatable.on('click', '.remove-item', function(e) {
         e.preventDefault();
         // article.removeItem($(this));
-        article.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce type de chambre ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Type de chambre supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+        article.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cet article ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Article supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
     });
 
     //Show record

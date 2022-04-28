@@ -8,23 +8,23 @@ let categorieArticle = {
                     //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
                     "url": "/assets/i18n/French.json"
                 },
-                // "ajax": {
-                //     "type": "POST",
-                //     "url": URL_GLOBAL_REQUEST,
-                //     data: function() {
-                //         return data = {
-                //             "url": URL_LIST_ITEM,
-                //             "method": "GET",
-                //         };
-                //     },
-                //     "dataSrc": "",
-                //     error: function(xhr, status, error) {
-                //         (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
-                //         alertify.error(status == 403 ? "Accès réfusé" : "Une erreur s'est produite lors de la connexion au serveur");
-                //         $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
-                //     }
-                // },
-                "ajax": "/assets/js/custom/data/categorie-article.txt",
+                "ajax": {
+                    "type": "POST",
+                    "url": URL_GLOBAL_REQUEST,
+                    data: function() {
+                        return data = {
+                            "url": URL_LIST_ITEM,
+                            "method": "GET",
+                        };
+                    },
+                    "dataSrc": "",
+                    error: function(xhr, status, error) {
+                        (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
+                        alertify.error(status == 403 ? "Accès réfusé" : "Une erreur s'est produite lors de la connexion au serveur");
+                        $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
+                    }
+                },
+                // "ajax": "/assets/js/custom/data/categorie-article.txt",
                 columns: [{
                         data: 'id',
                         "class": "",
@@ -127,12 +127,13 @@ let categorieArticle = {
         var form = $("div.add-new-modal").find('form');
         var data = categorieArticle.dataFormat(form)
         console.log(data)
-        categorieArticle.request((data.id ? URL_PUT_ITEM.replace("__id__", data.id) : URL_POST_ITEM), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
+        GlobalScript.request((data.id ? URL_PUT_ITEM.replace("__id__", data.id) : URL_POST_ITEM), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
+            console.log(data)
             datatable.ajax.reload();
-            categorieArticle.saSucces("Succès !", "Enregistrement effectué avec succès.")
-            $("div.add-new-modal").modal('hide')
+            // categorieArticle.saSucces("Succès !", "Enregistrement effectué avec succès.")
+            alertify.success("Enregistrement effectué avec succès")
+                // $("div.add-new-modal").modal('hide')
             form[0].reset()
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
@@ -144,10 +145,10 @@ let categorieArticle = {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         //console.log(id);
-        categorieArticle.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
+        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
-            var itemObj = JSON.parse(data);
+            console.log(data)
+            var itemObj = data;
             categorieArticle.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
 
@@ -161,11 +162,11 @@ let categorieArticle = {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         //console.log(id);
-        //var response = categorieArticle.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
-        categorieArticle.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
+        //var response = GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
+        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
-            var itemObj = JSON.parse(data);
+            console.log(data)
+            var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
             categorieArticle.setformData($("div.add-new-modal").find('form'), itemObj);
             $(".add-new-modal").modal('show');
@@ -179,10 +180,11 @@ let categorieArticle = {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         // console.log(id);
-        categorieArticle.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
+        GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
-            categorieArticle.saSucces(oktitle, oktext);
+            console.log(data)
+                // categorieArticle.saSucces(oktitle, oktext);
+            alertify.success(oktext)
             datatable.ajax.reload();
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
@@ -190,42 +192,22 @@ let categorieArticle = {
             categorieArticle.saError("Erreur !", "Une erreur s'est produite lors de la suppression.")
         });
     },
-    request: function(url, method, sendData) {
-        return new Promise(function(resolve, reject) {
-            $.ajax({
-                url: URL_GLOBAL_REQUEST,
-                method: "POST",
-                data: {
-                    "url": url,
-                    "method": method,
-                    "data": sendData,
-                },
-                success: function(data) {
-                    resolve(data) // Resolve promise and go to then()
-                },
-                error: function(err) {
-                    reject(err) // Reject the promise and go to catch()
-                },
-            });
-        });
-    },
     setformData: function(form, item) {
         if (form.length) {
             form.find("#item-id").val(item.id)
                 //form.find("#reference").val(item.id)
             form.find("#libelle").val(item.libelle)
-            form.find("#montant").val(item.montant)
         }
     },
     dataFormat: function(form) {
         if (form.length) {
-            return {
+            data = {
                 'id': form.find("#item-id").val(),
                 'libelle': form.find("#libelle").val(),
-                'montant': form.find("#montant").val(),
             };
+            return JSON.stringify(data);
         }
-        return null;
+        return "";
     },
     newItemEvent: function(event) {
         event.preventDefault();
@@ -241,8 +223,7 @@ let categorieArticle = {
     setShowingTable: function(itemObj) {
         var $showClasseTable = $('table.item-show-table');
         $showClasseTable.find('.td-reference').text(itemObj.id);
-        $showClasseTable.find('.td-libelle').find('a').text(itemObj.libelle);
-        $showClasseTable.find('.td-montant').text(itemObj.montant ? itemObj.montant : '');
+        $showClasseTable.find('.td-libelle').text(itemObj.libelle);
     },
 };
 $(document).ready(function() {
@@ -257,7 +238,7 @@ $(document).ready(function() {
     datatable.on('click', '.remove-item', function(e) {
         e.preventDefault();
         // categorieArticle.removeItem($(this));
-        categorieArticle.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce type de chambre ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Type de chambre supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+        categorieArticle.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cette catégorie d'articles ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimée !", "Catégorie d'articles supprimée avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
     });
 
     //Show record

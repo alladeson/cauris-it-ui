@@ -2,7 +2,7 @@
 
 {% block title %}
 	{{appName}}
-	- Type chambre
+	- Articles
 {% endblock %}
 
 {% block page_content %}
@@ -18,7 +18,7 @@
 
 		<div class="col-md-6">
 			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
-				<div>
+				{# <div>
 					<ul class="nav nav-pills">
 						<li class="nav-item">
 							<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
@@ -31,7 +31,7 @@
 							</a>
 						</li>
 					</ul>
-				</div>
+				</div> #}
 				<div onclick="article.newItemEvent(event)">
 					<a href="javascript:void(0);" class="btn btn-light" data-bs-toggle="modal" data-bs-target=".add-new-modal">
 						<i class="bx bx-plus me-1"></i>
@@ -47,12 +47,12 @@
 						<li>
 							<a class="dropdown-item" onclick="article.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
 						</li>
-						<li>
+						{# <li>
 							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
 						</li>
 						<li>
 							<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
-						</li>
+						</li> #}
 					</ul>
 				</div>
 			</div>
@@ -72,8 +72,11 @@
 						</div>
 					</th>
 					<th>Référence</th>
+					<th>Catégorie</th>
 					<th>Désignation</th>
 					<th>Prix</th>
+					<th>Taxe</th>
+					<th>Taxe spécifique</th>
 					<th>Stock</th>
 					<th>Stock de sécurité</th>
 					<th style="width: 80px; min-width: 80px;">Action</th>
@@ -95,25 +98,22 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						{# <div class="row">
+						<div class="row">
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
-									<label class="form-label" for="reference">Référence</label>
-									<input type="text" class="form-control" id="reference" name="reference" placeholder="Référence de la chambre" value="" required>
-									<div class="valid-tooltip">
-										Parfait !
-									</div>
+									<input type="hidden" id="item-id" name="item-id" value="">
+									<label for="categorie" class="form-label">Catégorie</label>
+									<select required data-trigger class="form-control form-select" data-trigger name="categorie" id="categorie" placeholder="chercher...">
+									</select>
 								</div>
-							</div>														
-						</div> #}
+							</div>
+						</div>
 						<div class="row">						
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
-									<label class="form-label" for="libelle">Libellé</label>
+									<label class="form-label" for="designation">Désignation</label>
 									<div class="input-group">
-										{# <span class="input-group-text" id="libellePrepend"><i class="mdi mdi-money"></i></span> #}
-										<input type="hidden" id="item-id" name="item-id" value="">
-										<input type="text" id="libelle" name="libelle" class="form-control" placeholder="Type de chambre" aria-describedby="libellePrepend" required>
+										<input type="text" id="designation" name="designation" class="form-control" placeholder="Le nom de l'article" value="" required>
 										{# <div class="invalid-tooltip">
 											Please choose a unique and valid username.
 										</div> #}
@@ -124,16 +124,52 @@
 						<div class="row">						
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
-									<label class="form-label" for="montant">Montant</label>
+									<label for="taxe" class="form-label">Taxe</label>
+									<select data-trigger required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher...">
+									</select>
+								</div>								
+							</div>							
+						</div>
+						<div class="row">
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="prix">Prix</label>
 									<div class="input-group">
-										<span class="input-group-text" id="montantPrepend"><i class="mdi mdi-money"></i></span>
-										<input type="number" id="montant" name="montant" class="form-control" placeholder="Montant des chambres" aria-describedby="montantPrepend" required>
+										<span class="input-group-text" id="prixPrepend">FCFA</i></span>
+										<input type="number" id="prix" name="prix" min="0" class="form-control" placeholder="Le prix T.T.C de l'article" aria-describedby="prixPrepend" required>
 										{# <div class="invalid-tooltip">
 											Please choose a unique and valid username.
 										</div> #}
 									</div>
 								</div>
-							</div>							
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="taxe-specifique">Taxe spécifique</label>
+									<input type="number" min="0" class="form-control" id="taxe-specifique" name="taxe-specifique" placeholder="La taxe spécifique si existante" value="">
+									{# <div class="valid-tooltip">
+										Parfait !
+									</div> #}
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label for="stock" class="form-label">Stock</label>
+									<input required type="number" min="0" class="form-control" id="stock" name="stock" placeholder="Le stock de l'article" value="">
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="stock-securite">Stock de sécurité</label>
+									<input required type="number" min="0" class="form-control" id="stock-securite" name="stock-securite" placeholder="Le stock de sécurité de l'article" value="">
+									{# <div class="valid-tooltip">
+										Parfait !
+									</div> #}
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -175,23 +211,55 @@
                                         Référence
                                     </th>
                                     <td class="text-center td-reference">
-										14
+                                    </td>
+                                </tr> 
+								<tr>
+                                    <th scope="row">
+                                        Catégorie
+                                    </th>
+                                    <td class="text-center td-categorie">
                                     </td>
                                 </tr>                                                    
                                 <tr>
                                     <th scope="row">
-                                        Libellé
+                                        Désignation
                                     </th>
-                                    <td class="text-center td-libelle">
-										<a href="#" class="badge badge-soft-primary">VIP</a>
+                                    <td class="text-center td-designation">
                                     </td>
                                 </tr>
 								<tr>
                                     <th scope="row">
-                                        Montant
+                                        Prix
                                     </th>
-                                    <td class="text-center td-montant">
-										10.000
+                                    <td class="text-center td-prix">
+                                    </td>
+                                </tr>
+								<tr>
+                                    <th scope="row">
+                                        Taxe
+                                    </th>
+                                    <td class="text-center td-taxe">
+                                    </td>
+                                </tr>
+								<tr>
+                                    <th scope="row">
+                                        Taxe Spécifique
+                                    </th>
+                                    <td class="text-center td-ts">
+                                    </td>
+                                </tr>
+								<tr>
+                                    <th scope="row">
+                                        Stock
+                                    </th>
+                                    <td class="text-center td-stock">
+                                    </td>
+                                </tr>
+								<tr>
+                                    <th scope="row">
+                                        Stock de sécurité
+                                    </th>
+                                    <td class="text-center td-stock-securite">
                                     </td>
                                 </tr>                                                      
                             </tbody>
@@ -212,6 +280,13 @@
 {% endblock %}
 
 {% block page_custom_scripts %}
+
+    <!-- Liste des constantes -->
+	<script>
+		const URL_LIST_CATEGORIE_ARTICLE = "{{url_list_categorie_article}}";
+		const URL_LIST_TAXE = "{{url_list_taxe}}";
+	</script>
+
 	<!-- init js -->
 	<script src="{{ asset('assets/js/custom/stock/article.init.js') }}"></script>
 {% endblock %}

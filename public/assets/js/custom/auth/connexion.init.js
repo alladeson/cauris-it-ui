@@ -17,7 +17,7 @@ let connexion = {
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err.responseText)
-            alertify.error(err.status == 403 ? "Identifiant ou Mot de passe incorrecte" : "Une erreur s'est produite lors de la connexion au serveur");
+            alertify.error((err.status == 401 || err.status == 403) ? "Identifiant ou Mot de passe incorrecte" : "Une erreur s'est produite lors de la connexion au serveur");
         })
     },
     sendData: function(form) {

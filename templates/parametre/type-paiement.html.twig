@@ -2,7 +2,7 @@
 
 {% block title %}
 	{{appName}}
-	- Catégories des articles
+	- Types de paiement
 {% endblock %}
 
 {% block page_content %}
@@ -10,7 +10,7 @@
 	<div class="row align-items-center">
 		<div class="col-md-6">
 			<div class="mb-3">
-				<h5 class="card-title">Liste des catégories d'articles
+				<h5 class="card-title">Liste des types de paiement
 					<span class="text-muted fw-normal ms-2"></span>
 				</h5>
 			</div>
@@ -31,12 +31,12 @@
 							</a>
 						</li>
 					</ul>
-				</div> #}
-				<div onclick="categorieArticle.newItemEvent(event)">
+				</div>
+				<div onclick="typePaiement.newItemEvent(event)">
 					<a href="javascript:void(0);" class="btn btn-light" data-bs-toggle="modal" data-bs-target=".add-new-modal">
 						<i class="bx bx-plus me-1"></i>
 						Nouvel Ajout</a>
-				</div>
+				</div> #}
 
 				<div class="dropdown">
 					<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -45,7 +45,7 @@
 
 					<ul class="dropdown-menu dropdown-menu-end">
 						<li>
-							<a class="dropdown-item" onclick="categorieArticle.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+							<a class="dropdown-item" onclick="typePaiement.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
 						</li>
 						{# <li>
 							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
@@ -72,8 +72,8 @@
 						</div>
 					</th>
 					<th>Référence</th>
-					<th>Libellé</th>
-					{# <th>Montant</th> #}
+					<th>Type</th>
+					<th>Description</th>
 					<th style="width: 80px; min-width: 80px;">Action</th>
 				</tr>
 			</thead>
@@ -83,55 +83,6 @@
 		<!-- end table -->
 	</div>
 	<!-- end table responsive -->
-
-	<div class="modal fade add-new-modal" id="add-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-			<div class="modal-content">
-				<form method="post" class="" onsubmit="categorieArticle.submitFormData(event)" >
-					<div class="modal-header">
-						<h5 class="modal-title">Nouvel ajout</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						{# <div class="row">
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="reference">Référence</label>
-									<input type="text" class="form-control" id="reference" name="reference" placeholder="Référence de la chambre" value="" required>
-									<div class="valid-tooltip">
-										Parfait !
-									</div>
-								</div>
-							</div>														
-						</div> #}
-						<div class="row">						
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="libelle">Libellé</label>
-									<div class="input-group">
-										{# <span class="input-group-text" id="libellePrepend"><i class="mdi mdi-money"></i></span> #}
-										<input type="hidden" id="item-id" name="item-id" value="">
-										<input type="text" id="libelle" name="libelle" class="form-control" placeholder="Catégorie des articles" aria-describedby="libellePrepend" required>
-										{# <div class="invalid-tooltip">
-											Please choose a unique and valid username.
-										</div> #}
-									</div>
-								</div>
-							</div>							
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
-						{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
-						<button type="submit" class="btn btn-primary">Enregistrer</button>
-					</div>
-				</form>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
-	<!-- /.modal -->
 
 	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -161,14 +112,20 @@
                                     <td class="text-center td-reference">
                                     </td>
                                 </tr>                                                    
+								<tr>
+                                    <th scope="row">
+                                        Type
+                                    </th>
+                                    <td class="text-center td-type">
+                                    </td>
+                                </tr> 
                                 <tr>
                                     <th scope="row">
-                                        Libellé
+                                        Description
                                     </th>
-                                    <td class="text-center td-libelle">
-										{# <a href="#" class="badge badge-soft-primary"></a> #}
+                                    <td class="text-center td-description">
                                     </td>
-                                </tr>                                                
+                                </tr>                                              
                             </tbody>
                         </table>
                         <!-- end table -->
@@ -188,5 +145,5 @@
 
 {% block page_custom_scripts %}
 	<!-- init js -->
-	<script src="{{ asset('assets/js/custom/stock/categorie-article.init.js') }}"></script>
+	<script src="{{ asset('assets/js/custom/parametres/type-paiement.init.js') }}"></script>
 {% endblock %}

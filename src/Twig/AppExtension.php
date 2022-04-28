@@ -27,16 +27,16 @@ class AppExtension extends AbstractExtension
         //     $this->session->start();
 
         $this->statutColors = [
-            ApiConstant::SD_SAISIE_NON_TERMINEE => "#fd7e14",
-            ApiConstant::SD_SAISIE_TERMINEE => "#00A3FF",
-            ApiConstant::SD_EN_DOUBLON => "#dc3545",
-            ApiConstant::SD_NINA_NON_ATTRIBUE => "#051D89",
-            ApiConstant::SD_NINA_ATTRIBUE => "#50CD89",
-            ApiConstant::SD_NON_VISA_PARQUET => "#d63384",
-            ApiConstant::SD_VISA_PARQUET => "#A3FF00",
-            ApiConstant::SD_NON_CONFORME => "#F1416C",
-            ApiConstant::SD_CONFORME => "#20c997",
-            ApiConstant::SD_JUGEMENT_SUPPLETIF_FAIT => "#198754"
+            // ApiConstant::SD_SAISIE_NON_TERMINEE => "#fd7e14",
+            // ApiConstant::SD_SAISIE_TERMINEE => "#00A3FF",
+            // ApiConstant::SD_EN_DOUBLON => "#dc3545",
+            // ApiConstant::SD_NINA_NON_ATTRIBUE => "#051D89",
+            // ApiConstant::SD_NINA_ATTRIBUE => "#50CD89",
+            // ApiConstant::SD_NON_VISA_PARQUET => "#d63384",
+            // ApiConstant::SD_VISA_PARQUET => "#A3FF00",
+            // ApiConstant::SD_NON_CONFORME => "#F1416C",
+            // ApiConstant::SD_CONFORME => "#20c997",
+            // ApiConstant::SD_JUGEMENT_SUPPLETIF_FAIT => "#198754"
         ];
 
         $this->isoCountries = [

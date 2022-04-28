@@ -1,6 +1,6 @@
 let datatable;
 let choices;
-let typeChambre = {
+let typeFacture = {
     listInitalizer: function() {
         // $(".datatable").DataTable({ responsive: !1 }),
         datatable = $(".datatable").DataTable({
@@ -24,6 +24,7 @@ let typeChambre = {
                         $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
                     }
                 },
+                // "ajax": "/assets/js/custom/data/categorie-article.txt",
                 columns: [{
                         data: 'id',
                         "class": "",
@@ -32,22 +33,14 @@ let typeChambre = {
                         "render": function(data, type, row, meta) {
                             return `` +
                                 `<div class="form-check font-size-16">` +
-                                `<input type="checkbox" class="form-check-input" id="typechambrecheck${data}">` +
-                                `<label class="form-check-label" for="typechambrecheck${data}"></label>` +
+                                `<input type="checkbox" class="form-check-input" id="typeFacturecheck${data}">` +
+                                `<label class="form-check-label" for="typeFacturecheck${data}"></label>` +
                                 `</div>`;
                         }
                     },
                     { data: 'id' },
-                    {
-                        data: 'libelle',
-                        "render": function(data, type, row, meta) {
-                            return `` +
-                                `<div class="d-flex gap-2">` +
-                                `<a href="javascript:void(0);" class="badge badge-soft-primary">${data}</a>` +
-                                `</div>`;
-                        }
-                    },
-                    { data: 'montant' },
+                    { data: 'type' },
+                    { data: 'description' },
                     {
                         "data": "id",
                         "class": "",
@@ -61,12 +54,6 @@ let typeChambre = {
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
                                                         <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
                                                     </li>
                                                 </ul>
                                             </div>`;
@@ -106,9 +93,9 @@ let typeChambre = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                typeChambre.saSucces(oktitle, oktext) :
+                typeFacture.saSucces(oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                typeChambre.saError(notitle, notext);
+                typeFacture.saError(notitle, notext);
         });
     },
     saRemoveParams: function(el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
@@ -124,96 +111,79 @@ let typeChambre = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                typeChambre.removeItem(el, oktitle, oktext) :
+                typeFacture.removeItem(el, oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                typeChambre.saError(notitle, notext);
+                typeFacture.saError(notitle, notext);
         });
     },
     submitFormData: function(event) {
         event.preventDefault();
         var form = $("div.add-new-modal").find('form');
-        var data = typeChambre.dataFormat(form)
+        var data = typeFacture.dataFormat(form)
         console.log(data)
-        typeChambre.request((data.id ? URL_PUT_ITEM.replace("__id__", data.id) : URL_POST_ITEM), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
+        GlobalScript.request((data.id ? URL_PUT_ITEM.replace("__id__", data.id) : URL_POST_ITEM), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
+            console.log(data)
             datatable.ajax.reload();
-            typeChambre.saSucces("Succès !", "Enregistrement effectué avec succès.")
-            $("div.add-new-modal").modal('hide')
+            // typeFacture.saSucces("Succès !", "Enregistrement effectué avec succès.")
+            alertify.success("Enregistrement effectué avec succès")
+                // $("div.add-new-modal").modal('hide')
             form[0].reset()
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            typeChambre.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            typeFacture.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
         });
     },
     showItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         //console.log(id);
-        typeChambre.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
+        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
-            var itemObj = JSON.parse(data);
-            typeChambre.setShowingTable(itemObj);
+            console.log(data)
+            var itemObj = data;
+            typeFacture.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
 
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            typeChambre.saError("Erreur !", "Une erreur s'est produite lors de l'affichage.")
+            typeFacture.saError("Erreur !", "Une erreur s'est produite lors de l'affichage.")
         });
     },
     editItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         //console.log(id);
-        //var response = typeChambre.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
-        typeChambre.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
+        //var response = GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
+        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
-            var itemObj = JSON.parse(data);
+            console.log(data)
+            var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
-            typeChambre.setformData($("div.add-new-modal").find('form'), itemObj);
+            typeFacture.setformData($("div.add-new-modal").find('form'), itemObj);
             $(".add-new-modal").modal('show');
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            typeChambre.saError("Erreur !", "Une erreur s'est produite lors de la modification.")
+            typeFacture.saError("Erreur !", "Une erreur s'est produite lors de la modification.")
         });
     },
     removeItem: function(el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         // console.log(id);
-        typeChambre.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
+        GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
-            typeChambre.saSucces(oktitle, oktext);
+            console.log(data)
+                // typeFacture.saSucces(oktitle, oktext);
+            alertify.success(oktext)
             datatable.ajax.reload();
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            typeChambre.saError("Erreur !", "Une erreur s'est produite lors de la suppression.")
-        });
-    },
-    request: function(url, method, sendData) {
-        return new Promise(function(resolve, reject) {
-            $.ajax({
-                url: URL_GLOBAL_REQUEST,
-                method: "POST",
-                data: {
-                    "url": url,
-                    "method": method,
-                    "data": sendData,
-                },
-                success: function(data) {
-                    resolve(data) // Resolve promise and go to then()
-                },
-                error: function(err) {
-                    reject(err) // Reject the promise and go to catch()
-                },
-            });
+            typeFacture.saError("Erreur !", "Une erreur s'est produite lors de la suppression.")
         });
     },
     setformData: function(form, item) {
@@ -221,18 +191,17 @@ let typeChambre = {
             form.find("#item-id").val(item.id)
                 //form.find("#reference").val(item.id)
             form.find("#libelle").val(item.libelle)
-            form.find("#montant").val(item.montant)
         }
     },
     dataFormat: function(form) {
         if (form.length) {
-            return {
+            data = {
                 'id': form.find("#item-id").val(),
                 'libelle': form.find("#libelle").val(),
-                'montant': form.find("#montant").val(),
             };
+            return JSON.stringify(data);
         }
-        return null;
+        return "";
     },
     newItemEvent: function(event) {
         event.preventDefault();
@@ -248,28 +217,28 @@ let typeChambre = {
     setShowingTable: function(itemObj) {
         var $showClasseTable = $('table.item-show-table');
         $showClasseTable.find('.td-reference').text(itemObj.id);
-        $showClasseTable.find('.td-libelle').find('a').text(itemObj.libelle);
-        $showClasseTable.find('.td-montant').text(itemObj.montant ? itemObj.montant : '');
+        $showClasseTable.find('.td-type').text(itemObj.type);
+        $showClasseTable.find('.td-description').text(itemObj.description);
     },
 };
 $(document).ready(function() {
-    typeChambre.listInitalizer();
-    // Edit record
-    datatable.on('click', '.edit-item', function(e) {
-        e.preventDefault();
-        typeChambre.editItem($(this));
-    });
+    typeFacture.listInitalizer();
+    // // Edit record
+    // datatable.on('click', '.edit-item', function(e) {
+    //     e.preventDefault();
+    //     typeFacture.editItem($(this));
+    // });
 
-    // Delete a record
-    datatable.on('click', '.remove-item', function(e) {
-        e.preventDefault();
-        // typeChambre.removeItem($(this));
-        typeChambre.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce type de chambre ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Type de chambre supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
-    });
+    // // Delete a record
+    // datatable.on('click', '.remove-item', function(e) {
+    //     e.preventDefault();
+    //     // typeFacture.removeItem($(this));
+    //     typeFacture.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cette catégorie d'articles ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimée !", "Catégorie d'articles supprimée avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+    // });
 
     //Show record
     datatable.on('click', '.show-item', function(e) {
         e.preventDefault();
-        typeChambre.showItem($(this));
+        typeFacture.showItem($(this));
     });
 });

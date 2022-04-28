@@ -18,7 +18,7 @@
 				<div class="accordion-body text-muted">
 					<form method="post" class="" onsubmit="facturation.submitFormData(event)">
 						<div class="row">
-							<div class="col-lg-4 col-md-4">
+							<div class="col-lg-3 col-md-3">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="debut">Date</label>
 									<input type="hidden" id="item-id" name="item-id" value="">
@@ -26,48 +26,76 @@
 									type="datetime-local" class="form-control" id="date" name="date" placeholder="" value="" required>
 								</div>
 							</div>
-							<div class="col-lg-4 col-md-4">
-								<div class="mb-3">
-									<label for="client" class="form-label font-size-13 text-muted">Client</label>
-									<select {{ facture_id ? "disabled": "" }} {#onchange="facturation.reloadDatatable(event)"#} required class="form-control form-select" data-trigger name="client" id="client" placeholder="chercher...">
-										{# <option value="">Sélectionner</option> #}
-										<option value="1">Darlene Smith</option>
-										<option value="2">James Nix</option>
-										<option value="3">Phyllis Gatlin</option>
-									</select>
-								</div>
+							<div class="col-lg-5 col-md-5">
+								<div class="row gx-3 gy-2 align-items-center mb-3">
+									<div class="col-10">
+										<label for="client" class="form-label font-size-13 text-muted">Client</label>
+										<select {{ facture_id ? "disabled": "" }} {#onchange="facturation.reloadDatatable(event)"#} required class="form-control form-select" data-trigger name="client" id="client" placeholder="chercher...">
+											{# <option value="">Sélectionner</option> #}
+											<option value="1">Darlene Smith</option>
+											<option value="2">James Nix</option>
+											<option value="3">Phyllis Gatlin</option>
+										</select>
+									</div>
+                                    <div class="col-2">
+										<a href="javascript:void(0);" class="mt-4 btn btn-outline-primary btn-rounded btn-sm waves-effect waves-light add-client">
+											<i class="bx bx-plus"></i>
+										</a>
+                                    </div>
+                                </div>								
 							</div>
 							<div class="col-lg-4 col-md-4">
-								<div class="mb-3">
-									<label for="taxe" class="form-label font-size-13 text-muted">Taxe</label>
-									<select required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher...">
-										<option value="0" selected>Exonéré(0%)</option>
-										<option value="18">Taxable(18%)</option>
-										<option value="5">5%</option>
-									</select>
+								<div class="row">
+									<div class="col-lg-6 col-md-6">
+										<div class="mb-3">
+											<label for="taxe" class="form-label font-size-13 text-muted">Taxe</label>
+											<select required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher...">
+												<option value="0" selected>Exonéré(0%)</option>
+												<option value="18">Taxable(18%)</option>
+												<option value="5">5%</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-6 col-md-6">
+										<div class="mb-3">
+											<label for="taxe" class="form-label font-size-13 text-muted">Aib</label>
+											<select required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher...">
+												<option value="0" selected>Libre(0%)</option>
+												<option value="18">1%(1%)</option>
+												<option value="5">3%(3%)</option>
+											</select>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-lg-3 col-md-3">
-								<div class="mb-3">
-									<label for="article" class="form-label font-size-13 text-muted">Article</label>
-									<select {#onchange="facturation.getArticle(event)"#} required class="form-control form-select" data-trigger name="article" id="article" placeholder="chercher...">
-										<option value="">Sélectionner</option>
-										<option value="1">Champagne</option>
-										<option value="2">Poulet Rôti</option>
-										<option value="3">Déjeuner</option>
-									</select>
-								</div>
+							<div class="col-lg-5 col-md-5">
+								<div class="row gx-3 gy-2 align-items-center mb-3">
+									<div class="col-10">
+										<label for="article" class="form-label font-size-13 text-muted">Article</label>
+										<select {#onchange="facturation.getArticle(event)"#} required class="form-control form-select" data-trigger name="article" id="article" placeholder="chercher...">
+											<option value="">Sélectionner</option>
+											<option value="1">Champagne</option>
+											<option value="2">Poulet Rôti</option>
+											<option value="3">Déjeuner</option>
+										</select>
+									</div>
+                                    <div class="col-2">
+										<a href="javascript:void(0);" class="mt-4 btn btn-outline-primary btn-rounded btn-sm waves-effect waves-light add-article">
+											<i class="bx bx-plus"></i>
+										</a>
+                                    </div>
+                                </div>
 							</div>
-							<div class="col-lg-3 col-md-3">
+							<div class="col-lg-2 col-md-2">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="prix_u">Prix Unitaire</label>
 									<input onchange="facturation.setMontant(event)"
 									type="number" step="0.001" min="0" class="form-control" id="prix_u" name="prix_u" placeholder="" value="" required>
 								</div>
 							</div>
-							<div class="col-lg-3 col-md-3">
+							<div class="col-lg-2 col-md-2">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="quantite">Quantité</label>
 									<input onchange="facturation.setMontant(event)"

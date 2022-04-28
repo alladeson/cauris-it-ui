@@ -91,29 +91,29 @@ let facturation = {
                                                 <li>
                                                     <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                 </li>` +
-                                                    `${!row.valid ? 
-                                                    `${!row.reservation?
-                                                `<li>
+                                                    `${!row.valid ?
+                            `${!row.reservation ?
+                                `<li>
                                                     <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier</a>
-                                                </li>`:``}`+
-                                                
-                                                    `<li>
+                                                </li>`: ``}` +
+
+                            `<li>
                                                         <a class="dropdown-item validate-item" href="javascript:void(0)" data-item-id="${data}">Valider</a>
                                                     </li>
                                                  
                                                 <li>
                                                     <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
-                                                </li>`: ''}`+
-                                                `</ul>
+                                                </li>`: ''}` +
+                        `</ul>
                                         </div>`;
-                            return html;
-                        }
-                    }
-                ],
-            }),
+                    return html;
+                }
+            }
+            ],
+        }),
             $(".dataTables_length select").addClass("form-select form-select-sm");
     },
-    choicesJsInit: function() {
+    choicesJsInit: function () {
         var e = document.querySelectorAll("[data-trigger]");
         for (i = 0; i < e.length; ++i) {
             var a = e[i];
@@ -128,7 +128,7 @@ let facturation = {
             });
         }
     },
-    saSucces: function(title, text) {
+    saSucces: function (title, text) {
         Swal.fire({
             title: title,
             text: text,
@@ -136,7 +136,7 @@ let facturation = {
             confirmButtonColor: "#5156be",
         })
     },
-    saError: function(title, text) {
+    saError: function (title, text) {
         Swal.fire({
             title: title,
             text: text,
@@ -144,7 +144,7 @@ let facturation = {
             confirmButtonColor: "#5156be",
         })
     },
-    saParams: function(title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
+    saParams: function (title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
         Swal.fire({
             title: title,
             text: text,
@@ -155,14 +155,14 @@ let facturation = {
             confirmButtonClass: "btn btn-success mt-2",
             cancelButtonClass: "btn btn-danger ms-2 mt-2",
             buttonsStyling: !1,
-        }).then(function(e) {
+        }).then(function (e) {
             e.value ?
                 facturation.saSucces(oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
                 facturation.saError(notitle, notext);
         });
     },
-    saRemoveParams: function(el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
+    saRemoveParams: function (el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
         Swal.fire({
             title: title,
             text: text,
@@ -173,14 +173,14 @@ let facturation = {
             confirmButtonClass: "btn btn-success mt-2",
             cancelButtonClass: "btn btn-danger ms-2 mt-2",
             buttonsStyling: !1,
-        }).then(function(e) {
+        }).then(function (e) {
             e.value ?
                 facturation.removeItem(el, oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
                 facturation.saError(notitle, notext);
         });
     },
-    saValidateItemParams: function(el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
+    saValidateItemParams: function (el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
         Swal.fire({
             title: title,
             text: text,
@@ -191,14 +191,14 @@ let facturation = {
             confirmButtonClass: "btn btn-success mt-2",
             cancelButtonClass: "btn btn-danger ms-2 mt-2",
             buttonsStyling: !1,
-        }).then(function(e) {
+        }).then(function (e) {
             e.value ?
                 facturation.validateItem(el, oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
                 facturation.saError(notitle, notext);
         });
     },
-    saValidateFactureParams: function(title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
+    saValidateFactureParams: function (title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
         Swal.fire({
             title: title,
             text: text,
@@ -209,18 +209,18 @@ let facturation = {
             confirmButtonClass: "btn btn-success mt-2",
             cancelButtonClass: "btn btn-danger ms-2 mt-2",
             buttonsStyling: !1,
-        }).then(function(e) {
+        }).then(function (e) {
             e.value ?
                 facturation.validateFacture(oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
                 facturation.saError(notitle, notext);
         });
     },
-    submitFormData: function(event) {
+    submitFormData: function (event) {
         event.preventDefault();
         var data = facturation.dataFormat(facturationForm)
         console.log(data)
-        GlobalScript.request((data.id ? (URL_PUT_ITEM.replace("__id__", facture ? facture.id ? facture.id : 0 : 0)).replace("__detailId__", data.id) : URL_POST_ITEM.replace("__clientId__", client ? client.id : 0)), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
+        GlobalScript.request((data.id ? (URL_PUT_ITEM.replace("__id__", facture ? facture.id ? facture.id : 0 : 0)).replace("__detailId__", data.id) : URL_POST_ITEM.replace("__clientId__", client ? client.id : 0)), (data.id ? 'PUT' : 'POST'), data).then(function (data) {
             // Run this when your request was successful
             facture = JSON.parse(data)
             console.log(facture)
@@ -233,62 +233,62 @@ let facturation = {
             facturationForm.find("#item-id").val('');
             // Mise à jour du champ date du formulaire de la facture
             facturationForm.find("#date").val(((new Date()).toISOString()).slice(0, 16))
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
             console.log(err)
             alertify.error("Une erreur s'est produite lors de l'enregistrement.")
         });
     },
-    editItem: function(el) {
+    editItem: function (el) {
         // Récupération de l'id de l'objet
         let detailId = el.data("item-id");
         //console.log(id);
         //var response = GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
-        GlobalScript.request((URL_GET_DETAIL_FACTURE.replace("__id__", facture ? facture.id ? facture.id : 0 : 0)).replace("__detailId__", detailId), 'GET', null).then(function(data) {
+        GlobalScript.request((URL_GET_DETAIL_FACTURE.replace("__id__", facture ? facture.id ? facture.id : 0 : 0)).replace("__detailId__", detailId), 'GET', null).then(function (data) {
             // Run this when your request was successful
             GlobalScript.scrollToTop();
             var itemObj = JSON.parse(data);
             console.log(itemObj);
             facturation.setformData(facturationForm, itemObj);
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
             console.log(err)
             alertify.error("Une erreur s'est produite lors de la modification.")
         });
     },
-    showItem: function(el) {
+    showItem: function (el) {
         // Récupération de l'id de l'objet
         let detailId = el.data("item-id");
         //console.log(id);
-        GlobalScript.request((URL_GET_DETAIL_FACTURE.replace("__id__", facture ? facture.id ? facture.id : 0 : 0)).replace("__detailId__", detailId), 'GET', null).then(function(data) {
+        GlobalScript.request((URL_GET_DETAIL_FACTURE.replace("__id__", facture ? facture.id ? facture.id : 0 : 0)).replace("__detailId__", detailId), 'GET', null).then(function (data) {
             // Run this when your request was successful
             var itemObj = JSON.parse(data);
             console.log(itemObj)
             facturation.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
 
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
             console.log(err)
             alertify.error("Une erreur s'est produite lors de l'affichage.")
         });
     },
-    removeItem: function(el, oktitle, oktext) {
+    removeItem: function (el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let detailId = el.data("item-id");
         // console.log(id);
-        GlobalScript.request((URL_DELETE_ITEM.replace("__id__", facture ? facture.id ? facture.id : 0 : 0)).replace("__detailId__", detailId), 'DELETE', null).then(function(data) {
+        GlobalScript.request((URL_DELETE_ITEM.replace("__id__", facture ? facture.id ? facture.id : 0 : 0)).replace("__detailId__", detailId), 'DELETE', null).then(function (data) {
             // Run this when your request was successful
             console.log(JSON.parse(data))
             alertify.success(oktext);
             datatable.ajax.reload();
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
             console.log(err)
             alertify.error("Une erreur s'est produite lors de la suppression.")
         });
     },
-    setformData: function(form, item) {
+    setformData: function (form, item) {
         if (form.length) {
             form.find("#item-id").val(item.id)
             form.find("#date").val(((new Date()).toISOString()).slice(0, 16))
@@ -300,7 +300,7 @@ let facturation = {
             facturation.setMontant();
         }
     },
-    dataFormat: function(form) {
+    dataFormat: function (form) {
         if (form.length) {
             return {
                 'id': form.find("#item-id").val(),
@@ -315,37 +315,37 @@ let facturation = {
         }
         return null;
     },
-    validateItem: function(el, oktitle, oktext) {
+    validateItem: function (el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let detailId = el.data("item-id");
         // console.log(id);
-        GlobalScript.request((URL_VALIDER_DETAIL_FACTURE.replace("__id__", facture ? facture.id ? facture.id : 0 : 0)).replace("__detailId__", detailId), 'PUT', null).then(function(data) {
+        GlobalScript.request((URL_VALIDER_DETAIL_FACTURE.replace("__id__", facture ? facture.id ? facture.id : 0 : 0)).replace("__detailId__", detailId), 'PUT', null).then(function (data) {
             // Run this when your request was successful
             console.log(JSON.parse(data))
             alertify.success(oktext);
             datatable.ajax.reload();
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
             console.log(err)
             alertify.error("Une erreur s'est produite lors de la validation.")
         });
     },
-    validateFacture: function(oktitle, oktext) {
-        GlobalScript.request(URL_VALIDER_FACTURE.replace("__id__", facture ? facture.id ? facture.id : 0 : 0), 'PUT', null).then(function(data) {
+    validateFacture: function (oktitle, oktext) {
+        GlobalScript.request(URL_VALIDER_FACTURE.replace("__id__", facture ? facture.id ? facture.id : 0 : 0), 'PUT', null).then(function (data) {
             // Run this when your request was successful
             facture = JSON.parse(data)
             console.log(facture)
             alertify.success(oktext);
             datatable.ajax.reload();
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
             console.log(err)
             alertify.error("Une erreur s'est produite lors de la validation.")
         });
     },
     // Récupération de la liste des services internes ou des clients
-    getForeignsData: function(url, selectData = [], choicePosition, itemId) {
-        GlobalScript.request(url, 'GET', null).then(function(data) {
+    getForeignsData: function (url, selectData = [], choicePosition, itemId) {
+        GlobalScript.request(url, 'GET', null).then(function (data) {
             // Run this when your request was successful
             dataJon = JSON.parse(data);
             console.log(dataJon);
@@ -353,17 +353,17 @@ let facturation = {
             choices[choicePosition].setChoices(dataJon, selectData[1], selectData[2]);
             if (itemId) choices[choicePosition].setChoiceByValue(itemId);
             // Vérification si l'ID de la facture provient de l'URL
-            if(FACTURE_ID && selectData[0] == "clients"){
+            if (FACTURE_ID && selectData[0] == "clients") {
                 // Récupération de la facture et recharge du tablau des lignes de la facture
                 facturation.getFactureById(FACTURE_ID)
             }
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
             console.log(err)
             alertify.error(err.status == 403 ? `Récupération de la liste des ${selectData[0]} : Accès réfusé` : `Une erreur s'est produite lors de la récupération des ${selectData[0]}`);
         });
     },
-    reloadDatatable: function(event) {
+    reloadDatatable: function (event) {
         event.preventDefault();
         // Remise à null de l'ID de facture venant de l'url de la page
         FACTURE_ID = null
@@ -377,7 +377,7 @@ let facturation = {
         }
         facturation.getEntity(URL_GET_FACTURE_CLIENT.replace("__clientId__", clientId ? clientId : 0), clientId, 'facture')
     },
-    getArticle: function(event = null) {
+    getArticle: function (event = null) {
         if (event) event.preventDefault();
         console.log('ici')
         var serviceId = facturationForm.find("#article").val();
@@ -389,13 +389,13 @@ let facturation = {
             facturation.setFormOnArticleChange()
         }
     },
-    setFormOnArticleChange: function() {
+    setFormOnArticleChange: function () {
         console.log(serviceInterne)
         facturationForm.find("#prix_u").val(serviceInterne ? serviceInterne.montant : 0)
         facturationForm.find("#quantite").val(1)
         facturationForm.find("#montant").val(serviceInterne ? serviceInterne.montant : 0)
     },
-    setMontant: function(event = null) {
+    setMontant: function (event = null) {
         if (event) event.preventDefault();
         var prixU = facturationForm.find("#prix_u").val();
         var quantite = facturationForm.find("#quantite").val();
@@ -406,8 +406,8 @@ let facturation = {
             montant = 0;
         facturationForm.find("#montant").val(montant)
     },
-    getEntity: function(url, id, dataname = 'donnée', reloadDatatable = false) {
-        GlobalScript.request(url.replace("__id__", id), 'GET', null).then(function(data) {
+    getEntity: function (url, id, dataname = 'donnée', reloadDatatable = false) {
+        GlobalScript.request(url.replace("__id__", id), 'GET', null).then(function (data) {
             // Run this when your request was successful
             dataJson = JSON.parse(data);
             console.log(dataJson);
@@ -424,19 +424,19 @@ let facturation = {
                 facture = dataJson
             }
             return dataJson;
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
             console.log(err)
             alertify.error(err.status == 403 ? `Récupération de ${dataname} : Accès réfusé` : `Une erreur s'est produite lors de la récupération de ${dataname}`);
         });
     },
-    setShowingTable: function(itemObj) {
+    setShowingTable: function (itemObj) {
         var $showClasseTable = $('table.item-show-table');
         $showClasseTable.find('.td-reference').text(itemObj.id);
         $showClasseTable.find('.td-designation').text(itemObj.reservation ? "Réservation" : itemObj.designation);
         $showClasseTable.find('.td-quantite').text(itemObj.quantite);
         $showClasseTable.find('.td-prixUnitaire').text(itemObj.prix);
-        $showClasseTable.find('.td-taxe').text(itemObj.taxe+"%");
+        $showClasseTable.find('.td-taxe').text(itemObj.taxe + "%");
         $showClasseTable.find('.td-montantHt').text(itemObj.montantHt);
         $showClasseTable.find('.td-montantTva').text(itemObj.montantTva);
         $showClasseTable.find('.td-montantTtc').text(itemObj.montantTtc);
@@ -447,8 +447,8 @@ let facturation = {
             html = `<span class="text-warning">Non-Validé</span>`;
         $showClasseTable.find('.td-statut').html(html);
     },
-    getFactureById: function(factureId){
-        GlobalScript.request(URL_GET_ITEM.replace("__id__" , factureId), 'GET', null).then(function(data) {
+    getFactureById: function (factureId) {
+        GlobalScript.request(URL_GET_ITEM.replace("__id__", factureId), 'GET', null).then(function (data) {
             // Run this when your request was successful
             dataJson = JSON.parse(data);
             console.log(dataJson);
@@ -456,53 +456,53 @@ let facturation = {
             client = facture.client
             choices[0].setChoiceByValue(client.id)
             datatable.ajax.reload()
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
             console.log(err)
             alertify.error(err.status == 403 ? `Récupération de la liste de la facture : Accès réfusé` : `Une erreur s'est produite lors de la récupération de la facture`);
         });
     }
 };
-$(document).ready(function() {
+$(document).ready(function () {
     facturation.listInitalizer();
     // Edit record
-    datatable.on('click', '.edit-item', function(e) {
+    datatable.on('click', '.edit-item', function (e) {
         e.preventDefault();
         facturation.editItem($(this));
     });
 
     // Delete a record
-    datatable.on('click', '.remove-item', function(e) {
+    datatable.on('click', '.remove-item', function (e) {
         e.preventDefault();
         //facturation.removeItem($(this));
         facturation.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cette ligne de facture ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimée !", "Suppression effectuée avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
     });
 
     //Show record
-    datatable.on('click', '.show-item', function(e) {
+    datatable.on('click', '.show-item', function (e) {
         e.preventDefault();
         facturation.showItem($(this));
     });
 
     //Validate record
-    datatable.on('click', '.validate-item', function(e) {
+    datatable.on('click', '.validate-item', function (e) {
         e.preventDefault();
         // facturation.validateItem($(this));
         facturation.saValidateItemParams($(this), "Êtes-vous sûr de vouloir valider cette ligne de facture ?", "Cette opération est irréversible !", "Oui, valider !", "Non, annuller !", "Validée !", "Validation effectuée avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
     });
 
     //Validate facture
-    $("a.validate-facture").click(function(e) {
+    $("a.validate-facture").click(function (e) {
         e.preventDefault();
-        if(facture && facture.valid){
+        if (facture && facture.valid) {
             alertify.warning("Cette facture est déjà validée")
-        }else{
+        } else {
             // facturation.validateFacture($(this));
             facturation.saValidateFactureParams("Êtes-vous sûr de vouloir valider la facture en cours ?", "Cette opération est irréversible !", "Oui, valider !", "Non, annuller !", "Validée !", "Validation effectuée avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
         }
     });
 });
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     facturation.choicesJsInit();
     facturationForm = $("div#facturationForm").find("form");
     // facturation.getForeignsData(URL_LIST_CLIENT, ['clients', 'id', 'identite'], 0, null);
