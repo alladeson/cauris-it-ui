@@ -269,4 +269,18 @@ $(document).ready(function() {
         e.preventDefault();
         approvisionnement.showItem($(this));
     });
+
+    //Show Action
+    datatable.on('responsive-resize', function(e, datatable, columns) {
+        e.preventDefault();
+        var count = columns.reduce(function(a, b) {
+            return b === false ? a + 1 : a;
+        }, 0);
+        var position = count ? "relative" : "absolute";
+        datatable.on('click', 'button.dropdown-toggle', function(e) {
+            e.preventDefault();
+            $(".dropdown-menu-end").css("position", position);
+        });
+        console.log(count + ' column(s) are hidden');
+    });
 });
