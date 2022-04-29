@@ -41,6 +41,21 @@ class StockController extends AbstractController
             "url_list_taxe" => ApiConstant::URL_LIST_TAXE,
         ]);
     }
+
+    #[Route('/clients', name: 'gstk_client')]
+    public function client(): Response
+    {
+        return $this->render('stock/client.html.twig', [
+            'page_title' => 'Clients',
+            'breadcrumb' => ['Gestion de Stock', 'Clients'],
+            "sidebar_code" => ['GSTK', 'CLT', ''],
+            "url_list_item" => ApiConstant::URL_LIST_CLIENT,
+            "url_post_item" => ApiConstant::URL_POST_CLIENT,
+            "url_put_item" => ApiConstant::URL_PUT_CLIENT,
+            "url_get_item" => ApiConstant::URL_GET_CLIENT,
+            "url_delete_item" => ApiConstant::URL_DELETE_CLIENT,
+        ]);
+    }
     
     #[Route('/approvisionnements', name: 'gstk_approvisionnement')]
     public function approvisionnement(): Response

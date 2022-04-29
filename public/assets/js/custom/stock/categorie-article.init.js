@@ -126,6 +126,7 @@ let categorieArticle = {
         event.preventDefault();
         var form = $("div.add-new-modal").find('form');
         var data = categorieArticle.dataFormat(form)
+        let dataId = form.find("#item-id").val();
         console.log(data)
         GlobalScript.request((data.id ? URL_PUT_ITEM.replace("__id__", data.id) : URL_POST_ITEM), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
@@ -133,7 +134,7 @@ let categorieArticle = {
             datatable.ajax.reload();
             // categorieArticle.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
-                // $("div.add-new-modal").modal('hide')
+            if (dataId) $("div.add-new-modal").modal('hide')
             form[0].reset()
         }).catch(function(err) {
             // Run this when promise was rejected via reject()

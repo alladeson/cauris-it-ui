@@ -34,20 +34,19 @@ class ApiConstant
     public const URL_PUT_CATEGORIE_ARTICLE = "stock/categorie-article/__id__";
     public const URL_GET_CATEGORIE_ARTICLE = "stock/categorie-article/__id__";
     public const URL_DELETE_CATEGORIE_ARTICLE = "stock/categorie-article/__id__";
-    // Catégorie des articles
+    // Les articles
     public const URL_LIST_ARTICLE = "stock/article";
     public const URL_POST_ARTICLE = "stock/article/categorie-article/__cId__/taxe/__tId__";
     public const URL_PUT_ARTICLE = "stock/article/__id__/categorie-article/__cId__/taxe/__tId__";
     public const URL_GET_ARTICLE = "stock/article/__id__";
     public const URL_DELETE_ARTICLE = "stock/article/__id__";
  
-     /*** Module Gestion Client ***/
-     //CRUD client
-     public const URL_LIST_CLIENT = "client";
-     public const URL_POST_CLIENT = "client";
-     public const URL_PUT_CLIENT = "client/__id__";
-     public const URL_GET_CLIENT = "client/__id__";
-     public const URL_DELETE_CLIENT = "client/__id__";
+     //Les clients
+     public const URL_LIST_CLIENT = "stock/client";
+     public const URL_POST_CLIENT = "stock/client";
+     public const URL_PUT_CLIENT = "stock/client/__id__";
+     public const URL_GET_CLIENT = "stock/client/__id__";
+     public const URL_DELETE_CLIENT = "stock/client/__id__";
 
      /*** Module Caisse ***/
      // Facturation et liste des factures

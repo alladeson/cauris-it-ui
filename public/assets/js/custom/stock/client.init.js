@@ -1,8 +1,6 @@
 let datatable;
-let choices = [];
-let categories = [];
-let taxes = [];
-let article = {
+let choices;
+let client = {
     listInitalizer: function() {
         // $(".datatable").DataTable({ responsive: !1 }),
         datatable = $(".datatable").DataTable({
@@ -26,7 +24,7 @@ let article = {
                         $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
                     }
                 },
-                // "ajax": "/assets/js/custom/data/article.txt",
+                // "ajax": "/assets/js/custom/data/categorie-article.txt",
                 columns: [{
                         data: 'id',
                         "class": "",
@@ -35,40 +33,54 @@ let article = {
                         "render": function(data, type, row, meta) {
                             return `` +
                                 `<div class="form-check font-size-16">` +
-                                `<input type="checkbox" class="form-check-input" id="articlecheck${data}">` +
-                                `<label class="form-check-label" for="articlecheck${data}"></label>` +
+                                `<input type="checkbox" class="form-check-input" id="clientcheck${data}">` +
+                                `<label class="form-check-label" for="clientcheck${data}"></label>` +
                                 `</div>`;
                         }
                     },
                     { data: 'id' },
                     {
-                        data: 'categorie',
-                        "render": function(data, type, row, meta) {
-                            return data.libelle;
-                        }
-                    },
-                    { data: 'designation' },
-                    {
-                        data: 'prix',
-                        render: function(data, type, row, meta) {
-                            return data + " fcfa";
-                        }
-                    },
-                    {
-                        data: 'taxe',
-                        "render": function(data, type, row, meta) {
-                            return data.string;
-                        }
-                    },
-                    {
-                        data: 'taxeSpecifique',
+                        data: 'name',
                         render: function(data, type, row, meta) {
                             return data ? data : "-";
                         }
                     },
-                    { data: 'stock' },
-                    { data: 'stockSecurite' },
-                    // { data: 'montant' },
+                    {
+                        data: 'ifu',
+                        render: function(data, type, row, meta) {
+                            return data ? data : "-";
+                        }
+                    },
+                    {
+                        data: 'rcm',
+                        render: function(data, type, row, meta) {
+                            return data ? data : "-";
+                        }
+                    },
+                    {
+                        data: 'telephone',
+                        render: function(data, type, row, meta) {
+                            return data ? data : "-";
+                        }
+                    },
+                    {
+                        data: 'email',
+                        render: function(data, type, row, meta) {
+                            return data ? data : "-";
+                        }
+                    },
+                    {
+                        data: 'address',
+                        render: function(data, type, row, meta) {
+                            return data ? data : "-";
+                        }
+                    },
+                    {
+                        data: 'ville',
+                        render: function(data, type, row, meta) {
+                            return data ? data : "-";
+                        }
+                    },
                     {
                         "data": "id",
                         "class": "",
@@ -79,7 +91,7 @@ let article = {
                                                 <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="bx bx-dots-horizontal-rounded"></i>
                                                 </button>
-                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                <ul class="dropdown-menu dropdown-menu-end" style="position: relative !important;">
                                                     <li>
                                                         <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                     </li>
@@ -97,21 +109,6 @@ let article = {
                 ],
             }),
             $(".dataTables_length select").addClass("form-select form-select-sm");
-    },
-    choicesJsInit: function() {
-        var e = document.querySelectorAll("[data-trigger]");
-        for (i = 0; i < e.length; ++i) {
-            var a = e[i];
-            choices[i] = new Choices(a, {
-                loadingText: 'Chargement...',
-                noResultsText: 'Aucun résultat trouvé',
-                noChoicesText: 'Pas de choix à effectuer',
-                itemSelectText: 'Appuyez pour sélectionner',
-                position: "bottom",
-                removeItemButton: true,
-                duplicateItemsAllowed: !1,
-            });
-        }
     },
     saSucces: function(title, text) {
         Swal.fire({
@@ -142,9 +139,9 @@ let article = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                article.saSucces(oktitle, oktext) :
+                client.saSucces(oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                article.saError(notitle, notext);
+                client.saError(notitle, notext);
         });
     },
     saRemoveParams: function(el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
@@ -160,34 +157,29 @@ let article = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                article.removeItem(el, oktitle, oktext) :
+                client.removeItem(el, oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                article.saError(notitle, notext);
+                client.saError(notitle, notext);
         });
     },
     submitFormData: function(event) {
         event.preventDefault();
         var form = $("div.add-new-modal").find('form');
-        var data = article.dataFormat(form)
+        var data = client.dataFormat(form)
         let dataId = form.find("#item-id").val();
         console.log(data)
-        var categorieId = form.find("#categorie").val();
-        var taxeId = form.find("#taxe").val();
-        var obj = { '__id__': data.id, '__cId__': categorieId, '__tId__': taxeId }
-        var submitUrl = data.id ? GlobalScript.textMultipleReplace(URL_PUT_ITEM, obj) : GlobalScript.textMultipleReplace(URL_POST_ITEM, obj);
-        GlobalScript.request(submitUrl, (data.id ? 'PUT' : 'POST'), data).then(function(data) {
+        GlobalScript.request((data.id ? URL_PUT_ITEM.replace("__id__", data.id) : URL_POST_ITEM), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
             console.log(data)
             datatable.ajax.reload();
-            // article.saSucces("Succès !", "Enregistrement effectué avec succès.")
+            // client.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
             if (dataId) $("div.add-new-modal").modal('hide')
-                // form[0].reset()
-            article.resetFormData(form);
+            form[0].reset()
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            article.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            client.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
         });
     },
     showItem: function(el) {
@@ -198,13 +190,13 @@ let article = {
             // Run this when your request was successful
             console.log(data)
             var itemObj = data;
-            article.setShowingTable(itemObj);
+            client.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
 
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            article.saError("Erreur !", "Une erreur s'est produite lors de l'affichage.")
+            client.saError("Erreur !", "Une erreur s'est produite lors de l'affichage.")
         });
     },
     editItem: function(el) {
@@ -217,14 +209,12 @@ let article = {
             console.log(data)
             var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
-            article.setformData($("div.add-new-modal").find('form'), itemObj);
-            GlobalScript.getForeignsData(URL_LIST_CATEGORIE_ARTICLE, ['catégories', 'id', 'libelle'], 0, itemObj.categorie.id);
-            GlobalScript.getForeignsData(URL_LIST_TAXE, ['taxes', 'id', 'string'], 1, itemObj.taxe.id);
+            client.setformData($("div.add-new-modal").find('form'), itemObj);
             $(".add-new-modal").modal('show');
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            article.saError("Erreur !", "Une erreur s'est produite lors de la modification.")
+            client.saError("Erreur !", "Une erreur s'est produite lors de la modification.")
         });
     },
     removeItem: function(el, oktitle, oktext) {
@@ -234,39 +224,42 @@ let article = {
         GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
             console.log(data)
-                // article.saSucces(oktitle, oktext);
+                // client.saSucces(oktitle, oktext);
             alertify.success(oktext)
             datatable.ajax.reload();
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            article.saError("Erreur !", "Une erreur s'est produite lors de la suppression.")
+            client.saError("Erreur !", "Une erreur s'est produite lors de la suppression.")
         });
     },
     setformData: function(form, item) {
         if (form.length) {
             form.find("#item-id").val(item.id)
-                //form.find("#reference").val(item.id)
-            form.find("#designation").val(item.designation)
-            form.find("#prix").val(item.prix)
-            form.find("#taxe-specifique").val(item.taxeSpecifique)
-            form.find("#stock").val(item.stock)
-            form.find("#stock-securite").val(item.stockSecurite)
+            form.find("#name").val(item.name)
+            form.find("#ifu").val(item.ifu)
+            form.find("#rcm").val(item.rcm)
+            form.find("#telephone").val(item.telephone)
+            form.find("#email").val(item.email)
+            form.find("#address").val(item.address)
+            form.find("#ville").val(item.ville)
         }
     },
     dataFormat: function(form) {
         if (form.length) {
             data = {
                 'id': form.find("#item-id").val(),
-                'designation': form.find("#designation").val(),
-                'prix': form.find("#prix").val(),
-                'taxeSpecifique': form.find("#taxe-specifique").val(),
-                'stock': form.find("#stock").val(),
-                'stockSecurite': form.find("#stock-securite").val(),
+                'name': form.find("#name").val(),
+                'ifu': form.find("#ifu").val(),
+                'rcm': form.find("#rcm").val(),
+                'telephone': form.find("#telephone").val(),
+                'email': form.find("#email").val(),
+                'address': form.find("#address").val(),
+                'ville': form.find("#ville").val(),
             };
             return JSON.stringify(data);
         }
-        return null;
+        return "";
     },
     newItemEvent: function(event) {
         event.preventDefault();
@@ -274,8 +267,6 @@ let article = {
         var form = $("div.add-new-modal").find('form');
         form[0].reset();
         form.find("#item-id").val("");
-        GlobalScript.getForeignsData(URL_LIST_CATEGORIE_ARTICLE, ['catégories', 'id', 'libelle'], 0, null);
-        GlobalScript.getForeignsData(URL_LIST_TAXE, ['taxes', 'id', 'string'], 1, null);
     },
     reloadDatatable: function(event) {
         event.preventDefault();
@@ -284,47 +275,34 @@ let article = {
     setShowingTable: function(itemObj) {
         var $showClasseTable = $('table.item-show-table');
         $showClasseTable.find('.td-reference').text(itemObj.id);
-        $showClasseTable.find('.td-categorie').text(itemObj.categorie.libelle);
-        $showClasseTable.find('.td-designation').text(itemObj.designation);
-        $showClasseTable.find('.td-prix').text(itemObj.prix);
-        $showClasseTable.find('.td-taxe').text(itemObj.taxe.string);
-        $showClasseTable.find('.td-ts').text(itemObj.taxeSpecifique ? itemObj.taxeSpecifique : "-");
-        $showClasseTable.find('.td-stock').text(itemObj.stock);
-        $showClasseTable.find('.td-stock-securite').text(itemObj.stockSecurite);
+        $showClasseTable.find('.td-name').text(itemObj.name ? itemObj.name : "-");
+        $showClasseTable.find('.td-ifu').text(itemObj.ifu ? itemObj.ifu : "-");
+        $showClasseTable.find('.td-rcm').text(itemObj.rcm ? itemObj.rcm : "-");
+        $showClasseTable.find('.td-telephone').text(itemObj.telephone ? itemObj.telephone : "-");
+        $showClasseTable.find('.td-email').text(itemObj.email ? itemObj.email : "-");
+        $showClasseTable.find('.td-address').text(itemObj.address ? itemObj.address : "-");
+        $showClasseTable.find('.td-ville').text(itemObj.ville ? itemObj.ville : "-");
     },
-    /**
-     * Réinitialiser le formulaire après un ajout, ceci permet à l'utilisateur de faire plusieurs ajout sans fermer le formulaire
-     * @param {Object} form Le formulaire d'ajout d'un article
-     */
-    resetFormData: function(form) {
-        form.find("#item-id").val("")
-        form.find("#designation").val("")
-        form.find("#prix").val("")
-        form.find("#taxe-specifique").val("")
-        form.find("#stock").val("")
-        form.find("#stock-securite").val("")
-    }
 };
 $(document).ready(function() {
-    article.listInitalizer();
-    article.choicesJsInit();
+    client.listInitalizer();
     // Edit record
     datatable.on('click', '.edit-item', function(e) {
         e.preventDefault();
-        article.editItem($(this));
+        client.editItem($(this));
     });
 
     // Delete a record
     datatable.on('click', '.remove-item', function(e) {
         e.preventDefault();
-        // article.removeItem($(this));
-        article.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cet article ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Article supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+        // client.removeItem($(this));
+        client.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce client ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Client supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
     });
 
     //Show record
     datatable.on('click', '.show-item', function(e) {
         e.preventDefault();
-        article.showItem($(this));
+        client.showItem($(this));
     });
 
     //Show Action
