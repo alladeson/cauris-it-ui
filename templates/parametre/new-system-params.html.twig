@@ -1,0 +1,374 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- Données du sysmtème
+{% endblock %}
+
+{% block custom_page_stylesheets %}
+	<!-- twitter-bootstrap-wizard css -->
+	<link href="{{ asset('assets/libs/twitter-bootstrap-wizard/prettify.css')}}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block page_content %}
+
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title mb-0">Formulaire des données du sysmtème</h4>
+				</div>
+				<div class="card-body">
+
+					<div id="progrss-wizard" class="twitter-bs-wizard">
+						<ul class="twitter-bs-wizard-nav nav nav-pills nav-justified">
+							<li class="nav-item">
+								<a href="#infos-societe" class="nav-link" data-toggle="tab">
+									<div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Les données de la société">
+										<i class="bx bx-group"></i>
+									</div>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="#infos-emcef" class="nav-link" data-toggle="tab">
+									<div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="e-MECef">
+										<i class="bx bx-bed"></i>
+									</div>
+								</a>
+							</li>
+
+							<li class="nav-item">
+								<a href="#recap-system-params" class="nav-link" data-toggle="tab">
+									<div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Récapitulatif">
+										<i class="bx bx-notepad"></i>
+									</div>
+								</a>
+							</li>
+						</ul>
+						<!-- wizard-nav -->
+
+						<div id="bar" class="progress mt-4">
+							<div class="progress-bar bg-success progress-bar-striped progress-bar-animated"></div>
+						</div>
+						<div class="tab-content twitter-bs-wizard-tab-content">
+							<div class="tab-pane" id="infos-societe">
+								<div class="text-center mb-4">
+									<h5>informations de la société</h5>
+									<p class="card-title-desc">Remplissez toutes les informations ci-dessous</p>
+								</div>
+								<form class="form-wizard" id="societe-form" onsubmit"systemParamsWizard.submitFormData(event)">
+									<div class="row">						
+										<div class="col-md-12">
+											<div class="mb-3 position-relative">
+												<label class="form-label" for="name">Nom ou Raison sociale</label>
+												<input onchange="systemParamsWizard.setRecapTable()" type="text" id="name" name="name" class="form-control" placeholder="Le nom de la société" required>
+											</div>
+										</div>							
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="mb-3 position-relative">
+												<label class="form-label" for="ifu">IFU</label>
+												<input type="hidden" id="item-id" name="item-id" value="">
+												<input onchange="systemParamsWizard.setRecapTable()" type="text" class="form-control" id="ifu" name="ifu" placeholder="L'IFU du client" value="">
+											</div>
+										</div>														
+									</div>
+									<div class="row">						
+										<div class="col-md-12">
+											<div class="mb-3 position-relative">
+												<label class="form-label" for="rcm">RCM</label>
+												<input onchange="systemParamsWizard.setRecapTable()" type="text" id="rcm" name="rcm" class="form-control" placeholder="Le numéro rcm du client">
+											</div>
+										</div>							
+									</div>
+									<div class="row">
+										<div class="col-lg-6">
+											<div class="mb-3 position-relative">
+												<label class="form-label" for="telepohone">Téléphone</label>
+												<div class="input-group">
+													<span class="input-group-text" id="telephonePrepend">
+														<i class="mdi mdi-phone"></i>
+													</span>
+													<input onchange="systemParamsWizard.setRecapTable()" type="tel" pattern="[5-9]{1}[0-9]{1}[0-9]{2}[0-9]{2}[0-9]{2}" class="form-control" id="telephone" name="telephone" placeholder="Numéro de téléphone" aria-describedby="telephonePrepend" required>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="mb-3 position-relative">
+												<label class="form-label" for="email">E-mail</label>
+												<div class="input-group">
+													<span class="input-group-text" id="emailPrepend">
+														<i class="mdi mdi-email"></i>
+													</span>
+													<input onchange="systemParamsWizard.setRecapTable()" type="email" id="email" name="email" class="form-control" placeholder="Adresse e-mail" aria-describedby="emailPrepend" required>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">						
+										<div class="col-md-6">
+											<div class="mb-3 position-relative">
+												<label class="form-label" for="pays">Pays</label>
+												<input onchange="systemParamsWizard.setRecapTable()" disabled type="text" id="pays" name="pays" class="form-control" placeholder="Le pays de la société" value="Bénin">
+											</div>
+										</div>							
+										<div class="col-md-6">
+											<div class="mb-3 position-relative">
+												<label class="form-label" for="ville">Ville</label>
+												<input onchange="systemParamsWizard.setRecapTable()" type="text" id="ville" name="ville" class="form-control" placeholder="La ville de la société">
+											</div>
+										</div>							
+									</div>
+									<div class="row">
+										<div class="col-lg-12">
+											<div class="mb-3 position-relative">
+												<label class="form-label" for="address">Adresse</label>
+												<div class="input-group">
+													<span class="input-group-text" id="addressPrepend">@</span>
+													<input onchange="systemParamsWizard.setRecapTable()" type="text" class="form-control" id="address" name="address" placeholder="Adresse de la société" aria-describedby="addressPrepend" required>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+								<ul class="pager wizard twitter-bs-wizard-pager-link">
+									<li class="next">
+										<a href="javascript: void(0);" class="btn btn-primary">Suivant
+											<i class="bx bx-chevron-right ms-1"></i>
+										</a>
+									</li>
+								</ul>
+							</div>
+							<div class="tab-pane" id="infos-emcef">
+								<div>
+									<div class="text-center mb-4">
+										<h5>e-MECef</h5>
+										<p class="card-title-desc">Remplissez toutes les informations ci-dessous</p>
+									</div>
+									<form class="form-wizard" id="emecef-form" onsubmit="systemParamsWizard.submitFormData(event)">
+										<div class="row">
+											<div class="col-lg-6">
+												<div class="mb-3">
+													<label for="type" class="form-label font-size-13 text-muted">Type de Système</label>
+													<select onchange="systemParamsWizard.setRecapTable()" required class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher...">
+														<option value="">Sélectionner</option>
+														<option value="Test">Test</option>
+														<option value="Production">Production</option>
+													</select>
+												</div>
+											</div>
+
+											<div class="col-lg-6">
+												<div class="mb-3">
+													<label for="nim" class="form-label font-size-13 text-muted">NIM</label>
+													<input onchange="systemParamsWizard.setRecapTable()" type="text" id="nim" name="nim" class="form-control" placeholder="Le nim de l'e-MECeF">
+												</div>
+											</div>
+										</div>
+										<div class="row">						
+											<div class="col-md-12">
+												<div class="mb-3 position-relative">
+													<label class="form-label" for="token">Token</label>
+													<textarea onchange="systemParamsWizard.setRecapTable()" id="token" name="token" rows="4" class="form-control" placeholder="Le token d'authentification à l'e-MECef"></textarea>
+												</div>
+											</div>							
+										</div>
+									</form>
+									<ul class="pager wizard twitter-bs-wizard-pager-link">
+										<li class="previous">
+											<a href="javascript: void(0);" class="btn btn-primary">
+												<i class="bx bx-chevron-left me-1"></i>
+												Précédent</a>
+										</li>
+										<li class="next">
+											<a href="javascript: void(0);" class="btn btn-primary">Suivant
+												<i class="bx bx-chevron-right ms-1"></i>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="tab-pane" id="recap-system-params">
+								<div>
+									<div class="text-center mb-4">
+										<h5>Récapitulatif</h5>
+										<p class="card-title-desc">Vueillez vérifier ces informations avant l'enregistrement</p>
+									</div>
+
+									<div class="table-responsive">
+										<table class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
+											<thead>
+												<tr>
+													<th scope="col" style="width: 50%;">
+														Type de données
+													</th>
+													<th scope="col" class="text-center">
+														Valeur de la donnée
+													</th>
+												</tr>
+											</thead>
+
+											<tbody>
+												<tr>
+													<th scope="row" colspan="2" class="text-center">
+														Société
+													</th>
+												</tr>
+												<tr>
+													<th scope="row">
+														Nom
+													</th>
+													<td class="text-center td-name">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row">
+														IFU
+													</th>
+													<td class="text-center td-ifu">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row">
+														RCM
+													</th>
+													<td class="text-center td-rcm">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row">
+														Téléphone
+													</th>
+													<td class="text-center td-telephone">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row">
+														E-mail
+													</th>
+													<td class="text-center td-email">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row">
+														Adresse
+													</th>
+													<td class="text-center td-address">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row">
+														Pays
+													</th>
+													<td class="text-center td-pays">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row">
+														Ville
+													</th>
+													<td class="text-center td-ville">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row" class="text-center" colspan="2">
+														Données de l'e-MECeF
+													</th>
+												</tr>
+												<tr>
+													<th scope="row">
+														Type de système
+													</th>
+													<td class="text-center td-type">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row">
+														NIM
+													</th>
+													<td class="text-center td-nim">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row">
+														Token
+													</th>
+													<td class="text-center td-token">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>												
+											</tbody>
+										</table>
+										<!-- end table -->
+									</div>
+
+									<ul class="pager wizard twitter-bs-wizard-pager-link">
+										<li class="previous">
+											<a href="javascript: void(0);" class="btn btn-primary">
+												<i class="bx bx-chevron-left me-1"></i>
+												Précédent</a>
+										</li>
+										<li class="float-end">
+											<a href="javascript: void(0);" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".confirmModal">Entregistrer</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end card body -->
+			</div>
+			<!-- end card -->
+		</div>
+		<!-- end col -->
+	</div>
+	<!-- end row -->
+
+	<!-- Modal -->
+	<div class="modal fade confirmModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header border-bottom-0">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="text-center">
+						<div class="mb-3">
+							<i class="bx bx-check-circle display-4 text-success"></i>
+						</div>
+						<h5>Confirmer l'enregistrement de la reservation</h5>
+					</div>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Fermer</button>
+					<button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal" onclick="systemParamsWizard.onSave(event);">Entregistrer</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end modal -->
+
+{% endblock %}
+
+{% block page_custom_scripts %}
+	<!-- twitter-bootstrap-wizard js -->
+	<script src="{{ asset('assets/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js') }}"></script>
+	<script src="{{ asset('assets/libs/twitter-bootstrap-wizard/prettify.js') }}"></script>
+	<!-- form wizard init -->
+	<script src="{{ asset('assets/js/pages/form-wizard.init.js') }}"></script>
+	
+	<!-- init js -->
+	<script src="{{ asset('assets/js/custom/parametres/new-system-params.init.js') }}"></script>
+{% endblock %}

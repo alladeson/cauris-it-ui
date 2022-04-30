@@ -1,22 +1,25 @@
 <?php
 
 use App\Kernel;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
-require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+require_once dirname(__DIR__) . '/vendor/autoload_runtime.php';
 
 return function (array $context) {
 
     $session = new Session();
-    if (!$session->getId()) $session->start();
+    if (!$session->getId()) {
+        $session->start();
+    }
 
     // Récupération de l'url de la requête en supprimant les espaces vides
     //$requestUri = trim($_SERVER['REQUEST_URI']);
     $request = Request::createFromGlobals();
     $requestPath = trim($request->getPathInfo());
     $queryPath = trim($request->query->get('uri'));
-    $home = [ "/", "/dashboard"];
+    $home = ["/", "/dashboard"];
+    $newSystemParamsUrl = "/parametre/system-params/new";
 
     //dump($requestPath, $queryPath);
     //dd($session->get('token'));
@@ -57,6 +60,14 @@ return function (array $context) {
             $session->clear();
             return header("Location: " . (in_array($requestPath, $home) || str_starts_with($requestPath, "/auth") ? "/auth/login?fatal-error" : "/auth/login?fatal-error&uri=" . $requestPath));
         }
+
+        // if ($user && !$user->systemParams && !str_starts_with($requestPath, $newSystemParamsUrl)) {
+        //     if ($user->role == "ADMIN") {
+        //         return header("Location: " . $newSystemParamsUrl);
+        //     }
+        // } else if ($user && $user->systemParams && str_starts_with($requestPath, $newSystemParamsUrl)) {
+        //     return header("Location: " . $home[0]);
+        // }
 
         // // - Sinon c-a-d le compte utilisateur connecté existe et s'il n'est pas activé, alors redirige à la page d'activation (du changement du mot de passe par défaut)
         // if (!$user->active) {

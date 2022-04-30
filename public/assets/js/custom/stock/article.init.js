@@ -110,6 +110,7 @@ let article = {
                 position: "bottom",
                 removeItemButton: true,
                 duplicateItemsAllowed: !1,
+                shouldSort: false,
             });
         }
     },

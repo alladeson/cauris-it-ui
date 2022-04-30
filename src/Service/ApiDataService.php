@@ -2,15 +2,14 @@
 
 namespace App\Service;
 
+use App\Utils\Tool;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpClient\Exception\TransportException;
-use Symfony\Component\HttpClient\HttpClient;
-use App\Utils\Tool;
 
 class ApiDataService
 {
@@ -21,11 +20,12 @@ class ApiDataService
     private $logger;
     // private UrlGeneratorInterface $urlGenerator;
 
-
     public static function requestAuthUser()
     {
         $session = new Session();
-        if (!$session->getId()) $session->start();
+        if (!$session->getId()) {
+            $session->start();
+        }
 
         $token = $session->get('token');
         $client = HttpClient::create();
@@ -33,11 +33,11 @@ class ApiDataService
         $options = [
             'headers' => [
                 'Authorization' => "Bearer {$token}",
-                'Content-Type' => "application/json"
-            ]
+                'Content-Type' => "application/json",
+            ],
         ];
         // get authenticated user
-        $response =  $client->request(Request::METHOD_GET, $baseUrl . ApiConstant::GET_AUTH_USER_URL,  $options);
+        $response = $client->request(Request::METHOD_GET, $baseUrl . ApiConstant::GET_AUTH_USER_URL, $options);
         $content = $response->getContent(false);
         $status = $response->getStatusCode(false);
         if ($status == 200) {
@@ -74,7 +74,6 @@ class ApiDataService
 
     //
 
-
     /**
      * Constructeur pour injecter le client http
      *
@@ -82,18 +81,18 @@ class ApiDataService
      */
     public function __construct(HttpClientInterface $httpClient, LoggerInterface $logger/*, UrlGeneratorInterface $urlGenerator*/)
     {
-        //$this->urlGenerator = $urlGenerator;        
+        //$this->urlGenerator = $urlGenerator;
         $this->httpClient = $httpClient;
         $this->baseUrl = $_ENV["API_BASE_URL"];
         $this->session = new Session();
-        if (!$this->session->getId())
+        if (!$this->session->getId()) {
             $this->session->start();
+        }
 
         $this->apiBearerToken = $this->session->get("token");
         //Logger
         $this->logger = $logger;
     }
-
 
     /**
      * Retourne l'url de base de l'api
@@ -105,9 +104,8 @@ class ApiDataService
         return $this->baseUrl;
     }
 
-
     /**
-     * 
+     *
      */
     public function requestUrl($method, $url, array $options = []): ResponseInterface
     {
@@ -116,7 +114,6 @@ class ApiDataService
         return $response;
     }
 
-
     /**
      * Envoie une requête HTTP à l'API
      *
@@ -124,7 +121,7 @@ class ApiDataService
      * @param String $route Route de l'API à exécuter
      * @param object $data Donnée du body de la requète
      * @return ResponseInterface Réponse de la requête
-    */
+     */
     public function request($methode, $route, $data = null): ResponseInterface
     {
         $options = [];
@@ -134,18 +131,17 @@ class ApiDataService
                 'headers' => [
                     'Authorization' => 'Bearer ' . $this->apiBearerToken,
                     'Content-Type' => 'application/json',
-                ]
+                ],
             ];
         } else {
             $options = [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $this->apiBearerToken,
-                ]
+                ],
             ];
         }
         return $this->requestUrl($methode, $this->baseUrl . $route, $options);
     }
-
 
     /**
      * Envoie une requête HTTP à l'API et reçoie les données sous forme de tableau.
@@ -161,7 +157,7 @@ class ApiDataService
         return $response->toArray(false);
     }
 
-        /**
+    /**
      * Envoie une requête HTTP GET à l'API et reçoie les données sous forme de tableau.
      *
      * @param String $route
@@ -207,7 +203,6 @@ class ApiDataService
     {
         return $this->requestToArray(Request::METHOD_DELETE, $route, $data);
     }
-
 
     /**
      * Envoie une requête HTTP à l'API et reçoie les données sous forme d'objet.
@@ -269,7 +264,6 @@ class ApiDataService
         return $this->requestToJson(Request::METHOD_DELETE, $route, $data);
     }
 
-
     /**
      * Exécute une requête
      */
@@ -283,15 +277,16 @@ class ApiDataService
         return new Response($response->getContent(false), $response->getStatusCode(false));
     }
 
-
     /**
-     * 
+     *
      * @param
      */
     public function logError($response)
     {
-        if ($response->getStatusCode(false) != 200)
+        if ($response->getStatusCode(false) != 200) {
             $this->setLogger($response->getContent(false), null);
+        }
+
     }
 
     /**
@@ -305,11 +300,6 @@ class ApiDataService
     {
         $this->logger->error($message, $context ? $context : []);
     }
-
-
-
-
-
 
     /**
      * Méthode de récupération des données depuis l'API
@@ -350,33 +340,40 @@ class ApiDataService
         return $response;
     }
 
-
-    public function getUserAccess($menu) {
+    public function getUserAccess($menu)
+    {
         $user = $this->session->get('user');
         return Tool::in_array_field($menu, "menu", $user['group']['access']);
     }
 
-    public function canUserAccess($menu) {
+    public function canUserAccess($menu)
+    {
         $user = $this->session->get('user');
-        if($user['admin']) return true;
+        if ($user['admin']) {
+            return true;
+        }
 
         $access = $this->getUserAccess($menu);
         return $access and ($access['readable'] or $access['writable'] or $access['deletable']);
     }
 
-    public function canUserAccessEnregistrement() {
+    public function canUserAccessEnregistrement()
+    {
         return $this->canUserAccess(ApiConstant::PROCESS_ENREGISTREMENT);
     }
 
-    public function canUserAccessVerificationRavec() {
+    public function canUserAccessVerificationRavec()
+    {
         return $this->canUserAccess(ApiConstant::PROCESS_VERIFICATION_RAVEC);
     }
 
-    public function canUserAccessVisaParquet() {
+    public function canUserAccessVisaParquet()
+    {
         return $this->canUserAccess(ApiConstant::PROCESS_VISA_PARQUET);
     }
 
-    public function canUserAccessDecisionTribunal() {
+    public function canUserAccessDecisionTribunal()
+    {
         return $this->canUserAccess(ApiConstant::PROCESS_VERIFICATION_CONFORMITE);
     }
 

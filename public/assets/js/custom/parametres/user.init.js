@@ -1,6 +1,6 @@
 let datatable;
 let choices;
-let client = {
+let user = {
     listInitalizer: function() {
         // $(".datatable").DataTable({ responsive: !1 }),
         datatable = $(".datatable").DataTable({
@@ -33,26 +33,26 @@ let client = {
                         "render": function(data, type, row, meta) {
                             return `` +
                                 `<div class="form-check font-size-16">` +
-                                `<input type="checkbox" class="form-check-input" id="clientcheck${data}">` +
-                                `<label class="form-check-label" for="clientcheck${data}"></label>` +
+                                `<input type="checkbox" class="form-check-input" id="usercheck${data}">` +
+                                `<label class="form-check-label" for="usercheck${data}"></label>` +
                                 `</div>`;
                         }
                     },
                     { data: 'id' },
                     {
-                        data: 'name',
+                        data: 'username',
                         render: function(data, type, row, meta) {
                             return data ? data : "-";
                         }
                     },
                     {
-                        data: 'ifu',
+                        data: 'lastname',
                         render: function(data, type, row, meta) {
                             return data ? data : "-";
                         }
                     },
                     {
-                        data: 'rcm',
+                        data: 'firstname',
                         render: function(data, type, row, meta) {
                             return data ? data : "-";
                         }
@@ -64,19 +64,7 @@ let client = {
                         }
                     },
                     {
-                        data: 'email',
-                        render: function(data, type, row, meta) {
-                            return data ? data : "-";
-                        }
-                    },
-                    {
-                        data: 'address',
-                        render: function(data, type, row, meta) {
-                            return data ? data : "-";
-                        }
-                    },
-                    {
-                        data: 'ville',
+                        data: 'role',
                         render: function(data, type, row, meta) {
                             return data ? data : "-";
                         }
@@ -110,6 +98,23 @@ let client = {
             }),
             $(".dataTables_length select").addClass("form-select form-select-sm");
     },
+    choicesJsInit: function() {
+        var e = document.querySelectorAll("[data-trigger]");
+        for (i = 0; i < e.length; ++i) {
+            var a = e[i];
+            choices = new Choices(a, {
+                loadingText: 'Chargement...',
+                noResultsText: 'Aucun résultat trouvé',
+                noChoicesText: 'Pas de choix à effectuer',
+                itemSelectText: 'Appuyez pour sélectionner',
+                position: "bottom",
+                removeItemButton: true,
+                duplicateItemsAllowed: !1,
+                shouldSort: false,
+                searchEnabled: false,
+            });
+        }
+    },
     saSucces: function(title, text) {
         Swal.fire({
             title: title,
@@ -139,9 +144,9 @@ let client = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                client.saSucces(oktitle, oktext) :
+                user.saSucces(oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                client.saError(notitle, notext);
+                user.saError(notitle, notext);
         });
     },
     saRemoveParams: function(el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
@@ -157,29 +162,29 @@ let client = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                client.removeItem(el, oktitle, oktext) :
+                user.removeItem(el, oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                client.saError(notitle, notext);
+                user.saError(notitle, notext);
         });
     },
     submitFormData: function(event) {
         event.preventDefault();
         var form = $("div.add-new-modal").find('form');
-        var data = client.dataFormat(form)
+        var data = user.dataFormat(form)
         let dataId = form.find("#item-id").val();
         console.log(data)
-        GlobalScript.request((data.id ? URL_PUT_ITEM.replace("__id__", data.id) : URL_POST_ITEM), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
+        GlobalScript.request((dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM), (dataId ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
             console.log(data)
             datatable.ajax.reload();
-            // client.saSucces("Succès !", "Enregistrement effectué avec succès.")
+            // user.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
             if (dataId) $("div.add-new-modal").modal('hide')
             form[0].reset()
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            client.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            user.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
         });
     },
     showItem: function(el) {
@@ -190,13 +195,13 @@ let client = {
             // Run this when your request was successful
             console.log(data)
             var itemObj = data;
-            client.setShowingTable(itemObj);
+            user.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
 
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            client.saError("Erreur !", "Une erreur s'est produite lors de l'affichage.")
+            user.saError("Erreur !", "Une erreur s'est produite lors de l'affichage.")
         });
     },
     editItem: function(el) {
@@ -209,12 +214,12 @@ let client = {
             console.log(data)
             var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
-            client.setformData($("div.add-new-modal").find('form'), itemObj);
+            user.setformData($("div.add-new-modal").find('form'), itemObj);
             $(".add-new-modal").modal('show');
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            client.saError("Erreur !", "Une erreur s'est produite lors de la modification.")
+            user.saError("Erreur !", "Une erreur s'est produite lors de la modification.")
         });
     },
     removeItem: function(el, oktitle, oktext) {
@@ -224,38 +229,37 @@ let client = {
         GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
             console.log(data)
-                // client.saSucces(oktitle, oktext);
+                // user.saSucces(oktitle, oktext);
             alertify.success(oktext)
             datatable.ajax.reload();
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            client.saError("Erreur !", "Une erreur s'est produite lors de la suppression.")
+            user.saError("Erreur !", "Une erreur s'est produite lors de la suppression.")
         });
     },
     setformData: function(form, item) {
         if (form.length) {
             form.find("#item-id").val(item.id)
-            form.find("#name").val(item.name)
-            form.find("#ifu").val(item.ifu)
-            form.find("#rcm").val(item.rcm)
-            form.find("#telephone").val(item.telephone)
-            form.find("#email").val(item.email)
-            form.find("#address").val(item.address)
-            form.find("#ville").val(item.ville)
+            form.find("#username").val(item.username)
+            form.find("#lastname").val(item.lastname)
+            form.find("#firstname").val(item.firstname)
+            form.find("#telephone").val(item.phone)
+            choices.setChoiceByValue(item.role)
+                // Le mot de passe n'est pas obligatoire lors de la mise à jour
+            form.find("#password").removeAttr("required")
         }
     },
     dataFormat: function(form) {
         if (form.length) {
             data = {
                 'id': form.find("#item-id").val(),
-                'name': form.find("#name").val(),
-                'ifu': form.find("#ifu").val(),
-                'rcm': form.find("#rcm").val(),
-                'telephone': form.find("#telephone").val(),
-                'email': form.find("#email").val(),
-                'address': form.find("#address").val(),
-                'ville': form.find("#ville").val(),
+                'username': form.find("#username").val(),
+                'lastname': form.find("#lastname").val(),
+                'firstname': form.find("#firstname").val(),
+                'phone': form.find("#telephone").val(),
+                'role': form.find("#role").val(),
+                'defaultPassword': form.find("#password").val(),
             };
             return JSON.stringify(data);
         }
@@ -267,6 +271,8 @@ let client = {
         var form = $("div.add-new-modal").find('form');
         form[0].reset();
         form.find("#item-id").val("");
+        // Le mot de passe est obligatoire pour l'ajout d'un utilisateur
+        form.find("#password").attr("required", "required")
     },
     reloadDatatable: function(event) {
         event.preventDefault();
@@ -283,26 +289,39 @@ let client = {
         $showClasseTable.find('.td-address').text(itemObj.address ? itemObj.address : "-");
         $showClasseTable.find('.td-ville').text(itemObj.ville ? itemObj.ville : "-");
     },
+    passwordShowToggle: function() {
+        var x = document.getElementById("password");
+        var y = document.getElementById("password-icon");
+        if (x.type === "password") {
+            x.type = "text";
+            icon = `<i class="mdi mdi-eye-off-outline"></i>`
+        } else {
+            x.type = "password";
+            icon = `<i class="mdi mdi-eye-outline"></i>`
+        }
+        y.innerHTML = icon;
+    }
 };
 $(document).ready(function() {
-    client.listInitalizer();
+    user.listInitalizer();
+    user.choicesJsInit();
     // Edit record
     datatable.on('click', '.edit-item', function(e) {
         e.preventDefault();
-        client.editItem($(this));
+        user.editItem($(this));
     });
 
     // Delete a record
     datatable.on('click', '.remove-item', function(e) {
         e.preventDefault();
-        // client.removeItem($(this));
-        client.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce client ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Client supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+        // user.removeItem($(this));
+        user.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce user ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Client supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
     });
 
     //Show record
     datatable.on('click', '.show-item', function(e) {
         e.preventDefault();
-        client.showItem($(this));
+        user.showItem($(this));
     });
 
     //Show Action
