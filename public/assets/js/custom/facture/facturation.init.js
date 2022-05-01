@@ -153,6 +153,7 @@ let facturation = {
                 removeItemButton: true,
                 duplicateItemsAllowed: !1,
                 shouldSort: false,
+                searchEnabled: $.inArray(i, [0, 3, 4, 5]) > -1 ? false : true,
             });
         }
     },
