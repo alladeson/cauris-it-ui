@@ -17,111 +17,107 @@
 			<div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#facturationForm">
 				<div class="accordion-body text-muted">
 					<form method="post" class="" onsubmit="facturation.submitFormData(event)">
-						<div class="row">
+						<div
+							class="row">
 							{# <div class="col-lg-3 col-md-3">
-								<div class="mb-3 position-relative">
-									<label class="form-label font-size-13 text-muted" for="debut">Date</label>
-									<input type="hidden" id="item-id" name="item-id" value="">
-									<input
-									type="datetime-local" class="form-control" id="date" name="date" placeholder="" value="" required>
-								</div>
-							</div> #}
+																																																																														<div class="mb-3 position-relative">
+																																																																															<label class="form-label font-size-13 text-muted" for="debut">Date</label>
+																																																																															<input type="hidden" id="item-id" name="item-id" value="">
+																																																																															<input
+																																																																															type="datetime-local" class="form-control" id="date" name="date" placeholder="" value="" required>
+																																																																														</div>
+																																																																													</div> #}
 							<div class="col-lg-4 col-md-4">
 								<div class="mb-3">
 									<label for="type" class="form-label font-size-13 text-muted">Type de facture</label>
-									<select required class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher...">
-									</select>
+									<select required class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher..."></select>
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-4">
 								<div class="row gx-3 gy-2 align-items-center mb-3">
 									<div class="col-10">
 										<label for="client" class="form-label font-size-13 text-muted">Client</label>
-										<select {{ facture_id ? "disabled": "" }} onchange="facturation.reloadDatatable(event)" required class="form-control form-select" data-trigger name="client" id="client" placeholder="chercher...">
-										</select>
+										<select {{ facture_id ? "disabled": "" }} onchange="facturation.reloadDatatable(event)" required class="form-control form-select" data-trigger name="client" id="client" placeholder="chercher..."></select>
 									</div>
-                                    <div class="col-2">
+									<div class="col-2">
 										<a href="javascript:void(0);" class="mt-4 btn btn-outline-primary btn-rounded btn-sm waves-effect waves-light add-client">
 											<i class="bx bx-plus"></i>
 										</a>
-                                    </div>
-                                </div>								
+									</div>
+								</div>
 							</div>
-							<div class="col-lg-4 col-md-4">								
+							<div class="col-lg-4 col-md-4">
 								<div class="row gx-3 gy-2 align-items-center mb-3">
 									<div class="col-10">
 										<label for="article" class="form-label font-size-13 text-muted">Article</label>
-										<select onchange="facturation.getArticle(event)" required class="form-control form-select" data-trigger name="article" id="article" placeholder="chercher...">
-										</select>
+										<select onchange="facturation.getArticle(event)" required class="form-control form-select" data-trigger name="article" id="article" placeholder="chercher..."></select>
 									</div>
-                                    <div class="col-2">
+									<div class="col-2">
 										<a href="javascript:void(0);" class="mt-4 btn btn-outline-primary btn-rounded btn-sm waves-effect waves-light add-article">
 											<i class="bx bx-plus"></i>
 										</a>
-                                    </div>
-                                </div>									
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-lg-4 col-md-4">
 								<div class="mb-3">
 									<label for="taxe" class="form-label font-size-13 text-muted">Taxe</label>
-									<select required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher...">
-									</select>
-								</div>								
+									<select required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher..."></select>
+								</div>
 							</div>
 							<div class="col-lg-2 col-md-2">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="prix_u">Prix Unitaire</label>
-									<input onchange="facturation.setMontant(event)"
-									type="number" step="1" min="1" class="form-control" id="prix_u" name="prix_u" placeholder="" value="" required>
+									<input onchange="facturation.setMontant(event)" type="number" step="1" min="1" class="form-control" id="prix_u" name="prix_u" placeholder="" value="" required>
 								</div>
 							</div>
 							<div class="col-lg-2 col-md-2">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="quantite">Quantité</label>
-									<input onchange="facturation.setMontant(event)"
-									type="number" step="1" min="1" class="form-control" id="quantite" name="quantite" placeholder="" value="1" required>
+									<input onchange="facturation.setMontant(event)" type="number" step="1" min="1" class="form-control" id="quantite" name="quantite" placeholder="" value="" required>
 								</div>
 							</div>
 							<div class="col-lg-2 col-md-2">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="montant">Montant HT</label>
-									<input
-									type="number" step="0.001" min="0.001" class="form-control" id="montant" name="montant" placeholder="" value="" required>
+									<input type="number" step="0.001" min="0.001" class="form-control" id="montant" name="montant" placeholder="" value="" required>
 								</div>
 							</div>
 							<div class="col-lg-2 col-md-2">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="taxe-specifique">Taxe spécifique</label>
-									<input
-									type="number" step="0.001" min="0" class="form-control" id="taxe-specifique" name="taxe-specifique" placeholder="" value="">
+									<input type="number" step="0.001" min="0" class="form-control" id="taxe-specifique" name="taxe-specifique" placeholder="" value="">
 								</div>
 							</div>
 						</div>
 
-						<h5 class="font-size-14 mt-4"><i class="mdi mdi-arrow-right text-primary me-1"></i>Remise</h5>
-						<div class="row">
-							<div class="col-lg-3 col-md-3 d-flex flex-row align-items-center">
-								<div class="mb-3">
-									<div class="form-check">
-										<input class="form-check-input" type="checkbox" id="remise-check">
-										<label class="form-check-label" for="remise-check">
-											Cocher si remise
-										</label>
-									</div>
-								</div>								
+						<div
+							class="row">
+							{# <div class="col-lg-3 col-md-3 d-flex flex-row align-items-center"> #}
+							<div class="mb-3">
+								<div class="form-check">
+									<input onchange="facturation.remiseInputsToggle(event)" class="form-check-input" type="checkbox" id="remise-check">
+									<label class="form-check-label" for="remise-check">
+										<h5 class="font-size-14">
+											<i class="mdi mdi-arrow-right text-primary me-1"></i>Remise</h5>
+									</label>
+								</div>
 							</div>
-							<div class="col-lg-3 col-md-3">
+							{# </div> #}
+						</div>
+						<div class="row" id="remiseInputsToggle">
+							<div class="col-lg-6 col-md-6">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="remise_prix_u">Prix Unitaire Originale</label>
-									<input type="number" step="0.001" min="0" class="form-control" id="remise_prix_u" name="remise_prix_u" placeholder="" value="" >
+									<input type="number" step="0.001" min="0" class="form-control" id="remise_prix_u" name="remise_prix_u" placeholder="" value="">
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6">
 								<div class="mb-3 position-relative">
-									<label class="form-label font-size-13 text-muted" for="quantite">Description remise</label>
-									<input type="texte" class="form-control" id="remise_description" name="remise_description" placeholder="" value="" >
+									<label class="form-label font-size-13 text-muted" for="remise_description">Description remise</label>
+									<input type="texte" class="form-control" id="remise_description" name="remise_description" placeholder="" value="">
 								</div>
 							</div>
 						</div>
@@ -144,21 +140,22 @@
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+			<div
+				class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
 				{# <div>
-					<ul class="nav nav-pills">
-						<li class="nav-item">
-							<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
-								<i class="bx bx-list-ul"></i>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
-								<i class="bx bx-grid-alt"></i>
-							</a>
-						</li>
-					</ul>
-				</div> #}
+																																																																																																													<ul class="nav nav-pills">
+																																																																																																														<li class="nav-item">
+																																																																																																															<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
+																																																																																																																<i class="bx bx-list-ul"></i>
+																																																																																																															</a>
+																																																																																																														</li>
+																																																																																																														<li class="nav-item">
+																																																																																																															<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
+																																																																																																																<i class="bx bx-grid-alt"></i>
+																																																																																																															</a>
+																																																																																																														</li>
+																																																																																																													</ul>
+																																																																																																												</div> #}
 				<div>
 					<a href="javascript:void(0);" class="btn btn-outline-success waves-effect waves-light validate-facture">
 						<i class="bx bx-list-check me-1"></i>
@@ -166,22 +163,21 @@
 				</div>
 
 				{# <div class="dropdown">
-					<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						<i class="bx bx-dots-horizontal-rounded"></i>
-					</a>
-
-					<ul class="dropdown-menu dropdown-menu-end">
-						<li>
-							<a class="dropdown-item" href="javascript:void(0);">Actualiser</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
-						</li>
-					</ul>
-				</div> #}
+																																																																																																													<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+																																																																																																														<i class="bx bx-dots-horizontal-rounded"></i>
+																																																																																																													</a>
+																																																																																																													<ul class="dropdown-menu dropdown-menu-end">
+																																																																																																														<li>
+																																																																																																															<a class="dropdown-item" href="javascript:void(0);">Actualiser</a>
+																																																																																																														</li>
+																																																																																																														<li>
+																																																																																																															<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
+																																																																																																														</li>
+																																																																																																														<li>
+																																																																																																															<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
+																																																																																																														</li>
+																																																																																																													</ul>
+																																																																																																												</div> #}
 			</div>
 
 		</div>
@@ -211,101 +207,140 @@
 					<th style="width: 80px; min-width: 80px;">Action</th>
 				</tr>
 			</thead>
-			<tbody>
-			</tbody>
+			<tbody></tbody>
 		</table>
 		<!-- end table -->
 	</div>
 	<!-- end table responsive -->
 
 	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-dialog modal-dialog-centered modal-xl">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Affichage</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div class="table-responsive">
-						<table
-							class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
-							{# <thead>
-							    <tr>
-							        <th scope="col" style="width: 50%;">
-							            Sweet Alert Type
-							        </th>
-							        <th scope="col" class="text-center">
-							            Sweet Alert Examples
-							        </th>
-							    </tr>
-							</thead> #}
-							<tbody>
-								<tr>
-									<th scope="row">
-										Référence
-									</th>
-									<td class="text-center td-reference">
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">
-										Désignation
-									</th>
-									<td class="text-center td-designation">
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">
-										Quantité
-									</th>
-									<td class="text-center td-quantite">
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">
-										Prix Unitaire
-									</th>
-									<td class="text-center td-prixUnitaire">
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">
-										Taxe
-									</th>
-									<td class="text-center td-taxe">
-									</td>
-								</tr>
-								<tr>
-                                    <th scope="row">
-                                        Montant HT
-                                    </th>
-                                    <td class="text-center td-montantHt">
-                                    </td>
-                                </tr>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Montant TVA
-                                    </th>
-                                    <td class="text-center td-montantTva">
-                                    </td>
-                                </tr>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Montant TTC
-                                    </th>
-                                    <td class="text-center td-montantTtc">
-                                    </td>
-                                </tr>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Statut
-                                    </th>
-                                    <td class="text-center text-warning td-statut">
-                                    </td>
-                                </tr>   
-							</tbody>
-						</table>
-						<!-- end table -->
+					<div class="row">
+						<div class="col-lg-6 col-md-6">
+							<h5 class="font-size-14 mt-2">
+								<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif générale</h5>
+							<div class="table-responsive">
+								<table class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
+									<thead>
+										<tr>
+											<th scope="col" colspan="2"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th scope="row">
+												Référence
+											</th>
+											<td class="text-center td-detail-reference"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Désignation
+											</th>
+											<td class="text-center td-detail-designation"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Quantité
+											</th>
+											<td class="text-center td-detail-quantite"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Prix Unitaire
+											</th>
+											<td class="text-center td-detail-prixUnitaire"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Taxe
+											</th>
+											<td class="text-center td-detail-taxe"></td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- end table -->
+							</div>
+						</div>
+						<div class="col-lg-6 col-md-6">
+							<h5 class="font-size-14 mt-2">
+								<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif des montants</h5>
+							<div class="table-responsive">
+								<table class="table table-nowrap align-middle justify-content-center mb-0 detail-recap-montant-table">
+									<thead>
+										<tr>
+											<th scope="col" colspan="2" class="text-center"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th scope="row">
+												Montant Total HT
+											</th>
+											<td class="text-center td-detail-mht"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Montant Total TVA
+											</th>
+											<td class="text-center td-detail-mtva"></td>
+										</tr>
+										<tr id="tr-detail-ts">
+											<th scope="row">
+												Montant Total TS H.T
+											</th>
+											<td class="text-center td-detail-tsHt"></td>
+										</tr>
+										<tr id="tr-detail-ts">
+											<th scope="row">
+												Montant Total TS T.T.C
+											</th>
+											<td class="text-center td-detail-tsTtc"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Montant Total T.T.C
+											</th>
+											<td class="text-center td-detail-mttc"></td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- end table -->
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12">
+							<h5 class="font-size-14 mt-4">
+								<i class="mdi mdi-arrow-right text-primary me-1"></i>Taxe spécifique et Remise</h5>
+							<div class="table-responsive">
+								<table class="table table-nowrap align-middle justify-content-center mb-0 ts-remise-show-table">
+									<thead>
+										<tr>
+											<th scope="col" class="text-center">Taxe spécifique</th>
+											<th scope="col" class="text-center">Remise</th>
+											<th scope="col" class="text-center tr-detail-remise">Prix unitaire originale</th>
+											<th scope="col" class="text-center tr-detail-remise">Description pour la remise</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="text-center td-detail-ts"></td>
+											<td class="text-center td-detail-remise"></td>
+											<td class="text-center td-detail-remise-prix-u tr-detail-remise"></td>
+											<td class="text-center td-detail-remise-description tr-detail-remise"></td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- end table -->
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="modal-footer d-flex justify-content-center">
@@ -321,7 +356,7 @@
 	<div class="modal fade validate-invoice-modal" id="validate-invoice-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-xl">
 			<div class="modal-content">
-				<form method="post" class="" onsubmit="facturation.confirmInvoiceValidation(event)" >
+				<form method="post" class="" onsubmit="facturation.confirmInvoiceValidation(event)">
 					<div class="modal-header">
 						<h5 class="modal-title">Validation de la facture</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -329,13 +364,13 @@
 					<div class="modal-body">
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
-								<h5 class="font-size-14 mt-2"><i class="mdi mdi-arrow-right text-primary me-1"></i>Formulaire de validation</h5>
+								<h5 class="font-size-14 mt-2">
+									<i class="mdi mdi-arrow-right text-primary me-1"></i>Formulaire de validation</h5>
 								<div class="row">
 									<div class="col-lg-12 col-md-12">
 										<div class="mb-3">
 											<label for="aib" class="form-label font-size-13 text-muted">Aib</label>
-											<select onchange="facturation.setRecapTableOnAibChange(event)" class="form-control form-select" data-trigger name="aib" id="aib" placeholder="chercher...">
-											</select>
+											<select onchange="facturation.setRecapTableOnAibChange(event)" class="form-control form-select" data-trigger name="aib" id="aib" placeholder="chercher..."></select>
 										</div>
 									</div>
 								</div>
@@ -343,51 +378,47 @@
 									<div class="col-lg-12 col-md-12">
 										<div class="mb-3">
 											<label for="type-paiement" class="form-label font-size-13 text-muted">Type de paiement</label>
-											<select required class="form-control form-select" data-trigger name="type-paiement" id="type-paiement" placeholder="chercher...">
-											</select>
+											<select required class="form-control form-select" data-trigger name="type-paiement" id="type-paiement" placeholder="chercher..."></select>
 										</div>
 									</div>
-								</div>					
+								</div>
 								<div class="row">
 									<div class="col-lg-4 col-md-4">
 										<div class="mb-3 position-relative">
 											<label class="form-label font-size-13 text-muted" for="montant-recu">Montant reçu</label>
-											<input onchange="facturation.setValidationForm(event)" 
-											type="number" step="1" min="1" class="form-control" id="montant-recu" name="montant-recu" placeholder="" value="" required>
+											<input onchange="facturation.setValidationForm(event)" type="number" step="1" min="1" class="form-control" id="montant-recu" name="montant-recu" placeholder="" value="" required>
 										</div>
 									</div>
 									<div class="col-lg-4 col-md-4">
 										<div class="mb-3 position-relative">
 											<label class="form-label font-size-13 text-muted" for="montant-payer">Montant payé</label>
-											<input onchange="facturation.setValidationForm(event)" 
-											type="number" step="1" min="1" class="form-control" id="montant-payer" name="montant-payer" placeholder="" value="" required>
+											<input onchange="facturation.setValidationForm(event)" type="number" step="1" min="1" class="form-control" id="montant-payer" name="montant-payer" placeholder="" value="" required>
 										</div>
 									</div>
 									<div class="col-lg-4 col-md-4">
 										<div class="mb-3 position-relative">
 											<label class="form-label font-size-13 text-muted" for="montant-rendu">Montant rendu</label>
-											<input onchange="facturation.setValidationForm(event)"
-											type="number" step="1" min="0" class="form-control" id="montant-rendu" name="montant-rendu" placeholder="" value="" required>
+											<input onchange="facturation.setValidationForm(event)" type="number" step="1" min="0" class="form-control" id="montant-rendu" name="montant-rendu" placeholder="" value="" required>
 										</div>
 									</div>
 								</div>
-								<div class="row">						
+								<div class="row">
 									<div class="col-md-12">
 										<div class="mb-3 position-relative">
 											<label class="form-label" for="description">Description</label>
 											<textarea id="description" name="description" rows="2" class="form-control" placeholder="Entrez une description pour la facture"></textarea>
 										</div>
-									</div>							
-								</div>					
+									</div>
+								</div>
 							</div>
 							<div class="col-lg-6 col-md-6">
-								<h5 class="font-size-14 mt-2"><i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif</h5>
+								<h5 class="font-size-14 mt-2">
+									<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif</h5>
 								<div class="table-responsive">
 									<table class="table table-nowrap align-middle justify-content-center mb-0 invoice-validation-table">
 										<thead>
 											<tr>
-												<th scope="col" colspan="2" class="text-center">
-												</th>
+												<th scope="col" colspan="2" class="text-center"></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -395,51 +426,44 @@
 												<th scope="row">
 													Montant Total HT
 												</th>
-												<td class="text-center td-invoice-mht">
-												</td>
-											</tr>																								
+												<td class="text-center td-invoice-mht"></td>
+											</tr>
 											<tr>
 												<th scope="row">
 													Montant Total TVA
 												</th>
-												<td class="text-center td-invoice-mtva">
-												</td>
-											</tr>																								
+												<td class="text-center td-invoice-mtva"></td>
+											</tr>
 											<tr id="tr-invoice-ts">
 												<th scope="row">
 													Montant Total TS H.T
 												</th>
-												<td class="text-center td-invoice-tsHt">
-												</td>
-											</tr>																								
+												<td class="text-center td-invoice-tsHt"></td>
+											</tr>
 											<tr id="tr-invoice-ts">
 												<th scope="row">
 													Montant Total TS T.T.C
 												</th>
-												<td class="text-center td-invoice-tsTtc">
-												</td>
-											</tr>																								
+												<td class="text-center td-invoice-tsTtc"></td>
+											</tr>
 											<tr id="tr-invoice-aib">
 												<th scope="row">
 													Montant Aib
 												</th>
-												<td class="text-center td-invoice-aib">
-												</td>
-											</tr>																								
+												<td class="text-center td-invoice-aib"></td>
+											</tr>
 											<tr id="tr-invoice-aib">
 												<th scope="row">
 													Montant Total T.T.C
 												</th>
-												<td class="text-center td-invoice-mttc">
-												</td>
-											</tr>																							
+												<td class="text-center td-invoice-mttc"></td>
+											</tr>
 											<tr id="tr-invoice-aib">
 												<th scope="row">
 													Statut
 												</th>
-												<td class="text-center td-invoice-status">
-												</td>
-											</tr>																								
+												<td class="text-center td-invoice-status"></td>
+											</tr>
 										</tbody>
 									</table>
 									<!-- end table -->
@@ -464,21 +488,21 @@
 
 {% block page_custom_scripts %}
 	<script>
-		const URL_LIST_CLIENT = "{{url_list_client}}";
-		const URL_GET_FACTURE_CLIENT = "{{url_get_facture_client}}";
-		const URL_GET_CLIENT = "{{url_get_client}}";
-		const URL_LIST_ARTICLE = "{{url_list_article}}";
-		const URL_GET_ARTICLE = "{{url_get_article}}";
-		const URL_GET_DETAIL_FACTURE = "{{url_get_detail_facture}}";
-		const URL_VALIDER_DETAIL_FACTURE = "{{url_valider_detail_facture}}";
-		const URL_VALIDER_FACTURE = "{{url_valider_facture}}";
-		const URL_LIST_TAXE = "{{url_list_taxe}}";
-		const URL_GET_TAXE = "{{url_get_taxe}}";
-		const URL_LIST_TAXE_AIB = "{{url_list_taxe_aib}}";
-		const URL_LIST_TYPE_FACTURE = "{{url_list_type_facture}}";
-		const URL_LIST_TYPE_PAIEMENT = "{{url_list_type_paiement}}";
-		const URL_IMPRIMER_FACTURE = "{{url_imprimer_facture}}";
-		let FACTURE_ID = "{{facture_id}}";
+		const URL_LIST_CLIENT = "{{ url_list_client }}";
+const URL_GET_FACTURE_CLIENT = "{{ url_get_facture_client }}";
+const URL_GET_CLIENT = "{{ url_get_client }}";
+const URL_LIST_ARTICLE = "{{ url_list_article }}";
+const URL_GET_ARTICLE = "{{ url_get_article }}";
+const URL_GET_DETAIL_FACTURE = "{{ url_get_detail_facture }}";
+const URL_VALIDER_DETAIL_FACTURE = "{{ url_valider_detail_facture }}";
+const URL_VALIDER_FACTURE = "{{ url_valider_facture }}";
+const URL_LIST_TAXE = "{{ url_list_taxe }}";
+const URL_GET_TAXE = "{{ url_get_taxe }}";
+const URL_LIST_TAXE_AIB = "{{ url_list_taxe_aib }}";
+const URL_LIST_TYPE_FACTURE = "{{ url_list_type_facture }}";
+const URL_LIST_TYPE_PAIEMENT = "{{ url_list_type_paiement }}";
+const URL_IMPRIMER_FACTURE = "{{ url_imprimer_facture }}";
+let FACTURE_ID = "{{ facture_id }}";
 	</script>
 	<!-- init js -->
 	<script src="{{ asset('assets/js/custom/facture/facturation.init.js') }}"></script>
