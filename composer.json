@@ -55,9 +55,7 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "requirements-checker": "script"
         },
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
+        "post-install-cmd": [],
         "post-update-cmd": [
             "@auto-scripts"
         ]
