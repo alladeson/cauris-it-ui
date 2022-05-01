@@ -30,7 +30,8 @@ class ApiConstant
     public const URL_GET_TAXE = "parametre/taxe/__id__";
 
     // Les Types de facture
-    public const URL_LIST_TYPE_FACTURE = "parametre/type-facture";
+    public const URL_LIST_TYPE_FACTURE = "parametre/type-facture/vente";
+    public const URL_LIST_TYPE_FACTURE_AVOIR = "parametre/type-facture/avoir";
     public const URL_GET_TYPE_FACTURE = "parametre/type-facture/__id__";
 
     // Les types de paiement
