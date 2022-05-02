@@ -1,0 +1,66 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- Facturation
+{% endblock %}
+
+{% block custom_page_stylesheets %}
+	<!-- twitter-bootstrap-wizard css -->
+	{# <link href="{{ asset('assets/libs/twitter-bootstrap-wizard/prettify.css')}}" rel="stylesheet" type="text/css"/> #}
+	<link href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block page_content %}
+
+	<div class="accordion accordion-flush" id="facturationForm">
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="flush-headingOne">
+				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
+					Veuillez remplir ce formulaire
+				</button>
+			</h2>
+			<div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#facturationForm">
+				<div class="accordion-body text-muted">
+					<form method="post" class="" onsubmit="newFactureAvoir.confirmInvoiceCreation(event)">
+						<div class="row">
+							<div class="col-lg-4 col-md-4">
+								<div class="mb-3">
+									<label for="type" class="form-label font-size-13 text-muted">Type de facture</label>
+									<select required class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher..."></select>
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-4">
+								<div class="mb-3 position-relative">
+									<label class="form-label font-size-13 text-muted" for="fv_ref">Référence de la facture de vente</label>
+									<input onchange="newFactureAvoir.getFacture(event)" type="texte" class="form-control" id="fv_ref" name="fv_ref" placeholder="" value="">
+									<div class="pristine-error text-help">Tapez au moins les 05 premier caractères de la référence</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer d-flex justify-content-center">
+							<button type="submit" class="btn btn-outline-info waves-effect waves-light">Créer</button>
+							<button type="reset" class="btn btn-outline-danger waves-effect waves-light btn-sm" data-bs-dismiss="modal">Annuler</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end accordion -->
+
+{% endblock %}
+
+{% block page_custom_scripts %}
+	<!-- init js -->
+	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+		const URL_LIST_TYPE_FACTURE_AVOIR = "{{ url_list_type_facture_avoir }}";
+		const URL_LIST_FACTURE_AUTOCOMPLETE = "{{ url_list_facture_autocomplete }}";
+		const URL_GET_FACTURE_BY_REF = "{{ url_get_facture_by_ref }}";
+		const URL_DETAIL_FACTURE_AVOIR = "{{ url_detail_facture_avoir }}";
+
+	</script>
+	<!-- init js -->
+	<script src="{{ asset('assets/js/custom/facture/new-facture-avoir.init.js') }}"></script>
+{% endblock %}

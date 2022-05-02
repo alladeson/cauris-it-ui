@@ -11,92 +11,44 @@
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="flush-headingOne">
 				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
-					Formulaire de facturation
+					Information de la facture
 				</button>
 			</h2>
 			<div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#facturationForm">
 				<div class="accordion-body text-muted">
-					<form method="post" class="" onsubmit="facturation.submitFormData(event)">
+					<form method="post" class="" onsubmit="factureAvoir.submitFormData(event)">
 						<div class="row">
 							<div class="col-lg-4 col-md-4">
 								<div class="mb-3">
 									<label for="type" class="form-label font-size-13 text-muted">Type de facture</label>
-									<select required class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher..."></select>
+									<input disabled type="text" class="form-control" id="type" name="type" placeholder="Le type de la facture" value="" required>
 								</div>
 							</div>
-							<div class="col-lg-4 col-md-4">
-								<div class="row gx-3 gy-2 align-items-center mb-3">
-									<div class="col-10">
-										<label for="client" class="form-label font-size-13 text-muted">Client</label>
-										<select {{ facture_id ? "disabled": "" }} onchange="facturation.reloadDatatable(event)" required class="form-control form-select" data-trigger name="client" id="client" placeholder="chercher..."></select>
-									</div>
-									<div class="col-2">
-										<a href="javascript:void(0);" class="mt-4 btn btn-outline-primary btn-rounded btn-sm waves-effect waves-light add-client">
-											<i class="bx bx-plus"></i>
-										</a>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-4 col-md-4">
-								<div class="row gx-3 gy-2 align-items-center mb-3">
-									<div class="col-10">
-										<label for="article" class="form-label font-size-13 text-muted">Article</label>
-										<select onchange="facturation.getArticle(event)" required class="form-control form-select" data-trigger name="article" id="article" placeholder="chercher..."></select>
-									</div>
-									<div class="col-2">
-										<a href="javascript:void(0);" class="mt-4 btn btn-outline-primary btn-rounded btn-sm waves-effect waves-light add-article">
-											<i class="bx bx-plus"></i>
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
 							<div class="col-lg-4 col-md-4">
 								<div class="mb-3">
-									<label for="taxe" class="form-label font-size-13 text-muted">Taxe</label>
-									<select required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher..."></select>
+									<label for="client" class="form-label font-size-13 text-muted">Client</label>
+									<input disabled type="text" class="form-control" id="client" name="client" placeholder="Le type de la facture" value="" required>
 								</div>
 							</div>
-							<div class="col-lg-2 col-md-2">
-								<div class="mb-3 position-relative">
-									<label class="form-label font-size-13 text-muted" for="prix_u">Prix Unitaire</label>
-									<input onchange="facturation.setMontant(event)" type="number" step="1" min="1" class="form-control" id="prix_u" name="prix_u" placeholder="" value="" required>
-								</div>
-							</div>
-							<div class="col-lg-2 col-md-2">
-								<div class="mb-3 position-relative">
-									<label class="form-label font-size-13 text-muted" for="quantite">Quantité</label>
-									<input onchange="facturation.setMontant(event)" type="number" step="1" min="1" class="form-control" id="quantite" name="quantite" placeholder="" value="" required>
-								</div>
-							</div>
-							<div class="col-lg-2 col-md-2">
-								<div class="mb-3 position-relative">
-									<label class="form-label font-size-13 text-muted" for="montant">Montant HT</label>
-									<input type="number" step="0.001" min="0.001" class="form-control" id="montant" name="montant" placeholder="" value="" required>
-								</div>
-							</div>
-							<div class="col-lg-2 col-md-2">
-								<div class="mb-3 position-relative">
-									<label class="form-label font-size-13 text-muted" for="taxe-specifique">Taxe spécifique</label>
-									<input type="number" step="0.001" min="0" class="form-control" id="taxe-specifique" name="taxe-specifique" placeholder="" value="">
+							<div class="col-lg-4 col-md-4">
+								<div class="mb-3">
+									<label for="nombre-article" class="form-label font-size-13 text-muted">Nombre d'article</label>
+									<input disabled type="text" class="form-control" id="nombre-article" name="nombre-article" placeholder="Le nombre d'article de la facture" value="" required>
 								</div>
 							</div>
 						</div>
 
-						<div
+						{# <div
 							class="row">
-							{# <div class="col-lg-3 col-md-3 d-flex flex-row align-items-center"> #}
 							<div class="mb-3">
 								<div class="form-check">
-									<input onchange="facturation.remiseInputsToggle(event)" class="form-check-input" type="checkbox" id="remise-check">
+									<input onchange="factureAvoir.remiseInputsToggle(event)" class="form-check-input" type="checkbox" id="remise-check">
 									<label class="form-check-label" for="remise-check">
 										<h5 class="font-size-14">
 											<i class="mdi mdi-arrow-right text-primary me-1"></i>Remise</h5>
 									</label>
 								</div>
 							</div>
-							{# </div> #}
 						</div>
 						<div class="row" id="remiseInputsToggle">
 							<div class="col-lg-6 col-md-6">
@@ -111,10 +63,10 @@
 									<input type="texte" class="form-control" id="remise_description" name="remise_description" placeholder="" value="">
 								</div>
 							</div>
-						</div>
+						</div> #}
 						<div class="modal-footer d-flex justify-content-center">
-							<button type="submit" class="btn btn-outline-info waves-effect waves-light">Ajouter</button>
-							<button type="reset" class="btn btn-outline-danger waves-effect waves-light btn-sm" data-bs-dismiss="modal">Annuler</button>
+							{# <button type="submit" class="btn btn-outline-info waves-effect waves-light">Ajouter</button>
+							<button type="reset" class="btn btn-outline-danger waves-effect waves-light btn-sm" data-bs-dismiss="modal">Annuler</button> #}
 						</div>
 					</form>
 				</div>
@@ -133,44 +85,12 @@
 		<div class="col-md-6">
 			<div
 				class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
-				{# <div>
-																																																																																																													<ul class="nav nav-pills">
-																																																																																																														<li class="nav-item">
-																																																																																																															<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
-																																																																																																																<i class="bx bx-list-ul"></i>
-																																																																																																															</a>
-																																																																																																														</li>
-																																																																																																														<li class="nav-item">
-																																																																																																															<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
-																																																																																																																<i class="bx bx-grid-alt"></i>
-																																																																																																															</a>
-																																																																																																														</li>
-																																																																																																													</ul>
-																																																																																																												</div> #}
 				<div>
 					<a href="javascript:void(0);" class="btn btn-outline-success waves-effect waves-light validate-facture">
 						<i class="bx bx-list-check me-1"></i>
 						Valider</a>
 				</div>
-
-				{# <div class="dropdown">
-																																																																																																													<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-																																																																																																														<i class="bx bx-dots-horizontal-rounded"></i>
-																																																																																																													</a>
-																																																																																																													<ul class="dropdown-menu dropdown-menu-end">
-																																																																																																														<li>
-																																																																																																															<a class="dropdown-item" href="javascript:void(0);">Actualiser</a>
-																																																																																																														</li>
-																																																																																																														<li>
-																																																																																																															<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
-																																																																																																														</li>
-																																																																																																														<li>
-																																																																																																															<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
-																																																																																																														</li>
-																																																																																																													</ul>
-																																																																																																												</div> #}
 			</div>
-
 		</div>
 	</div>
 	<!-- end row -->
@@ -347,7 +267,6 @@
 	<div class="modal fade validate-invoice-modal" id="validate-invoice-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-xl">
 			<div class="modal-content">
-				<form method="post" class="" onsubmit="facturation.confirmInvoiceValidation(event)">
 					<div class="modal-header">
 						<h5 class="modal-title">Validation de la facture</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -356,50 +275,60 @@
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
 								<h5 class="font-size-14 mt-2">
-									<i class="mdi mdi-arrow-right text-primary me-1"></i>Formulaire de validation</h5>
-								<div class="row">
-									<div class="col-lg-12 col-md-12">
-										<div class="mb-3">
-											<label for="aib" class="form-label font-size-13 text-muted">Aib</label>
-											<select onchange="facturation.setRecapTableOnAibChange(event)" class="form-control form-select" data-trigger name="aib" id="aib" placeholder="chercher..."></select>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-12 col-md-12">
-										<div class="mb-3">
-											<label for="type-paiement" class="form-label font-size-13 text-muted">Type de paiement</label>
-											<select required class="form-control form-select" data-trigger name="type-paiement" id="type-paiement" placeholder="chercher..."></select>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-4 col-md-4">
-										<div class="mb-3 position-relative">
-											<label class="form-label font-size-13 text-muted" for="montant-recu">Montant reçu</label>
-											<input onchange="facturation.setValidationForm(event)" type="number" step="1" min="1" class="form-control" id="montant-recu" name="montant-recu" placeholder="" value="" required>
-										</div>
-									</div>
-									<div class="col-lg-4 col-md-4">
-										<div class="mb-3 position-relative">
-											<label class="form-label font-size-13 text-muted" for="montant-payer">Montant payé</label>
-											<input onchange="facturation.setValidationForm(event)" type="number" step="1" min="1" class="form-control" id="montant-payer" name="montant-payer" placeholder="" value="" required>
-										</div>
-									</div>
-									<div class="col-lg-4 col-md-4">
-										<div class="mb-3 position-relative">
-											<label class="form-label font-size-13 text-muted" for="montant-rendu">Montant rendu</label>
-											<input onchange="facturation.setValidationForm(event)" type="number" step="1" min="0" class="form-control" id="montant-rendu" name="montant-rendu" placeholder="" value="" required>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="mb-3 position-relative">
-											<label class="form-label" for="description">Description</label>
-											<textarea id="description" name="description" rows="2" class="form-control" placeholder="Entrez une description pour la facture"></textarea>
-										</div>
-									</div>
+									<i class="mdi mdi-arrow-right text-primary me-1"></i>Données de validation</h5>
+								<div class="table-responsive">
+									<table class="table table-nowrap align-middle justify-content-center mb-0 invoice-validation-data-table">
+										<thead>
+											<tr>
+												<th scope="col" colspan="2" class="text-center"></th>
+											</tr>
+										</thead>
+										<tbody>										
+											<tr id="">
+												<th scope="row">
+													Type de facture
+												</th>
+												<td class="text-center td-invoice-type-facture"></td>
+											</tr>
+											<tr>
+												<th scope="row">
+													Aib
+												</th>
+												<td class="text-center td-invoice-aib"></td>
+											</tr>
+											<tr>
+												<th scope="row">
+													Type de paiement
+												</th>
+												<td class="text-center td-invoice-type-paiement"></td>
+											</tr>
+											<tr id="">
+												<th scope="row">
+													Montant reçu
+												</th>
+												<td class="text-center td-invoice-mrecu"></td>
+											</tr>
+											<tr id="">
+												<th scope="row">
+													Montant payé
+												</th>
+												<td class="text-center td-invoice-mpayer"></td>
+											</tr>
+											<tr id="">
+												<th scope="row">
+													Montant rendu
+												</th>
+												<td class="text-center td-invoice-mrendu"></td>
+											</tr>
+											<tr id="">
+												<th scope="row">
+													Description
+												</th>
+												<td class="text-center td-invoice-description"></td>
+											</tr>
+										</tbody>
+									</table>
+									<!-- end table -->
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6">
@@ -465,9 +394,8 @@
 					<div class="modal-footer d-flex justify-content-center">
 						<button type="reset" class="btn btn-light btn-sm" data-bs-dismiss="modal">Annuler</button>
 						{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
-						<button type="submit" class="btn btn-primary">Valider</button>
+						<button type="button" onclick="factureAvoir.confirmInvoiceValidation(event)" class="btn btn-primary">Valider</button>
 					</div>
-				</form>
 			</div>
 			<!-- /.modal-content -->
 		</div>
@@ -494,7 +422,8 @@ const URL_LIST_TYPE_FACTURE = "{{ url_list_type_facture }}";
 const URL_LIST_TYPE_PAIEMENT = "{{ url_list_type_paiement }}";
 const URL_IMPRIMER_FACTURE = "{{ url_imprimer_facture }}";
 let FACTURE_ID = "{{ facture_id }}";
+const URL_VALIDER_FACTURE_AVOIR = "{{ url_valider_facture_avoir }}";
 	</script>
 	<!-- init js -->
-	<script src="{{ asset('assets/js/custom/facture/facturation.init.js') }}"></script>
+	<script src="{{ asset('assets/js/custom/facture/facture-avoir.init.js') }}"></script>
 {% endblock %}

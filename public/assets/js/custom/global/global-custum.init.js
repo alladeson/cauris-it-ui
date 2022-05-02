@@ -3,10 +3,12 @@ let waitMe_zone = '';
 
 $(document).on({
     ajaxStart: function() {
-        GlobalScript.run_waitMe((waitMe_zone.length ? waitMe_zone : $('body')), 1, 'win8')
+        if (waitMe_zone != null)
+            GlobalScript.run_waitMe((waitMe_zone.length ? waitMe_zone : $('body')), 1, 'win8')
     },
     ajaxStop: function() {
-        (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
+        if (waitMe_zone != null)
+            (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
     },
 });
 

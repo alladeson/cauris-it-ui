@@ -79,5 +79,13 @@ class ApiConstant
     public const URL_GET_FACTURE_CLIENT = "factures/client/__clientId__";
     public const URL_GET_DETAIL_FACTURE = "factures/__id__/detail/__detailId__";
     public const URL_VALIDER_DETAIL_FACTURE = "factures/__id__/detail/__detailId__/valider";
+    public const URL_GET_FACTURE_BY_REF = "factures/reference/__ref__";
+    
+    // Les factures d'avoir
+    public const URL_POST_FACTURE_AVOIR = "facture-avoir/type/__typeId__/facture-vente/__fvId__";
+    public const URL_VALIDER_FACTURE_AVOIR = "facture-avoir/__id__/valider";
+    public const URL_LIST_FACTURE_AUTOCOMPLETE = "factures/autocomplete/type/__typeId__";
 
+    // Local url
+    public const URL_DETAIL_FACTURE_AVOIR = "/factures/facture-avoir/__id__/details";
 }
