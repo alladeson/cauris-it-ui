@@ -279,7 +279,7 @@ let factureAvoir = {
         }).then(function(e) {
             e.value ?
                 window.open(
-                    URL_IMPRIMER_FACTURE.replace("__id__", facture.id),
+                    facture.filename ? URL_GET_FILE.replace("__fileName__", facture.filename) : URL_IMPRIMER_FACTURE.replace("__id__", facture.id),
                     "_blank"
                 ) :
                 "";

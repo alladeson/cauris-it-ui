@@ -115,22 +115,22 @@ let facturation = {
                                                         <li>
                                                             <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                         </li>` +
-                                                    `${!row.valid ? 
-                                                            `<li>
+                                                    `${!row.valid ?
+                            `<li>
                                                                 <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier</a>
                                                             </li> 
                                                             <li>
                                                                 <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
                                                             </li>`
-                                                            : ""
-                                                        }` +
-                                                    `</ul>
+                            : ""
+                        }` +
+                        `</ul>
                                                 </div>`;
-                                            return html;
-                                            // <li>
-                                            //     <a class="dropdown-item validate-item" href="javascript:void(0)" data-item-id="${data}">Valider</a>
-                                            // </li>
-                                        },
+                    return html;
+                    // <li>
+                    //     <a class="dropdown-item validate-item" href="javascript:void(0)" data-item-id="${data}">Valider</a>
+                    // </li>
+                },
             },
             ],
         })),
@@ -288,7 +288,7 @@ let facturation = {
         }).then(function (e) {
             e.value
                 ? window.open(
-                    URL_IMPRIMER_FACTURE.replace("__id__", facture.id),
+                    facture.filename ? URL_GET_FILE.replace("__fileName__", facture.filename) : URL_IMPRIMER_FACTURE.replace("__id__", facture.id),
                     "_blank"
                 )
                 : "";
@@ -569,20 +569,17 @@ let facturation = {
     },
     getArticle: function (event = null) {
         if (event) event.preventDefault();
-        console.log("ici");
-        var serviceId = facturationForm.find("#article").val();
-        console.log(serviceId);
-        if (serviceId)
-            facturation.getEntity(URL_GET_ARTICLE, serviceId, "l'article");
+        var articleId = facturationForm.find("#article").val();
+        if (articleId)
+            facturation.getEntity(URL_GET_ARTICLE, articleId, "l'article");
         else {
             article = null;
             facturation.setFormOnArticleChange();
         }
     },
     setFormOnArticleChange: function () {
-        console.log(article);
         facturationForm.find("#prix_u").val(article ? article.prix : null);
-        facturationForm.find("#quantite").val(null);
+        facturationForm.find("#quantite").val(article ? 1 : null);
         facturationForm.find("#montant").val(article ? article.prix : null);
         facturationForm
             .find("#taxe-specifique")

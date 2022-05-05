@@ -93,6 +93,40 @@ let GlobalScript = {
             });
         });
     },
+    requestLocal: function(url, method, sendData) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                url: url,
+                method: method,
+                dataType: "json",
+                data: sendData,
+                success: function(data) {
+                    resolve(data) // Resolve promise and go to then()
+                },
+                error: function(err) {
+                    reject(err) // Reject the promise and go to catch()
+                },
+            });
+        });
+    },
+    requestFile: function(formData) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                url: URL_GLOBAL_REQUEST_FILE,
+                method: "POST",
+                dataType: "json",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    resolve(data) // Resolve promise and go to then()
+                },
+                error: function(err) {
+                    reject(err) // Reject the promise and go to catch()
+                },
+            });
+        });
+    },
     /**
      * Smooth scrolling to a specific element 
      **/

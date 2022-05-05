@@ -79,6 +79,26 @@ class SecurityController extends AbstractController
         }
     }
 
+    /**
+     * Mettre à jour les données de l'utilisateur connecté
+     *
+     * @return Response
+     */
+    #[Route('/user/auth-reset', name: 'user_session_reset', methods:["POST"])]
+    public function resetAuthUser(Request $request): Response
+    {
+        $user = null;
+        try {
+            // Récupération de l'utilisateur connecté
+            $user = ApiDataService::getAuthUser();
+            $this->session->set("user", $user);
+        } catch (TransportException $th) {
+            throw $th;
+            //dd($th);
+        }
+        return new Response(json_encode($user), 200);
+    }
+
     #[Route('/logout', name: 'app_logout')]
     public function logout()
     {

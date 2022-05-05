@@ -61,7 +61,7 @@
 			</div>
 		</div>
 
-		<div class="dropdown d-none d-sm-inline-block">
+		{# <div class="dropdown d-none d-sm-inline-block">
 			<button type="button" class="btn header-item" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<img id="header-lang-img" src="{{asset('assets/images/flags/us.jpg')}}" alt="Header Language" height="16">
 			</button>
@@ -97,7 +97,7 @@
 					<span class="align-middle">Russian</span>
 				</a>
 			</div>
-		</div>
+		</div> #}
 
 		<div class="dropdown d-none d-sm-inline-block">
 			<button type="button" class="btn header-item" id="mode-setting-btn">
@@ -106,7 +106,7 @@
 			</button>
 		</div>
 
-		<div class="dropdown d-none d-lg-inline-block ms-1">
+		{# <div class="dropdown d-none d-lg-inline-block ms-1">
 			<button type="button" class="btn header-item" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<i data-feather="grid" class="icon-lg"></i>
 			</button>
@@ -155,15 +155,15 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> #}
 
 		<div class="dropdown d-inline-block">
 			<button type="button" class="btn header-item noti-icon position-relative" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<i data-feather="bell" class="icon-lg"></i>
-				<span class="badge bg-danger rounded-pill">5</span>
+				<span class="badge bg-danger rounded-pill">{#5#}</span>
 			</button>
 			<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
-				<div class="p-3">
+				{# <div class="p-3">
 					<div class="row align-items-center">
 						<div class="col">
 							<h6 class="m-0">
@@ -252,31 +252,31 @@
 						<i class="mdi mdi-arrow-right-circle me-1"></i>
 						<span>View More..</span>
 					</a>
-				</div>
+				</div> #}
 			</div>
 		</div>
 
-		<div class="dropdown d-inline-block">
+		{# <div class="dropdown d-inline-block">
 			<button type="button" class="btn header-item right-bar-toggle me-2">
 				<i data-feather="settings" class="icon-lg"></i>
 			</button>
-		</div>
+		</div> #}
 
 		<div class="dropdown d-inline-block">
 			<button type="button" class="btn header-item bg-soft-light border-start border-end" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<img class="rounded-circle header-profile-user" src="{{asset('assets/images/users/avatar-1.jpg')}}" alt="Header Avatar">
-				<span class="d-none d-xl-inline-block ms-1 fw-medium">Shawn L.</span>
+				<img class="rounded-circle header-profile-user" src="{{ authUser.photo ? (url_get_file() | replace({'__fileName__': authUser.photo})) : asset('assets/images/default-user-img.png') }}" alt="Header Avatar">
+				<span class="d-none d-xl-inline-block ms-1 fw-medium">{{authUser.username}}</span>
 				<i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
 			</button>
 			<div
 				class="dropdown-menu dropdown-menu-end">
 				<!-- item-->
-				<a class="dropdown-item" href="apps-contacts-profile.html">
+				<a class="dropdown-item" href="{{path('parametre_users_profile')}}">
 					<i class="mdi mdi-face-profile font-size-16 align-middle me-1"></i>
-					Profile</a>
-				<a class="dropdown-item" href="auth-lock-screen.html">
+					Votre profil</a>
+				{# <a class="dropdown-item" href="auth-lock-screen.html">
 					<i class="mdi mdi-lock font-size-16 align-middle me-1"></i>
-					Lock screen</a>
+					Lock screen</a> #}
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item" href="{{path('app_logout')}}">
 					<i class="mdi mdi-logout font-size-16 align-middle me-1"></i>

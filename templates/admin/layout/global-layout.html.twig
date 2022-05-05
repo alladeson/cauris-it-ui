@@ -1,5 +1,6 @@
 {% extends "base.html.twig" %}
 {% set appName = 'Cauris-iT' %}
+{% set authUser = app.session.get('user') %}
 {# Menu format #}
 {% set menus = [
 	{
@@ -112,6 +113,14 @@
 				children: [],
 			},
 			{
+				id: "update_params",
+				pathName: "parametre_update",
+				title: "Paramètre du système",
+				dataKey: "t-params-update",
+				active: sidebar_code[1] == "SYSTU" ? true : false,
+				children: [],
+			},                       
+			{
 				id: "new_params",
 				pathName: "parametre_new",
 				title: "Données du système",
@@ -179,4 +188,8 @@
 
 {% block global_scripts %}
 	{# Les scripts globales à toutes les pages #}	
+	<script>
+		// URL global request get file
+		const URL_GET_FILE = "{{ url_get_file() }}";
+	</script>
 {% endblock %}

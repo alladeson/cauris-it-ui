@@ -5,12 +5,6 @@
 	- Facturation
 {% endblock %}
 
-{% block custom_page_stylesheets %}
-	<!-- twitter-bootstrap-wizard css -->
-	{# <link href="{{ asset('assets/libs/twitter-bootstrap-wizard/prettify.css')}}" rel="stylesheet" type="text/css"/> #}
-	<link href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css"/>
-{% endblock %}
-
 {% block page_content %}
 
 	<div class="accordion accordion-flush" id="facturationForm">
@@ -52,8 +46,6 @@
 {% endblock %}
 
 {% block page_custom_scripts %}
-	<!-- init js -->
-	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script>
 		const URL_LIST_TYPE_FACTURE_AVOIR = "{{ url_list_type_facture_avoir }}";
 		const URL_LIST_FACTURE_AUTOCOMPLETE = "{{ url_list_facture_autocomplete }}";

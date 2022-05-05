@@ -1,7 +1,7 @@
 let datatable;
 let choices = [];
 let save = true;
-let systemParamsWizard = {
+let newSystemParamsWizard = {
     choicesJsInit: function() {
         var e = document.querySelectorAll("[data-trigger]");
         for (i = 0; i < e.length; ++i) {
@@ -57,9 +57,9 @@ let systemParamsWizard = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                systemParamsWizard.removeItem(el, oktitle, oktext) :
+                newSystemParamsWizard.removeItem(el, oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                systemParamsWizard.saError(notitle, notext);
+                newSystemParamsWizard.saError(notitle, notext);
         });
     },
     request: function(url, method, sendData) {
@@ -83,9 +83,9 @@ let systemParamsWizard = {
         });
     },
     submitFormDataNew: function() {
-        var data = systemParamsWizard.dataFormat()
+        var data = newSystemParamsWizard.dataFormat()
         console.log(data)
-        systemParamsWizard.request(URL_POST_ITEM, 'POST', data).then(function(data) {
+        newSystemParamsWizard.request(URL_POST_ITEM, 'POST', data).then(function(data) {
             // Run this when your request was successful
             console.log(data)
                 //datatable.ajax.reload();
@@ -100,17 +100,34 @@ let systemParamsWizard = {
         });
     },
     submitFormData: function() {
-        var data = systemParamsWizard.dataFormat()
+        var data = newSystemParamsWizard.dataFormat()
         GlobalScript.request(URL_POST_ITEM, 'POST', data).then(function(data) {
             // Run this when your request was successful
             console.log(data)
-            systemParamsWizard.saSuccesSystemParams("Succès !", "Enregistrement effectué avec succès.")
+            newSystemParamsWizard.submitFormDataLogo(data);
+        }).catch(function(err) {
+            // Run this when promise was rejected via reject()
+            console.log(err)
+            newSystemParamsWizard.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+        });
+    },
+    submitFormDataLogo: function(param) {
+        var societeForm = $("form#societe-form")
+        let formData = new FormData();
+        let file = societeForm.find("input#logo")[0].files[0];
+        formData.append("file", file);
+        formData.append("method", "PUT");
+        formData.append("url", URL_PUT_SYSTEM_PARAMS_LOGO.replace("__id__", param.id));
+        GlobalScript.requestFile(formData).then(function(data) {
+            // Run this when your request was successful
+            console.log(data)
+            newSystemParamsWizard.saSuccesSystemParams("Succès !", "Enregistrement effectué avec succès.")
             $("form#societe-form")[0].reset()
             $("form#emecef-form")[0].reset()
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             console.log(err)
-            systemParamsWizard.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            newSystemParamsWizard.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
         });
     },
     dataFormat: function() {
@@ -157,13 +174,15 @@ let systemParamsWizard = {
     },
     onSave: function(event) {
         event.preventDefault();
-        var data = systemParamsWizard.dataFormat()
+        var societeForm = $("form#societe-form")
+
+        // Vérification des infos importantes
+        var data = newSystemParamsWizard.dataFormat()
         console.log(data);
         if (data) {
             $.each(JSON.parse(data), function(key, value) {
                 if (!value && key != "rcm") {
-                    console.log("valeur manquante : " + key)
-                    systemParamsWizard.saError("Erreur !", "L'enregistrement ne peut aboutir pour manque d'informations")
+                    newSystemParamsWizard.saError("Erreur !", "L'enregistrement ne peut aboutir pour manque d'informations")
                     save = false;
                     return save;
                 } else {
@@ -171,9 +190,48 @@ let systemParamsWizard = {
                 }
             })
         }
-        if (save) systemParamsWizard.submitFormData();
+        // Vérification de la pressence du logo
+        if (save && !(societeForm).find("input#logo").val()) {
+            newSystemParamsWizard.saError("Erreur !", "L'enregistrement ne peut aboutir pour manque d'informations. Veuillez charger le logo");
+            save = false;
+            return;
+        }
+        if (save) newSystemParamsWizard.submitFormData();
+    },
+    imageReset: function() {
+        // $(this).parent().remove();
+        // $(".imgAdd").show();
+        $("div.imageUpPreview").find("input.img").val("");
+        $("div.imageUpPreview").find("div.imagePreview").replaceWith(`<div class="imagePreview"></div>`);
+        $("div.imageUpPreview").find("i.del").hide();
     }
 };
 $(document).ready(function() {
-    systemParamsWizard.choicesJsInit();
+    newSystemParamsWizard.choicesJsInit();
+
+    // Gestion de l'image
+    $(document).on("click", "i.del", function() {
+        newSystemParamsWizard.imageReset();
+    });
+    $(function() {
+        $(document).on("change", ".uploadFile", function() {
+            var uploadFile = $(this);
+            var files = !!this.files ? this.files : [];
+            if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+
+            if (/^image/.test(files[0].type)) { // only image file
+                var reader = new FileReader(); // instance of the FileReader
+                reader.readAsDataURL(files[0]); // read the local file
+
+                reader.onloadend = function() { // set image data as background of div
+                    //alert(uploadFile.closest(".upimage").find('.imagePreview').length);
+                    uploadFile.closest(".imgUp").find('.imagePreview').css("background-image", "url(" + this.result + ")");
+                }
+                $("div.imageUpPreview").find("i.del").show();
+            } else {
+                newSystemParamsWizard.imageReset();
+            }
+
+        });
+    });
 });

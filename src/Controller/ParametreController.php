@@ -6,10 +6,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\ApiConstant;
+use App\Service\ApiDataService;
+use Symfony\Component\HttpClient\Exception\TransportException;
 
 #[Route('/parametre')]
 class ParametreController extends AbstractController
 {
+    private $apiService;
+    public function __construct(ApiDataService $apiService)
+    {
+        $this->apiService = $apiService;
+    }
+    
     /**
      * Afficher la liste des taxes
      *
@@ -83,6 +91,34 @@ class ParametreController extends AbstractController
     }
 
     /**
+     * Afficher l'interface de gestion du profil utilisateur
+     *
+     * @return Response
+     */
+    #[Route('/utilisateurs/profil', name: 'parametre_users_profile')]
+    public function usersProfile(): Response
+    {
+        $user = null;
+        try {
+            // Tentative de récupération de l'utilisateur connecté
+            $user = $this->apiService->getAuthUser();
+        } catch (TransportException $th) {
+            throw $th;
+            //dd($th);
+        }
+        return $this->render('parametre/user-profile.html.twig', [
+            'page_title' => 'Profil utilisateur',
+            'breadcrumb' => ['Paramètres', 'Profil utilisateur'],
+            "sidebar_code" => ['PARAMS', 'USP', ''],
+            "url_put_item" => ApiConstant::URL_PUT_USER,
+            "url_get_item" => ApiConstant::URL_GET_USER,
+            "url_put_item_password_reset" => ApiConstant::URL_PUT_USER_PASSWORD_RESET,
+            "url_put_item_photo" => ApiConstant::URL_PUT_USER_PHOTO,
+            "user" => $user
+        ]);
+    }
+
+    /**
      * Afficher l'interface de création du paramètre de système
      *
      * @return Response
@@ -95,8 +131,41 @@ class ParametreController extends AbstractController
             'breadcrumb' => ['Paramètres', 'Données du système'],
             "sidebar_code" => ['PARAMS', 'SYST', ''],
             "url_post_item" => ApiConstant::URL_POST_SYSTEM_PARAMS,
+            "url_put_item_logo" => ApiConstant::URL_PUT_SYSTEM_PARAMS_LOGO,
         ]);
     }
 
-    
+    /**
+     * Afficher l'interface d'affichage et de mise à jour des données de paramètres du système
+     *
+     * @return Response
+     */
+    #[Route('/system-params/update', name: 'parametre_update')]
+    public function updateSystemParam(): Response
+    {
+        $param = null; $emcef = null; $users = null;
+        try {
+            // Tentative de récupération du paramètre du système
+            $param = $this->apiService->get(ApiConstant::URL_GET_SYSTEM_PARAMS);
+            // Tentative de récupération des infos du emcef
+            // $emcef = $this->apiService->get(ApiConstant::URL_GET_EMCEF_INFOS);
+            // Tentative de récupération des utilisateurs de l'application
+            $users = $this->apiService->getToArray(ApiConstant::URL_LIST_USER);
+        } catch (TransportException $th) {
+            throw $th;
+            //dd($th);
+        }
+        return $this->render('parametre/system-params.html.twig', [
+            'page_title' => 'Paramètres du système',
+            'breadcrumb' => ['Paramètres', 'Paramètres du système'],
+            "sidebar_code" => ['PARAMS', 'SYSTU', ''],
+            "url_get_item" => ApiConstant::URL_GET_SYSTEM_PARAMS,
+            "url_put_item" => ApiConstant::URL_PUT_SYSTEM_PARAMS,
+            "url_put_item_logo" => ApiConstant::URL_PUT_SYSTEM_PARAMS_LOGO,
+            "url_get_emcef_infos" => ApiConstant::URL_GET_EMCEF_INFOS,
+            "param" => $param,
+            "emcef" => $emcef,
+            "users" => $users,
+        ]);
+    }
 }

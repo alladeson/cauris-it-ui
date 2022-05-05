@@ -21,8 +21,11 @@ class ApiConstant
     public const URL_LIST_SYSTEM_PARAMS = "parametre/params";
     public const URL_POST_SYSTEM_PARAMS = "parametre/params";
     public const URL_PUT_SYSTEM_PARAMS = "parametre/params/__id__";
-    public const URL_GET_SYSTEM_PARAMS = "parametre/params/__id__";
+    public const URL_PUT_SYSTEM_PARAMS_LOGO = "parametre/params/__id__/logo";
+    // public const URL_GET_SYSTEM_PARAMS = "parametre/params/__id__";
+    public const URL_GET_SYSTEM_PARAMS = "parametre/params/one";
     public const URL_DELETE_SYSTEM_PARAMS = "parametre/params/__id__";
+    public const URL_GET_EMCEF_INFOS = "parametre/emcef/api/info/status";
 
     // Les taxes
     public const URL_LIST_TAXE = "parametre/taxe";
@@ -42,6 +45,7 @@ class ApiConstant
     public const URL_LIST_USER = "parametre/users";
     public const URL_POST_USER = "parametre/users";
     public const URL_PUT_USER = "parametre/users/__id__";
+    public const URL_PUT_USER_PHOTO = "parametre/users/__id__/photo";
     public const URL_GET_USER = "parametre/users/__id__";
     public const URL_DELETE_USER = "parametre/users/__id__";
     public const URL_PUT_USER_PASSWORD_RESET = "parametre/users/__id__/reset-password";
@@ -88,4 +92,6 @@ class ApiConstant
 
     // Local url
     public const URL_DETAIL_FACTURE_AVOIR = "/factures/facture-avoir/__id__/details";
+    // Les fichiers
+    public const URL_GET_FILE = "public/downloadFile/__fileName__";
 }

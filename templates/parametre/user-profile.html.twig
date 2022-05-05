@@ -1,0 +1,254 @@
+{% extends 'admin/layout/crud-layout.html.twig' %}
+
+{% block title %}
+  {{ appName }}
+  - Profil Utilisateur
+{% endblock %}
+
+{% block custom_page_stylesheets %}
+  <!-- Pour la gestion de l'image css -->
+  <link href="{{
+    asset(
+      'assets/js/plugins/bootstrap-image-upload-preview/src/style.css'
+    )
+    }}"
+    rel="stylesheet"
+    type="text/css" />
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-xl-9 col-lg-8">
+            <div class="card">
+            <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm order-2 order-sm-1">
+                            <div class="d-flex align-items-start mt-3 mt-sm-0">
+                                <div class="flex-shrink-0">
+                                    <div class="avatar-xl me-3">
+                                        <img src="{{ user.photo ? (url_get_file() | replace({'__fileName__': user.photo})) : asset('assets/images/default-user-img.png') }}" alt="photo profil" class="img-fluid rounded-circle d-block">
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div>
+                                        <h5 class="font-size-16 mb-1">{{user.fullname}}</h5>
+                                        <p class="text-muted font-size-13">{{user.role}}</p>
+                                        <div class="d-flex flex-wrap align-items-start gap-2 gap-lg-3 text-muted font-size-13">
+                                            <div><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>{{user.phone ? user.phone : "Pas de numéro de téléphone"}}</div>
+                                            <div><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>{{user.email ? user.email : "Pas d'e-mail"}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {# <div class="col-sm-auto order-1 order-sm-2">
+                            <div class="d-flex align-items-start justify-content-end gap-2">
+                                
+                            </div>
+                        </div> #}
+                    </div>                                        
+                </div>
+            </div>
+            <!-- end card -->
+            <div class="card">
+                <form class="" data-user="{{user|json_encode()}}" id="user-form" {#onsubmit="userProfile.onSave(event)"#} enctype="multipart/form-data">
+                    <div class="card-header">
+                                <h5 class="card-title mb-0">
+                                Informations de l'Utilisateur
+                                </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row imageUpPreview d-flex justify-content-center flex-md-row-reverse">
+                            <div class="col-lg-3 col-md-3 col-sm-4 col-8 imgUp">
+                                <div class="imagePreview" style="background-image: url({{ user.photo ? (url_get_file() | replace({'__fileName__': user.photo})) : asset('assets/images/default-user-img.png') }})"></div>
+                                <label class="btn btn-primary imgUpBtn"> 
+                                    Changer votre photo
+                                    <input type="file" id="photo" name="photo" class="uploadFile img" accept="image/*" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                                </label>
+                                <i class="fa fa-times del" style="display:none;"></i>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <div class="row">						
+                                    <div class="col-md-12">
+                                        <div class="mb-3 position-relative">
+                                            <label class="form-label" for="lastname">Nom</label>
+                                            <input type="text" id="lastname" name="lastname" value="{{user.lastname}}" class="form-control" placeholder="Votre nom" required>
+                                        </div>
+                                    </div>							
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-3 position-relative">
+                                            <input type="hidden" id="item-id" name="item-id" value="{{user.id}}">
+                                            <label class="form-label" for="firstname">Prénom</label>
+                                            <input type="text" class="form-control" id="firstname" name="firstname" value="{{user.firstname}}" placeholder="Votre prenom">
+                                        </div>
+                                    </div>														
+                                </div>
+                                <div class="row">						
+                                    <div class="col-md-12">
+                                        <div class="mb-3 position-relative">
+                                            <label class="form-label" for="username">Identifiant</label>
+                                            <input type="text" id="username" name="username" class="form-control" placeholder="Votre identifiant" value="{{user.username}}">
+                                        </div>
+                                    </div>							
+                                </div>
+                            </div>
+                        </div>
+                        <!-- row -->									
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-3 position-relative">
+                                    <label class="form-label" for="telepohone">Téléphone</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="telephonePrepend">
+                                            <i class="mdi mdi-phone"></i>
+                                        </span>
+                                        <input type="tel" value="{{user.telephone}}" pattern="[5-9]{1}[0-9]{1}[0-9]{2}[0-9]{2}[0-9]{2}" class="form-control" id="telephone" name="telephone" placeholder="Numéro de téléphone" aria-describedby="telephonePrepend">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-3 position-relative">
+                                    <label class="form-label" for="email">E-mail</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="emailPrepend">
+                                            <i class="mdi mdi-email"></i>
+                                        </span>
+                                        <input type="email" id="email" name="email" value="{{user.email}}" class="form-control" placeholder="Adresse e-mail" aria-describedby="emailPrepend">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card body -->
+                    <div class="card-footer bg-transparent border-top d-flex justify-content-end">
+                        <button type="button" class="btn btn-outline-info waves-effect waves-light" data-bs-toggle="modal" data-bs-target=".confirmModal">
+                            Mettre à jour les informations
+                        </button>
+                    </div>
+                    <!-- end card footer -->
+                </form>
+            </div>
+            <!-- end card -->
+        </div>
+        <!-- end col -->
+        <div class="col-xl-3 col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Mot de passe</h5>
+                    <div>
+                        <form class="mt-4 pt-2" id="password-form" method="" action="">
+                            <div class="mb-3">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1">
+                                        <label class="form-label">Ancien</label>
+                                    </div>
+                                </div>
+                                <div class="input-group auth-pass-inputgroup">
+                                    <input type="password" class="form-control" id="oldValue" name="oldValue" placeholder="Ancien mot de passe" aria-label="Password" aria-describedby="oldValue-password-addon" required>
+                                    <button class="btn btn-light shadow-none ms-0" type="button" id="oldValue-password-addon" onclick="userProfile.passwordShowToggle(event, 'oldValue', 'oldValue-password-addon')">
+                                        <i class="mdi mdi-eye-outline"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1">
+                                        <label class="form-label">Nouveau</label>
+                                    </div>
+                                </div>
+                                <div class="input-group auth-pass-inputgroup">
+                                    <input type="password" class="form-control" id="newValue" name="newValue" placeholder="Nouveau mot de passe" aria-label="Password" aria-describedby="newValue-password-addon" required>
+                                    <button class="btn btn-light shadow-none ms-0" type="button" id="newValue-password-addon" onclick="userProfile.passwordShowToggle(event, 'newValue', 'newValue-password-addon')">
+                                        <i class="mdi mdi-eye-outline"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex align-items-start">
+                                    <div class="flex-grow-1">
+                                        <label class="form-label">Confirmer nouveau</label>
+                                    </div>
+                                </div>
+                                <div class="input-group auth-pass-inputgroup">
+                                    <input type="password" class="form-control" id="confirmedValue" name="confirmedValue" placeholder="Confirmer mot de passe" aria-label="Password" aria-describedby="confirmedValue-password-addon" required>
+                                    <button class="btn btn-light shadow-none ms-0" type="button" id="confirmedValue-password-addon" onclick="userProfile.passwordShowToggle(event, 'confirmedValue', 'confirmedValue-password-addon')">
+                                        <i class="mdi mdi-eye-outline"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-primary w-100 waves-effect waves-light" type="button" data-bs-toggle="modal" data-bs-target=".passwordConfirmModal">Envoyer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- end card body -->
+            </div>
+            <!-- end card -->
+        </div>
+        <!-- end col -->
+    </div>
+    <!-- end row -->
+
+    <!-- Modal -->
+	<div class="modal fade confirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bx bx-check-circle display-4 text-success"></i>
+                        </div>
+                        <h5>Confirmer la modification de vos informations</h5>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal" onclick="userProfile.onSave(event);">Confirmer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->
+
+	<div class="modal fade passwordConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bx bx-check-circle display-4 text-success"></i>
+                        </div>
+                        <h5>Confirmer la modification de votre mot de passe</h5>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal" onclick="userProfile.onSavePassword(event);">Confirmer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->
+{% endblock %}
+
+{% block page_custom_scripts %}
+
+  <script>
+    const URL_PUT_USER_PASSWORD_RESET = "{{ url_put_item_password_reset }}";
+    const URL_PUT_USER_PHOTO = "{{ url_put_item_photo }}";
+    const URL_RESET_AUTH_USER = "{{ path('user_session_reset') }}";
+    const URL_LOGOUT_AUTH_USER = "{{ path('app_logout') }}";
+  </script>
+
+  <!-- init js -->
+  <script src="{{ asset('assets/js/custom/parametres/user-profile.init.js') }}"></script>
+{% endblock %}

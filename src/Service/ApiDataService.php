@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Utils\Tool;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpClient\HttpClient;
@@ -10,8 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use Symfony\Component\Mime\Part\DataPart;
+use Symfony\Component\Mime\Part\Multipart\FormDataPart;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
-class ApiDataService
+class ApiDataService extends AbstractController
 {
     private $httpClient;
     private $baseUrl;
@@ -140,6 +146,42 @@ class ApiDataService
                 ],
             ];
         }
+        return $this->requestUrl($methode, $this->baseUrl . $route, $options);
+    }
+    /**
+     * Envoie une requête HTTP à l'API
+     *
+     * @param String $methode Méthode HTTP à exécuter
+     * @param String $route Route de l'API à exécuter
+     * @param UploadedFile $file Le fichier à envoyer
+     * @return ResponseInterface Réponse de la requête
+     */
+    public function requestFile($methode, $route, $file): ResponseInterface
+    {
+        // Récupération de la destination temporaire du fichier
+        $destination = $this->getParameter('kernel.project_dir').'/public/assets/uploads';
+        // Enregistrement temporaire du fichier
+        $file->move($destination, $file->getClientOriginalName());
+        // Formation des données à envoyer au serveur distant
+        $formFields = [
+            // Récupération du fichier
+            'file' => DataPart::fromPath($destination. "/" . $file->getClientOriginalName()),
+        ]; 
+        $formData = new FormDataPart($formFields);
+        // Formatage du header de la requête
+        $headers = $formData->getPreparedHeaders()->toArray();
+        $headers[] = 'Authorization: Bearer ' . $this->apiBearerToken;
+        $headers[] = 'Authorization: Bearer ' . $this->apiBearerToken;
+        // $headers[] = 'Content-Type: multipart/form-data';
+        // Préparation des options de la requête
+        $options = [
+            'body' => $formData->bodyToIterable(),
+            'headers' => $headers,
+        ];
+        // Suppression du fichier temporairement enregistré
+        $filesystem = new Filesystem();
+        $filesystem->remove([$destination. "/" . $file->getClientOriginalName()]);
+        // Exécution de la requête vers l'api
         return $this->requestUrl($methode, $this->baseUrl . $route, $options);
     }
 
@@ -274,6 +316,21 @@ class ApiDataService
         $data = $request->request->get('data');
 
         $response = $this->request($method, $route, $data);
+        return new Response($response->getContent(false), $response->getStatusCode(false));
+    }
+
+    /**
+     * Envoie une requête pour l'enregistrement d'un fichier
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function executeFile(Request $request): Response
+    {
+        $method = $request->request->get('method');
+        $route = $request->request->get('url');
+        $file = $request->files->get('file');
+        $response = $this->requestFile($method, $route, $file);
         return new Response($response->getContent(false), $response->getStatusCode(false));
     }
 

@@ -295,6 +295,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('menu_exist', [$this, 'menuExist']),
             new TwigFunction('country_name', [$this, 'getCountryName']),
             new TwigFunction('statut_color', [$this, 'getStatutColor']),
+            new TwigFunction('url_get_file', [$this, 'urlGetFile']),
         ];
     }
 
@@ -323,5 +324,10 @@ class AppExtension extends AbstractExtension
     public function getStatutColor($statut)
     {
         return $this->statutColors[$statut];
+    }
+
+    public function urlGetFile()
+    {
+        return $_ENV["API_BASE_URL"].ApiConstant::URL_GET_FILE;
     }
 }
