@@ -5,5 +5,5 @@
 return array (
   'APP_ENV' => 'prod',
   'APP_SECRET' => 'de4be7a1990b1f5c9fefcb6ef20967a2',
-  'PI_BASE_URL' => 'https://cauris-it-api-v1.herokuapp.com/',
+  'API_BASE_URL' => 'https://cauris-it-api-v1.herokuapp.com/',
 );
