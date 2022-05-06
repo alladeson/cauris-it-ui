@@ -133,7 +133,7 @@ let newFactureAvoir = {
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
                 console.log(err);
-                alertify.error("Impossible de récupérer la facture de ventre à cette référence. Veuillez renseigner la bonne référence !");
+                alertify.error("Impossible de récupérer la facture de ventre avec ce code. Veuillez renseigner le bon code MECeF/DGI !");
             });
     },
     confirmInvoiceCreation: function(event) {
@@ -180,7 +180,7 @@ $(document).ready(function() {
             }).catch(function(err) {
                 // Run this when promise was rejected via reject()
                 console.log(err)
-                alertify.error(`Une erreur est survenue : impossible de recherche la référence.`);
+                alertify.error(`Une erreur est survenue : impossible de recherche le code correspondant.`);
                 //return null;
             });
         },

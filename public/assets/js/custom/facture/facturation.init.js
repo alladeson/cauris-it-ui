@@ -9,6 +9,7 @@ let articles;
 let article;
 let factureMontantTtc = 0;
 let taxeSpecifique = null;
+let originalPrice = null;
 let facturation = {
         listInitalizer: function() {
                 // $(".datatable").DataTable({ responsive: !1 }),
@@ -355,6 +356,7 @@ let facturation = {
                 console.log(itemObj);
                 // Sauvegarde la taxe spécifique si existante sinon null
                 taxeSpecifique = itemObj.ts ? itemObj.ts.tsUnitaire : null;
+                originalPrice = itemObj.isRemise ? itemObj.discount.originalPrice : null;
                 facturation.setformData(facturationForm, itemObj);
             })
             .catch(function (err) {
@@ -422,8 +424,9 @@ let facturation = {
             form.find("#quantite").val(item.quantite);
             // form.find("#taxe-specifique").val(item.taxeSpecifique);
             form.find("#remise-check").prop("checked", item.remise ? true : false);
-            form.find("#remise_prix_u").val(item.originalPrice);
-            form.find("#remise_description").val(item.priceModification);
+            form.find("#remise_taux").val(item.discount ? item.discount.taux : "");
+            form.find("#remise_prix_u").val(item.discount ? item.discount.originalPrice : "");
+            form.find("#remise_description").val(item.discount ? item.discount.priceModification : "");
             choices[1].setChoiceByValue(client.id);
             choices[3].setChoiceByValue(item.taxe.id);
             choices[2].setChoiceByValue(item.article ? item.article.id : 0);
@@ -441,12 +444,9 @@ let facturation = {
                 prixUnitaire: form.find("#prix_u").val(),
                 taxeSpecifique: form.find("#taxe-specifique").val(),
                 remise: form.find("#remise-check").is(":checked"),
-                originalPrice: form.find("#remise-check").is(":checked")
-                    ? form.find("#remise_prix_u").val()
-                    : "",
-                priceModification: form.find("#remise-check").is(":checked")
-                    ? form.find("#remise_description").val()
-                    : "",
+                taux: form.find("#remise-check").is(":checked") ? form.find("#remise_taux").val() : "",
+                originalPrice: form.find("#remise-check").is(":checked") ? form.find("#remise_prix_u").val() : "",
+                priceModification: form.find("#remise-check").is(":checked") ? form.find("#remise_description").val() : "",
                 taxeId: form.find("#taxe").val(),
                 tfId: form.find("#type").val(),
             };
@@ -616,6 +616,7 @@ let facturation = {
                     article = dataJson;
                     // Sauvegarde de la taxe spécique si existante sinon null
                     taxeSpecifique = article.taxeSpecifique;
+                    originalPrice = article.prix;
                     facturation.setFormOnArticleChange();
                 }
 
@@ -652,8 +653,9 @@ let facturation = {
         var $tsRemmiseShowTable = $("table.ts-remise-show-table");
         $tsRemmiseShowTable.find(".td-detail-ts").text(taxeSpecifique ? taxeSpecifique : "-");
         $tsRemmiseShowTable.find(".td-detail-remise").text(itemObj.remise ? "Oui" : "Non");
-        $tsRemmiseShowTable.find(".td-detail-remise-prix-u").text(itemObj.originalPrice);
-        $tsRemmiseShowTable.find(".td-detail-remise-description").text(itemObj.priceModification);
+        $tsRemmiseShowTable.find(".td-detail-remise-taux").text(itemObj.remise ? itemObj.discount.taux + "%" : "-");
+        $tsRemmiseShowTable.find(".td-detail-remise-prix-u").text(itemObj.remise ? itemObj.discount.originalPrice : "-");
+        $tsRemmiseShowTable.find(".td-detail-remise-description").text(itemObj.remise ? itemObj.discount.priceModification : "-");
         if (!itemObj.remise) $tsRemmiseShowTable.find(".tr-detail-remise").hide();
 
         // Affichage des montants
@@ -788,10 +790,12 @@ let facturation = {
         var remise = facturationForm.find("#remise-check").is(":checked");
         if (remise) {
             facturationForm.find("div#remiseInputsToggle").show();
+            facturationForm.find("#remise_taux").attr("required", "required");
             facturationForm.find("#remise_prix_u").attr("required", "required");
             facturationForm.find("#remise_description").attr("required", "required");
         } else {
             facturationForm.find("div#remiseInputsToggle").hide();
+            facturationForm.find("#remise_taux").removeAttr("required");
             facturationForm.find("#remise_prix_u").removeAttr("required");
             facturationForm.find("#remise_description").removeAttr("required");
         }

@@ -641,8 +641,9 @@ let factureAvoir = {
         var $tsRemmiseShowTable = $("table.ts-remise-show-table");
         $tsRemmiseShowTable.find(".td-detail-ts").text(taxeSpecifique ? taxeSpecifique : "-");
         $tsRemmiseShowTable.find(".td-detail-remise").text(itemObj.remise ? "Oui" : "Non");
-        $tsRemmiseShowTable.find(".td-detail-remise-prix-u").text(itemObj.originalPrice);
-        $tsRemmiseShowTable.find(".td-detail-remise-description").text(itemObj.priceModification);
+        $tsRemmiseShowTable.find(".td-detail-remise-taux").text(itemObj.remise ? itemObj.discount.taux + "%" : "-");
+        $tsRemmiseShowTable.find(".td-detail-remise-prix-u").text(itemObj.remise ? itemObj.discount.originalPrice : "-");
+        $tsRemmiseShowTable.find(".td-detail-remise-description").text(itemObj.remise ? itemObj.discount.priceModification : "-");
         if (!itemObj.remise) $tsRemmiseShowTable.find(".tr-detail-remise").hide();
 
         // Affichage des montants
