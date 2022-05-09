@@ -7,10 +7,10 @@
 
 {% block page_content %}
 
-	<div class="accordion accordion-flush" id="facturationForm">
+	<div class="accordion accordion-flush mb-2" id="facturationForm">
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="flush-headingOne">
-				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
+				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne" style="background-color: #eeeef9;">
 					Formulaire de facturation
 				</button>
 			</h2>
@@ -73,7 +73,7 @@
 							<div class="col-lg-2 col-md-2">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="montant">Montant HT</label>
-									<input type="number" step="1" min="1" class="form-control" id="montant" name="montant" placeholder="" value="" required>
+									<input type="number" step="0.01" min="0.01" class="form-control" id="montant" name="montant" placeholder="" value="" required>
 								</div>
 							</div>
 							<div class="col-lg-2 col-md-2">

@@ -7,10 +7,10 @@
 
 {% block page_content %}
 
-	<div class="accordion accordion-flush" id="facturationForm">
+	<div class="accordion accordion-flush mb-2" id="facturationForm">
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="flush-headingOne">
-				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
+				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne" style="background-color: #eeeef9;">
 					Information de la facture
 				</button>
 			</h2>
@@ -83,12 +83,14 @@
 			</div>
 		</div>
 		<div class="col-md-6">
-			<div
-				class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
 				<div>
-					<a href="javascript:void(0);" class="btn btn-outline-success waves-effect waves-light validate-facture">
+					<a href="javascript:void(0);" class="btn btn-outline-success waves-effect waves-light validate-facture" style="display: none;">
 						<i class="bx bx-list-check me-1"></i>
 						Valider</a>
+					<a href="javascript:void(0);" class="btn btn-outline-success waves-effect waves-light print-facture"  style="display: none;">
+						<i class="bx bx-printer me-1"></i>
+						Imprimer</a>
 				</div>
 			</div>
 		</div>

@@ -48,7 +48,7 @@
 		children: [
 			{
 				id: "facture-vente",
-				pathName: "facture_vente",
+				pathName: "new_facture_vente",
 				title: "Facture Ventes",
 				dataKey: "t-facture-vente",
 				active: sidebar_code[1] == "FACTV" ? true : false,
@@ -60,6 +60,14 @@
 				title: "Facture d'avoir",
 				dataKey: "t-facture-avoir",
 				active: sidebar_code[1] == "NFA" ? true : false,
+				children: [],
+			},
+			{
+				id: "liste-factures",
+				pathName: "liste_facture",
+				title: "Liste des Factures",
+				dataKey: "t-liste-factures",
+				active: sidebar_code[1] == "LSTF" ? true : false,
 				children: [],
 			},
 			{
@@ -191,5 +199,11 @@
 	<script>
 		// URL global request get file
 		const URL_GET_FILE = "{{ url_get_file() }}";
+		// URL global print invoice and get file
+		const URL_GLOBAL_IMPRIMER_FACTURE = "{{ url_print_invoice() }}";
+		// URL global details invoice
+		const URL_GLOBAL_DETAILS_FACTURE = "{{ url_details_invoice() }}";
+		// URL global details invoice
+		const URL_GLOBAL_UPDATE_FACTURE_VENTE = "{{ path('update_facture_vente', {id: '__id__'}) }}";
 	</script>
 {% endblock %}

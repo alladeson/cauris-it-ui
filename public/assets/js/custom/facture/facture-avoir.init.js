@@ -10,104 +10,104 @@ let article;
 let factureMontantTtc = 0;
 let taxeSpecifique = null;
 let factureAvoir = {
-    listInitalizer: function() {
-        // $(".datatable").DataTable({ responsive: !1 }),
-        (datatable = $(".datatable").DataTable({
-            language: {
-                //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-                url: "/assets/i18n/French.json",
-            },
-            ajax: {
-                type: "POST",
-                url: URL_GLOBAL_REQUEST,
-                data: function() {
-                    return (data = {
-                        url: FACTURE_ID ?
-                            URL_GET_ITEM.replace("__id__", FACTURE_ID) : URL_GET_FACTURE_CLIENT.replace(
-                                "__clientId__",
-                                client ? client.id : 0
-                            ),
-                        method: "GET",
-                    });
-                },
-                dataSrc: "details",
-                error: function(xhr, status, error) {
-                    (waitMe_zone.length ? waitMe_zone : $("body")).waitMe("hide");
-                    alertify.error(
-                        xhr.status == 403 ?
-                        "Accès réfusé" :
-                        xhr.status == 404 ?
-                        "Aucune facture trouvée" :
-                        "Une erreur s'est produite lors de la connexion au serveur"
-                    );
-                    $(".datatable")
-                        .find("tbody td")
-                        .html('<span class="text-danger">Echec de chargement</span>');
-                },
-            },
-            // "ajax": "/assets/js/custom/data/facture.txt",
-            columns: [{
-                    data: "id",
-                    class: "",
-                    orderable: false,
-                    searchable: false,
-                    render: function(data, type, row, meta) {
-                        return (
-                            `` +
-                            `<div class="form-check font-size-16">` +
-                            `<input type="checkbox" class="form-check-input" id="detailFacturecheck${data}">` +
-                            `<label class="form-check-label" for="detailFacturecheck${data}"></label>` +
-                            `</div>`
-                        );
-                    },
-                },
-                { data: "id" },
-                {
-                    data: "article",
-                    render: function(data, type, row, meta) {
-                        return data.designation;
-                    },
-                },
-                { data: "quantite" },
-                {
-                    data: "taxe",
-                    render: function(data, type, row, meta) {
-                        return data.groupe + " (" + data.valeur + "%)";
-                    },
-                },
-                { data: "prixUnitaire" },
-                {
-                    data: "montantHt",
-                    render: function(data, type, row, meta) {
-                        return data ? data : 0;
-                    },
-                },
-                {
-                    data: "montantTva",
-                    render: function(data, type, row, meta) {
-                        return data ? data : 0;
-                    },
-                },
-                {
-                    data: "montantTtc",
-                    render: function(data, type, row, meta) {
-                        return data ? data : 0;
-                    },
-                },
-                {
-                    data: "taxeSpecifique",
-                    render: function(data, type, row, meta) {
-                        return data ? data : "-";
-                    },
-                },
-                {
-                    data: "id",
-                    class: "",
-                    orderable: false,
-                    searchable: false,
-                    render: function(data, type, row, meta) {
-                        let html =
-                            `<div class="dropdown">
+        listInitalizer: function() {
+                // $(".datatable").DataTable({ responsive: !1 }),
+                (datatable = $(".datatable").DataTable({
+                            language: {
+                                //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                                url: "/assets/i18n/French.json",
+                            },
+                            ajax: {
+                                type: "POST",
+                                url: URL_GLOBAL_REQUEST,
+                                data: function() {
+                                    return (data = {
+                                        url: FACTURE_ID ?
+                                            URL_GET_ITEM.replace("__id__", FACTURE_ID) : URL_GET_FACTURE_CLIENT.replace(
+                                                "__clientId__",
+                                                client ? client.id : 0
+                                            ),
+                                        method: "GET",
+                                    });
+                                },
+                                dataSrc: "details",
+                                error: function(xhr, status, error) {
+                                    (waitMe_zone.length ? waitMe_zone : $("body")).waitMe("hide");
+                                    alertify.error(
+                                        xhr.status == 403 ?
+                                        "Accès réfusé" :
+                                        xhr.status == 404 ?
+                                        "Aucune facture trouvée" :
+                                        "Une erreur s'est produite lors de la connexion au serveur"
+                                    );
+                                    $(".datatable")
+                                        .find("tbody td")
+                                        .html('<span class="text-danger">Echec de chargement</span>');
+                                },
+                            },
+                            // "ajax": "/assets/js/custom/data/facture.txt",
+                            columns: [{
+                                        data: "id",
+                                        class: "",
+                                        orderable: false,
+                                        searchable: false,
+                                        render: function(data, type, row, meta) {
+                                            return (
+                                                `` +
+                                                `<div class="form-check font-size-16">` +
+                                                `<input type="checkbox" class="form-check-input" id="detailFacturecheck${data}">` +
+                                                `<label class="form-check-label" for="detailFacturecheck${data}"></label>` +
+                                                `</div>`
+                                            );
+                                        },
+                                    },
+                                    { data: "id" },
+                                    {
+                                        data: "article",
+                                        render: function(data, type, row, meta) {
+                                            return data.designation;
+                                        },
+                                    },
+                                    { data: "quantite" },
+                                    {
+                                        data: "taxe",
+                                        render: function(data, type, row, meta) {
+                                            return data.groupe + " (" + data.valeur + "%)";
+                                        },
+                                    },
+                                    { data: "prixUnitaire" },
+                                    {
+                                        data: "montantHt",
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : 0;
+                                        },
+                                    },
+                                    {
+                                        data: "montantTva",
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : 0;
+                                        },
+                                    },
+                                    {
+                                        data: "montantTtc",
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : 0;
+                                        },
+                                    },
+                                    {
+                                        data: "taxeSpecifique",
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        },
+                                    },
+                                    {
+                                        data: "id",
+                                        class: "",
+                                        orderable: false,
+                                        searchable: false,
+                                        render: function(data, type, row, meta) {
+                                                let html =
+                                                    `<div class="dropdown">
                                 <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bx bx-dots-horizontal-rounded"></i>
                                 </button>
@@ -115,6 +115,11 @@ let factureAvoir = {
                                     <li>
                                         <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                     </li>
+                                    ${!row.valid ?
+                                        `<li>
+                                        <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
+                                        </li>`
+                                        : "" }
                                 </ul>
                             </div>`;
                         return html;
@@ -679,6 +684,13 @@ let factureAvoir = {
                 facturationForm.find("#type").val(facture.type.description);
                 facturationForm.find("#client").val(client.name);
                 facturationForm.find("#nombre-article").val(facture.details.length);
+                if (facture.confirm) {
+                    $("a.validate-facture").hide()
+                    $("a.print-facture").show()
+                } else {
+                    $("a.validate-facture").show();
+                    $("a.print-facture").hide();
+                }
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
@@ -806,6 +818,23 @@ $(document).ready(function() {
         factureAvoir.showItem($(this));
     });
 
+    // Delete a record
+    datatable.on("click", ".remove-item", function (e) {
+        e.preventDefault();
+        //facturation.removeItem($(this));
+        factureAvoir.saRemoveParams(
+            $(this),
+            "Êtes-vous sûr de vouloir supprimer cette ligne de facture ?",
+            "Cette opération est irréversible !",
+            "Oui, supprimer !",
+            "Non, annuller !",
+            "Supprimée !",
+            "Suppression effectuée avec succès.",
+            "Annullée !",
+            "Opération annullée, rien n'a changé."
+        );
+    });
+
     //Validate record
     // datatable.on("click", ".validate-item", function(e) {
     //     e.preventDefault();
@@ -852,6 +881,14 @@ $(document).ready(function() {
             $(".dropdown-menu-end").css("position", position);
         });
         console.log(count + ' column(s) are hidden');
+    });
+    //Validate facture
+    $("a.print-facture").click(function(e) {
+        e.preventDefault();
+        window.open(
+            facture.filename ? URL_GET_FILE.replace("__fileName__", facture.filename) : URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id),
+            "_blank"
+        )
     });
 });
 document.addEventListener("DOMContentLoaded", function() {

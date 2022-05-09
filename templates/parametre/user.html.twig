@@ -115,7 +115,10 @@
 							<div class="col-md-6">
 								<div class="mb-3 position-relative">
 									<label class="form-label" for="username">Idenfiant</label>
-									<input type="text" class="form-control" id="username" name="username" placeholder="L'idenfiant de l'utilisateur" value="" required>
+									<div class="input-group">
+										<span class="input-group-text" id="usernamePrepend">@</i></span>
+										<input type="text" class="form-control" id="username" name="username" placeholder="L'idenfiant de l'utilisateur" value="" required aria-describedby="usernamePrepend">
+									</div>
 								</div>
 							</div>					
 							<div class="col-md-6">

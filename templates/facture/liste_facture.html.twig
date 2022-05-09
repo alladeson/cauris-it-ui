@@ -8,7 +8,7 @@
 {% block page_content %}
 
 	{# Filtre #}
-	<div class="mt-2">
+	{# <div class="mt-2">
 		<h5 class="font-size-14 mb-2">
 			<i class="mdi mdi-arrow-right text-primary me-1"></i>
 			Filtre : </h5>
@@ -38,13 +38,13 @@
 			</div>
 		</form>
 	</div>
-	<br>
+	<br> #}
 	{# End Filtre #}
 
 	<div class="row align-items-center">
 		<div class="col-md-6">
 			<div class="mb-3">
-				<h5 class="card-title">Liste des factures
+				<h5 class="card-title">
 					<span class="text-muted fw-normal ms-2"></span>
 				</h5>
 			</div>
@@ -52,7 +52,7 @@
 
 		<div class="col-md-6">
 			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
-				<div>
+				{# <div>
 					<ul class="nav nav-pills">
 						<li class="nav-item">
 							<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
@@ -65,7 +65,7 @@
 							</a>
 						</li>
 					</ul>
-				</div>
+				</div> #}
 				{# <div>
 					<a href="javascript:void(0);" class="btn btn-light" data-bs-toggle="modal" data-bs-target=".add-new-modal">
 						<i class="bx bx-plus me-1"></i>
@@ -81,12 +81,12 @@
 						<li>
 							<a class="dropdown-item" onclick="listeFacture.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
 						</li>
-						<li>
+						{# <li>
 							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
 						</li>
 						<li>
 							<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
-						</li>
+						</li> #}
 					</ul>
 				</div>
 			</div>
@@ -105,217 +105,28 @@
 							<label class="form-check-label" for="checkAll"></label>
 						</div>
 					</th>
-					<th scope="col">Réf.</th>
-					<th scope="col">Date</th>
+					<th scope="col">#</th>
+					<th scope="col">Type</th>
 					<th scope="col">Client</th>
-					{# <th scope="col">Objet</th> #}
-					<th scope="col">Montant TTC</th>
+					<th scope="col">Montant Total</th>
 					<th scope="col">Statut</th>
+					<th scope="col">Code MCeF</th>
 					<th style="width: 80px; min-width: 80px;">Action</th>
 				</tr>
 			</thead>
 			<tbody>
-				{# <tr>
-					<th scope="row">
-						<div class="form-check font-size-16">
-							<input type="checkbox" class="form-check-input" id="contacusercheck1">
-							<label class="form-check-label" for="contacusercheck1"></label>
-						</div>
-					</th>
-					<td>156</td>
-					<td>10 janv. 2022 à 10h</td>
-					<td>Phyllis Gatlin</td>
-					<td>Réservation</td>
-					<td>315000</td>
-					<td class="text-warning">En attente</td>
-					<td>
-						<div class="dropdown">
-							<button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-								<i class="bx bx-dots-horizontal-rounded"></i>
-							</button>
-							<ul class="dropdown-menu dropdown-menu-end">
-								<li>
-									<a class="dropdown-item show-item" href="javascript:void(0);">Afficher</a>
-								</li>
-								<li>
-									<a class="dropdown-item edit-item" href="javascript:void(0);">Modifier</a>
-								</li>
-								<li>
-									<a class="dropdown-item remove-item" href="javascript:void(0);">Supprimer</a>
-								</li>
-							</ul>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-						<div class="form-check font-size-16">
-							<input type="checkbox" class="form-check-input" id="contacusercheck2">
-							<label class="form-check-label" for="contacusercheck2"></label>
-						</div>
-					</th>
-					<td>354</td>
-					<td>15 févr. 2022 à 17h</td>
-					<td>James Nix</td>
-					<td>Référence</td>
-					<td>15000</td>
-					<td class="text-success">Traité</td>
-					<td>
-						<div class="dropdown">
-							<button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-								<i class="bx bx-dots-horizontal-rounded"></i>
-							</button>
-							<ul class="dropdown-menu dropdown-menu-end">
-								<li>
-									<a class="dropdown-item show-item" href="javascript:void(0);">Afficher</a>
-								</li>
-								<li>
-									<a class="dropdown-item edit-item" href="javascript:void(0);">Modifier</a>
-								</li>
-								<li>
-									<a class="dropdown-item remove-item" href="javascript:void(0);">Supprimer</a>
-								</li>
-							</ul>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">
-						<div class="form-check font-size-16">
-							<input type="checkbox" class="form-check-input" id="contacusercheck3">
-							<label class="form-check-label" for="contacusercheck3"></label>
-						</div>
-					</th>
-					<td>780</td>
-					<td>12 mars 2022 à 08h</td>
-					<td>Darlene Smith</td>
-					<td>Réservation</td>
-					<td>45000</td>
-					<td class="text-warning">En attente</td>
-					<td>
-						<div class="dropdown">
-							<button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-								<i class="bx bx-dots-horizontal-rounded"></i>
-							</button>
-							<ul class="dropdown-menu dropdown-menu-end">
-								<li>
-									<a class="dropdown-item show-item" href="javascript:void(0);">Afficher</a>
-								</li>
-								<li>
-									<a class="dropdown-item edit-item" href="javascript:void(0);">Modifier</a>
-								</li>
-								<li>
-									<a class="dropdown-item remove-item" href="javascript:void(0);">Supprimer</a>
-								</li>
-							</ul>
-						</div>
-					</td>
-				</tr> #}
 			</tbody>
 		</table>
 		<!-- end table -->
 	</div>
 	<!-- end table responsive -->
 
-	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Affichage</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="table-responsive">
-                        <table class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
-                            {# <thead>
-                                <tr>
-                                    <th scope="col" style="width: 50%;">
-                                        Sweet Alert Type
-                                    </th>
-                                    <th scope="col" class="text-center">
-                                        Sweet Alert Examples
-                                    </th>
-                                </tr>
-                            </thead> #}
-                            <tbody>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Référence
-                                    </th>
-                                    <td class="text-center td-reference">
-                                    </td>
-                                </tr>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Date
-                                    </th>
-                                    <td class="text-center td-date">
-                                    </td>
-                                </tr>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Client
-                                    </th>
-                                    <td class="text-center td-client">
-                                    </td>
-                                </tr>                                                    
-                                {# <tr>
-                                    <th scope="row">
-                                        Objet
-                                    </th>
-                                    <td class="text-center">
-										<a href="#" class="badge badge-soft-primary">Réservation</a>
-                                    </td>
-                                </tr> #}
-                                <tr>
-                                    <th scope="row">
-                                        Montant HT
-                                    </th>
-                                    <td class="text-center td-montantHt">
-                                    </td>
-                                </tr>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Montant TVA
-                                    </th>
-                                    <td class="text-center td-montantTva">
-                                    </td>
-                                </tr>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Montant TTC
-                                    </th>
-                                    <td class="text-center td-montantTtc">
-                                    </td>
-                                </tr>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Statut
-                                    </th>
-                                    <td class="text-center text-warning td-statut">
-                                    </td>
-                                </tr>                                                    
-                            </tbody>
-                        </table>
-                        <!-- end table -->
-                    </div>
-				</div>
-				<div class="modal-footer d-flex justify-content-center">
-					<button type="button" class="btn btn-warning btn-sm" data-bs-dismiss="modal">Fermer</button>
-					<a href="javascript:void(0);" class="detail_link" data-uri="{{path('facturation')}}">
-						<button type="button" class="btn btn-info" data-bs-dismiss="modal">Detail</button>
-					</a>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
+	{% include "facture/__facture_details.html.twig" %}
 	<!-- /.modal -->
 
 {% endblock %}
 
 {% block page_custom_scripts %}
 	<!-- init js -->
-	<script src="{{ asset('assets/js/custom/caisse/liste-facture.init.js') }}"></script>
+	<script src="{{ asset('assets/js/custom/facture/liste-facture.init.js') }}"></script>
 {% endblock %}

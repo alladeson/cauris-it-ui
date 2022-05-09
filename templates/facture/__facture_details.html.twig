@@ -1,0 +1,138 @@
+<div class="modal fade facture-details-modal" id="facture-details-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-xl">
+			<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Affichage de la facture</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-lg-6 col-md-6">
+								<h5 class="font-size-14 mt-2">
+									<i class="mdi mdi-arrow-right text-primary me-1"></i>Données de validation</h5>
+								<div class="table-responsive">
+									<table class="table table-nowrap align-middle justify-content-center mb-0 invoice-validation-data-table">
+										<thead>
+											<tr>
+												<th scope="col" colspan="2" class="text-center"></th>
+											</tr>
+										</thead>
+										<tbody>										
+											<tr id="">
+												<th scope="row">
+													Type de facture
+												</th>
+												<td class="text-center td-invoice-type-facture"></td>
+											</tr>
+											<tr>
+												<th scope="row">
+													Aib
+												</th>
+												<td class="text-center td-invoice-aib"></td>
+											</tr>
+											<tr>
+												<th scope="row">
+													Type de paiement
+												</th>
+												<td class="text-center td-invoice-type-paiement"></td>
+											</tr>
+											<tr id="">
+												<th scope="row">
+													Montant reçu
+												</th>
+												<td class="text-center td-invoice-mrecu"></td>
+											</tr>
+											<tr id="">
+												<th scope="row">
+													Montant payé
+												</th>
+												<td class="text-center td-invoice-mpayer"></td>
+											</tr>
+											<tr id="">
+												<th scope="row">
+													Montant rendu
+												</th>
+												<td class="text-center td-invoice-mrendu"></td>
+											</tr>
+											<tr id="">
+												<th scope="row">
+													Description
+												</th>
+												<td class="text-center td-invoice-description"></td>
+											</tr>
+										</tbody>
+									</table>
+									<!-- end table -->
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<h5 class="font-size-14 mt-2">
+									<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif</h5>
+								<div class="table-responsive">
+									<table class="table table-nowrap align-middle justify-content-center mb-0 invoice-validation-table">
+										<thead>
+											<tr>
+												<th scope="col" colspan="2" class="text-center"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th scope="row">
+													Montant Total HT
+												</th>
+												<td class="text-center td-invoice-mht"></td>
+											</tr>
+											<tr>
+												<th scope="row">
+													Montant Total TVA
+												</th>
+												<td class="text-center td-invoice-mtva"></td>
+											</tr>
+											<tr id="tr-invoice-ts">
+												<th scope="row">
+													Montant Total TS H.T
+												</th>
+												<td class="text-center td-invoice-tsHt"></td>
+											</tr>
+											<tr id="tr-invoice-ts">
+												<th scope="row">
+													Montant Total TS T.T.C
+												</th>
+												<td class="text-center td-invoice-tsTtc"></td>
+											</tr>
+											<tr id="tr-invoice-aib">
+												<th scope="row">
+													Montant Aib
+												</th>
+												<td class="text-center td-invoice-aib"></td>
+											</tr>
+											<tr id="tr-invoice-aib">
+												<th scope="row">
+													Montant Total T.T.C
+												</th>
+												<td class="text-center td-invoice-mttc"></td>
+											</tr>
+											<tr id="tr-invoice-aib">
+												<th scope="row">
+													Statut
+												</th>
+												<td class="text-center td-invoice-status"></td>
+											</tr>
+										</tbody>
+									</table>
+									<!-- end table -->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer d-flex justify-content-center">
+						<button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Fermer</button>
+						<button type="button" class="btn btn-success btn-sm btn-print">Imprimer</button>
+						<button type="button" class="btn btn-primary btn-details">Details</button>
+					</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->

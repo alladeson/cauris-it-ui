@@ -16,8 +16,23 @@ class FactureController extends AbstractController {
      *
      * @return Response
      */
-    #[ Route( '/facture-vente', name:'facture_vente' ) ]
-    function factureVente(): Response {
+    #[ Route( '/facture-vente', name:'new_facture_vente' ) ]
+    function createfactureVente(): Response {
+        return $this->fvRender();
+    }
+
+    #[ Route( '/facture-vente/{id}', name:'update_facture_vente' ) ]
+    function updateFactureVente($id): Response {
+        return $this->fvRender($id);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param [type] $id
+     * @return Response
+     */
+    function fvRender($id = null): Response {
         return $this->render( 'facture/facture-vente.html.twig', [
             'page_title' => 'Facture Ventes',
             'breadcrumb' => [ 'Facture', 'Facture Ventes' ],
@@ -25,7 +40,7 @@ class FactureController extends AbstractController {
             'url_post_item' => ApiConstant::URL_POST_FACTURE,
             'url_put_item' => ApiConstant::URL_PUT_FACTURE,
             'url_get_item' => ApiConstant::URL_GET_FACTURE,
-            'url_delete_item' => ApiConstant::URL_DELETE_FACTURE,
+            'url_delete_item' => ApiConstant::URL_DELETE_DETAIL_FACTURE,
             'url_list_client' => ApiConstant::URL_LIST_CLIENT,
             'url_get_client' => ApiConstant::URL_GET_CLIENT,
             'url_get_facture_client' => ApiConstant::URL_GET_FACTURE_CLIENT,
@@ -40,7 +55,7 @@ class FactureController extends AbstractController {
             'url_list_type_facture' => ApiConstant::URL_LIST_TYPE_FACTURE,
             'url_list_type_paiement' => ApiConstant::URL_LIST_TYPE_PAIEMENT,
             'url_imprimer_facture' => $_ENV[ 'API_BASE_URL' ] . ApiConstant::URL_IMPRIMER_FACTURE,
-            'facture_id' => null,
+            'facture_id' => $id,
         ] );
     }
 
@@ -64,17 +79,17 @@ class FactureController extends AbstractController {
     }
 
 
-    #[ Route( '/facture-avoir/{id}/details', name:'facture_avoir') ]
-    public function factureAvoirDetails($id): Response
+    #[ Route( '/{id}/details', name:'facture_details') ]
+    public function factureDetails($id): Response
     {
         return $this->render('facture/facture-avoir.html.twig', [
-            'page_title' => "Facture d'avoir",
-            'breadcrumb' => [ 'Facture', "Facture d'avoir" ],
+            'page_title' => "Détails de la facture",
+            'breadcrumb' => [ 'Facture', "Détails de la facture" ],
             'sidebar_code' => [ 'FACT', 'NFA', '' ],
             'url_post_item' => ApiConstant::URL_POST_FACTURE,
             'url_put_item' => ApiConstant::URL_PUT_FACTURE,
             'url_get_item' => ApiConstant::URL_GET_FACTURE,
-            'url_delete_item' => ApiConstant::URL_DELETE_FACTURE,
+            'url_delete_item' => ApiConstant::URL_DELETE_DETAIL_FACTURE,
             'url_list_client' => ApiConstant::URL_LIST_CLIENT,
             'url_get_client' => ApiConstant::URL_GET_CLIENT,
             'url_get_facture_client' => ApiConstant::URL_GET_FACTURE_CLIENT,
@@ -91,6 +106,21 @@ class FactureController extends AbstractController {
             'url_imprimer_facture' => $_ENV[ 'API_BASE_URL' ] . ApiConstant::URL_IMPRIMER_FACTURE,
             "facture_id" => $id,
             'url_valider_facture_avoir' => ApiConstant::URL_VALIDER_FACTURE_AVOIR,
+        ]);
+    }
+
+    /**
+     * @Route("/liste-factures", name="liste_facture")
+     */
+    public function listeFacture(): Response
+    {
+        return $this->render('facture/liste_facture.html.twig', [
+            'page_title' => 'Liste des Factures',
+            'breadcrumb' => ['Facture', 'Liste Factures'],
+            "sidebar_code" => ['FACT', 'LSTF', ''],
+            "url_list_item" => ApiConstant::URL_LIST_FACTURE,
+            "url_get_item" => ApiConstant::URL_GET_FACTURE,
+            "url_delete_item" => ApiConstant::URL_DELETE_FACTURE,
         ]);
     }
 }

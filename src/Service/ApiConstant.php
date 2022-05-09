@@ -79,7 +79,8 @@ class ApiConstant
     public const URL_IMPRIMER_FACTURE = "public/facture/__id__/imprimer";
     public const URL_PUT_FACTURE = "factures/__id__/detail/__detailId__";
     public const URL_GET_FACTURE = "factures/__id__";
-    public const URL_DELETE_FACTURE = "factures/__id__/detail/__detailId__";
+    public const URL_DELETE_FACTURE = "factures/__id__";
+    public const URL_DELETE_DETAIL_FACTURE = "factures/__id__/detail/__detailId__";
     public const URL_GET_FACTURE_CLIENT = "factures/client/__clientId__";
     public const URL_GET_DETAIL_FACTURE = "factures/__id__/detail/__detailId__";
     public const URL_VALIDER_DETAIL_FACTURE = "factures/__id__/detail/__detailId__/valider";
@@ -91,7 +92,7 @@ class ApiConstant
     public const URL_LIST_FACTURE_AUTOCOMPLETE = "factures/autocomplete/type/__typeId__";
 
     // Local url
-    public const URL_DETAIL_FACTURE_AVOIR = "/factures/facture-avoir/__id__/details";
+    public const URL_DETAIL_FACTURE_AVOIR = "/factures/__id__/details";
     // Les fichiers
     public const URL_GET_FILE = "public/downloadFile/__fileName__";
 }

@@ -34,16 +34,17 @@ let facturation = {
                                 dataSrc: "details",
                                 error: function(xhr, status, error) {
                                     (waitMe_zone.length ? waitMe_zone : $("body")).waitMe("hide");
-                                    alertify.error(
+                                    console.log(xhr.status)
+                                    xhr.status ? alertify.error(
                                         xhr.status == 403 ?
                                         "Accès réfusé" :
                                         xhr.status == 404 ?
                                         "Aucune facture trouvée" :
                                         "Une erreur s'est produite lors de la connexion au serveur"
-                                    );
-                                    $(".datatable")
+                                    ) : '';
+                                    xhr.status ? $(".datatable")
                                         .find("tbody td")
-                                        .html('<span class="text-danger">Echec de chargement</span>');
+                                        .html('<span class="text-danger">Echec de chargement</span>') : "";
                                 },
                             },
                             // "ajax": "/assets/js/custom/data/facture.txt",
@@ -109,24 +110,24 @@ let facturation = {
                                         render: function(data, type, row, meta) {
                                                 let html =
                                                     `<div class="dropdown">
-                                                    <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="bx bx-dots-horizontal-rounded"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-end">
-                                                        <li>
-                                                            <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
-                                                        </li>` +
-                                                    `${!row.valid ?
-                            `<li>
-                                                                <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier</a>
-                                                            </li> 
+                                                        <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="bx bx-dots-horizontal-rounded"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
                                                             <li>
-                                                                <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
-                                                            </li>`
-                            : ""
-                        }` +
-                        `</ul>
-                                                </div>`;
+                                                                <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
+                                                            </li>
+                                                            ${!row.valid ?
+                                                                `<li>
+                                                                    <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier</a>
+                                                                </li> 
+                                                                <li>
+                                                                    <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
+                                                                </li>`
+                                                                : ""
+                                                            }
+                                                        </ul>
+                                                    </div>`;
                     return html;
                     // <li>
                     //     <a class="dropdown-item validate-item" href="javascript:void(0)" data-item-id="${data}">Valider</a>
@@ -770,10 +771,26 @@ let facturation = {
                     // Mise à jour du montant aib
                     // Sauvegarde temporaire du montant ttc de la facture, cela servira dans le cas du changement de l'aib étant donné que c'est le seul champ affecté par le montant aib
                     if (!factureMontantTtc) factureMontantTtc = facture.montantTtc;
-                    var montantAib = Math.round((facture.montantHt * aib.valeur) / 100);
-                    var montantTtc = factureMontantTtc + montantAib;
-                    facture.montantAib = montantAib;
-                    facture.montantTtc = montantTtc;
+                    /**
+                     * Le montant de l'Aib est arrondi par defaut si sa partie decimale est <= 5 (je veux dire le chiffre après la virgule),
+                     * et par excès si la partie décimale est > 5
+                     * Le code qui suit resoud cette approche que nous avons constacté lors des tests sur les factures générées par le serveur de la DGI
+                     */
+                    // Calcule du montant aib
+                    var montantAib = (facture.montantHt * aib.valeur) / 100;
+                    // Récupération de la partie décimale
+                    var decimal = montantAib - Math.trunc(montantAib);
+                    // Si La partie decimale est null ou inférieure ou égale à 0.5, prendre la partie
+                    // entière du montant l'aib
+                    if (decimal == 0 || decimal <= 0.5)
+                        facture.montantAib = Math.trunc(montantAib);
+                    // Sinon, prendre la partie entière du montant de l'aib + 1
+                    else
+                        facture.montantAib = Math.trunc(montantAib) + 1;
+
+                    // Mise à jour du montant ttc de la facture en y ajoutant le montantAib;
+                    facture.montantTtc = factureMontantTtc + facture.montantAib;
+                    // Mise à jour du tableau récapitulatif pour la validation de la facture
                     facturation.setValidatonFormRecapTable();
                 })
                 .catch(function (err) {
@@ -856,8 +873,13 @@ $(document).ready(function () {
         if (facture && facture.valid) {
             alertify.warning("Cette facture est déjà validée");
         } else if (facture && facture.details) {
+            // Mise à jour du montant ttc de la facture et remise à null du montant aib
+            if(factureMontantTtc) facture.montantTtc = factureMontantTtc;
+            facture.montantAib = null;
+            // Mise à jour du modal de validation
             facturation.setValidatonFormRecapTable();
             // Récupération des aib
+            choices[4].removeActiveItems();
             facturation.getForeignsData(
                 URL_LIST_TAXE_AIB,
                 ["taux aib", "id", "string"],
@@ -898,6 +920,10 @@ document.addEventListener("DOMContentLoaded", function () {
     facturation.choicesJsInit();
     facturationForm = $("div#facturationForm").find("form");
     factureValidationForm = $("div#validate-invoice-modal").find("form");
+    if (FACTURE_ID) {
+        // Récupération de la facture et recharge du tablau des lignes de la facture
+        facturation.getFactureById(FACTURE_ID);
+    }
     //Gestion des champs de remise
     facturation.remiseInputsToggle();
     // Récupératon des types de facture
