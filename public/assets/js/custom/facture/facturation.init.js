@@ -118,14 +118,14 @@ let facturation = {
                                                                 <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                             </li>
                                                             ${!row.valid ?
-                                                                `<li>
+                            `<li>
                                                                     <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier</a>
                                                                 </li> 
                                                                 <li>
                                                                     <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
                                                                 </li>`
-                                                                : ""
-                                                            }
+                            : ""
+                        }
                                                         </ul>
                                                     </div>`;
                     return html;
@@ -355,9 +355,13 @@ let facturation = {
                 GlobalScript.scrollToTop();
                 var itemObj = data;
                 console.log(itemObj);
+                // Mise à jour de l'article 
+                article = data.article;
                 // Sauvegarde la taxe spécifique si existante sinon null
                 taxeSpecifique = itemObj.ts ? itemObj.ts.tsUnitaire : null;
-                originalPrice = itemObj.isRemise ? itemObj.discount.originalPrice : null;
+                //Mise à jour du prix originale de l'article
+                originalPrice = itemObj.isRemise ? itemObj.discount.originalPrice : itemObj.prixUnitaire;
+                // Mise à jour du formulaire de facturation
                 facturation.setformData(facturationForm, itemObj);
             })
             .catch(function (err) {
@@ -424,6 +428,9 @@ let facturation = {
             form.find("#prix_u").val(item.prixUnitaire);
             form.find("#quantite").val(item.quantite);
             // form.find("#taxe-specifique").val(item.taxeSpecifique);
+            // Gestion du nom de la taxe spécifique
+            form.find("div.taxe-specifique label")
+                .text(article && article.taxeSpecifique ? "TS (" + article.tsName + ")" : "TS (Taxe spécifique)")
             form.find("#remise-check").prop("checked", item.remise ? true : false);
             form.find("#remise_taux").val(item.discount ? item.discount.taux : "");
             form.find("#remise_prix_u").val(item.discount ? item.discount.originalPrice : "");
@@ -512,7 +519,7 @@ let facturation = {
                 datatable.ajax.reload();
                 facturation.saSuccesFactureValider(
                     "Validée !",
-                    "Facture validée avec succès ! Cliquer sur 'OK' pour afficher la facture."
+                    "Facture validée avec succès ! Cliquer sur 'OK' pour imprimer la facture."
                 );
             })
             .catch(function (err) {
@@ -585,11 +592,13 @@ let facturation = {
         facturationForm
             .find("#taxe-specifique")
             .val(article ? article.taxeSpecifique : null);
+        // Gestion du nom de la taxe spécifique
+        facturationForm.find("div.taxe-specifique label")
+            .text(article && article.taxeSpecifique ? "TS (" + article.tsName + ")" : "TS (Taxe spécifique)")
         choices[3].setChoiceByValue(article?.taxe.id);
         // Gestion des remise
         facturationForm.find("#remise-check").prop("checked", false);
-        facturationForm.find("#remise_prix_u").val(null);
-        facturationForm.find("#remise_description").val(null);
+        facturation.remiseInputsToggle();
     },
     setMontant: function (event = null) {
         if (event) event.preventDefault();
@@ -802,19 +811,213 @@ let facturation = {
                 });
         }
     },
+    customMessageOnFactureationFormSubmit: function (event = null) {
+        if (event) event.preventDefault();
+        if (!facturationForm.find("#type").val()) {
+            alertify.warning("Veuillez sélectionner un type de facture svp !");
+            return;
+        }
+        if (!facturationForm.find("#client").val()) {
+            alertify.warning("Veuillez sélectionner un client svp !");
+            return;
+        }
+        if (!facturationForm.find("#article").val()) {
+            alertify.warning("Veuillez sélectionner un article svp !");
+            return;
+        }
+        if (!facturationForm.find("#taxe").val()) {
+            alertify.warning("Veuillez sélectionner une taxe svp !");
+            return;
+        }
+        else {
+            facturation.submitFormData(event);
+        }
+    },
+    customMessageOnValidationFormSubmit: function (event = null) {
+        if (event) event.preventDefault();
+         // Vérification du choix du type de paiement
+        if (!factureValidationForm.find("#type-paiement").val()) {
+            alertify.warning("Veuillez sélectionner un type de paiement svp !");
+            return;
+        }
+        else {
+            facturation.confirmInvoiceValidation(event);
+        }
+    },
     remiseInputsToggle: function (event = null) {
         if (event) event.preventDefault();
         var remise = facturationForm.find("#remise-check").is(":checked");
         if (remise) {
-            facturationForm.find("div#remiseInputsToggle").show();
-            facturationForm.find("#remise_taux").attr("required", "required");
-            facturationForm.find("#remise_prix_u").attr("required", "required");
-            facturationForm.find("#remise_description").attr("required", "required");
+            if (!article) {
+                alertify.warning(
+                    "Veuillez sélectionner un article svp !"
+                );
+                facturationForm.find("#remise-check").prop("checked", false)
+            } else {
+                facturationForm.find("div#remiseInputsToggle").show();
+                facturationForm.find("#remise_taux").attr("required", "required");
+                facturationForm.find("#remise_prix_u").attr("required", "required");
+                facturationForm.find("#remise_description").attr("required", "required");
+                // Mise à jour automatique du prix original de l'article
+                facturationForm.find("#remise_prix_u").val(originalPrice);
+                // Mise à jour des du formulaire pour la remise
+                facturation.setRemiseFormOnPricesChange();
+            }
         } else {
             facturationForm.find("div#remiseInputsToggle").hide();
             facturationForm.find("#remise_taux").removeAttr("required");
             facturationForm.find("#remise_prix_u").removeAttr("required");
             facturationForm.find("#remise_description").removeAttr("required");
+            facturationForm.find("#remise_taux").val(null);
+            facturationForm.find("#remise_prix_u").val(null);
+            facturationForm.find("#remise_description").val(null);
+        }
+    },
+    setRemiseFormOnPricesChange: function (event = null, setMontant = false) {
+        if (event) event.preventDefault()
+        var remise = facturationForm.find("#remise-check").is(":checked");
+        if (remise) {
+            var prixUnitaire = parseInt(facturationForm.find("#prix_u").val());
+            var prixOriginale = parseInt(facturationForm.find("#remise_prix_u").val());
+            var taux = ((prixOriginale && prixUnitaire) && prixUnitaire < prixOriginale) ? Math.round(((prixOriginale - prixUnitaire) * 100) / prixOriginale) : 0;
+            facturationForm.find("#remise_taux").val(taux);
+            facturationForm.find("#remise_description").val("Une remise de " + taux + "%");
+        } else {
+            facturation.remiseInputsToggle();
+        }
+        if (setMontant)
+            facturation.setMontant();
+    },
+    setRemiseFormOnTauxChange: function (event = null) {
+        if (event) event.preventDefault()
+        var remise = facturationForm.find("#remise-check").is(":checked");
+        if (remise) {
+            var prixOriginale = parseInt(facturationForm.find("#remise_prix_u").val());
+            var taux = parseInt(facturationForm.find("#remise_taux").val());
+            var prixUnitaire = prixOriginale ? (prixOriginale - Math.round((prixOriginale * taux) / 100)) : 0;
+            facturationForm.find("#prix_u").val(prixUnitaire);
+            facturationForm.find("#remise_description").val("Une remise de " + taux + "%");
+            facturation.setMontant();
+        } else {
+            facturation.remiseInputsToggle();
+        }
+    },
+    /**
+     * Soumission du formulaire du client
+     */
+    clientSubmitFormData: function (event) {
+        event.preventDefault();
+        var form = $("div.client-new-modal").find('form');
+        var data = facturation.clientDataFormat(form)
+        console.log(data)
+        GlobalScript.request((data.id ? URL_PUT_CLIENT.replace("__id__", data.id) : URL_POST_CLIENT), (data.id ? 'PUT' : 'POST'), data).then(function (data) {
+            // Run this when your request was successful
+            console.log(data)
+            client = data;
+            // Mise à jour du champ de selection du client
+            choices[1].setChoices([{ value: data.id, label: data.name, selected: true }])
+            //
+            datatable.ajax.reload();
+            // facturation.saSucces("Succès !", "Enregistrement effectué avec succès.")
+            alertify.success("Enregistrement effectué avec succès")
+            $("div.client-new-modal").modal('hide')
+            form[0].reset()
+        }).catch(function (err) {
+            // Run this when promise was rejected via reject()
+            console.log(err)
+            facturation.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+        });
+    },
+    clientDataFormat: function (form) {
+        if (form.length) {
+            data = {
+                'id': form.find("#item-id").val(),
+                'name': form.find("#name").val(),
+                'ifu': form.find("#ifu").val(),
+                'rcm': form.find("#rcm").val(),
+                'telephone': form.find("#telephone").val(),
+                'email': form.find("#email").val(),
+                'address': form.find("#address").val(),
+                'ville': form.find("#ville").val(),
+            };
+            return JSON.stringify(data);
+        }
+        return "";
+    },
+    clientNewItemEvent: function (event) {
+        event.preventDefault();
+        $("div.client-new-modal").find('h5.modal-title').text('Nouvel ajout');
+        var form = $("div.client-new-modal").find('form');
+        form.attr("onsubmit", "facturation.clientSubmitFormData(event)")
+        form[0].reset();
+        form.find("#item-id").val("");
+    },
+    /**
+     * Soumission du formulaire de l'article
+     */
+    articleSubmitFormData: function (event) {
+        event.preventDefault();
+        var form = $("div.article-new-modal").find('form');
+        var data = facturation.articleDataFormat(form)
+        console.log(data)
+        var categorieId = form.find("#categorie").val();
+        var taxeId = form.find("#taxe").val();
+        var obj = { '__id__': data.id, '__cId__': categorieId, '__tId__': taxeId }
+        var submitUrl = data.id ? GlobalScript.textMultipleReplace(URL_PUT_ARTICLE, obj) : GlobalScript.textMultipleReplace(URL_POST_ARTICLE, obj);
+        GlobalScript.request(submitUrl, (data.id ? 'PUT' : 'POST'), data).then(function (data) {
+            // Run this when your request was successful
+            console.log(data)
+            article = data;
+            // Mise à jour du champ de selection de l'article
+            choices[2].setChoices([{ value: data.id, label: data.designation, selected: true }])
+            // Sauvegarde de la taxe spécique si existante sinon null
+            taxeSpecifique = article.taxeSpecifique;
+            originalPrice = article.prix;
+            facturation.setFormOnArticleChange();
+            $("div.article-new-modal").modal('hide')
+            alertify.success("Enregistrement effectué avec succès")
+            form[0].reset();
+        }).catch(function (err) {
+            // Run this when promise was rejected via reject()
+            console.log(err)
+            facturation.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+        });
+    },
+    articleDataFormat: function (form) {
+        if (form.length) {
+            data = {
+                'id': form.find("#item-id").val(),
+                'designation': form.find("#designation").val(),
+                'prix': form.find("#prix").val(),
+                'taxeSpecifique': form.find("#taxe-specifique").val(),
+                'tsName': form.find("#ts-name").val(),
+                'stock': form.find("#stock").val(),
+                'stockSecurite': form.find("#stock-securite").val(),
+            };
+            return JSON.stringify(data);
+        }
+        return null;
+    },
+    articleNewItemEvent: function (event) {
+        event.preventDefault();
+        $("div.article-new-modal").find('h5.modal-title').text('Nouvel ajout');
+        var form = $("div.article-new-modal").find('form');
+        form.attr("onsubmit", "facturation.articleSubmitFormData(event)")
+        form[0].reset();
+        form.find("#item-id").val("");
+        GlobalScript.getForeignsData(URL_LIST_CATEGORIE_ARTICLE, ['catégories', 'id', 'libelle'], 6, null);
+        GlobalScript.getForeignsData(URL_LIST_TAXE, ['taxes', 'id', 'string'], 7, null);
+    },
+    articleSetTsName: function (tsElement) {
+        if (tsElement.val()) {
+            $("div.article-new-modal").find('form').find("div.ts-name").show();
+            if (!$("div.article-new-modal").find('form').find("input#ts-name").val())
+                $("div.article-new-modal").find('form').find("input#ts-name").val("Taxe spécifique");
+            $("div.article-new-modal").find('form').find("input#ts-name").attr("required", "required");
+        } else {
+            $("div.article-new-modal").find('form').find("div.ts-name").hide();
+            $("div.article-new-modal").find('form').find("input#ts-name").val(null);
+            $("div.article-new-modal").find('form').find("input#ts-name").removeAttr("required");
         }
     }
 };
@@ -874,7 +1077,7 @@ $(document).ready(function () {
             alertify.warning("Cette facture est déjà validée");
         } else if (facture && facture.details) {
             // Mise à jour du montant ttc de la facture et remise à null du montant aib
-            if(factureMontantTtc) facture.montantTtc = factureMontantTtc;
+            if (factureMontantTtc) facture.montantTtc = factureMontantTtc;
             facture.montantAib = null;
             // Mise à jour du modal de validation
             facturation.setValidatonFormRecapTable();
@@ -956,4 +1159,9 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     // Mise à jour du champ date du formulaire de la facture
     // facturationForm.find("#date").val(((new Date()).toISOString()).slice(0, 16))
+    // GEstion de la taxe spécifique de l'article 
+    $("div.article-new-modal").find('form').find("input#taxe-specifique").change(function (event) {
+        event.preventDefault();
+        facturation.articleSetTsName($(this));
+    })
 });

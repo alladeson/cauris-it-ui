@@ -16,22 +16,22 @@
 			</h2>
 			<div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#facturationForm">
 				<div class="accordion-body text-muted">
-					<form method="post" class="" onsubmit="facturation.submitFormData(event)">
+					<form method="post" class="" onsubmit="facturation.customMessageOnFactureationFormSubmit(event)">
 						<div class="row">
 							<div class="col-lg-4 col-md-4">
 								<div class="mb-3">
 									<label for="type" class="form-label font-size-13 text-muted">Type de facture</label>
-									<select required class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher..."></select>
+									<select class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher..."></select>
 								</div>
 							</div>
 							<div class="col-lg-4 col-md-4">
 								<div class="row gx-3 gy-2 align-items-center mb-3">
 									<div class="col-10">
 										<label for="client" class="form-label font-size-13 text-muted">Client</label>
-										<select {{ facture_id ? "disabled": "" }} onchange="facturation.reloadDatatable(event)" required class="form-control form-select" data-trigger name="client" id="client" placeholder="chercher..."></select>
+										<select {{ facture_id ? "disabled": "" }} onchange="facturation.reloadDatatable(event)" class="form-control form-select" data-trigger name="client" id="client" placeholder="chercher..."></select>
 									</div>
-									<div class="col-2">
-										<a href="javascript:void(0);" class="mt-4 btn btn-outline-primary btn-rounded btn-sm waves-effect waves-light add-client">
+									<div class="col-2" onclick="facturation.clientNewItemEvent(event)">
+										<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target=".client-new-modal" class="mt-4 btn btn-outline-primary btn-rounded btn-sm waves-effect waves-light add-client">
 											<i class="bx bx-plus"></i>
 										</a>
 									</div>
@@ -41,10 +41,10 @@
 								<div class="row gx-3 gy-2 align-items-center mb-3">
 									<div class="col-10">
 										<label for="article" class="form-label font-size-13 text-muted">Article</label>
-										<select onchange="facturation.getArticle(event)" required class="form-control form-select" data-trigger name="article" id="article" placeholder="chercher..."></select>
+										<select onchange="facturation.getArticle(event)" class="form-control form-select" data-trigger name="article" id="article" placeholder="chercher..."></select>
 									</div>
-									<div class="col-2">
-										<a href="javascript:void(0);" class="mt-4 btn btn-outline-primary btn-rounded btn-sm waves-effect waves-light add-article">
+									<div class="col-2" onclick="facturation.articleNewItemEvent(event)">
+										<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target=".article-new-modal" class="mt-4 btn btn-outline-primary btn-rounded btn-sm waves-effect waves-light add-article">
 											<i class="bx bx-plus"></i>
 										</a>
 									</div>
@@ -55,30 +55,30 @@
 							<div class="col-lg-4 col-md-4">
 								<div class="mb-3">
 									<label for="taxe" class="form-label font-size-13 text-muted">Taxe</label>
-									<select required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher..."></select>
+									<select class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher..."></select>
 								</div>
 							</div>
 							<div class="col-lg-2 col-md-2">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="prix_u">Prix Unitaire</label>
-									<input onchange="facturation.setMontant(event)" type="number" step="1" min="1" class="form-control" id="prix_u" name="prix_u" placeholder="" value="" required>
+									<input onchange="facturation.setRemiseFormOnPricesChange(event, true)" type="number" step="1" min="1" class="form-control" id="prix_u" name="prix_u" placeholder="" value="" required>
 								</div>
 							</div>
 							<div class="col-lg-2 col-md-2">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="quantite">Quantité</label>
-									<input onchange="facturation.setMontant(event)" type="number" step="0.001" min="0.001" class="form-control" id="quantite" name="quantite" placeholder="" value="" required>
+									<input onchange="facturation.setMontant(event)" type="number" step="0.01" min="0.01" class="form-control" id="quantite" name="quantite" placeholder="" value="" required>
 								</div>
 							</div>
 							<div class="col-lg-2 col-md-2">
 								<div class="mb-3 position-relative">
-									<label class="form-label font-size-13 text-muted" for="montant">Montant HT</label>
+									<label class="form-label font-size-13 text-muted" for="montant">Montant</label>
 									<input type="number" step="0.01" min="0.01" class="form-control" id="montant" name="montant" placeholder="" value="" required>
 								</div>
 							</div>
-							<div class="col-lg-2 col-md-2">
+							<div class="col-lg-2 col-md-2 taxe-specifique">
 								<div class="mb-3 position-relative">
-									<label class="form-label font-size-13 text-muted" for="taxe-specifique">Taxe spécifique</label>
+									<label class="form-label font-size-13 text-muted" for="taxe-specifique">TS (Taxe spécifique)</label>
 									<input type="number" step="0.001" min="0" class="form-control" id="taxe-specifique" name="taxe-specifique" placeholder="" value="">
 								</div>
 							</div>
@@ -101,14 +101,14 @@
 						<div class="row" id="remiseInputsToggle">
 							<div class="col-lg-3 col-md-3">
 								<div class="mb-3 position-relative">
-									<label class="form-label font-size-13 text-muted" for="remise_taux">Taux</label>
-									<input type="number" step="1" min="1" class="form-control" id="remise_taux" name="remise_taux" placeholder="" value="">
+									<label class="form-label font-size-13 text-muted" for="remise_taux">Taux (en %)</label>
+									<input type="number" onchange="facturation.setRemiseFormOnTauxChange(event)" step="1" min="1" class="form-control" id="remise_taux" name="remise_taux" placeholder="" value="">
 								</div>
 							</div>
 							<div class="col-lg-3 col-md-3">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="remise_prix_u">Prix Unitaire Originale</label>
-									<input type="number" step="0.001" min="0" class="form-control" id="remise_prix_u" name="remise_prix_u" placeholder="" value="">
+									<input onchange="facturation.setRemiseFormOnPricesChange(event)" type="number" step="0.001" min="0" class="form-control" id="remise_prix_u" name="remise_prix_u" placeholder="" value="">
 								</div>
 							</div>
 							<div class="col-lg-6 col-md-6">
@@ -120,7 +120,7 @@
 						</div>
 						<div class="modal-footer d-flex justify-content-center">
 							<button type="submit" class="btn btn-outline-info waves-effect waves-light">Ajouter</button>
-							<button type="reset" class="btn btn-outline-danger waves-effect waves-light btn-sm" data-bs-dismiss="modal">Annuler</button>
+							<button type="reset" class="btn btn-outline-danger waves-effect waves-light btn-sm">Annuler</button>
 						</div>
 					</form>
 				</div>
@@ -355,7 +355,7 @@
 	<div class="modal fade validate-invoice-modal" id="validate-invoice-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-xl">
 			<div class="modal-content">
-				<form method="post" class="" onsubmit="facturation.confirmInvoiceValidation(event)">
+				<form method="post" class="" onsubmit="facturation.customMessageOnValidationFormSubmit(event)">
 					<div class="modal-header">
 						<h5 class="modal-title">Validation de la facture</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -377,7 +377,7 @@
 									<div class="col-lg-12 col-md-12">
 										<div class="mb-3">
 											<label for="type-paiement" class="form-label font-size-13 text-muted">Type de paiement</label>
-											<select required class="form-control form-select" data-trigger name="type-paiement" id="type-paiement" placeholder="chercher..."></select>
+											<select class="form-control form-select" data-trigger name="type-paiement" id="type-paiement" placeholder="chercher..."></select>
 										</div>
 									</div>
 								</div>
@@ -483,25 +483,42 @@
 	</div>
 	<!-- /.modal -->
 
+	{# client new form #}
+	<div class="modal fade client-new-modal" id="client-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		{% include "stock/__client_form.html.twig" %}
+	</div>
+	<!-- /.modal -->
+
+	{# Article new form #}
+	<div class="modal fade article-new-modal" id="article-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		{% include "stock/__article_form.html.twig" %}
+	</div>
+	<!-- /.modal -->
+
 {% endblock %}
 
 {% block page_custom_scripts %}
 	<script>
 		const URL_LIST_CLIENT = "{{ url_list_client }}";
-const URL_GET_FACTURE_CLIENT = "{{ url_get_facture_client }}";
-const URL_GET_CLIENT = "{{ url_get_client }}";
-const URL_LIST_ARTICLE = "{{ url_list_article }}";
-const URL_GET_ARTICLE = "{{ url_get_article }}";
-const URL_GET_DETAIL_FACTURE = "{{ url_get_detail_facture }}";
-const URL_VALIDER_DETAIL_FACTURE = "{{ url_valider_detail_facture }}";
-const URL_VALIDER_FACTURE = "{{ url_valider_facture }}";
-const URL_LIST_TAXE = "{{ url_list_taxe }}";
-const URL_GET_TAXE = "{{ url_get_taxe }}";
-const URL_LIST_TAXE_AIB = "{{ url_list_taxe_aib }}";
-const URL_LIST_TYPE_FACTURE = "{{ url_list_type_facture }}";
-const URL_LIST_TYPE_PAIEMENT = "{{ url_list_type_paiement }}";
-const URL_IMPRIMER_FACTURE = "{{ url_imprimer_facture }}";
-let FACTURE_ID = "{{ facture_id }}";
+		const URL_GET_FACTURE_CLIENT = "{{ url_get_facture_client }}";
+		const URL_GET_CLIENT = "{{ url_get_client }}";
+		const URL_POST_CLIENT = "{{ url_post_client }}";
+		const URL_PUT_CLIENT = "{{ url_put_client }}";
+		const URL_LIST_ARTICLE = "{{ url_list_article }}";
+		const URL_LIST_CATEGORIE_ARTICLE = "{{url_list_categorie_article}}";
+		const URL_GET_ARTICLE = "{{ url_get_article }}";
+		const URL_POST_ARTICLE = "{{ url_post_article }}";
+		const URL_PUT_ARTICLE = "{{ url_put_article }}";
+		const URL_GET_DETAIL_FACTURE = "{{ url_get_detail_facture }}";
+		const URL_VALIDER_DETAIL_FACTURE = "{{ url_valider_detail_facture }}";
+		const URL_VALIDER_FACTURE = "{{ url_valider_facture }}";
+		const URL_LIST_TAXE = "{{ url_list_taxe }}";
+		const URL_GET_TAXE = "{{ url_get_taxe }}";
+		const URL_LIST_TAXE_AIB = "{{ url_list_taxe_aib }}";
+		const URL_LIST_TYPE_FACTURE = "{{ url_list_type_facture }}";
+		const URL_LIST_TYPE_PAIEMENT = "{{ url_list_type_paiement }}";
+		const URL_IMPRIMER_FACTURE = "{{ url_imprimer_facture }}";
+		let FACTURE_ID = "{{ facture_id }}";
 	</script>
 	<!-- init js -->
 	<script src="{{ asset('assets/js/custom/facture/facturation.init.js') }}"></script>

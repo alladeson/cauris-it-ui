@@ -1,0 +1,94 @@
+<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<form method="post" class="" onsubmit="article.submitFormData(event)" >
+					<div class="modal-header">
+						<h5 class="modal-title">Nouvel ajout</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="mb-3 position-relative">
+									<input type="hidden" id="item-id" name="item-id" value="">
+									<label for="categorie" class="form-label">Catégorie</label>
+									<select required data-trigger class="form-control form-select" data-trigger name="categorie" id="categorie" placeholder="chercher...">
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">						
+							<div class="col-md-12">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="designation">Désignation</label>
+									<div class="input-group">
+										<input type="text" id="designation" name="designation" class="form-control" placeholder="Le nom de l'article" value="" required>
+										{# <div class="invalid-tooltip">
+											Please choose a unique and valid username.
+										</div> #}
+									</div>
+								</div>
+							</div>							
+						</div>
+						<div class="row">						
+							<div class="col-md-12">
+								<div class="mb-3 position-relative">
+									<label for="taxe" class="form-label">Taxe</label>
+									<select data-trigger required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher...">
+									</select>
+								</div>								
+							</div>							
+						</div>
+						<div class="row">
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="prix">Prix</label>
+									<div class="input-group">
+										<span class="input-group-text" id="prixPrepend">FCFA</i></span>
+										<input type="number" id="prix" name="prix" min="0" class="form-control" placeholder="Le prix T.T.C de l'article" aria-describedby="prixPrepend" required>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="taxe-specifique">Taxe spécifique</label>
+									<input type="number" min="0" class="form-control" id="taxe-specifique" name="taxe-specifique" placeholder="La taxe spécifique si existante" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row ts-name" style="display:none;">
+							<div class="col-lg-12 col-md-12">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="ts-name">Nom de la taxe spécifique</label>
+									<input type="text" class="form-control" id="ts-name" name="ts-name" placeholder="Le nom de la taxe spécifique" value="">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label for="stock" class="form-label">Stock</label>
+									<input required type="number" min="0" class="form-control" id="stock" name="stock" placeholder="Le stock de l'article" value="">
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="stock-securite">Stock de sécurité</label>
+									<input required type="number" min="0" class="form-control" id="stock-securite" name="stock-securite" placeholder="Le stock de sécurité de l'article" value="">
+									{# <div class="valid-tooltip">
+										Parfait !
+									</div> #}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
+						{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
+						<button type="submit" class="btn btn-primary">Enregistrer</button>
+					</div>
+				</form>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->

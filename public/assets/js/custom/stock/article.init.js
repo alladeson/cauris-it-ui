@@ -251,6 +251,10 @@ let article = {
             form.find("#designation").val(item.designation)
             form.find("#prix").val(item.prix)
             form.find("#taxe-specifique").val(item.taxeSpecifique)
+            form.find("#ts-name").val(item.tsName);
+            // Gestion du nom de la taxe
+            article.setTsName(form.find("#taxe-specifique"));
+            //
             form.find("#stock").val(item.stock)
             form.find("#stock-securite").val(item.stockSecurite)
         }
@@ -262,6 +266,7 @@ let article = {
                 'designation': form.find("#designation").val(),
                 'prix': form.find("#prix").val(),
                 'taxeSpecifique': form.find("#taxe-specifique").val(),
+                'tsName': form.find("#ts-name").val(),
                 'stock': form.find("#stock").val(),
                 'stockSecurite': form.find("#stock-securite").val(),
             };
@@ -304,6 +309,18 @@ let article = {
         form.find("#taxe-specifique").val("")
         form.find("#stock").val("")
         form.find("#stock-securite").val("")
+    },
+    setTsName: function(tsElement) {
+        if (tsElement.val()) {
+            $("div.ts-name").show();
+            if (!$("input#ts-name").val())
+                $("input#ts-name").val("Taxe spécifique");
+            $("input#ts-name").attr("required", "required");
+        } else {
+            $("div.ts-name").hide();
+            $("input#ts-name").val(null);
+            $("input#ts-name").removeAttr("required");
+        }
     }
 };
 $(document).ready(function() {
@@ -341,4 +358,11 @@ $(document).ready(function() {
         });
         console.log(count + ' column(s) are hidden');
     });
+});
+document.addEventListener("DOMContentLoaded", function() {
+    // GEstion de la taxe spécifique de l'article 
+    $("input#taxe-specifique").change(function(event) {
+        event.preventDefault();
+        article.setTsName($(this));
+    })
 });
