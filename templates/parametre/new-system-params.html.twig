@@ -27,14 +27,14 @@
 							<li class="nav-item">
 								<a href="#infos-societe" class="nav-link" data-toggle="tab">
 									<div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Les données de la société">
-										<i class="bx bx-group"></i>
+										<i class="bx bxs-store"></i>
 									</div>
 								</a>
 							</li>
 							<li class="nav-item">
 								<a href="#infos-emcef" class="nav-link" data-toggle="tab">
 									<div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="e-MECef">
-										<i class="bx bx-bed"></i>
+										<i class="mdi mdi-server-security"></i>
 									</div>
 								</a>
 							</li>
@@ -68,7 +68,7 @@
 											</label>
 											<i class="fa fa-times del" style="display:none;"></i>
 										</div>
-										<div class="col-lg-10 col-md-9">
+										<div class="col-lg-10 col-md-9 col-sm-8">
 											<div class="row">						
 												<div class="col-md-12">
 													<div class="mb-3 position-relative">
@@ -82,7 +82,7 @@
 													<div class="mb-3 position-relative">
 														<label class="form-label" for="ifu">IFU</label>
 														<input type="hidden" id="item-id" name="item-id" value="">
-														<input onchange="newSystemParamsWizard.setRecapTable()" type="text" class="form-control" id="ifu" name="ifu" placeholder="L'IFU de la société" value="">
+														<input type="text" onchange="newSystemParamsWizard.setRecapTable()" pattern="[0-9]{13}" class="form-control" id="ifu" name="ifu" placeholder="L'IFU de la société" value="">
 													</div>
 												</div>														
 											</div>
@@ -98,7 +98,7 @@
 									</div>
 									<!-- row -->									
 									<div class="row">
-										<div class="col-lg-6">
+										<div class="col-sm-6">
 											<div class="mb-3 position-relative">
 												<label class="form-label" for="telepohone">Téléphone</label>
 												<div class="input-group">
@@ -109,7 +109,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="col-lg-6">
+										<div class="col-sm-6">
 											<div class="mb-3 position-relative">
 												<label class="form-label" for="email">E-mail</label>
 												<div class="input-group">
@@ -122,13 +122,13 @@
 										</div>
 									</div>
 									<div class="row">						
-										<div class="col-md-6">
+										<div class="col-sm-6">
 											<div class="mb-3 position-relative">
 												<label class="form-label" for="pays">Pays</label>
 												<input onchange="newSystemParamsWizard.setRecapTable()" disabled type="text" id="pays" name="pays" class="form-control" placeholder="Le pays de la société" value="Bénin">
 											</div>
 										</div>							
-										<div class="col-md-6">
+										<div class="col-sm-6">
 											<div class="mb-3 position-relative">
 												<label class="form-label" for="ville">Ville</label>
 												<input onchange="newSystemParamsWizard.setRecapTable()" type="text" id="ville" name="ville" class="form-control" placeholder="La ville de la société">
@@ -136,7 +136,7 @@
 										</div>							
 									</div>
 									<div class="row">
-										<div class="col-lg-12">
+										<div class="col-12">
 											<div class="mb-3 position-relative">
 												<label class="form-label" for="address">Adresse</label>
 												<div class="input-group">
@@ -163,7 +163,7 @@
 									</div>
 									<form class="form-wizard" id="emecef-form" onsubmit="newSystemParamsWizard.submitFormData(event)">
 										<div class="row">
-											<div class="col-lg-6">
+											<div class="col-sm-6">
 												<div class="mb-3">
 													<label for="type" class="form-label font-size-13 text-muted">Type de Système</label>
 													<select onchange="newSystemParamsWizard.setRecapTable()" required class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher...">
@@ -174,7 +174,7 @@
 												</div>
 											</div>
 
-											<div class="col-lg-6">
+											<div class="col-sm-6">
 												<div class="mb-3">
 													<label for="nim" class="form-label font-size-13 text-muted">NIM</label>
 													<input onchange="newSystemParamsWizard.setRecapTable()" type="text" id="nim" name="nim" class="form-control" placeholder="Le nim de l'e-MECeF">
@@ -182,7 +182,7 @@
 											</div>
 										</div>
 										<div class="row">						
-											<div class="col-md-12">
+											<div class="col-12">
 												<div class="mb-3 position-relative">
 													<label class="form-label" for="token">Token</label>
 													<textarea onchange="newSystemParamsWizard.setRecapTable()" id="token" name="token" rows="4" class="form-control" placeholder="Le token d'authentification à l'e-MECef"></textarea>
@@ -335,7 +335,7 @@
 												Précédent</a>
 										</li>
 										<li class="float-end">
-											<a href="javascript: void(0);" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".confirmModal">Entregistrer</a>
+											<a href="javascript: void(0);" class="btn btn-primary" onclick="newSystemParamsWizard.onSave(event);" {#data-bs-toggle="modal" data-bs-target=".confirmModal"#}>Entregistrer</a>
 										</li>
 									</ul>
 								</div>
@@ -368,7 +368,7 @@
 				</div>
 				<div class="modal-footer justify-content-center">
 					<button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Fermer</button>
-					<button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal" onclick="newSystemParamsWizard.onSave(event);">Entregistrer</button>
+					<button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal" onclick="newSystemParamsWizard.submitFormData(event);">Entregistrer</button>
 				</div>
 			</div>
 		</div>

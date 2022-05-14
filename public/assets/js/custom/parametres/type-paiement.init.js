@@ -131,8 +131,7 @@ let typePaiement = {
             form[0].reset()
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            typePaiement.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
         });
     },
     showItem: function(el) {
@@ -148,8 +147,7 @@ let typePaiement = {
 
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            typePaiement.saError("Erreur !", "Une erreur s'est produite lors de l'affichage.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'affichage");
         });
     },
     editItem: function(el) {
@@ -166,8 +164,7 @@ let typePaiement = {
             $(".add-new-modal").modal('show');
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            typePaiement.saError("Erreur !", "Une erreur s'est produite lors de la modification.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "la modification");
         });
     },
     removeItem: function(el, oktitle, oktext) {
@@ -182,8 +179,7 @@ let typePaiement = {
             datatable.ajax.reload();
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            typePaiement.saError("Erreur !", "Une erreur s'est produite lors de la suppression.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "la suppression");
         });
     },
     setformData: function(form, item) {

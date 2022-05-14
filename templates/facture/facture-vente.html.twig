@@ -10,7 +10,7 @@
 	<div class="accordion accordion-flush mb-2" id="facturationForm">
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="flush-headingOne">
-				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne" style="background-color: #eeeef9;">
+				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
 					Formulaire de facturation
 				</button>
 			</h2>
@@ -18,13 +18,13 @@
 				<div class="accordion-body text-muted">
 					<form method="post" class="" onsubmit="facturation.customMessageOnFactureationFormSubmit(event)">
 						<div class="row">
-							<div class="col-lg-4 col-md-4">
+							<div class="col-md-4 col-sm-6">
 								<div class="mb-3">
 									<label for="type" class="form-label font-size-13 text-muted">Type de facture</label>
-									<select class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher..."></select>
+									<select onchange="facturation.reloadDatatable(event)" class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher..."></select>
 								</div>
 							</div>
-							<div class="col-lg-4 col-md-4">
+							<div class="col-md-4 col-sm-6">
 								<div class="row gx-3 gy-2 align-items-center mb-3">
 									<div class="col-10">
 										<label for="client" class="form-label font-size-13 text-muted">Client</label>
@@ -37,7 +37,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-4 col-md-4">
+							<div class="col-md-4 col-sm-6">
 								<div class="row gx-3 gy-2 align-items-center mb-3">
 									<div class="col-10">
 										<label for="article" class="form-label font-size-13 text-muted">Article</label>
@@ -50,33 +50,33 @@
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-4 col-md-4">
+						{# </div>
+						<div class="row"> #}
+							<div class="col-md-4 col-sm-6">
 								<div class="mb-3">
 									<label for="taxe" class="form-label font-size-13 text-muted">Taxe</label>
 									<select class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher..."></select>
 								</div>
 							</div>
-							<div class="col-lg-2 col-md-2">
+							<div class="col-md-2 col-sm-6">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="prix_u">Prix Unitaire</label>
 									<input onchange="facturation.setRemiseFormOnPricesChange(event, true)" type="number" step="1" min="1" class="form-control" id="prix_u" name="prix_u" placeholder="" value="" required>
 								</div>
 							</div>
-							<div class="col-lg-2 col-md-2">
+							<div class="col-md-2 col-sm-6">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="quantite">Quantité</label>
 									<input onchange="facturation.setMontant(event)" type="number" step="0.01" min="0.01" class="form-control" id="quantite" name="quantite" placeholder="" value="" required>
 								</div>
 							</div>
-							<div class="col-lg-2 col-md-2">
+							<div class="col-md-2 col-sm-6">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="montant">Montant</label>
 									<input type="number" step="0.01" min="0.01" class="form-control" id="montant" name="montant" placeholder="" value="" required>
 								</div>
 							</div>
-							<div class="col-lg-2 col-md-2 taxe-specifique">
+							<div class="col-md-2 col-sm-6 taxe-specifique">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="taxe-specifique">TS (Taxe spécifique)</label>
 									<input type="number" step="0.001" min="0" class="form-control" id="taxe-specifique" name="taxe-specifique" placeholder="" value="">
@@ -86,7 +86,7 @@
 
 						<div
 							class="row">
-							{# <div class="col-lg-3 col-md-3 d-flex flex-row align-items-center"> #}
+							{# <div class="col-md-3 col-sm-6 d-flex flex-row align-items-center"> #}
 							<div class="mb-3">
 								<div class="form-check">
 									<input onchange="facturation.remiseInputsToggle(event)" class="form-check-input" type="checkbox" id="remise-check">
@@ -99,19 +99,19 @@
 							{# </div> #}
 						</div>
 						<div class="row" id="remiseInputsToggle">
-							<div class="col-lg-3 col-md-3">
+							<div class="col-md-3 col-sm-6">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="remise_taux">Taux (en %)</label>
 									<input type="number" onchange="facturation.setRemiseFormOnTauxChange(event)" step="1" min="1" class="form-control" id="remise_taux" name="remise_taux" placeholder="" value="">
 								</div>
 							</div>
-							<div class="col-lg-3 col-md-3">
+							<div class="col-md-3 col-sm-6">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="remise_prix_u">Prix Unitaire Originale</label>
 									<input onchange="facturation.setRemiseFormOnPricesChange(event)" type="number" step="0.001" min="0" class="form-control" id="remise_prix_u" name="remise_prix_u" placeholder="" value="">
 								</div>
 							</div>
-							<div class="col-lg-6 col-md-6">
+							<div class="col-md-6 col-sm-12">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="remise_description">Description remise</label>
 									<input type="texte" class="form-control" id="remise_description" name="remise_description" placeholder="" value="">
@@ -129,14 +129,14 @@
 	</div>
 	<!-- end accordion -->
 	<div class="row align-items-center">
-		<div class="col-md-6">
+		<div class="col-md-6 col-7">
 			<div class="mb-3">
 				<h5 class="card-title">Détails de la facture
 					<span class="text-muted fw-normal ms-2"></span>
 				</h5>
 			</div>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-6 col-5">
 			<div
 				class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
 				{# <div>
@@ -219,7 +219,7 @@
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<div class="col-lg-6 col-md-6">
+						<div class="col-lg-6 col-sm-12">
 							<h5 class="font-size-14 mt-2">
 								<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif générale</h5>
 							<div class="table-responsive">
@@ -265,8 +265,8 @@
 								<!-- end table -->
 							</div>
 						</div>
-						<div class="col-lg-6 col-md-6">
-							<h5 class="font-size-14 mt-2">
+						<div class="col-lg-6 col-sm-12">
+							<h5 class="font-size-14 mt-lg-2 mt-4">
 								<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif des montants</h5>
 							<div class="table-responsive">
 								<table class="table table-nowrap align-middle justify-content-center mb-0 detail-recap-montant-table">
@@ -313,7 +313,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-lg-12 col-md-12">
+						<div class="col-md-12">
 							<h5 class="font-size-14 mt-4">
 								<i class="mdi mdi-arrow-right text-primary me-1"></i>Taxe spécifique et Remise</h5>
 							<div class="table-responsive">
@@ -362,19 +362,19 @@
 					</div>
 					<div class="modal-body">
 						<div class="row">
-							<div class="col-lg-6 col-md-6">
+							<div class="col-lg-6 col-sm-12">
 								<h5 class="font-size-14 mt-2">
 									<i class="mdi mdi-arrow-right text-primary me-1"></i>Formulaire de validation</h5>
 								<div class="row">
-									<div class="col-lg-12 col-md-12">
+									<div class="col-lg-12 col-sm-6">
 										<div class="mb-3">
 											<label for="aib" class="form-label font-size-13 text-muted">Aib</label>
 											<select onchange="facturation.setRecapTableOnAibChange(event)" class="form-control form-select" data-trigger name="aib" id="aib" placeholder="chercher..."></select>
 										</div>
 									</div>
-								</div>
-								<div class="row">
-									<div class="col-lg-12 col-md-12">
+								{# </div>
+								<div class="row"> #}
+									<div class="col-lg-12 col-sm-6">
 										<div class="mb-3">
 											<label for="type-paiement" class="form-label font-size-13 text-muted">Type de paiement</label>
 											<select class="form-control form-select" data-trigger name="type-paiement" id="type-paiement" placeholder="chercher..."></select>
@@ -382,19 +382,19 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-lg-4 col-md-4">
+									<div class="col-sm-4">
 										<div class="mb-3 position-relative">
 											<label class="form-label font-size-13 text-muted" for="montant-recu">Montant reçu</label>
 											<input onchange="facturation.setValidationForm(event)" type="number" step="1" min="1" class="form-control" id="montant-recu" name="montant-recu" placeholder="" value="" required>
 										</div>
 									</div>
-									<div class="col-lg-4 col-md-4">
+									<div class="col-sm-4">
 										<div class="mb-3 position-relative">
 											<label class="form-label font-size-13 text-muted" for="montant-payer">Montant payé</label>
 											<input onchange="facturation.setValidationForm(event)" type="number" step="1" min="1" class="form-control" id="montant-payer" name="montant-payer" placeholder="" value="" required>
 										</div>
 									</div>
-									<div class="col-lg-4 col-md-4">
+									<div class="col-sm-4">
 										<div class="mb-3 position-relative">
 											<label class="form-label font-size-13 text-muted" for="montant-rendu">Montant rendu</label>
 											<input onchange="facturation.setValidationForm(event)" type="number" step="1" min="0" class="form-control" id="montant-rendu" name="montant-rendu" placeholder="" value="" required>
@@ -402,7 +402,7 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-md-12">
+									<div class="col-12">
 										<div class="mb-3 position-relative">
 											<label class="form-label" for="description">Description</label>
 											<textarea id="description" name="description" rows="2" class="form-control" placeholder="Entrez une description pour la facture"></textarea>
@@ -410,8 +410,8 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-6 col-md-6">
-								<h5 class="font-size-14 mt-2">
+							<div class="col-lg-6 col-sm-12">
+								<h5 class="font-size-14 mt-lg-2 mt-4">
 									<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif</h5>
 								<div class="table-responsive">
 									<table class="table table-nowrap align-middle justify-content-center mb-0 invoice-validation-table">
@@ -515,7 +515,7 @@
 		const URL_LIST_TAXE = "{{ url_list_taxe }}";
 		const URL_GET_TAXE = "{{ url_get_taxe }}";
 		const URL_LIST_TAXE_AIB = "{{ url_list_taxe_aib }}";
-		const URL_LIST_TYPE_FACTURE = "{{ url_list_type_facture }}";
+		const URL_LIST_TYPE_FACTURE_VENTE = "{{ url_list_type_facture_vente }}";
 		const URL_LIST_TYPE_PAIEMENT = "{{ url_list_type_paiement }}";
 		const URL_IMPRIMER_FACTURE = "{{ url_imprimer_facture }}";
 		let FACTURE_ID = "{{ facture_id }}";

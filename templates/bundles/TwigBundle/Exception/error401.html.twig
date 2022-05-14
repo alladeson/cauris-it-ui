@@ -1,0 +1,9 @@
+{% extends "bundles/TwigBundle/Exception/layout.html.twig" %} 
+
+{% block errorContent %}
+    <h1 class="display-1 fw-semibold">4<span class="text-primary mx-2">0</span>1</h1>
+    <h4 class="text-uppercase">Une autorisation est réquise pour accéder à cette ressource. Si cela persiste, veuillez contacter votre administrateur ou votre fournisseur du SFE. Merci !</h4>
+    <div class="mt-5 text-center">
+        <a class="btn btn-primary waves-effect waves-light" href="{{path('dashboard')}}">Retour au tableau de bord</a>
+    </div>
+{% endblock %}

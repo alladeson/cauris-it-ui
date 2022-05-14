@@ -33,7 +33,8 @@ class ApiConstant
     public const URL_GET_TAXE = "parametre/taxe/__id__";
 
     // Les Types de facture
-    public const URL_LIST_TYPE_FACTURE = "parametre/type-facture/vente";
+    public const URL_LIST_TYPE_FACTURE = "parametre/type-facture";
+    public const URL_LIST_TYPE_FACTURE_VENTE = "parametre/type-facture/vente";
     public const URL_LIST_TYPE_FACTURE_AVOIR = "parametre/type-facture/avoir";
     public const URL_GET_TYPE_FACTURE = "parametre/type-facture/__id__";
 
@@ -49,6 +50,13 @@ class ApiConstant
     public const URL_GET_USER = "parametre/users/__id__";
     public const URL_DELETE_USER = "parametre/users/__id__";
     public const URL_PUT_USER_PASSWORD_RESET = "parametre/users/__id__/reset-password";
+
+    //Pour les paramètre de disposition des pages (Layout)
+    public const URL_LIST_LAYOUT = "parametre/layout-settings";
+    public const URL_POST_LAYOUT = "parametre/layout-settings";
+    public const URL_PUT_LAYOUT = "parametre/layout-settings/__id__";
+    public const URL_GET_LAYOUT = "parametre/layout-settings/__id__";
+    public const URL_DELETE_LAYOUT = "parametre/layout-settings/__id__";
 
     /*** Module Gestion de stock ***/
     // Catégorie des articles
@@ -74,6 +82,11 @@ class ApiConstant
     /*** Module Caisse ***/
     // Facturation et liste des factures
     public const URL_LIST_FACTURE = "factures";
+    public const URL_LIST_FACTURE_BY_TYPE = "factures/type/__typeId__";
+    public const URL_LIST_FACTURE_BY_TYPE_CREATED_DATE = "factures/type/__typeId__/created-at";
+    public const URL_LIST_FACTURE_BY_TYPE_CONFIRMED_DATE = "factures/type/__typeId__/confirmed-at";
+    public const URL_LIST_FACTURE_BY_CREATED_DATE = "factures/list/created-at";
+    public const URL_LIST_FACTURE_BY_CONFIRMED_DATE = "factures/list/confirmed-at";
     public const URL_POST_FACTURE = "factures/client/__clientId__/article/__articleId__";
     public const URL_VALIDER_FACTURE = "factures/__id__/valider";
     public const URL_IMPRIMER_FACTURE = "public/facture/__id__/imprimer";
@@ -81,7 +94,7 @@ class ApiConstant
     public const URL_GET_FACTURE = "factures/__id__";
     public const URL_DELETE_FACTURE = "factures/__id__";
     public const URL_DELETE_DETAIL_FACTURE = "factures/__id__/detail/__detailId__";
-    public const URL_GET_FACTURE_CLIENT = "factures/client/__clientId__";
+    public const URL_GET_FACTURE_CLIENT = "factures/client/__clientId__/type/__typeId__";
     public const URL_GET_DETAIL_FACTURE = "factures/__id__/detail/__detailId__";
     public const URL_VALIDER_DETAIL_FACTURE = "factures/__id__/detail/__detailId__/valider";
     public const URL_GET_FACTURE_BY_REF = "factures/reference/__ref__";

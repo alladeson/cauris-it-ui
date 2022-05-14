@@ -1,9 +1,13 @@
+{% set appName = 'Cauris-iT' %}
+
+{% set authUser = app.session.get('user') %}
+{% set userLayout = authUser ? authUser.layout : null %}
 <!DOCTYPE html>
 <html lang="fr">
     <head>
         <title>
 			{% block title %}
-                Cauris-iT
+                {{appName}}
 			{% endblock %}
 		</title>
         {% block metas %}        
@@ -52,7 +56,7 @@
 			<link href="{{ asset('assets/js/plugins/waitMe-31.10.17/waitMe.min.css') }}" rel="stylesheet">
         {% endblock %}
     </head>
-    <body data-layout="horizontal">
+    <body data-layout="{{userLayout ? userLayout.layout : "horizontal"}}" data-sidebar-size="{{userLayout and userLayout.layout == "vertical" ?  userLayout.sidebarSize : "lg" }}" data-layout-mode="{{userLayout ? userLayout.mode : "light"}}" data-topbar="{{userLayout ? userLayout.topbarColor : "light"}}" data-sidebar="{{userLayout ? userLayout.sidebarColor : "light"}}" data-layout-size="{{userLayout ? userLayout.width : "fuild"}}" data-layout-scrollable="{{userLayout ? (userLayout.position == "scrollable" ? "true" : "false")  : "false"}}">
         {% block body %}{% endblock %}
 
         {% block javascripts %}
@@ -77,6 +81,11 @@
 
             <!-- Intégration waitMe jquery plugin -->
 			<script src="{{ asset('assets/js/plugins/waitMe-31.10.17/waitMe.min.js') }}"></script>
+
+            <!-- Inputmask jquery plugin -->
+			<script src="{{ asset('assets/js/plugins/Inputmask-5.x/dist/jquery.inputmask.js') }}"></script>
+			<script src="{{ asset('assets/js/plugins/Inputmask-5.x/dist/inputmask.min.js') }}"></script>
+			<script src="{{ asset('assets/js/plugins/Inputmask-5.x/dist/bindings/inputmask.binding.js') }}"></script>
 
 			<script src="{{ asset('assets/js/custom/global/global-custum.init.js') }}"></script>
 

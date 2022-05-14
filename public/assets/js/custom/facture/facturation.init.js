@@ -8,8 +8,10 @@ let clients;
 let articles;
 let article;
 let factureMontantTtc = 0;
+let factureReglement = null;
 let taxeSpecifique = null;
 let originalPrice = null;
+let typeFactureId = 0;
 let facturation = {
         listInitalizer: function() {
                 // $(".datatable").DataTable({ responsive: !1 }),
@@ -27,7 +29,7 @@ let facturation = {
                                             URL_GET_ITEM.replace("__id__", FACTURE_ID) : URL_GET_FACTURE_CLIENT.replace(
                                                 "__clientId__",
                                                 client ? client.id : 0
-                                            ),
+                                            ).replace("__typeId__", typeFactureId),
                                         method: "GET",
                                     });
                                 },
@@ -312,6 +314,13 @@ let facturation = {
             .then(function (data) {
                 // Run this when your request was successful
                 facture = data;
+                // Récupération de règlement de la facture : utilise pour mettre à jour le formulaire de la validation
+                factureReglement = facture.reglement;
+                // Récupération du montant TTC de la facture
+                factureMontantTtc = facture.montantTtc;
+                // Le montant ttc réel est le montant ttc sans aib : utile lors de la mises à jour du formulaire de validation
+                if (facture.aib) factureMontantTtc = facture.montantTtc - facture.montantAib;
+                //
                 console.log(facture);
                 datatable.ajax.reload();
                 alertify.success("Ajout effectué avec succès.");
@@ -333,8 +342,7 @@ let facturation = {
             })
             .catch(function (err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de l'enregistrement.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "l'enregistrement");
             });
     },
     editItem: function (el) {
@@ -366,8 +374,7 @@ let facturation = {
             })
             .catch(function (err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de la modification.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la modification");
             });
     },
     showItem: function (el) {
@@ -393,8 +400,7 @@ let facturation = {
             })
             .catch(function (err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de l'affichage.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "l'affichage");
             });
     },
     removeItem: function (el, oktitle, oktext) {
@@ -417,8 +423,7 @@ let facturation = {
             })
             .catch(function (err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de la suppression.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la suppression");
             });
     },
     setformData: function (form, item) {
@@ -496,8 +501,7 @@ let facturation = {
             })
             .catch(function (err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de la validation.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la validation");
             });
     },
     validateFacture: function (oktitle, oktext) {
@@ -514,6 +518,13 @@ let facturation = {
             .then(function (data) {
                 // Run this when your request was successful
                 facture = data;
+                // Récupération de règlement de la facture : utilise pour mettre à jour le formulaire de la validation
+                factureReglement = facture.reglement;
+                // Récupération du montant TTC de la facture
+                factureMontantTtc = facture.montantTtc;
+                // Le montant ttc réel est le montant ttc sans aib : utile lors de la mises à jour du formulaire de validation
+                if (facture.aib) factureMontantTtc = facture.montantTtc - facture.montantAib;
+                //
                 console.log(facture);
                 alertify.success(oktext);
                 datatable.ajax.reload();
@@ -524,8 +535,7 @@ let facturation = {
             })
             .catch(function (err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de la validation.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la validation");
             });
     },
     // Récupération de la liste des articles ou des clients
@@ -550,18 +560,21 @@ let facturation = {
             })
             .catch(function (err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error(
-                    err.status == 403
-                        ? `Récupération de la liste des ${selectData[0]} : Accès réfusé`
-                        : `Une erreur s'est produite lors de la récupération des ${selectData[0]}`
-                );
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la récupération des " + selectData[0]);
             });
     },
     reloadDatatable: function (event) {
         event.preventDefault();
+        // Vérification de la sélection du type de la facture suite à la sélection du client
+        if (!facturationForm.find("#type").val()) {
+            alertify.warning("Veuillez sélectionner un type de facture svp !");
+            return;
+        }
         // Remise à null de l'ID de facture venant de l'url de la page
         FACTURE_ID = null;
+        // Récupération de l'id du type de la facture
+        typeFactureId = facturationForm.find("#type").val();
+        // Récupération de l'id du client
         var clientId = facturationForm.find("#client").val();
         console.log("client id : " + clientId);
         if (clientId) facturation.getEntity(URL_GET_CLIENT, clientId, "client");
@@ -570,7 +583,7 @@ let facturation = {
             datatable.ajax.reload();
         }
         facturation.getEntity(
-            URL_GET_FACTURE_CLIENT.replace("__clientId__", clientId ? clientId : 0),
+            URL_GET_FACTURE_CLIENT.replace("__clientId__", clientId ? clientId : 0).replace("__typeId__", typeFactureId),
             clientId,
             "facture"
         );
@@ -634,17 +647,18 @@ let facturation = {
                     facture = dataJson;
                     // Mise à jour du type de la facture
                     if (facture.type) choices[0].setChoiceByValue(facture.type.id);
+                    // Récupération de règlement de la facture : utilise pour mettre à jour le formulaire de la validation
+                    factureReglement = facture.reglement;
+                    // Récupération du montant TTC de la facture
+                    factureMontantTtc = facture.montantTtc;
+                // Le montant ttc réel est le montant ttc sans aib : utile lors de la mises à jour du formulaire de validation
+                    if (facture.aib) factureMontantTtc = facture.montantTtc - facture.montantAib;
                 }
                 return dataJson;
             })
             .catch(function (err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error(
-                    err.status == 403
-                        ? `Récupération de ${dataname} : Accès réfusé`
-                        : `Une erreur s'est produite lors de la récupération de ${dataname}`
-                );
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la récupération de " + dataname);
             });
     },
     setShowingTable: function (itemObj) {
@@ -695,22 +709,22 @@ let facturation = {
         GlobalScript.request(URL_GET_ITEM.replace("__id__", factureId), "GET", null)
             .then(function (data) {
                 // Run this when your request was successful
-                dataJson = data;
-                console.log(dataJson);
-                facture = dataJson;
+                console.log(data);
+                facture = data;
                 client = facture.client;
                 choices[0].setChoiceByValue(facture.type.id);
                 choices[1].setChoiceByValue(client.id);
                 datatable.ajax.reload();
+                // Récupération de règlement de la facture : utilise pour mettre à jour le formulaire de la validation
+                factureReglement = facture.reglement;
+                // Récupération du montant TTC de la facture
+                factureMontantTtc = facture.montantTtc;
+                // Le montant ttc réel est le montant ttc sans aib : utile lors de la mises à jour du formulaire de validation
+                if (facture.aib) factureMontantTtc = facture.montantTtc - facture.montantAib;
             })
             .catch(function (err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error(
-                    err.status == 403
-                        ? `Récupération de la liste de la facture : Accès réfusé`
-                        : `Une erreur s'est produite lors de la récupération de la facture`
-                );
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la récupération de la facture");
             });
     },
     confirmInvoiceValidation: function (event) {
@@ -767,6 +781,14 @@ let facturation = {
         if (facture.valid) html = `<span class="text-success">Validé</span>`;
         else html = `<span class="text-warning">En attente de validation</span>`;
         $validationFormRecpaTable.find(".td-invoice-status").html(html);
+
+        // Mise à jour du formulaire de validation  en fonction de la valeur du règlement de la facture
+        if (factureReglement) {
+            factureValidationForm.find("#montant-recu").val(factureReglement.montantRecu);
+            factureValidationForm.find("#montant-payer").val(factureReglement.montantPayer);
+            factureValidationForm.find("#montant-rendu").val(factureReglement.montantRendu);
+            factureValidationForm.find("#description").val(factureReglement.description);
+        }
     },
     setRecapTableOnAibChange: function (event = null) {
         if (event) event.preventDefault();
@@ -777,6 +799,8 @@ let facturation = {
                     // Run this when your request was successful
                     var aib = data;
                     console.log(aib);
+                    // Mise à jour de l'aib de la facture
+                    facture.aib = data;
                     // Mise à jour du montant aib
                     // Sauvegarde temporaire du montant ttc de la facture, cela servira dans le cas du changement de l'aib étant donné que c'est le seul champ affecté par le montant aib
                     if (!factureMontantTtc) factureMontantTtc = facture.montantTtc;
@@ -804,11 +828,16 @@ let facturation = {
                 })
                 .catch(function (err) {
                     // Run this when promise was rejected via reject()
-                    console.log(err);
-                    alertify.error(
-                        `Une erreur s'est produite lors de la récupération de l'aib`
-                    );
+                    GlobalScript.ajxRqtErrHandler(err, "alertify", "la récupération de l'aib");
                 });
+        } else {
+            // Mise à null de l'aib et de son mantant
+            facture.aib = null;
+            facture.montantAib = null;
+            // Réinialisation du montant ttc de la facture
+            facture.montantTtc = factureMontantTtc;
+            // Mise à jour du tableau récapitulatif pour la validation de la facture
+            facturation.setValidatonFormRecapTable();
         }
     },
     customMessageOnFactureationFormSubmit: function (event = null) {
@@ -838,6 +867,9 @@ let facturation = {
          // Vérification du choix du type de paiement
         if (!factureValidationForm.find("#type-paiement").val()) {
             alertify.warning("Veuillez sélectionner un type de paiement svp !");
+            return;
+        } else if (parseInt(factureValidationForm.find("#montant-payer").val()) != facture.montantTtc) {
+            alertify.warning("Veuillez mettre à jour les montant du règlement de la facture svp !");
             return;
         }
         else {
@@ -924,8 +956,7 @@ let facturation = {
             form[0].reset()
         }).catch(function (err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            facturation.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
         });
     },
     clientDataFormat: function (form) {
@@ -979,8 +1010,7 @@ let facturation = {
             form[0].reset();
         }).catch(function (err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            facturation.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
         });
     },
     articleDataFormat: function (form) {
@@ -1077,8 +1107,7 @@ $(document).ready(function () {
             alertify.warning("Cette facture est déjà validée");
         } else if (facture && facture.details) {
             // Mise à jour du montant ttc de la facture et remise à null du montant aib
-            if (factureMontantTtc) facture.montantTtc = factureMontantTtc;
-            facture.montantAib = null;
+            if (factureMontantTtc && !facture.aib) facture.montantTtc = factureMontantTtc;
             // Mise à jour du modal de validation
             facturation.setValidatonFormRecapTable();
             // Récupération des aib
@@ -1087,14 +1116,14 @@ $(document).ready(function () {
                 URL_LIST_TAXE_AIB,
                 ["taux aib", "id", "string"],
                 4,
-                null
+                facture.aib ? facture.aib.id : null
             );
             // Récupération des types de paiement
             facturation.getForeignsData(
                 URL_LIST_TYPE_PAIEMENT,
                 ["types de paiement", "id", "description"],
                 5,
-                null
+                factureReglement && factureReglement.typePaiement ? factureReglement.typePaiement.id : null
             );
             $("#validate-invoice-modal").modal("toggle");
         } else {
@@ -1123,15 +1152,11 @@ document.addEventListener("DOMContentLoaded", function () {
     facturation.choicesJsInit();
     facturationForm = $("div#facturationForm").find("form");
     factureValidationForm = $("div#validate-invoice-modal").find("form");
-    if (FACTURE_ID) {
-        // Récupération de la facture et recharge du tablau des lignes de la facture
-        facturation.getFactureById(FACTURE_ID);
-    }
     //Gestion des champs de remise
     facturation.remiseInputsToggle();
     // Récupératon des types de facture
     facturation.getForeignsData(
-        URL_LIST_TYPE_FACTURE,
+        URL_LIST_TYPE_FACTURE_VENTE,
         ["types de facture", "id", "description"],
         0,
         null
@@ -1157,11 +1182,20 @@ document.addEventListener("DOMContentLoaded", function () {
         3,
         null
     );
+    // Récupération de la facture et recharge du tablau des lignes de la facture
+    if (FACTURE_ID) {
+        facturation.getFactureById(FACTURE_ID);
+    }
     // Mise à jour du champ date du formulaire de la facture
     // facturationForm.find("#date").val(((new Date()).toISOString()).slice(0, 16))
     // GEstion de la taxe spécifique de l'article 
-    $("div.article-new-modal").find('form').find("input#taxe-specifique").change(function (event) {
+    $("div.article-new-modal").find('form').find("input#taxe-specifique").keyup(function (event) {
         event.preventDefault();
         facturation.articleSetTsName($(this));
     })
+    // Input mask pour l'ifu du client
+    $("div.client-new-modal").find('form').find("#ifu").inputmask({
+        mask: "*************",
+        casing: "upper",
+    });
 });

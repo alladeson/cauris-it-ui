@@ -1,6 +1,4 @@
 {% extends "base.html.twig" %}
-{% set appName = 'Cauris-iT' %}
-{% set authUser = app.session.get('user') %}
 {# Menu format #}
 {% set menus = [
 	{
@@ -141,16 +139,20 @@
 ] %}
 {% block body %}
 	{# <!-- Begin page --> #}
-	<div id="layout-wrapper"> 
+	<div id="layout-wrapper" data-user-layout="{{ userLayout ? userLayout|json_encode() : null }}"> 
 		<header id="page-topbar">
 			{% block header %}
 				{{ include('admin/layout/components/header.html.twig') }}
 			{% endblock %}
 		</header>
 
-		<div class="topnav">
+		<div class="{{ (userLayout and userLayout.layout == 'vertical') ? 'vertical-menu' : "topnav"}}">
 			{% block left_sidebar %}
-				{{ include('admin/layout/components/topnav.html.twig') }}
+				{% if userLayout and userLayout.layout == 'vertical' %}
+					{{ include('admin/layout/components/left-sidebar.html.twig') }}
+				{% else %}					
+					{{ include('admin/layout/components/topnav.html.twig') }}					
+				{% endif %}
 			{% endblock %}
 		</div>
 		<!-- Topnav End -->
@@ -186,7 +188,9 @@
 
 
 	{# <!-- Right Sidebar --> #}
-	<div class="right-bar"></div>
+	<div class="right-bar">
+		{% include "admin/layout/components/right-sidebar.html.twig" %}
+	</div>
 	{# <!-- /Right-bar --> #}
 
 	{# <!-- Right bar overlay--> #}
@@ -205,5 +209,7 @@
 		const URL_GLOBAL_DETAILS_FACTURE = "{{ url_details_invoice() }}";
 		// URL global details invoice
 		const URL_GLOBAL_UPDATE_FACTURE_VENTE = "{{ path('update_facture_vente', {id: '__id__'}) }}";
+		// URL global details invoice
+		const URL_GLOBAL_LAYOUT_SETTINGS = "{{ path('global_request_layout_settings') }}";
 	</script>
 {% endblock %}

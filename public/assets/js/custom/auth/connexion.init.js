@@ -16,8 +16,7 @@ let connexion = {
             window.location.href = queryParam ? queryParam : "/";
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err.responseText)
-            alertify.error((err.status == 401 || err.status == 403) ? "Identifiant ou Mot de passe incorrecte" : "Une erreur s'est produite lors de la connexion au serveur");
+            (err.status == 401 || err.status == 403) ? alertify.error("Identifiant ou Mot de passe incorrecte"): GlobalScript.ajxRqtErrHandler(err, "alertify", "la connexion au serveur");
         })
     },
     sendData: function(form) {

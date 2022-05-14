@@ -89,8 +89,7 @@ let newFactureAvoir = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de la création de la facture d'avoir.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la création de la facture d'avoir");
             });
     },
     // Récupération de la liste des articles ou des clients
@@ -110,30 +109,29 @@ let newFactureAvoir = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error(
-                    err.status == 403 ?
-                    `Récupération de la liste des ${selectData[0]} : Accès réfusé` :
-                    `Une erreur s'est produite lors de la récupération des ${selectData[0]}`
-                );
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la récupération des " + selectData[0]);
             });
     },
     getFacture: function(event) {
         event.preventDefault();
         var reference = facturationForm.find("#fv_ref").val();
+        var term = Inputmask.unmask(reference, { mask: "****-****-****-****-****-****" });
         console.log(reference);
-        waitMe_zone = null;
-        GlobalScript.request(URL_GET_FACTURE_BY_REF.replace("__ref__", reference), "GET", null)
+        waitMe_zone = facturationForm;
+        GlobalScript.request(URL_GET_FACTURE_BY_REF.replace("__ref__", term), "GET", null)
             .then(function(data) {
                 // Run this when your request was successful
                 facture = data;
                 console.log(data);
-                waitMe_zone = "";
+                newFactureAvoir.confirmInvoiceCreation(event);
+                waitMe_zone = facturationForm;
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Impossible de récupérer la facture de ventre avec ce code. Veuillez renseigner le bon code MECeF/DGI !");
+                if (err.status == 404)
+                    alertify.error("Impossible de récupérer la facture de ventre avec ce code. Veuillez renseigner le bon code MECeF/DGI !");
+                else
+                    GlobalScript.ajxRqtErrHandler(err, "alertify", "la récupération de la facture");
             });
     },
     confirmInvoiceCreation: function(event) {
@@ -159,19 +157,25 @@ $(document).ready(function() {
         0,
         null
     );
+    // Remettre à null la valeur du code MECeF/DGI si le type de la facture change
+    facturationForm.find("#type").change(function(event) {
+        event.preventDefault();
+        facturationForm.find("#fv_ref").val(null);
+    })
 
     // Gestion de l'autocompletion
     $("#fv_ref").autocomplete({
         source: function(request, response) {
             var typeId = facturationForm.find("#type").val();
             console.log("type : " + typeId)
-            console.log("search : " + request.term)
+            var term = Inputmask.unmask(request.term, { mask: "****-****-****-****-****-****" });
+            console.log("search : " + term)
             if (!typeId) {
-                alertify.error("Veuillez choisir un type de facture.")
+                alertify.warning("Veuillez choisir un type de facture et reprenez svp !")
                 return;
             }
             waitMe_zone = null
-            return GlobalScript.request(URL_LIST_FACTURE_AUTOCOMPLETE.replace("__typeId__", typeId) + "?search=" + request.term, 'GET', null).then(function(data) {
+            return GlobalScript.request(URL_LIST_FACTURE_AUTOCOMPLETE.replace("__typeId__", typeId) + "?search=" + term, 'GET', null).then(function(data) {
                 // Run this when your request was successful
                 console.log(data)
                 items = data;
@@ -179,13 +183,16 @@ $(document).ready(function() {
                 waitMe_zone = ""
             }).catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err)
-                alertify.error(`Une erreur est survenue : impossible de recherche le code correspondant.`);
-                //return null;
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la recherche du code correspondant");
             });
         },
         autofocus: true,
-        minLength: 4,
+        minLength: 2,
         delay: 100,
+    });
+    // Input mask pour le code MECef/DGI
+    facturationForm.find("#fv_ref").inputmask({
+        mask: "****-****-****-****-****-****",
+        casing: "upper",
     });
 });

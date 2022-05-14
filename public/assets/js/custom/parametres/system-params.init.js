@@ -57,8 +57,7 @@ let systemParamsWizard = {
                 //form[0].reset()
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            categorieArticle.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
         });
     },
     submitFormData: function() {
@@ -71,8 +70,7 @@ let systemParamsWizard = {
             else systemParamsWizard.saSuccesSystemParams("Succès !", "Enregistrement effectué avec succès.")
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            systemParamsWizard.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
         });
     },
     submitFormDataLogo: function(param) {
@@ -88,8 +86,7 @@ let systemParamsWizard = {
             systemParamsWizard.saSuccesSystemParams("Succès !", "Enregistrement effectué avec succès.")
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            systemParamsWizard.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
         });
     },
     dataFormat: function() {

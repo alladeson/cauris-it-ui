@@ -29,4 +29,10 @@ class GlobalController extends AbstractController
         {
         return $this->apiService->executeFile($request);
     }
+
+    #[Route('/__request/api/layout-settings', name:'global_request_layout_settings', methods:['POST'])]
+    function requestLayoutSettings(Request $request): Response
+        {
+        return $this->apiService->executeLayoutSettings($request);
+    }
 }

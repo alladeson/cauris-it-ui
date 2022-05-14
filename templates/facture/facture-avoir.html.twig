@@ -10,7 +10,7 @@
 	<div class="accordion accordion-flush mb-2" id="facturationForm">
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="flush-headingOne">
-				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne" style="background-color: #eeeef9;">
+				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
 					Information de la facture
 				</button>
 			</h2>
@@ -18,19 +18,19 @@
 				<div class="accordion-body text-muted">
 					<form method="post" class="" onsubmit="factureAvoir.submitFormData(event)">
 						<div class="row">
-							<div class="col-lg-4 col-md-4">
+							<div class="col-md-4 col-sm-5">
 								<div class="mb-3">
 									<label for="type" class="form-label font-size-13 text-muted">Type de facture</label>
 									<input disabled type="text" class="form-control" id="type" name="type" placeholder="Le type de la facture" value="" required>
 								</div>
 							</div>
-							<div class="col-lg-4 col-md-4">
+							<div class="col-sm-4">
 								<div class="mb-3">
 									<label for="client" class="form-label font-size-13 text-muted">Client</label>
 									<input disabled type="text" class="form-control" id="client" name="client" placeholder="Le type de la facture" value="" required>
 								</div>
 							</div>
-							<div class="col-lg-4 col-md-4">
+							<div class="col-md-4 col-sm-3">
 								<div class="mb-3">
 									<label for="nombre-article" class="form-label font-size-13 text-muted">Nombre d'article</label>
 									<input disabled type="text" class="form-control" id="nombre-article" name="nombre-article" placeholder="Le nombre d'article de la facture" value="" required>
@@ -75,14 +75,14 @@
 	</div>
 	<!-- end accordion -->
 	<div class="row align-items-center">
-		<div class="col-md-6">
+		<div class="col-md-6 col-7">
 			<div class="mb-3">
 				<h5 class="card-title">Détails de la facture
 					<span class="text-muted fw-normal ms-2"></span>
 				</h5>
 			</div>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-6 col-5">
 			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
 				<div>
 					<a href="javascript:void(0);" class="btn btn-outline-success waves-effect waves-light validate-facture" style="display: none;">
@@ -135,7 +135,7 @@
 				</div>
 				<div class="modal-body">
 					<div class="row">
-						<div class="col-lg-6 col-md-6">
+						<div class="col-lg-6">
 							<h5 class="font-size-14 mt-2">
 								<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif générale</h5>
 							<div class="table-responsive">
@@ -181,8 +181,8 @@
 								<!-- end table -->
 							</div>
 						</div>
-						<div class="col-lg-6 col-md-6">
-							<h5 class="font-size-14 mt-2">
+						<div class="col-lg-6">
+							<h5 class="font-size-14 mt-lg-2 mt-4">
 								<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif des montants</h5>
 							<div class="table-responsive">
 								<table class="table table-nowrap align-middle justify-content-center mb-0 detail-recap-montant-table">
@@ -275,7 +275,7 @@
 					</div>
 					<div class="modal-body">
 						<div class="row">
-							<div class="col-lg-6 col-md-6">
+							<div class="col-lg-6">
 								<h5 class="font-size-14 mt-2">
 									<i class="mdi mdi-arrow-right text-primary me-1"></i>Données de validation</h5>
 								<div class="table-responsive">
@@ -333,8 +333,8 @@
 									<!-- end table -->
 								</div>
 							</div>
-							<div class="col-lg-6 col-md-6">
-								<h5 class="font-size-14 mt-2">
+							<div class="col-lg-6">
+								<h5 class="font-size-14 mt-lg-2 mt-4">
 									<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif</h5>
 								<div class="table-responsive">
 									<table class="table table-nowrap align-middle justify-content-center mb-0 invoice-validation-table">
@@ -410,21 +410,21 @@
 {% block page_custom_scripts %}
 	<script>
 		const URL_LIST_CLIENT = "{{ url_list_client }}";
-const URL_GET_FACTURE_CLIENT = "{{ url_get_facture_client }}";
-const URL_GET_CLIENT = "{{ url_get_client }}";
-const URL_LIST_ARTICLE = "{{ url_list_article }}";
-const URL_GET_ARTICLE = "{{ url_get_article }}";
-const URL_GET_DETAIL_FACTURE = "{{ url_get_detail_facture }}";
-const URL_VALIDER_DETAIL_FACTURE = "{{ url_valider_detail_facture }}";
-const URL_VALIDER_FACTURE = "{{ url_valider_facture }}";
-const URL_LIST_TAXE = "{{ url_list_taxe }}";
-const URL_GET_TAXE = "{{ url_get_taxe }}";
-const URL_LIST_TAXE_AIB = "{{ url_list_taxe_aib }}";
-const URL_LIST_TYPE_FACTURE = "{{ url_list_type_facture }}";
-const URL_LIST_TYPE_PAIEMENT = "{{ url_list_type_paiement }}";
-const URL_IMPRIMER_FACTURE = "{{ url_imprimer_facture }}";
-let FACTURE_ID = "{{ facture_id }}";
-const URL_VALIDER_FACTURE_AVOIR = "{{ url_valider_facture_avoir }}";
+		const URL_GET_FACTURE_CLIENT = "{{ url_get_facture_client }}";
+		const URL_GET_CLIENT = "{{ url_get_client }}";
+		const URL_LIST_ARTICLE = "{{ url_list_article }}";
+		const URL_GET_ARTICLE = "{{ url_get_article }}";
+		const URL_GET_DETAIL_FACTURE = "{{ url_get_detail_facture }}";
+		const URL_VALIDER_DETAIL_FACTURE = "{{ url_valider_detail_facture }}";
+		const URL_VALIDER_FACTURE = "{{ url_valider_facture }}";
+		const URL_LIST_TAXE = "{{ url_list_taxe }}";
+		const URL_GET_TAXE = "{{ url_get_taxe }}";
+		const URL_LIST_TAXE_AIB = "{{ url_list_taxe_aib }}";
+		const URL_LIST_TYPE_FACTURE_VENTE = "{{ url_list_type_facture_vente }}";
+		const URL_LIST_TYPE_PAIEMENT = "{{ url_list_type_paiement }}";
+		const URL_IMPRIMER_FACTURE = "{{ url_imprimer_facture }}";
+		let FACTURE_ID = "{{ facture_id }}";
+		const URL_VALIDER_FACTURE_AVOIR = "{{ url_valider_facture_avoir }}";
 	</script>
 	<!-- init js -->
 	<script src="{{ asset('assets/js/custom/facture/facture-avoir.init.js') }}"></script>

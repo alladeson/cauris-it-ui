@@ -3,6 +3,7 @@
 use App\Kernel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Response;
 
 require_once dirname(__DIR__) . '/vendor/autoload_runtime.php';
 
@@ -20,6 +21,7 @@ return function (array $context) {
     $queryPath = trim($request->query->get('uri'));
     $home = ["/", "/dashboard"];
     $newSystemParamsUrl = "/parametre/system-params/new";
+    $URL_GLOBAL_REQUEST = "/__global/__request";
 
     //dump($requestPath, $queryPath);
     //dd($session->get('token'));
@@ -37,7 +39,8 @@ return function (array $context) {
     }
     // Cas : Compte utilisateur connecté
     else {
-
+        // Récupération de l'utilisateur connecté
+        $user = $session->get('user');
         // Vérifie la validité du token
         $expirytime = $session->get('expiryToken'); //dd($expirytime);
         $expirytime = intval($expirytime / 1000); //dd($expirytime);
@@ -45,43 +48,39 @@ return function (array $context) {
         // $expirydate = new DateTime($session->get('expiryToken'));
         $interval = (new DateTime())->diff($expirydate);
         // - Si le token a expiré, alors redirige à la page de connexion
-        if ($interval->invert) {
+        if ($interval->invert || str_starts_with($requestPath, "/auth/logout")) {
+            // Récupération du layout de l'utilisateur
+            $layout = $user->{ 'layout'};
+            // Suppression des données de la session
             $session->clear();
+            // Mise à jour du layout dans la session
+            $session->set("user", (object)["layout" => $layout]);
+            // 
             return header("Location: " . (in_array($requestPath, $home) || str_starts_with($requestPath, "/auth") ? "/auth/login" : "/auth/login?uri=" . $requestPath));
         }
 
-        // - Sinon c-a-d le token est valide, alors récupère le compte utilisateur connecté
-        // $user = ApiDataService::getAuthUser();
-        $user = $session->get('user');
-        //dd($user);
-
+        // - Sinon c-a-d le token est valide
         // - Si le compte utilisateur connecté est inexistante (FATAL ERROR)
         if (!$user) {
             $session->clear();
             return header("Location: " . (in_array($requestPath, $home) || str_starts_with($requestPath, "/auth") ? "/auth/login?fatal-error" : "/auth/login?fatal-error&uri=" . $requestPath));
         }
 
-        // if ($user && !$user->systemParams && !str_starts_with($requestPath, $newSystemParamsUrl)) {
-        //     if ($user->role == "ADMIN") {
-        //         return header("Location: " . $newSystemParamsUrl);
-        //     }
-        // } else if ($user && $user->systemParams && str_starts_with($requestPath, $newSystemParamsUrl)) {
-        //     return header("Location: " . $home[0]);
-        // }
+        // Vérification de la présence du paramètre du system
+        $params = $session->get('params');
+        if(!$params && str_starts_with($requestPath, $URL_GLOBAL_REQUEST)){
+            return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+        }
+        if (!$params && !str_starts_with($requestPath, $newSystemParamsUrl)) {
+            if ($user->{ 'role'} == "SUPER_ADMIN") {
+                return header("Location: " . $newSystemParamsUrl);
+            }else {
+                throw new \Exception("Les informations du paramètre du système ne sont pas définies. Veuillez contacter votre fournisseur du SFE !", Response::HTTP_UNAUTHORIZED); 
+            }
+        } else if (!$params && str_starts_with($requestPath, $newSystemParamsUrl)) {
+            return header("Location: " . $home[0]);
+        }
 
-        // // - Sinon c-a-d le compte utilisateur connecté existe et s'il n'est pas activé, alors redirige à la page d'activation (du changement du mot de passe par défaut)
-        // if (!$user->active) {
-        //     if (str_starts_with($requestPath, "/auth/password")) {
-        //         return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
-        //     }
-        //     return header("Location: " . (in_array($requestPath, $home) || str_starts_with($requestPath, "/auth") ? "/auth/password/activate" : "/auth/password/activate?uri=" . $requestPath));
-        // }
-
-        // Sinon c-a-d le compte utilisateur connecté existe et est activé
-        // if (str_starts_with($requestPath, "/auth")) {
-        //     dd('ici');
-        //     return header("Location: " . (empty($queryPath) ? "/" : $queryPath));
-        // }
         return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
     }
 };

@@ -57,7 +57,7 @@ class FactureController extends AbstractController {
             'url_list_taxe' => ApiConstant::URL_LIST_TAXE,
             'url_get_taxe' => ApiConstant::URL_GET_TAXE,
             'url_list_taxe_aib' => ApiConstant::URL_LIST_TAXE_AIB,
-            'url_list_type_facture' => ApiConstant::URL_LIST_TYPE_FACTURE,
+            'url_list_type_facture_vente' => ApiConstant::URL_LIST_TYPE_FACTURE_VENTE,
             'url_list_type_paiement' => ApiConstant::URL_LIST_TYPE_PAIEMENT,
             'url_imprimer_facture' => $_ENV[ 'API_BASE_URL' ] . ApiConstant::URL_IMPRIMER_FACTURE,
             'facture_id' => $id,
@@ -106,7 +106,7 @@ class FactureController extends AbstractController {
             'url_list_taxe' => ApiConstant::URL_LIST_TAXE,
             'url_get_taxe' => ApiConstant::URL_GET_TAXE,
             'url_list_taxe_aib' => ApiConstant::URL_LIST_TAXE_AIB,
-            'url_list_type_facture' => ApiConstant::URL_LIST_TYPE_FACTURE,
+            'url_list_type_facture_vente' => ApiConstant::URL_LIST_TYPE_FACTURE_VENTE,
             'url_list_type_paiement' => ApiConstant::URL_LIST_TYPE_PAIEMENT,
             'url_imprimer_facture' => $_ENV[ 'API_BASE_URL' ] . ApiConstant::URL_IMPRIMER_FACTURE,
             "facture_id" => $id,
@@ -124,8 +124,14 @@ class FactureController extends AbstractController {
             'breadcrumb' => ['Facture', 'Liste Factures'],
             "sidebar_code" => ['FACT', 'LSTF', ''],
             "url_list_item" => ApiConstant::URL_LIST_FACTURE,
+            "url_list_item_by_type" => ApiConstant::URL_LIST_FACTURE_BY_TYPE,
+            "url_list_item_by_type_created_date" => ApiConstant::URL_LIST_FACTURE_BY_TYPE_CREATED_DATE,
+            "url_list_item_by_type_confirmed_date" => ApiConstant::URL_LIST_FACTURE_BY_TYPE_CONFIRMED_DATE,
+            "url_list_item_by_created_date" => ApiConstant::URL_LIST_FACTURE_BY_CREATED_DATE,
+            "url_list_item_confirmed_date" => ApiConstant::URL_LIST_FACTURE_BY_CONFIRMED_DATE,
             "url_get_item" => ApiConstant::URL_GET_FACTURE,
             "url_delete_item" => ApiConstant::URL_DELETE_FACTURE,
+            "url_list_type_facture" => ApiConstant::URL_LIST_TYPE_FACTURE,
         ]);
     }
 }

@@ -178,8 +178,7 @@ let client = {
             form[0].reset()
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            client.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
         });
     },
     showItem: function(el) {
@@ -195,8 +194,7 @@ let client = {
 
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            client.saError("Erreur !", "Une erreur s'est produite lors de l'affichage.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'affichage");
         });
     },
     editItem: function(el) {
@@ -213,8 +211,7 @@ let client = {
             $(".add-new-modal").modal('show');
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            client.saError("Erreur !", "Une erreur s'est produite lors de la modification.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "la modification");
         });
     },
     removeItem: function(el, oktitle, oktext) {
@@ -229,8 +226,7 @@ let client = {
             datatable.ajax.reload();
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            client.saError("Erreur !", "Une erreur s'est produite lors de la suppression.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "la suppression");
         });
     },
     setformData: function(form, item) {
@@ -317,5 +313,11 @@ $(document).ready(function() {
             $(".dropdown-menu-end").css("position", position);
         });
         console.log(count + ' column(s) are hidden');
+    });
+
+    // Input mask pour l'ifu du client
+    $("div.add-new-modal").find('form').find("#ifu").inputmask({
+        mask: "*************",
+        casing: "upper",
     });
 });

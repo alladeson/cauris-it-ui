@@ -33,7 +33,7 @@ let newSystemParamsWizard = {
             icon: "success",
             confirmButtonColor: "#5156be",
         }).then(function(e) {
-            e.value ? location.href = "/dashboard" : '';
+            e.value ? location.href = "/auth/logout" : '';
         });
     },
     saError: function(title, text) {
@@ -44,62 +44,8 @@ let newSystemParamsWizard = {
             confirmButtonColor: "#5156be",
         })
     },
-    saRemoveParams: function(el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: "warning",
-            showCancelButton: !0,
-            confirmButtonText: confirmButtonText,
-            cancelButtonText: cancelButtonText,
-            confirmButtonClass: "btn btn-success mt-2",
-            cancelButtonClass: "btn btn-danger ms-2 mt-2",
-            buttonsStyling: !1,
-        }).then(function(e) {
-            e.value ?
-                newSystemParamsWizard.removeItem(el, oktitle, oktext) :
-                e.dismiss === Swal.DismissReason.cancel &&
-                newSystemParamsWizard.saError(notitle, notext);
-        });
-    },
-    request: function(url, method, sendData) {
-        return new Promise(function(resolve, reject) {
-            $.ajax({
-                url: URL_GLOBAL_REQUEST,
-                method: "POST",
-                dataType: "json",
-                data: {
-                    "url": url,
-                    "method": method,
-                    "data": sendData,
-                },
-                success: function(data) {
-                    resolve(data) // Resolve promise and go to then()
-                },
-                error: function(err) {
-                    reject(err) // Reject the promise and go to catch()
-                },
-            });
-        });
-    },
-    submitFormDataNew: function() {
-        var data = newSystemParamsWizard.dataFormat()
-        console.log(data)
-        newSystemParamsWizard.request(URL_POST_ITEM, 'POST', data).then(function(data) {
-            // Run this when your request was successful
-            console.log(data)
-                //datatable.ajax.reload();
-                // categorieArticle.saSucces("Succès !", "Enregistrement effectué avec succès.")
-            alertify.success("Enregistrement effectué avec succès")
-                //if (dataId) $("div.add-new-modal").modal('hide')
-                //form[0].reset()
-        }).catch(function(err) {
-            // Run this when promise was rejected via reject()
-            console.log(err)
-            categorieArticle.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
-        });
-    },
-    submitFormData: function() {
+    submitFormData: function(event = null) {
+        if (event) event.preventDefault();
         var data = newSystemParamsWizard.dataFormat()
         GlobalScript.request(URL_POST_ITEM, 'POST', data).then(function(data) {
             // Run this when your request was successful
@@ -107,8 +53,7 @@ let newSystemParamsWizard = {
             newSystemParamsWizard.submitFormDataLogo(data);
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            newSystemParamsWizard.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
         });
     },
     submitFormDataLogo: function(param) {
@@ -121,13 +66,12 @@ let newSystemParamsWizard = {
         GlobalScript.requestFile(formData).then(function(data) {
             // Run this when your request was successful
             console.log(data)
-            newSystemParamsWizard.saSuccesSystemParams("Succès !", "Enregistrement effectué avec succès.")
+            newSystemParamsWizard.saSuccesSystemParams("Succès !", "Enregistrement effectué avec succès. Pour continuer, vous devez vous connecter à nouveau. Cliquer sur OK pour continuer...")
             $("form#societe-form")[0].reset()
             $("form#emecef-form")[0].reset()
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            newSystemParamsWizard.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
         });
     },
     dataFormat: function() {
@@ -196,7 +140,7 @@ let newSystemParamsWizard = {
             save = false;
             return;
         }
-        if (save) newSystemParamsWizard.submitFormData();
+        if (save) $("div.confirmModal").modal("show");
     },
     imageReset: function() {
         // $(this).parent().remove();

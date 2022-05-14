@@ -54,7 +54,8 @@ let userProfile = {
             e.value ? location.href = URL_LOGOUT_AUTH_USER : '';
         });
     },
-    editItem: function() {
+    editItem: function(event = null) {
+        if (event) event.preventDefault();
         var data = userProfile.dataFormat()
         var userForm = $("form#user-form")
         GlobalScript.request(URL_GET_ITEM.replace("__id__", JSON.parse(data).id), 'PUT', data).then(function(data) {
@@ -66,11 +67,11 @@ let userProfile = {
             }
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            userProfile.saError("Erreur !", "Une erreur s'est produite lors de la modification.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "la modification");
         });
     },
-    passwordReset: function() {
+    passwordReset: function(event = null) {
+        if (event) event.preventDefault();
         var data = userProfile.passwordDataFormat()
         GlobalScript.request(URL_PUT_USER_PASSWORD_RESET.replace("__id__", JSON.parse(data).id), 'PUT', data).then(function(data) {
             // Run this when your request was successful
@@ -78,12 +79,7 @@ let userProfile = {
             userProfile.saSuccesPasswordReset("Succès !", "Modification effectuée avec succès. Vous allez être déconnecté !")
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            var responseText = JSON.parse(err.responseText)
-            errorMessage = "Une erreur s'est produite lors de la modification.";
-            if (responseText.message)
-                errorMessage = responseText.message
-            userProfile.saError("Erreur !", errorMessage)
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "la modification");
         });
     },
     submitFormDataPhoto: function(user) {
@@ -99,8 +95,7 @@ let userProfile = {
             userProfile.saSuccesEditUser("Succès !", "Modification effectuée avec succès.")
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            userProfile.saError("Erreur !", "Une erreur s'est produite lors de l'enregistrement.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
         });
     },
     resetAuthUser: function() {
@@ -110,8 +105,7 @@ let userProfile = {
             userProfile.saSuccesEditUser("Succès !", "Modification effectuée avec succès.")
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            userProfile.saError("Erreur !", "Une erreur s'est produite lors de la modification.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "la modification");
         });
     },
     dataFormat: function(form) {
@@ -158,7 +152,7 @@ let userProfile = {
                 }
             })
         }
-        if (save) userProfile.editItem();
+        if (save) $("div.confirmModal").modal("show");
     },
     onSavePassword: function(event) {
         event.preventDefault();
@@ -177,7 +171,7 @@ let userProfile = {
                 }
             })
         }
-        if (save) userProfile.passwordReset();
+        if (save) $("div.passwordConfirmModal").modal("show");
     },
     passwordShowToggle: function(event = null, inputId, iconButtonId) {
         if (event) event.preventDefault();

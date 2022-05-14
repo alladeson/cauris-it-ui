@@ -21,7 +21,7 @@
                                     </a>
                                     {% if child.children %}
                                         <ul class="sub-menu mm-collapse {{child.active ? 'mm-show' : ''}}" aria-expanded="false">
-                                             {% for child2 in child.children %}
+                                            {% for child2 in child.children %}
                                                 <li class="{{child2.active ? 'mm-active' : ''}}">
                                                     <a href="{{ child2.children ? 'javascript:void(0);' : path(child2.pathName)}}" data-key="{{child2.dataKey}}">{{child2.title}}</a>
                                                 </li>

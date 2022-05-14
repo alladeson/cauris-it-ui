@@ -1,6 +1,14 @@
 let datatable;
 let choices = [];
 let objet;
+let statsPayload = {
+    "debut": null,
+    "fin": null,
+    "debutAt": null,
+    "finAt": null,
+};
+let filtreForm = null;
+let url_list = null;
 let listeFacture = {
         listInitalizer: function() {
                 // $(".datatable").DataTable({ responsive: !1 }),
@@ -14,8 +22,9 @@ let listeFacture = {
                                 "url": URL_GLOBAL_REQUEST,
                                 data: function() {
                                     return data = {
-                                        "url": URL_LIST_ITEM,
+                                        "url": url_list,
                                         "method": "GET",
+                                        "data": JSON.stringify(statsPayload),
                                     };
                                 },
                                 "dataSrc": "",
@@ -74,31 +83,31 @@ let listeFacture = {
                                                 <i class="bx bx-dots-horizontal-rounded"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                            ${row.confirm ? 
-                                                `<li>
+                                            ${row.confirm ?
+                            `<li>
                                                     <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item print-item" href="javascript:void(0);" data-item-id="${data}">Imprimer</a>
                                                 </li>` :
-                                                `<li>
+                            `<li>
                                                     <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier et/ou valider</a>
                                                 </li>` }
-                                                ${(!row.confirm && !row.details.length) ? 
-                                                `<li>
+                                                ${(!row.confirm /*&& !row.details.length*/) ?
+                            `<li>
                                                     <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
                                                 </li>` : ``
-                                                }
+                        }
                                             </ul>
                                         </div>`;
-                            return html;
-                        }
-                    }
-                ],
-            }),
+                    return html;
+                }
+            }
+            ],
+        }),
             $(".dataTables_length select").addClass("form-select form-select-sm");
     },
-    choicesJsInit: function() {
+    choicesJsInit: function () {
         var e = document.querySelectorAll("[data-trigger]");
         for (i = 0; i < e.length; ++i) {
             var a = e[i];
@@ -110,10 +119,12 @@ let listeFacture = {
                 position: "bottom",
                 removeItemButton: true,
                 duplicateItemsAllowed: !1,
+                shouldSort: false,
+                searchEnabled: $.inArray(i, [0]) > -1 ? false : true,
             });
         }
     },
-    saSucces: function(title, text) {
+    saSucces: function (title, text) {
         Swal.fire({
             title: title,
             text: text,
@@ -121,7 +132,7 @@ let listeFacture = {
             confirmButtonColor: "#5156be",
         })
     },
-    saError: function(title, text) {
+    saError: function (title, text) {
         Swal.fire({
             title: title,
             text: text,
@@ -129,7 +140,7 @@ let listeFacture = {
             confirmButtonColor: "#5156be",
         })
     },
-    saParams: function(title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
+    saParams: function (title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
         Swal.fire({
             title: title,
             text: text,
@@ -140,14 +151,14 @@ let listeFacture = {
             confirmButtonClass: "btn btn-success mt-2",
             cancelButtonClass: "btn btn-danger ms-2 mt-2",
             buttonsStyling: !1,
-        }).then(function(e) {
+        }).then(function (e) {
             e.value ?
                 listeFacture.saSucces(oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
                 listeFacture.saError(notitle, notext);
         });
     },
-    saRemoveParams: function(el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
+    saRemoveParams: function (el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
         Swal.fire({
             title: title,
             text: text,
@@ -158,85 +169,80 @@ let listeFacture = {
             confirmButtonClass: "btn btn-success mt-2",
             cancelButtonClass: "btn btn-danger ms-2 mt-2",
             buttonsStyling: !1,
-        }).then(function(e) {
+        }).then(function (e) {
             e.value ?
                 listeFacture.removeItem(el, oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                article.saError(notitle, notext);
+                listeFacture.saError(notitle, notext);
         });
     },
-    showItem: function(el) {
+    showItem: function (el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         //console.log(id);
-        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
+        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function (data) {
             // Run this when your request was successful
             console.log(data)
             listeFacture.setDetailsFactureRecapTable(data);
             $(".show-item-modal").modal('show')
 
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            listeFacture.saError("Erreur !", "Une erreur s'est produite lors de l'affichage.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'affichage");
         });
     },
-    editItem: function(el) {
+    editItem: function (el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         //console.log(id);
-        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
+        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function (data) {
             // Run this when your request was successful
             console.log(data)
-            if(data.type.group == "FV"){
+            if (data.type.groupe == "FV") {
                 location.href = URL_GLOBAL_UPDATE_FACTURE_VENTE.replace("__id__", data.id);
-            }else if(data.type.group == "FA"){
+            } else if (data.type.groupe == "FA") {
                 location.href = URL_GLOBAL_DETAILS_FACTURE.replace("__id__", data.id);
             }
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            listeFacture.saError("Erreur !", "Une erreur s'est produite lors de l'affichage de l'interface de modification.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'affichage de l'interface de modification");
         });
     },
-    printItem: function(el) {
+    printItem: function (el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         //console.log(id);
-        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
+        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function (data) {
             // Run this when your request was successful
             console.log(data)
             window.open(
                 facture.filename ? URL_GET_FILE.replace("__fileName__", data.filename) : URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", data.id),
                 "_blank"
             )
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            listeFacture.saError("Erreur !", "Une erreur s'est produite lors de l'affichage de l'interface de modification.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'affichage de l'interface de modification");
         });
     },
-    removeItem: function(el, oktitle, oktext) {
+    removeItem: function (el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         // console.log(id);
-        GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
+        GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function (data) {
             // Run this when your request was successful
-            console.log(data)
-                // article.saSucces(oktitle, oktext);
+            console.log(data);
             alertify.success(oktext)
             datatable.ajax.reload();
-        }).catch(function(err) {
+        }).catch(function (err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            article.saError("Erreur !", "Une erreur s'est produite lors de la suppression.")
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "la suppression");
         });
     },
-    reloadDatatable: function(event) {
+    reloadDatatable: function (event) {
         event.preventDefault();
         datatable.ajax.reload();
     },
-    setDetailsFactureRecapTable: function(facture) {
+    setDetailsFactureRecapTable: function (facture) {
         // Tableau des données de validation
         var $validationDataFormTable = $("div#facture-details-modal table.invoice-validation-data-table");
         $validationDataFormTable.find(".td-invoice-type-facture").text(facture.type ? facture.type.description : "-");
@@ -276,7 +282,7 @@ let listeFacture = {
         $("div#facture-details-modal").find("button.btn-print").attr("data-id", facture.id)
         $("div#facture-details-modal").find("button.btn-details").attr("data-id", facture.id)
         // Gestion de l'impression de la factrue
-        $("div#facture-details-modal").find("button.btn-print").click(function(e){
+        $("div#facture-details-modal").find("button.btn-print").click(function (e) {
             e.preventDefault();
             window.open(
                 facture.filename ? URL_GET_FILE.replace("__fileName__", facture.filename) : URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id),
@@ -284,7 +290,7 @@ let listeFacture = {
             )
         })
         // Gestion de l'affichage des détails de la facture
-        $("div#facture-details-modal").find("button.btn-details").click(function(e){
+        $("div#facture-details-modal").find("button.btn-details").click(function (e) {
             e.preventDefault();
             location.href = URL_GLOBAL_DETAILS_FACTURE.replace("__id__", facture.id);
         })
@@ -292,32 +298,141 @@ let listeFacture = {
         $("div#facture-details-modal").modal('show');
     },
 };
-$(document).ready(function() {
+$(document).ready(function () {
+    // Mise de l'url de liste des facture pour récupérer une liste vide
+    url_list = URL_LIST_ITEM + "?search=vide";
+    // Initialisation du table de liste de facture avec datatable
     listeFacture.listInitalizer();
     // Edit record
-    datatable.on('click', '.edit-item', function(e) {
+    datatable.on('click', '.edit-item', function (e) {
         e.preventDefault();
         listeFacture.editItem($(this));
     });
 
     // Delete a record
-    datatable.on('click', '.remove-item', function(e) {
+    datatable.on('click', '.remove-item', function (e) {
         e.preventDefault();
         listeFacture.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cette facture ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimée !", "Facture supprimée avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
     });
 
     // Delete a record
-    datatable.on('click', '.print-item', function(e) {
+    datatable.on('click', '.print-item', function (e) {
         e.preventDefault();
         listeFacture.printItem($(this));
     });
 
     //Show record
-    datatable.on('click', '.show-item', function(e) {
+    datatable.on('click', '.show-item', function (e) {
         e.preventDefault();
         listeFacture.showItem($(this));
     });
+    //Show Action
+    datatable.on('responsive-resize', function (e, datatable, columns) {
+        e.preventDefault();
+        var count = columns.reduce(function (a, b) {
+            return b === false ? a + 1 : a;
+        }, 0);
+        var position = count ? "relative" : "absolute";
+        datatable.on('click', 'button.dropdown-toggle', function (e) {
+            e.preventDefault();
+            $(".dropdown-menu-end").css("position", position);
+        });
+        console.log(count + ' column(s) are hidden');
+    });
 });
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
+    // Initialisation des champs de séléction avec choices.js
     listeFacture.choicesJsInit();
+    // Récupératon des types de facture
+    GlobalScript.getForeignsData(
+        URL_LIST_TYPE_FACTURE,
+        ["types de facture", "id", "description"],
+        0,
+        null
+    );
+    // Récupération du formulaire du filtre
+    filtreForm = $("form.filtre-form");
+    // Gestion des évènements liées au filtre de la liste des factures
+    // Si "Toutes" est coché, alors décocher les boutons radios de date
+    filtreForm.find("input#getAll").change(function (event) {
+        event.preventDefault();
+        if (filtreForm.find("input#getAll").is(":checked"))
+            filtreForm.find("input[name='dateRadios']:checked").prop("checked", false);
+    })
+    // Si une des boutons radios de date est cochée, alors décocher "Toutes"
+    filtreForm.find("input[name='dateRadios']").change(function (event) {
+        event.preventDefault();
+        filtreForm.find("input#getAll").prop("checked", false);
+    })
+    // Lors de la soumission du formulaire de filtre, c'est-à-dire en cliquant sur le bouton de recherche
+    filtreForm.submit(function (event) {
+        event.preventDefault();
+        // Récupération du type de la facture sélectionné
+        var typeFactureId = filtreForm.find("select#type").val();
+        // Si "Toutes" est coché, on récupère toutes les facture, ou en fonction du type de facture
+        if (filtreForm.find("input#getAll").is(":checked")) {
+            // alertify.success("'Toutes' coché");
+            url_list = URL_LIST_ITEM;
+            // Si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
+            if (typeFactureId)
+                url_list = URL_LIST_FACTURE_BY_TYPE.replace("__typeId__", typeFactureId);
+            // Réchargement du tableau de liste de la facture
+            datatable.ajax.reload();
+            return;
+        }
+        // Si un des boutons radios de dates est coché, alors le filtre sera fait en fonction des dates
+        if (filtreForm.find("input[name='dateRadios']").is(":checked")) {
+            // Si les dates ne sont pas renseignées, alors un avertissement est renvoyer et le code s'arrête là
+            if (!filtreForm.find("input#date-debut").val() || !filtreForm.find("input#date-fin").val()) {
+                alertify.warning("Veuillez bien renseigner les date de début et de fin svp. Merci !");
+                return
+            }
+            // Ici les date sont renseignées
+            // Récupération du type de date sélectionné
+            var typeDate = filtreForm.find("input[name='dateRadios']:checked").val();
+            // Récupération des dates de début et de fin
+            var debut = new Date(filtreForm.find("input#date-debut").val());
+            var fin = new Date(filtreForm.find("input#date-fin").val());
+            // Comparaison des dates, la date de fin doit être supérieure à la date de début
+            if (fin.getTime() <= debut.getTime()) {
+                alertify.error("La date de fin doit être supérieure à la date de début");
+                return;
+            }
+            // Ici les dates sont renseignées et valides
+            // Si le type de date est la date de création (émission) de la facture, 
+            // alors récupération de la liste en fonction de la date de création qui est une date de type Instant
+            if (typeDate == "createdAt") {
+                // alertify.success("Date d'émission des facture coché");
+                statsPayload.debutAt = debut.toISOString();
+                statsPayload.finAt = fin.toISOString();
+                console.log(statsPayload);
+                url_list = URL_LIST_FACTURE_BY_CREATED_DATE;
+                // Si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
+                if (typeFactureId)
+                    url_list = URL_LIST_FACTURE_BY_TYPE_CREATED_DATE.replace("__typeId__", typeFactureId);
+                // Réchargement du tableau de liste de la facture
+                datatable.ajax.reload();
+                return;
+            }
+            // Si le type de date est la date de confirmation (validation) de la facture,
+            // alors récupération de la liste en fonction de la date de confirmation qui est une date de type Date,
+            // pas besoin de la transformer, on peut utiliser directement la valeur des champ
+            else if (typeDate == "confirmedAt") {
+                // alertify.success("Date de confirmation des facture coché");
+                statsPayload.debut = filtreForm.find("input#date-debut").val();
+                statsPayload.fin = filtreForm.find("input#date-fin").val();
+                console.log(statsPayload);
+                url_list = URL_LIST_FACTURE_BY_CONFIRMED_DATE;
+                // Si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
+                if (typeFactureId)
+                    url_list = URL_LIST_FACTURE_BY_TYPE_CONFIRMED_DATE.replace("__typeId__", typeFactureId);
+                // Réchargement du tableau de liste de la facture
+                datatable.ajax.reload();
+                return;
+            }
+        }
+        // Si aucun critère n'est choisi, alors un avertissement est renvoyé
+        alertify.warning("Veuillez choisir un critère pour le filtre svp. Merci !");
+    })
+
 });

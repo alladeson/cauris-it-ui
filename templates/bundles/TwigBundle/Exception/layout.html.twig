@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	{% set appName = 'Cauris-iT' %}
+	<!-- <body data-layout="horizontal"> -->
+	<div class="my-5 pt-5">
+        <div class="container">
+            <div class="row">
+				<div class="col-lg-12">
+					<div class="text-center mb-5">
+						{% block errorContent %}{% endblock %}
+					</div>
+				</div>
+			</div>
+			<!-- end row -->
+			<div class="row justify-content-center">
+                <div class="col-md-10 col-xl-8">
+                    <div>
+                        <img src="{{ asset('assets/images/error-img.png') }}" alt="" class="img-fluid">
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- end row -->
+		</div>
+        <!-- end container -->
+    </div>
+    <!-- end content -->
+
+{% endblock %}

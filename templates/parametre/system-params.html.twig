@@ -21,10 +21,10 @@
         <div class="col-xl-9 col-lg-8">
             <div class="card">
                 <div class="row d-flex justify-content-center">
-                    <div class="col-lg-3 col-md-3 col-sm-4 col-8">
+                    <div class="col-sm-3 col-8">
                         <img class="card-img img-fluid" src="{{ url_get_file() | replace({'__fileName__': param.logo}) }}" alt="Logo">
                     </div>
-                    <div class="col-lg-9 col-md-9 col-sm-4 col-8">
+                    <div class="col-sm-9 col-8">
                         <div class="card-body">
                             <h5 class="card-title mb-3">
                                 {{param.name}}
@@ -60,8 +60,8 @@
                                 </h5>
                     </div>
                     <div class="card-body">
-                        <div class="row imageUpPreview d-flex justify-content-center flex-md-row-reverse">
-                            <div class="col-lg-3 col-md-3 col-sm-4 col-8 imgUp">
+                        <div class="row imageUpPreview d-flex justify-content-center flex-sm-row-reverse">
+                            <div class="col-md-3 col-sm-4 col-8 imgUp">
                                 <div class="imagePreview" style="background-image: url({{ url_get_file() | replace({'__fileName__': param.logo}) }})"></div>
                                 <label class="btn btn-primary imgUpBtn"> 
                                     Changer votre logo
@@ -69,7 +69,7 @@
                                 </label>
                                 <i class="fa fa-times del" style="display:none;"></i>
                             </div>
-                            <div class="col-lg-9 col-md-9">
+                            <div class="col-md-9 col-sm-8">
                                 <div class="row">						
                                     <div class="col-md-12">
                                         <div class="mb-3 position-relative">
@@ -83,7 +83,7 @@
                                         <div class="mb-3 position-relative">
                                             <label class="form-label" for="ifu">IFU</label>
                                             <input type="hidden" id="item-id" name="item-id" value="">
-                                            <input type="text" class="form-control" id="ifu" name="ifu" value="{{param.ifu}}" placeholder="L'IFU du de la société">
+                                            <input type="text"  pattern="[0-9]{13}" class="form-control" id="ifu" name="ifu" value="{{param.ifu}}" placeholder="L'IFU du de la société">
                                         </div>
                                     </div>														
                                 </div>
@@ -99,7 +99,7 @@
                         </div>
                         <!-- row -->									
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3 position-relative">
                                     <label class="form-label" for="telepohone">Téléphone</label>
                                     <div class="input-group">
@@ -110,7 +110,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3 position-relative">
                                     <label class="form-label" for="email">E-mail</label>
                                     <div class="input-group">
@@ -123,13 +123,13 @@
                             </div>
                         </div>
                         <div class="row">						
-                            <div class="col-md-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3 position-relative">
                                     <label class="form-label" for="pays">Pays</label>
                                     <input disabled type="text" id="pays" name="pays" class="form-control" placeholder="Le pays de la société" value="{{param.pays}}">
                                 </div>
                             </div>							
-                            <div class="col-md-6">
+                            <div class="col-sm-6">
                                 <div class="mb-3 position-relative">
                                     <label class="form-label" for="ville">Ville</label>
                                     <input type="text" id="ville" name="ville" value="{{param.ville}}" class="form-control" placeholder="La ville de la société">
@@ -137,7 +137,7 @@
                             </div>							
                         </div>
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-12">
                                 <div class="mb-3 position-relative">
                                     <label class="form-label" for="address">Adresse</label>
                                     <div class="input-group">

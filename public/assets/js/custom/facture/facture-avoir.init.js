@@ -326,8 +326,7 @@ let factureAvoir = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de l'enregistrement.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "l'enregistrement");
             });
     },
     editItem: function(el) {
@@ -354,8 +353,7 @@ let factureAvoir = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de la modification.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la modification");;
             });
     },
     showItem: function(el) {
@@ -381,8 +379,7 @@ let factureAvoir = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de l'affichage.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "l'affichage");
             });
     },
     removeItem: function(el, oktitle, oktext) {
@@ -405,8 +402,7 @@ let factureAvoir = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de la suppression.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la suppression");
             });
     },
     setformData: function(form, item) {
@@ -481,8 +477,7 @@ let factureAvoir = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de la validation.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la validation");
             });
     },
     validateFacture: function(oktitle, oktext) {
@@ -507,8 +502,7 @@ let factureAvoir = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error("Une erreur s'est produite lors de la validation.");
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la validation");
             });
     },
     // Récupération de la liste des articles ou des clients
@@ -533,12 +527,7 @@ let factureAvoir = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error(
-                    err.status == 403 ?
-                    `Récupération de la liste des ${selectData[0]} : Accès réfusé` :
-                    `Une erreur s'est produite lors de la récupération des ${selectData[0]}`
-                );
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la récupération des " + selectData[0]);
             });
     },
     reloadDatatable: function(event) {
@@ -622,12 +611,7 @@ let factureAvoir = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error(
-                    err.status == 403 ?
-                    `Récupération de ${dataname} : Accès réfusé` :
-                    `Une erreur s'est produite lors de la récupération de ${dataname}`
-                );
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la récupération de " + dataname);
             });
     },
     setShowingTable: function(itemObj) {
@@ -694,12 +678,7 @@ let factureAvoir = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                console.log(err);
-                alertify.error(
-                    err.status == 403 ?
-                    `Récupération de la liste de la facture : Accès réfusé` :
-                    `Une erreur s'est produite lors de la récupération de la facture`
-                );
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la récupération de la facture");
             });
     },
     confirmInvoiceValidation: function(event) {
@@ -788,10 +767,7 @@ let factureAvoir = {
                 })
                 .catch(function(err) {
                     // Run this when promise was rejected via reject()
-                    console.log(err);
-                    alertify.error(
-                        `Une erreur s'est produite lors de la récupération de l'aib`
-                    );
+                    GlobalScript.ajxRqtErrHandler(err, "alertify", "la récupération de l'aib");
                 });
         }
     },

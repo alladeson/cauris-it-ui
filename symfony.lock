@@ -17,6 +17,30 @@
     "doctrine/lexer": {
         "version": "1.2.3"
     },
+    "illuminate/collections": {
+        "version": "v9.12.1"
+    },
+    "illuminate/conditionable": {
+        "version": "v9.12.1"
+    },
+    "illuminate/contracts": {
+        "version": "v9.12.1"
+    },
+    "illuminate/macroable": {
+        "version": "v9.12.1"
+    },
+    "illuminate/pipeline": {
+        "version": "v9.12.1"
+    },
+    "illuminate/support": {
+        "version": "v9.12.1"
+    },
+    "monolog/monolog": {
+        "version": "2.6.0"
+    },
+    "nesbot/carbon": {
+        "version": "2.58.0"
+    },
     "nikic/php-parser": {
         "version": "v4.13.2"
     },
@@ -32,6 +56,9 @@
     "psr/log": {
         "version": "1.1.4"
     },
+    "psr/simple-cache": {
+        "version": "3.0.0"
+    },
     "sensio/framework-extra-bundle": {
         "version": "6.2",
         "recipe": {
@@ -43,6 +70,15 @@
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "spatie/backtrace": {
+        "version": "1.2.1"
+    },
+    "spatie/flare-client-php": {
+        "version": "1.1.0"
+    },
+    "spatie/ignition": {
+        "version": "1.2.10"
     },
     "symfony/apache-pack": {
         "version": "1.0",
@@ -171,8 +207,14 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.25.0"
     },
+    "symfony/polyfill-php80": {
+        "version": "v1.25.0"
+    },
     "symfony/polyfill-php81": {
         "version": "v1.25.0"
+    },
+    "symfony/process": {
+        "version": "v6.0.8"
     },
     "symfony/requirements-checker": {
         "version": "2.0",
@@ -204,6 +246,19 @@
     },
     "symfony/string": {
         "version": "v5.4.3"
+    },
+    "symfony/translation": {
+        "version": "6.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.3",
+            "ref": "da64f5a2b6d96f5dc24914517c0350a5f91dee43"
+        },
+        "files": [
+            "./config/packages/translation.yaml",
+            "./translations/.gitignore"
+        ]
     },
     "symfony/translation-contracts": {
         "version": "v2.5.0"
@@ -238,5 +293,8 @@
     },
     "twig/twig": {
         "version": "v3.3.8"
+    },
+    "voku/portable-ascii": {
+        "version": "2.0.1"
     }
 }

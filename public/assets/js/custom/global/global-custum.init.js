@@ -4,12 +4,24 @@ let waitMe_zone = '';
 $(document).on({
     ajaxStart: function() {
         if (waitMe_zone != null)
-            GlobalScript.run_waitMe((waitMe_zone.length ? waitMe_zone : $('body')), 1, 'win8')
+            GlobalScript.run_waitMe((waitMe_zone.length ? waitMe_zone : $('body')), 1, 'stretch')
     },
     ajaxStop: function() {
         if (waitMe_zone != null)
             (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
+
+        waitMe_zone = "";
     },
+});
+
+$(document).ready(function() {
+    var rightbar = $("div.right-bar")
+    rightbar.on("change", "input[name='layout-mode'], input[name='layout-width'], input[name='layout-position'], input[name='topbar-color'], input[name='sidebar-size'], input[name='sidebar-color']", function(event) {
+        GlobalScript.layoutSettings(event);
+    });
+    rightbar.find("input[name='layout']").on('change', function(event) {
+        GlobalScript.layoutSettings(event, true);
+    });
 });
 
 // $(document).on(
@@ -160,8 +172,7 @@ let GlobalScript = {
             return true;
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            console.log(err)
-            alertify.error(err.status == 403 ? `Récupération de la liste des ${selectData[0]} : Accès réfusé` : `Une erreur s'est produite lors de la récupération des ${selectData[0]}`);
+            GlobalScript.ajxRqtErrHandler(err, "alertify", "la récupération des " + selectData[0]);
             return false;
         });
     },
@@ -176,5 +187,91 @@ let GlobalScript = {
             text = text.replace(new RegExp(x, 'g'), obj[x]);
         }
         return text;
+    },
+    saError: function(title, text) {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: "error",
+            confirmButtonColor: "#5156be",
+        })
+    },
+    ajxRqtErrHandler: function(err, alert, errTopic) {
+        console.log(err);
+        // Meessage d'erreur par défaut
+        var defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + ". Si cela persiste, veuillez contacter votre administrateur ou votre fournisseur du SFE. Merci !";
+        // Les erreur du serveur : backend (spring-boot)  ou frontend (symfony)
+        if ($.inArray(err.status, [500, 502, 503, 504]) > -1)
+            defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + " : le serveur ne répond pas. Si cela persiste, veuillez contacter votre administrateur ou votre fournisseur du SFE. Merci !";
+        // Essayons de transformer la réponse en objet json
+        try {
+            var responseText = JSON.parse(err.responseText);
+            // Utilisateur non authentifié
+            if (responseText.status == 401 && responseText.message.startsWith("Full authentication is required")) {
+                defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + " : Authentification requise.";
+                return;
+            }
+            if (responseText.status != 500 && responseText.message)
+                defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + " : " + responseText.message;
+        } catch (e) {
+            // To do
+        }
+        if (alert == "sweet")
+            GlobalScript.saError("Erreur !", defaultErrMessage);
+        if (alert == "alertify")
+            alertify.error(defaultErrMessage);
+    },
+    layoutSettings: function(event = null, layoutChange = false) {
+        if (event) event.preventDefault();
+        var layout = $("div#layout-wrapper").data('userLayout');
+        // Le right bar element
+        var rightbar = $("div.right-bar");
+        // Formatage de données du layout
+        data = {
+            'id': null, // Si c'est pour la 1ère fois, le layout sera créé par le backend et mis à jour en session par Symfony
+            'layout': rightbar.find("input[name='layout']:checked").val(),
+            'mode': rightbar.find("input[name='layout-mode']:checked").val(),
+            'width': rightbar.find("input[name='layout-width']:checked").val(),
+            'position': rightbar.find("input[name='layout-position']:checked").val(),
+            'topbarColor': rightbar.find("input[name='topbar-color']:checked").val(),
+            'sidebarSize': rightbar.find("input[name='sidebar-size']:checked").val(),
+            'sidebarColor': rightbar.find("input[name='sidebar-color']:checked").val(),
+        };
+        // Si le layout existe, donc c'est une mise à jour
+        if (layout) {
+            // Mise à jour de l'id du data, ce qui permet au backend de faire une mise à jour et non une création
+            data.id = layout.id;
+        }
+
+        layout = data;
+        // Envoie de la requête pour l'enregistrement des données du layout
+        waitMe_zone = layoutChange ? "" : null;
+        GlobalScript.requestLayoutSettings(JSON.stringify(layout)).then(function(data) {
+            // Run this when your request was successful
+            console.log("OK")
+            layoutChange ? window.location.href = "" : "";
+        }).catch(function(err) {
+            // Run this when promise was rejected via reject()
+            console.log(err);
+            // GlobalScript.ajxRqtErrHandler(err, "alertify", "la mise à jour des paramètre du layout");
+        });
+    },
+    requestLayoutSettings: function(layout) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                url: URL_GLOBAL_LAYOUT_SETTINGS,
+                method: "POST",
+                dataType: "json",
+                data: {
+                    "layout": layout,
+                },
+                success: function(data) {
+                    resolve(data) // Resolve promise and go to then()
+                },
+                error: function(err) {
+                    reject(err) // Reject the promise and go to catch()
+                },
+            });
+        });
     }
 }

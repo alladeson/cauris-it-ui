@@ -61,7 +61,7 @@ class SecurityController extends AbstractController
         try {
             // $response = $this->apiService->sendData("POST", "public/signin/", $this->setData($request, null));
             $response = $this->apiService->request("POST", "public/signin/", $this->setData($request, null));
-            if ($response->getStatusCode(false) == 200) {
+            if ($response->getStatusCode(false) ==  Response::HTTP_OK) {
                 $responseObjet = json_decode($response->getContent(false));
                 // set session attributes
                 $this->session->set("token", $responseObjet->{'token'});
@@ -72,10 +72,13 @@ class SecurityController extends AbstractController
                 // Récupération de l'utilisateur connecté
                 $user = ApiDataService::getAuthUser();
                 $this->session->set("user", $user);
+                // Récupération du paramètre du system et sauvegarde dans le session
+                $params = ApiDataService::getSystemParams();
+                $this->session->set("params", $params);
             }
             return new Response($response->getContent(false), $response->getStatusCode(false));
         } catch (TransportException $e) {
-            return new Response($e->getMessage(), 502);
+            return new Response($e->getMessage(), Response::HTTP_BAD_GATEWAY);
         }
     }
 

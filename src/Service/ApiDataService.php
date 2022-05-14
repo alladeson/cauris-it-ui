@@ -78,6 +78,29 @@ class ApiDataService extends AbstractController
         return $status == Response::HTTP_OK ? json_decode($content) : null;
     }
 
+    public static function getSystemParams()
+    {
+        $session = new Session();
+        if (!$session->getId()) $session->start();
+
+        $token = $session->get('token');
+        $client = HttpClient::create();
+        $baseUrl = $_ENV["API_BASE_URL"];
+        $options = [
+            'headers' => [
+                'Authorization' => "Bearer {$token}",
+                'Content-Type' => "application/json"
+            ]
+        ];
+        // get system params
+        $response =  $client->request(Request::METHOD_GET, $baseUrl . ApiConstant::URL_GET_SYSTEM_PARAMS,  $options);
+        
+        $content = $response->getContent(false);
+        $status = $response->getStatusCode(false);
+
+        return $status == Response::HTTP_OK ? json_decode($content) : null;
+    }
+
     //
 
     /**
@@ -331,6 +354,37 @@ class ApiDataService extends AbstractController
         $route = $request->request->get('url');
         $file = $request->files->get('file');
         $response = $this->requestFile($method, $route, $file);
+        return new Response($response->getContent(false), $response->getStatusCode(false));
+    }
+    /**
+     * Envoie une requête pour l'enregistrement d'un fichier
+     *
+     * @param Request $request
+     * @return Response
+     */
+
+    public function executeLayoutSettings(Request $request): Response
+    {
+        $session = new Session();
+        if (!$session->getId()) $session->start();
+        // Récupération du layout de la requête
+        $layout = $request->request->get('layout');
+        // Transformation du layout en objet, utile pour verifier la présence d'un probable id en vue de la modification
+        $layout = is_string($layout) ? json_decode($layout) : $layout;
+        // Tentative de récupération de layout depuis la session
+        $layoutSession = $session->get('user')->{ 'layout'};
+        // Si un layout existe dans la session et que le layout à enregistrer est sans id (ça arrive si l'utilisateur modifie les paramètres du layout sans recharger la page)
+        // On met l'id du layout à envoyer à l'api à jour
+        if($layoutSession && !$layout->{ 'id'})
+            $layout->{ 'id'} = $layoutSession->{ 'id'};
+        // Exécution de la requête vers l'api
+        $response = $this->request(Request::METHOD_POST, ApiConstant::URL_POST_LAYOUT, $layout);
+        // Si tout se passe, l'api renvoie l'utilisateur contenant son layout déjà en base
+        if ($response->getStatusCode(false) == Response::HTTP_OK){
+            // Mise à jour de l'utilisateur en session
+            $session->set("user", json_decode($response->getContent(false)));
+        }
+        // Renvoie de la réponse à la vue
         return new Response($response->getContent(false), $response->getStatusCode(false));
     }
 
