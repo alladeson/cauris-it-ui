@@ -334,7 +334,9 @@ let facturation = {
                 choices[2].removeActiveItems();
                 choices[3].removeActiveItems();
                 facturation.getArticle();
-                facturationForm.find("#item-id").val("");
+                facturationForm.find("#item-id").val(null);
+                //Affichage ou non des champs de la taxe spécifique
+                facturation.tsInputsToggle();
                 //Affichage ou non des champs de remise
                 facturation.remiseInputsToggle();
                 // Mise à jour du champ date du formulaire de la facture
@@ -368,7 +370,7 @@ let facturation = {
                 // Sauvegarde la taxe spécifique si existante sinon null
                 taxeSpecifique = itemObj.ts ? itemObj.ts.tsUnitaire : null;
                 //Mise à jour du prix originale de l'article
-                originalPrice = itemObj.isRemise ? itemObj.discount.originalPrice : itemObj.prixUnitaire;
+                originalPrice = itemObj.remise ? itemObj.discount.originalPrice : itemObj.prixUnitaire;
                 // Mise à jour du formulaire de facturation
                 facturation.setformData(facturationForm, itemObj);
             })
@@ -433,33 +435,41 @@ let facturation = {
             form.find("#prix_u").val(item.prixUnitaire);
             form.find("#quantite").val(item.quantite);
             // form.find("#taxe-specifique").val(item.taxeSpecifique);
-            // Gestion du nom de la taxe spécifique
-            form.find("div.taxe-specifique label")
-                .text(article && article.taxeSpecifique ? "TS (" + article.tsName + ")" : "TS (Taxe spécifique)")
+            // Gestion de la taxe spécifique (le montant est mise à jour dans fonction setMontant())
+            form.find("#ts-check").prop("checked", item.taxeSpecifique ? true : false);
+            form.find("div.taxe-specifique #ts-name")
+                .val(item.taxeSpecifique ? item.ts.name : null)
+            // Gestsion de la remise
             form.find("#remise-check").prop("checked", item.remise ? true : false);
             form.find("#remise_taux").val(item.discount ? item.discount.taux : "");
             form.find("#remise_prix_u").val(item.discount ? item.discount.originalPrice : "");
             form.find("#remise_description").val(item.discount ? item.discount.priceModification : "");
+            //
             choices[1].setChoiceByValue(client.id);
             choices[3].setChoiceByValue(item.taxe.id);
             choices[2].setChoiceByValue(item.article ? item.article.id : 0);
             facturation.setMontant();
+            // Affichage ou non des champs de la taxe spécifique
+            facturation.tsInputsToggle();
             // Affichage ou non des champs de la remise
             facturation.remiseInputsToggle();
         }
     },
     dataFormat: function (form) {
         if (form.length) {
+            var ts = form.find("#ts-check").is(":checked");
+            var remise = form.find("#remise-check").is(":checked");
             data = {
                 id: form.find("#item-id").val(),
                 quantite: form.find("#quantite").val(),
                 unite: "U",
                 prixUnitaire: form.find("#prix_u").val(),
-                taxeSpecifique: form.find("#taxe-specifique").val(),
-                remise: form.find("#remise-check").is(":checked"),
-                taux: form.find("#remise-check").is(":checked") ? form.find("#remise_taux").val() : "",
-                originalPrice: form.find("#remise-check").is(":checked") ? form.find("#remise_prix_u").val() : "",
-                priceModification: form.find("#remise-check").is(":checked") ? form.find("#remise_description").val() : "",
+                taxeSpecifique: ts ? form.find("#taxe-specifique").val() : null,
+                tsName: ts ? form.find("#ts-name").val() : null,
+                remise: remise,
+                taux: remise ? form.find("#remise_taux").val() : null,
+                originalPrice: remise ? form.find("#remise_prix_u").val() : null,
+                priceModification: remise ? form.find("#remise_description").val() : null,
                 taxeId: form.find("#taxe").val(),
                 tfId: form.find("#type").val(),
             };
@@ -602,15 +612,20 @@ let facturation = {
         facturationForm.find("#prix_u").val(article ? article.prix : null);
         facturationForm.find("#quantite").val(article ? 1 : null);
         facturationForm.find("#montant").val(article ? article.prix : null);
+        // Gestion de la taxe spécifique
+        facturationForm.find("#ts-check").prop("checked", article && article.taxeSpecifique ? true : false);
         facturationForm
             .find("#taxe-specifique")
             .val(article ? article.taxeSpecifique : null);
+        // Affichage ou non des champs de la taxe spécifique
+        facturation.tsInputsToggle();
         // Gestion du nom de la taxe spécifique
-        facturationForm.find("div.taxe-specifique label")
-            .text(article && article.taxeSpecifique ? "TS (" + article.tsName + ")" : "TS (Taxe spécifique)")
+        facturationForm.find("div.taxe-specifique #ts-name")
+            .val(article && article.taxeSpecifique ? article.tsName : "")
         choices[3].setChoiceByValue(article?.taxe.id);
         // Gestion des remise
         facturationForm.find("#remise-check").prop("checked", false);
+        // Affichage ou non des champs de la remise
         facturation.remiseInputsToggle();
     },
     setMontant: function (event = null) {
@@ -905,6 +920,26 @@ let facturation = {
             facturationForm.find("#remise_description").val(null);
         }
     },
+    tsInputsToggle: function (event = null) {
+        if (event) event.preventDefault();
+        var ts = facturationForm.find("#ts-check").is(":checked");
+        if (ts) {
+            if (!article) {
+                alertify.warning(
+                    "Veuillez sélectionner un article svp !"
+                );
+                facturationForm.find("#ts-check").prop("checked", false)
+            } else {
+                facturationForm.find("div#tsInputsToggle").show();
+                facturationForm.find("#taxe-specifique").attr("required", "required");
+                facturationForm.find("#ts-name").attr("required", "required");
+            }
+        } else {
+            facturationForm.find("div#tsInputsToggle").hide();
+            facturationForm.find("#taxe-specifique").removeAttr("required");
+            facturationForm.find("#ts-name").removeAttr("required");
+        }
+    },
     setRemiseFormOnPricesChange: function (event = null, setMontant = false) {
         if (event) event.preventDefault()
         var remise = facturationForm.find("#remise-check").is(":checked");
@@ -1105,7 +1140,7 @@ $(document).ready(function () {
         console.log("ici");
         if (facture && facture.valid) {
             alertify.warning("Cette facture est déjà validée");
-        } else if (facture && facture.details) {
+        } else if (facture && facture.details.length) {
             // Mise à jour du montant ttc de la facture et remise à null du montant aib
             if (factureMontantTtc && !facture.aib) facture.montantTtc = factureMontantTtc;
             // Mise à jour du modal de validation
@@ -1154,6 +1189,8 @@ document.addEventListener("DOMContentLoaded", function () {
     factureValidationForm = $("div#validate-invoice-modal").find("form");
     //Gestion des champs de remise
     facturation.remiseInputsToggle();
+    //Gestion de la taxe spécifique
+    facturation.tsInputsToggle();
     // Récupératon des types de facture
     facturation.getForeignsData(
         URL_LIST_TYPE_FACTURE_VENTE,
