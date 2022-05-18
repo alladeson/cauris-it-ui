@@ -1,6 +1,20 @@
 //Définition de la zone de loading
-let waitMe_zone = '';
+let waitMe_zone = null;
+// Définition des variable d'url d'impression et de téléchargment de la facture
+let $pdf = "";
+let $pdfDowload = "";
+// Instanciation de l'objet d'état de l'affichage de la facture
+const $initialState = {
+    pdfDoc: null,
+    currentPage: 1,
+    pageCount: 0,
+    zoom: 1,
+};
 
+/**
+ * Gestion d'affichage de waitMe pour les requêtes ajax de l'application
+ * Si une requête ne nécessite pas de waitMe loader, mettre waitMe_zon à null
+ */
 $(document).on({
     ajaxStart: function() {
         if (waitMe_zone != null)
@@ -13,7 +27,9 @@ $(document).on({
         waitMe_zone = "";
     },
 });
-
+/**
+ * Gestion des élément de rigthbar pour la mise en page de l'écran
+ */
 $(document).ready(function() {
     var rightbar = $("div.right-bar")
     rightbar.on("change", "input[name='layout-mode'], input[name='layout-width'], input[name='layout-position'], input[name='topbar-color'], input[name='sidebar-size'], input[name='sidebar-color']", function(event) {
@@ -196,6 +212,13 @@ let GlobalScript = {
             confirmButtonColor: "#5156be",
         })
     },
+
+    /**
+     * Gestion des erreur des requêtes ajax
+     * @param {Objet} err L'objet error de la requête ajax
+     * @param {String} alert Le type d'alerte à utiliser : Soit c'est Alertify ou c'est SweetAlert
+     * @param {String} errTopic L'opération qui a suscité l'erreur
+     */
     ajxRqtErrHandler: function(err, alert, errTopic) {
         console.log(err);
         // Meessage d'erreur par défaut
@@ -221,6 +244,10 @@ let GlobalScript = {
         if (alert == "alertify")
             alertify.error(defaultErrMessage);
     },
+    /**
+     * Gestion global de l'apparence de l'application
+     * @param {boolean} layoutChange Permet d'indiquer le changement de la disposition de l'écran : vertical ou Horizontal
+     */
     layoutSettings: function(event = null, layoutChange = false) {
         if (event) event.preventDefault();
         var layout = $("div#layout-wrapper").data('userLayout');
@@ -256,6 +283,11 @@ let GlobalScript = {
             // GlobalScript.ajxRqtErrHandler(err, "alertify", "la mise à jour des paramètre du layout");
         });
     },
+    /**
+     * Envoie des requêtes de sauvegarde des paramètre de mise en page pour l'utilisateur
+     * @param {Object} layout L'objet contenant les paramètres de mise en page de l'application pour un utilisateur
+     * @returns Promise
+     */
     requestLayoutSettings: function(layout) {
         return new Promise(function(resolve, reject) {
             $.ajax({
@@ -273,5 +305,134 @@ let GlobalScript = {
                 },
             });
         });
-    }
+    },
+    /**
+     * Pour visionner la facture imprimée en pdf avant l'impression physique ou le téléchargement du pdf
+     * @param {String} printPdfUrl L'url d'impression de la facture
+     * @param {String} downloadPdfUrl L'url de téléchargement de la facture après son impression en pdf
+     * @param {String} pdfName  Le nom du fichier pour le téléchargement
+     */
+    pdfwebviewer: function(printPdfUrl, dowloadPdfUrl, pdfName) {
+        // Mise à jour des url d'impression et de téléchargement
+        $pdf = printPdfUrl;
+        $pdfDowload = dowloadPdfUrl;
+        // Lancement de waiteMe
+        GlobalScript.run_waitMe($('body'), 1, 'stretch')
+            // Lancement de l'impression de la facture
+        pdfjsLib
+            .getDocument($pdf)
+            .promise.then((doc) => {
+                // Une fois imprimée, la facture est récupérée pour la faire visionner
+                $initialState.pdfDoc = doc;
+                console.log('pdfDocument', $initialState.pdfDoc);
+
+                $('#page_count').html($initialState.pdfDoc.numPages);
+
+                // Fonction qui rend l'affichage de la facture 
+                GlobalScript.renderPage();
+                // Affichage du modal contenant la facture, ce modal est inclus dans templates/admin/global-layout.html.twig
+                $("div.webviwer-invoice-modal").modal("show");
+
+                // Gestion des évènements essentiels et utils dans notre cas
+                // Button events : Les touches de direction pour passer d'une page à l'autre
+                $('#prev-page').click(GlobalScript.showPrevPage);
+                $('#next-page').click(GlobalScript.showNextPage);
+                // Zoom functionality : Les touches de zoom de l'affichage
+                $('#zoom_in').on('click', () => {
+                    if ($initialState.pdfDoc === null) return;
+                    $initialState.zoom *= 4 / 3;
+
+                    GlobalScript.renderPage();
+                });
+
+                $('#zoom_out').on('click', () => {
+                    if ($initialState.pdfDoc === null) return;
+                    $initialState.zoom *= 2 / 3;
+                    GlobalScript.renderPage();
+                });
+                // La touche pour l'impression physique de la facture
+                $('#pdf_printer').on('click', () => {
+                    printJS({ printable: $pdfDowload, type: 'pdf', showModal: true });
+                });
+                // La touche pour le téléchargement de la facture en version pdf
+                $("#pdf_download").click(function(event) {
+                    event.preventDefault()
+                    GlobalScript.saveFile(pdfName, $pdfDowload);
+                });
+
+                // Mise en pause de waitMe
+                $('body').waitMe('hide')
+            })
+            .catch((err) => {
+                alert(err.message);
+            });
+    },
+    // Render the page.
+    renderPage: function() {
+        $initialState.pdfDoc
+            // Load the first page.
+            .getPage($initialState.currentPage)
+            .then((page) => {
+                const canvas = $('#canvas')[0];
+                const $ctx = canvas.getContext('2d');
+                const $viewport = page.getViewport({
+                    scale: $initialState.zoom,
+                });
+
+                canvas.height = $viewport.height;
+                canvas.width = $viewport.width;
+
+                // Render the PDF page into the canvas context.
+                const renderCtx = {
+                    canvasContext: $ctx,
+                    viewport: $viewport,
+                };
+
+                page.render(renderCtx);
+
+                $('#page_num').html($initialState.currentPage);
+            });
+    },
+    showPrevPage: function() {
+        if ($initialState.pdfDoc === null || $initialState.currentPage <= 1)
+            return;
+        $initialState.currentPage--;
+
+        // Render the current page.
+        $('#current_page').val($initialState.currentPage);
+        GlobalScript.renderPage();
+    },
+    showNextPage: function() {
+        if (
+            $initialState.pdfDoc === null ||
+            $initialState.currentPage >=
+            $initialState.pdfDoc._pdfInfo.numPages
+        )
+            return;
+
+        $initialState.currentPage++;
+        $('#current_page').val($initialState.currentPage);
+        GlobalScript.renderPage();
+    },
+    saveFile: function(fileName, urlFile) {
+        let a = document.createElement("a");
+        a.style = "display: none";
+        document.body.appendChild(a);
+        a.href = urlFile;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(urlFile);
+        a.remove();
+    },
+    /**
+     * Afficher la facture imprimer sur l'écran de l'application
+     * @param {Object} facture L'objet de la facture à afficher
+     */
+    showPrintedInvoice: function(facture) {
+            var printPdfUrl = URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id);
+            var pdfName = "facture-" + facture.numero + ".pdf";
+            var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", pdfName);
+            GlobalScript.pdfwebviewer(printPdfUrl, dowloadPdfUrl, pdfName)
+        }
+        /** Fin de l'affichage de la facture **/
 }

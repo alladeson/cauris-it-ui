@@ -88,7 +88,7 @@ let listeFacture = {
                                                     <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item print-item" href="javascript:void(0);" data-item-id="${data}">Imprimer</a>
+                                                    <a class="dropdown-item print-item" href="javascript:void(0);" data-item-id="${data}">Générer Facture</a>
                                                 </li>` :
                             `<li>
                                                     <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier et/ou valider</a>
@@ -215,10 +215,7 @@ let listeFacture = {
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function (data) {
             // Run this when your request was successful
             console.log(data)
-            window.open(
-                facture.filename ? URL_GET_FILE.replace("__fileName__", data.filename) : URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", data.id),
-                "_blank"
-            )
+            GlobalScript.showPrintedInvoice(data);
         }).catch(function (err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "l'affichage de l'interface de modification");
@@ -284,10 +281,7 @@ let listeFacture = {
         // Gestion de l'impression de la factrue
         $("div#facture-details-modal").find("button.btn-print").click(function (e) {
             e.preventDefault();
-            window.open(
-                facture.filename ? URL_GET_FILE.replace("__fileName__", facture.filename) : URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id),
-                "_blank"
-            )
+            GlobalScript.showPrintedInvoice(facture);
         })
         // Gestion de l'affichage des détails de la facture
         $("div#facture-details-modal").find("button.btn-details").click(function (e) {

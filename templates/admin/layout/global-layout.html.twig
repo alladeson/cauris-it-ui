@@ -172,6 +172,10 @@
 					<!-- start page content -->
 					{% block page_content %}{% endblock %}
 					<!-- end page content -->
+
+					<!-- Pour visionner le facture imprimée -->
+					{% include "facture/__facture_pdf_viewer.html.twig" %}
+
 				</div>
 			</div>
 			{# <!-- End Page-content --> #}

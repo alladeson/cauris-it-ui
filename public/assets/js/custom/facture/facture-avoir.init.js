@@ -283,12 +283,8 @@ let factureAvoir = {
             confirmButtonColor: "#5156be",
         }).then(function(e) {
             e.value ?
-                window.open(
-                    facture.filename ? URL_GET_FILE.replace("__fileName__", facture.filename) : URL_IMPRIMER_FACTURE.replace("__id__", facture.id),
-                    "_blank"
-                ) :
-                "";
-            location.href = "";
+                GlobalScript.showPrintedInvoice(facture) : "";
+                $("#validate-invoice-modal").modal("toggle");
         });
     },
     submitFormData: function(event) {
@@ -861,10 +857,7 @@ $(document).ready(function() {
     //Validate facture
     $("a.print-facture").click(function(e) {
         e.preventDefault();
-        window.open(
-            facture.filename ? URL_GET_FILE.replace("__fileName__", facture.filename) : URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id),
-            "_blank"
-        )
+        GlobalScript.showPrintedInvoice(facture);
     });
 });
 document.addEventListener("DOMContentLoaded", function() {

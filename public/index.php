@@ -18,7 +18,7 @@ return function (array $context) {
     //$requestUri = trim($_SERVER['REQUEST_URI']);
     $request = Request::createFromGlobals();
     $requestPath = trim($request->getPathInfo());
-    $queryPath = trim($request->query->get('uri'));
+    $queryPath = trim($request->query->get('uri') ? $request->query->get('uri') : "");
     $home = ["/", "/dashboard"];
     $newSystemParamsUrl = "/parametre/system-params/new";
     $URL_GLOBAL_REQUEST = "/__global/__request";

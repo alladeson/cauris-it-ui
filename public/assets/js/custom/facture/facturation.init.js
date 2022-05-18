@@ -290,13 +290,8 @@ let facturation = {
             icon: "success",
             confirmButtonColor: "#5156be",
         }).then(function (e) {
-            e.value
-                ? window.open(
-                    facture.filename ? URL_GET_FILE.replace("__fileName__", facture.filename) : URL_IMPRIMER_FACTURE.replace("__id__", facture.id),
-                    "_blank"
-                )
-                : "";
-            location.href = "";
+            e.value ?  GlobalScript.showPrintedInvoice(facture) : "";
+            $("#validate-invoice-modal").modal("toggle");
         });
     },
     submitFormData: function (event) {
@@ -482,9 +477,9 @@ let facturation = {
             data = {
                 aibId: form.find("#aib").val(),
                 typePaiementId: form.find("#type-paiement").val(),
-                montantRecu: form.find("#montant-recu").val(),
-                montantPayer: form.find("#montant-payer").val(),
-                montantRendu: form.find("#montant-rendu").val(),
+                montantRecu: parseInt(form.find("#montant-recu").val()),
+                montantPayer: parseInt(form.find("#montant-payer").val()),
+                montantRendu: parseInt(form.find("#montant-rendu").val()),
                 description: $.trim(form.find("#description").val()),
             };
             return JSON.stringify(data);
@@ -511,7 +506,7 @@ let facturation = {
             })
             .catch(function (err) {
                 // Run this when promise was rejected via reject()
-                GlobalScript.ajxRqtErrHandler(err, "alertify", "la validation");
+                GlobalScript.ajxRqtErrHandler(err, "sweet", "la validation");
             });
     },
     validateFacture: function (oktitle, oktext) {
@@ -540,12 +535,12 @@ let facturation = {
                 datatable.ajax.reload();
                 facturation.saSuccesFactureValider(
                     "Validée !",
-                    "Facture validée avec succès ! Cliquer sur 'OK' pour imprimer la facture."
+                    "Facture validée avec succès ! Cliquer sur 'OK' pour générer la facture."
                 );
             })
             .catch(function (err) {
                 // Run this when promise was rejected via reject()
-                GlobalScript.ajxRqtErrHandler(err, "alertify", "la validation");
+                GlobalScript.ajxRqtErrHandler(err, "sweet", "la validation");
             });
     },
     // Récupération de la liste des articles ou des clients
@@ -820,18 +815,23 @@ let facturation = {
                     // Sauvegarde temporaire du montant ttc de la facture, cela servira dans le cas du changement de l'aib étant donné que c'est le seul champ affecté par le montant aib
                     if (!factureMontantTtc) factureMontantTtc = facture.montantTtc;
                     /**
-                     * Le montant de l'Aib est arrondi par defaut si sa partie decimale est <= 5 (je veux dire le chiffre après la virgule),
+                     * Le montant de l'Aib est arrondi par defaut si sa partie decimale est < 5 (je veux dire le chiffre après la virgule),
                      * et par excès si la partie décimale est > 5
+                     * Si la partie décimale est égle à 0.5, ambiguïté dans le calcul, il faudrait  attendre la reponse du serveur de la DGI pour prendre une décisison
                      * Le code qui suit resoud cette approche que nous avons constacté lors des tests sur les factures générées par le serveur de la DGI
                      */
                     // Calcule du montant aib
-                    var montantAib = (facture.montantHt * aib.valeur) / 100;
+                    var montantAib = (facture.montantHtAib * aib.valeur) / 100;
                     // Récupération de la partie décimale
                     var decimal = montantAib - Math.trunc(montantAib);
                     // Si La partie decimale est null ou inférieure ou égale à 0.5, prendre la partie
                     // entière du montant l'aib
-                    if (decimal == 0 || decimal <= 0.5)
+                    if (decimal < 0.5 )
                         facture.montantAib = Math.trunc(montantAib);
+                    // Sinon si le decimal est égale à 0.5, ambiguïté dans le calcul, il faudrait
+		            // attendre la reponse du serveur de la DGI pour prendre une décisison
+                    else if(decimal == 0.5)
+                        facture.montantAib = montantAib;
                     // Sinon, prendre la partie entière du montant de l'aib + 1
                     else
                         facture.montantAib = Math.trunc(montantAib) + 1;
@@ -883,7 +883,7 @@ let facturation = {
         if (!factureValidationForm.find("#type-paiement").val()) {
             alertify.warning("Veuillez sélectionner un type de paiement svp !");
             return;
-        } else if (parseInt(factureValidationForm.find("#montant-payer").val()) != facture.montantTtc) {
+        } else if (parseFloat(factureValidationForm.find("#montant-payer").val()) != parseFloat(facture.montantTtc)) {
             alertify.warning("Veuillez mettre à jour les montant du règlement de la facture svp !");
             return;
         }
