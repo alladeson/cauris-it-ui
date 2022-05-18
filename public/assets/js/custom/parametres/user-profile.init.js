@@ -142,7 +142,7 @@ let userProfile = {
         console.log(data);
         if (data) {
             $.each(JSON.parse(data), function(key, value) {
-                if (!value && !($.inArray(key, ['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'defaultPassword', 'photo', 'telephone', 'phone', 'email']) > -1)) {
+                if (!value && !($.inArray(key, ['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'defaultPassword', 'photo', 'telephone', 'phone', 'email', 'layout']) > -1)) {
                     console.log(key)
                     userProfile.saError("Erreur !", "L'enregistrement ne peut aboutir pour manque d'informations. Veuillez bien renseigner votre nom, prénom et identifiant !")
                     save = false;
