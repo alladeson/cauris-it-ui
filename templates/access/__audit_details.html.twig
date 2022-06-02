@@ -1,0 +1,62 @@
+<div class="modal fade audit-details-modal" id="audit-details-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-xl">
+			<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Affichage</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-lg-6">
+								<h5 class="font-size-14 mt-2">
+									<i class="mdi mdi-arrow-right text-primary me-1"></i>Valeur avant</h5>
+								<div class="table-responsive">
+									<table class="table table-nowrap align-middle justify-content-center mb-0 audit-valeur-avant-table" style="background-color: white;">
+										<thead>
+											<tr>
+												<th scope="col" class=""></th>
+											</tr>
+										</thead>
+										<tbody>										
+											<tr id="">
+												<td class="td-valeur-avant">
+													<pre id="valeur-avant"></pre>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<!-- end table -->
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<h5 class="font-size-14 mt-2">
+									<i class="mdi mdi-arrow-right text-primary me-1"></i>Valeur après</h5>
+								<div class="table-responsive">
+									<table class="table table-nowrap align-middle justify-content-center mb-0 audit-valeur-apres-table" style="background-color: white;">
+										<thead>
+											<tr>
+												<th scope="col" class=""></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td class="td-valeur-apres">
+													<pre id="valeur-apres"></pre>
+												</td>
+											</tr>											
+										</tbody>
+									</table>
+									<!-- end table -->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer d-flex justify-content-center">
+						<button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Fermer</button>
+					</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->

@@ -1,0 +1,275 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- Utilisateurs
+{% endblock %}
+
+{% block page_content %}
+
+	<div class="row align-items-center">
+		<div class="col-md-6 col-4">
+			<div class="mb-3">
+				<h5 class="card-title">Liste des utilisateurs
+					<span class="text-muted fw-normal ms-2"></span>
+				</h5>
+			</div>
+		</div>
+
+		<div class="col-md-6 col-8">
+			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+				{# <div>
+					<ul class="nav nav-pills">
+						<li class="nav-item">
+							<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
+								<i class="bx bx-list-ul"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
+								<i class="bx bx-grid-alt"></i>
+							</a>
+						</li>
+					</ul>
+				</div> #}
+				<div onclick="user.newItemEvent(event)">
+					<a href="javascript:void(0);" class="btn btn-light" data-bs-toggle="modal" data-bs-target=".add-new-modal">
+						<i class="bx bx-plus me-1"></i>
+						Nouvel Ajout</a>
+				</div>
+
+				<div class="dropdown">
+					<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bx bx-dots-horizontal-rounded"></i>
+					</a>
+
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li>
+							<a class="dropdown-item" onclick="user.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+						</li>
+						{# <li>
+							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
+						</li> #}
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- end row -->
+
+	<div class="table-responsive mb-4">
+		<table class="table align-middle datatable dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+			<thead>
+				<tr>
+					<th>
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="checkAll">
+							<label class="form-check-label" for="checkAll"></label>
+						</div>
+					</th>
+					<th>Réf.</th>
+					<th>Idenfiant</th>
+					<th>Nom</th>
+					<th>Prenom</th>
+					<th>Téléphone</th>
+					<th>Rôle</th>
+					<th style="width: 80px; min-width: 80px;">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<!-- end table -->
+	</div>
+	<!-- end table responsive -->
+
+	<div class="modal fade add-new-modal" id="add-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<form method="post" class="" {#onsubmit="user.submitFormData(event)"#} >
+					<div class="modal-header">
+						<h5 class="modal-title">Nouvel ajout</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="mb-3 position-relative">
+									<input type="hidden" id="item-id" name="item-id" value="">
+									<label class="form-label" for="lastname">Nom</label>
+									<input type="text" id="lastname" name="lastname" class="form-control" placeholder="Le nom de l'utilisateur" required>
+								</div>
+							</div>							
+							<div class="col-md-6">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="firstname">Prénom</label>
+									<input type="text" id="firstname" name="firstname" class="form-control" placeholder="Le prenom de l'utilisateur">
+								</div>
+							</div>														
+						</div>
+						<div class="row">								
+							<div class="col-md-6">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="username">Idenfiant</label>
+									<div class="input-group">
+										<span class="input-group-text" id="usernamePrepend">@</i></span>
+										<input type="text" class="form-control" id="username" name="username" placeholder="L'idenfiant de l'utilisateur" value="" required aria-describedby="usernamePrepend">
+									</div>
+								</div>
+							</div>					
+							<div class="col-md-6">
+								<div class="mb-3 position-relative">
+									<label for="telephone" class="form-label">Téléphone</label>
+									<div class="input-group">
+										<span class="input-group-text" id="telephonePrepend"><i class="mdi mdi-phone"></i></span>
+										<input type="tel" pattern="[5-9]{1}[0-9]{1}[0-9]{2}[0-9]{2}[0-9]{2}" class="form-control" id="telephone" name="telephone" placeholder="Le téléphone de l'utilisateur" value="" aria-describedby="telephonePrepend">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">							
+							<div class="col-md-12">
+								<div class="mb-3 position-relative">
+									<label for="groupe" class="form-label">Groupe utilisateur</label>
+									<select data-trigger required class="form-control form-select" data-trigger name="groupe" id="groupe" placeholder="chercher...">
+									</select>
+								</div>
+							</div>							
+						</div>
+						{# <div class="row">							
+							<div class="col-md-12">
+								<div class="mb-3 position-relative">
+									<label for="role" class="form-label">Rôle</label>
+									<select data-trigger required class="form-control form-select" data-trigger name="role" id="role" placeholder="chercher...">
+										<option value="" selected>Sélectionner</option>
+										<option value="ADMIN" selected>Administrateur</option>
+										<option value="CAISSIER">Caissier(ère)</option>
+										<option value="COMMERCIALE">Commerciale</option>
+										<option value="SECRETAIRE">Secrétaire</option>
+									</select>
+								</div>
+							</div>							
+						</div> #}
+						<div class="row">						
+							<div class="col-md-12">
+								<div class="mb-3 position-relative">
+									<label for="password" class="form-label">Mot de passe</label>
+									<div class="input-group">
+                                        <label class="input-group-text"><i class="mdi mdi-lock-plus-outline"></i></label>
+										<input required type="password" class="form-control" id="password" name="password" placeholder="Entrez le mot de passe" value="">
+                                        <label class="input-group-text" id="password-icon" onclick="user.passwordShowToggle()" style="cursor: pointer !important;"><i class="mdi mdi-eye-outline"></i></label>
+                                    </div>
+								</div>							
+							</div>							
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
+						{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
+						<button type="button" class="btn btn-primary submit-button">Enregistrer</button>
+					</div>
+				</form>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Affichage</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="table-responsive">
+                        <table class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
+                            {# <thead>
+                                <tr>
+                                    <th scope="col" style="width: 50%;">
+                                        Sweet Alert Type
+                                    </th>
+                                    <th scope="col" class="text-center">
+                                        Sweet Alert Examples
+                                    </th>
+                                </tr>
+                            </thead> #}
+                            <tbody>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Référence
+                                    </th>
+                                    <td class="text-center td-reference">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Idenfiant
+                                    </th>
+                                    <td class="text-center td-username">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Nom
+                                    </th>
+                                    <td class="text-center td-lastname">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Prenom
+                                    </th>
+                                    <td class="text-center td-firstname">
+                                    </td>
+                                </tr>                                               
+                                <tr>
+                                    <th scope="row">
+                                        Téléphone
+                                    </th>
+                                    <td class="text-center td-telephone">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        Rôle
+                                    </th>
+                                    <td class="text-center td-role">
+                                    </td>
+                                </tr>                                                
+                            </tbody>
+                        </table>
+                        <!-- end table -->
+                    </div>
+				</div>
+				<div class="modal-footer d-flex justify-content-center">
+					<button type="button" class="btn btn-info" data-bs-dismiss="modal">Fermer</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+{% endblock %}
+
+{% block page_custom_scripts %}
+
+	<script>
+		let URL_LIST_USER_GROUP = "{{url_list_groupe}}";
+		{% if authUser.sa %}
+			URL_LIST_ITEM = "{{url_list_item_sa}}";
+			URL_LIST_USER_GROUP = "{{url_list_groupe_sa}}";
+		{% endif %}
+	</script>
+
+	<!-- init js -->
+	<script src="{{ asset('assets/js/custom/access/user.init.js') }}"></script>
+{% endblock %}

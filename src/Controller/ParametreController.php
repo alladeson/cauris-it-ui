@@ -30,6 +30,7 @@ class ParametreController extends AbstractController
             'page_title' => 'Taxe',
             'breadcrumb' => ['Paramètres', 'Taxe'],
             "sidebar_code" => ['PARAMS', 'TAXE', ''],
+            'menu_code' =>  ApiConstant::parametreTaxe,
             "url_list_item" => ApiConstant::URL_LIST_TAXE,
             "url_get_item" => ApiConstant::URL_GET_TAXE,
         ]);
@@ -47,6 +48,7 @@ class ParametreController extends AbstractController
             'page_title' => 'Type de facture',
             'breadcrumb' => ['Paramètres', 'Type de facture'],
             "sidebar_code" => ['PARAMS', 'TPF', ''],
+            'menu_code' =>  ApiConstant::parametreTypeFacture,
             "url_list_item" => ApiConstant::URL_LIST_TYPE_FACTURE,
             "url_get_item" => ApiConstant::URL_GET_TYPE_FACTURE,
         ]);
@@ -64,57 +66,9 @@ class ParametreController extends AbstractController
             'page_title' => 'Type de paiement',
             'breadcrumb' => ['Paramètres', 'Type de paiement'],
             "sidebar_code" => ['PARAMS', 'TPP', ''],
+            'menu_code' =>  ApiConstant::parametreTypePaiement,
             "url_list_item" => ApiConstant::URL_LIST_TYPE_PAIEMENT,
             "url_get_item" => ApiConstant::URL_GET_TYPE_PAIEMENT,
-        ]);
-    }
-
-    /**
-     * Afficher l'interface de gestion des utilisateurs
-     *
-     * @return Response
-     */
-    #[Route('/utilisateurs', name: 'parametre_users')]
-    public function users(): Response
-    {
-        return $this->render('parametre/user.html.twig', [
-            'page_title' => 'Utilisateurs',
-            'breadcrumb' => ['Paramètres', 'Utilisateurs'],
-            "sidebar_code" => ['PARAMS', 'USR', ''],
-            "url_list_item" => ApiConstant::URL_LIST_USER,
-            "url_post_item" => ApiConstant::URL_POST_USER,
-            "url_put_item" => ApiConstant::URL_PUT_USER,
-            "url_get_item" => ApiConstant::URL_GET_USER,
-            "url_delete_item" => ApiConstant::URL_DELETE_USER,
-            "url_put_item_password_reset" => ApiConstant::URL_PUT_USER_PASSWORD_RESET,
-        ]);
-    }
-
-    /**
-     * Afficher l'interface de gestion du profil utilisateur
-     *
-     * @return Response
-     */
-    #[Route('/utilisateurs/profil', name: 'parametre_users_profile')]
-    public function usersProfile(): Response
-    {
-        $user = null;
-        try {
-            // Tentative de récupération de l'utilisateur connecté
-            $user = $this->apiService->getAuthUser();
-        } catch (TransportException $th) {
-            throw $th;
-            //dd($th);
-        }
-        return $this->render('parametre/user-profile.html.twig', [
-            'page_title' => 'Profil utilisateur',
-            'breadcrumb' => ['Paramètres', 'Profil utilisateur'],
-            "sidebar_code" => ['PARAMS', 'USP', ''],
-            "url_put_item" => ApiConstant::URL_PUT_USER,
-            "url_get_item" => ApiConstant::URL_GET_USER,
-            "url_put_item_password_reset" => ApiConstant::URL_PUT_USER_PASSWORD_RESET,
-            "url_put_item_photo" => ApiConstant::URL_PUT_USER_PHOTO,
-            "user" => $user
         ]);
     }
 
@@ -130,6 +84,7 @@ class ParametreController extends AbstractController
             'page_title' => 'Données du système',
             'breadcrumb' => ['Paramètres', 'Données du système'],
             "sidebar_code" => ['PARAMS', 'SYST', ''],
+            'menu_code' =>  ApiConstant::parametreDonneSysteme,
             "url_post_item" => ApiConstant::URL_POST_SYSTEM_PARAMS,
             "url_put_item_logo" => ApiConstant::URL_PUT_SYSTEM_PARAMS_LOGO,
         ]);
@@ -159,6 +114,7 @@ class ParametreController extends AbstractController
             'page_title' => 'Paramètres du système',
             'breadcrumb' => ['Paramètres', 'Paramètres du système'],
             "sidebar_code" => ['PARAMS', 'SYSTU', ''],
+            'menu_code' =>  ApiConstant::parametreSysteme,
             "url_get_item" => ApiConstant::URL_GET_SYSTEM_PARAMS,
             "url_put_item" => ApiConstant::URL_PUT_SYSTEM_PARAMS,
             "url_put_item_logo" => ApiConstant::URL_PUT_SYSTEM_PARAMS_LOGO,

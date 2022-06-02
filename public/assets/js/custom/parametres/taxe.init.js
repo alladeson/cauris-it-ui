@@ -20,7 +20,7 @@ let taxe = {
                     "dataSrc": "",
                     error: function(xhr, status, error) {
                         (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
-                        alertify.error(status == 403 ? "Accès réfusé" : "Une erreur s'est produite lors de la connexion au serveur");
+                        GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des taxes");
                         $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
                     }
                 },
@@ -127,8 +127,10 @@ let taxe = {
         event.preventDefault();
         var form = $("div.add-new-modal").find('form');
         var data = taxe.dataFormat(form)
+        let dataId = form.find("#item-id").val();
+        if (GlobalScript.traceFormChange(dataId)) return;
         console.log(data)
-        GlobalScript.request((data.id ? URL_PUT_ITEM.replace("__id__", data.id) : URL_POST_ITEM), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
+        GlobalScript.request((dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM), (dataId ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
             console.log(data)
             datatable.ajax.reload();
@@ -169,6 +171,7 @@ let taxe = {
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
             taxe.setformData($("div.add-new-modal").find('form'), itemObj);
             $(".add-new-modal").modal('show');
+            GlobalScript.formChange($("div.add-new-modal").find('form'));
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "la modification");
@@ -230,6 +233,7 @@ $(document).ready(function() {
     // // Edit record
     // datatable.on('click', '.edit-item', function(e) {
     //     e.preventDefault();
+    //     formChange = false;
     //     taxe.editItem($(this));
     // });
 

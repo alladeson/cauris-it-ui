@@ -16,10 +16,11 @@
 			</h2>
 			<div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#facturationForm">
 				<div class="accordion-body text-muted">
-					<form method="post" class="" onsubmit="facturation.customMessageOnFactureationFormSubmit(event)">
+					<form method="post" class="" onsubmit="facturation.customMessageOnFactureationFormSubmit(event)" onreset="location.href = '';">
 						<div class="row">
 							<div class="col-md-4 col-sm-6">
 								<div class="mb-3">
+									<input type="hidden" id="item-id" name="item-id" value="">
 									<label for="type" class="form-label font-size-13 text-muted">Type de facture</label>
 									<select onchange="facturation.reloadDatatable(event)" class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher..."></select>
 								</div>

@@ -101,6 +101,29 @@ class ApiDataService extends AbstractController
         return $status == Response::HTTP_OK ? json_decode($content) : null;
     }
 
+    public static function getAuthUserAccess()
+    {
+        $session = new Session();
+        if (!$session->getId()) $session->start();
+
+        $token = $session->get('token');
+        $client = HttpClient::create();
+        $baseUrl = $_ENV["API_BASE_URL"];
+        $options = [
+            'headers' => [
+                'Authorization' => "Bearer {$token}",
+                'Content-Type' => "application/json"
+            ]
+        ];
+        // get accesses for connected user
+        $response =  $client->request(Request::METHOD_GET, $baseUrl . ApiConstant::URL_LIST_ACCESS_BY_CONNECTED_USER,  $options);
+        
+        $content = $response->getContent(false);
+        $status = $response->getStatusCode(false);
+
+        return $status == Response::HTTP_OK ? json_decode($content) : null;
+    }
+
     //
 
     /**
@@ -357,7 +380,7 @@ class ApiDataService extends AbstractController
         return new Response($response->getContent(false), $response->getStatusCode(false));
     }
     /**
-     * Envoie une requête pour l'enregistrement d'un fichier
+     * Envoie une requête pour la mise à jour des paramètres de mise en forme de la vue
      *
      * @param Request $request
      * @return Response
@@ -453,39 +476,23 @@ class ApiDataService extends AbstractController
 
     public function getUserAccess($menu)
     {
-        $user = $this->session->get('user');
-        return Tool::in_array_field($menu, "menu", $user['group']['access']);
+        $access = $this->session->get('access');
+        return Tool::in_array_field($menu, "menu", $access);
     }
 
-    public function canUserAccess($menu)
+    public function canUserAccessReadable($menu)
     {
-        $user = $this->session->get('user');
-        if ($user['admin']) {
-            return true;
-        }
-
         $access = $this->getUserAccess($menu);
-        return $access and ($access['readable'] or $access['writable'] or $access['deletable']);
+        return $access and $access->{'readable'};
     }
-
-    public function canUserAccessEnregistrement()
+    public function canUserAccessWritable($menu)
     {
-        return $this->canUserAccess(ApiConstant::PROCESS_ENREGISTREMENT);
+        $access = $this->getUserAccess($menu);
+        return $access and $access->{'writable'};
     }
-
-    public function canUserAccessVerificationRavec()
+    public function canUserAccessDeletable($menu)
     {
-        return $this->canUserAccess(ApiConstant::PROCESS_VERIFICATION_RAVEC);
+        $access = $this->getUserAccess($menu);
+        return $access and $access->{'deletable'};
     }
-
-    public function canUserAccessVisaParquet()
-    {
-        return $this->canUserAccess(ApiConstant::PROCESS_VISA_PARQUET);
-    }
-
-    public function canUserAccessDecisionTribunal()
-    {
-        return $this->canUserAccess(ApiConstant::PROCESS_VERIFICATION_CONFORMITE);
-    }
-
 }

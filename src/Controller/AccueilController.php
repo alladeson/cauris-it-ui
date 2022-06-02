@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use App\Service\ApiConstant;
 
 class AccueilController extends AbstractController
 {
@@ -29,7 +30,8 @@ class AccueilController extends AbstractController
         return $this->render('admin/dashboard.html.twig', [
             'page_title' => 'Tableau de bord',
             'breadcrumb' => ['Accueil', 'Tableau de bord'],
-            "sidebar_code" => ['TB', '', '']
+            "sidebar_code" => ['TB', '', ''],
+            "url_bilan_dashboard" => ApiConstant::URL_BILAN_DASHBOARD,
         ]);
     }
 }

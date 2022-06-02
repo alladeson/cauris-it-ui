@@ -7,32 +7,43 @@
             <li class="menu-title" data-key="t-menu">Menu</li>
 
             {% for menu in menus %}
-                <li class="{{menu.active ? 'mm-active' : ''}}">
-                    <a href="{{ menu.children ? 'javascript:void(0);' : path(menu.pathName)}}" class=" {{menu.children ? 'has-arrow' : ''}} {{menu.active ? 'mm-active' : ''}}">
-                        <i data-feather="{{menu.icon}}"></i>
-                        <span data-key="{{menu.dataKey}}">{{menu.title}}</span>
-                    </a>
-                    {% if menu.children %}
-                        <ul class="sub-menu mm-collapse {{menu.active ? 'mm-show' : ''}}" aria-expanded="false">                           
-                            {% for child in menu.children %}
-                                <li class="{{child.active ? 'mm-active' : ''}}">
-                                    <a href="{{ child.children ? 'javascript:void(0);' : path(child.pathName)}}" class="{{child.children ? 'has-arrow' : ''}} {{child.active ? 'mm-active' : ''}}">
-                                        <span data-key="{{child.dataKey}}">{{child.title}}</span>
-                                    </a>
-                                    {% if child.children %}
-                                        <ul class="sub-menu mm-collapse {{child.active ? 'mm-show' : ''}}" aria-expanded="false">
-                                            {% for child2 in child.children %}
-                                                <li class="{{child2.active ? 'mm-active' : ''}}">
-                                                    <a href="{{ child2.children ? 'javascript:void(0);' : path(child2.pathName)}}" data-key="{{child2.dataKey}}">{{child2.title}}</a>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
+                {# Contrôle d'accès #}
+                {% if menu.readable %}
+                    <li class="{{menu.active ? 'mm-active' : ''}}">
+                        <a href="{{ menu.children ? 'javascript:void(0);' : path(menu.pathName)}}" class=" {{menu.children ? 'has-arrow' : ''}} {{menu.active ? 'mm-active' : ''}}">
+                            <i data-feather="{{menu.icon}}"></i>
+                            <span data-key="{{menu.dataKey}}">{{menu.title}}</span>
+                        </a>
+                        {% if menu.children %}
+                            <ul class="sub-menu mm-collapse {{menu.active ? 'mm-show' : ''}}" aria-expanded="false">                           
+                                {% for child in menu.children %}
+                                    {# Contrôle d'accès #}
+                                    {% if child.readable %}
+                                        <li class="{{child.active ? 'mm-active' : ''}}">
+                                            <a href="{{ child.children ? 'javascript:void(0);' : path(child.pathName)}}" class="{{child.children ? 'has-arrow' : ''}} {{child.active ? 'mm-active' : ''}}">
+                                                <span data-key="{{child.dataKey}}">{{child.title}}</span>
+                                            </a>
+                                            {% if child.children %}
+                                                <ul class="sub-menu mm-collapse {{child.active ? 'mm-show' : ''}}" aria-expanded="false">
+                                                    {% for child2 in child.children %}
+                                                        {# Contrôle d'accès #}
+                                                        {% if child2.readable %}
+                                                            <li class="{{child2.active ? 'mm-active' : ''}}">
+                                                                <a href="{{ child2.children ? 'javascript:void(0);' : path(child2.pathName)}}" data-key="{{child2.dataKey}}">{{child2.title}}</a>
+                                                            </li>
+                                                        {% endif %}
+                                                        
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                        </li>     
                                     {% endif %}
-                                </li>     
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </li>
+                                    
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endif %}                
             {% endfor %}
 
             <!-- <li>

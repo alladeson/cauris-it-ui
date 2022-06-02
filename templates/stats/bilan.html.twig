@@ -1,0 +1,91 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- Liste Factures
+{% endblock %}
+
+{% block page_content %}
+
+	{# Filtre #}
+	<div class="mt-2">
+		<h5 class="font-size-14 mb-2">
+			<i class="mdi mdi-arrow-right text-primary me-1"></i>
+			Filtre : </h5>
+
+		<form class="row gx-3 gy-2 align-items-center filtre-form">
+			{# <div class="row mb-3 mt-3">
+				<div class="col-lg-2 col-md-3 col-sm-3 col-4">
+					<div class="form-check">
+                        <input class="form-check-input" type="radio" name="dateRadios" id="createddAt"  value="createdAt">
+                        <label class="form-check-label" for="createddAt">
+							Émises le
+						</label>
+					</div>
+                </div>
+				<div class="col-lg-2 col-md-3 col-sm-3 col-5">
+                    <div class="form-check">
+						<input class="form-check-input" type="radio" name="dateRadios" id="confirmedAt" value="confirmedAt">
+						<label class="form-check-label" for="confirmedAt">
+							Validées le
+						</label>
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-3 col-sm-3 col-3">
+                    <div class="form-check form-switch mb-3" dir="ltr">
+                        <input type="checkbox" class="form-check-input" id="getAll">
+                        <label class="form-check-label" for="getAll">Toutes</label>
+                    </div>
+				</div>
+            </div> #}
+			<div class="row mb-3 mt-3">
+				<div class="col-lg-3 col-md-3 col-sm-3 mb-sm-0 mb-2">
+					<label class="form-label font-size-13 text-muted" for="date-debut">Début</label>
+					<input type="datetime-local" class="form-control" id="date-debut" name="date-debut" placeholder="" value="" step=1>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-3 mb-sm-0 mb-2">
+					<label class="form-label font-size-13 text-muted" for="date-fin">Fin</label>
+					<input type="datetime-local" class="form-control" id="date-fin" name="date-fin" placeholder="" value="" step=1>
+				</div>
+				{# <div class="col-lg-4 col-md-5 col-sm-4 mb-sm-0 mb-2">
+					<label for="type" class="form-label font-size-13 text-muted">Type de facture</label>
+					<select class="form-control form-select" data-trigger name="type" id="type" placeholder=""></select>
+				</div> #}
+				<div class="col-sm-6 mt-sm-4 mt-2 mb-sm-0 mb-2">
+					<div class="row">						
+						<div class="d-flex flex-wrap justify-content-between justify-content-center">
+							<button type="submit" class="btn btn-primary" style="margin-top: 5px;">
+								<i class="bx bx-search-alt align-middle"></i>
+								<span class="d-sm-none">Rechercher</span>
+							</button>
+							<button type="button" class="btn btn-success print-bilan" style="margin-top: 5px;">
+								<i class="bx bx-printer align-middle"></i>
+								<span class="d-sm-none">Imprimer</span>
+							</button>
+						</div>							
+					</div>					
+				</div>
+			</div>
+		</form>
+	</div>
+	<br>
+	{# End Filtre #}	
+
+	{% include "stats/__bilan_tabs.html.twig" %}
+	<!-- end bilan tabs -->
+
+	{% include "facture/__facture_details.html.twig" %}
+	<!-- /.modal -->
+
+{% endblock %}
+
+{% block page_custom_scripts %}
+	<script>
+		const URL_LIST_FV_CONFIRMED_DATE = "{{ url_list_fv_confirmed_date }}";
+		const URL_LIST_FA_CONFIRMED_DATE = "{{ url_list_fa_confirmed_date }}";
+		const URL_LIST_RECAP_CONFIRMED_DATE = "{{ url_list_recap_confirmed_date }}";
+		const URL_IMPRESSION_BILAN = "{{ url_impression_bilan }}";
+	</script>
+	<!-- init js -->
+	<script src="{{ asset('assets/js/custom/stats/bilan.init.js') }}"></script>
+{% endblock %}

@@ -1,53 +1,53 @@
 let datatable;
 let choices;
 let categorieArticle = {
-    listInitalizer: function() {
-        // $(".datatable").DataTable({ responsive: !1 }),
-        datatable = $(".datatable").DataTable({
-                "language": {
-                    //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-                    "url": "/assets/i18n/French.json"
-                },
-                "ajax": {
-                    "type": "POST",
-                    "url": URL_GLOBAL_REQUEST,
-                    data: function() {
-                        return data = {
-                            "url": URL_LIST_ITEM,
-                            "method": "GET",
-                        };
-                    },
-                    "dataSrc": "",
-                    error: function(xhr, status, error) {
-                        (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
-                        alertify.error(status == 403 ? "Accès réfusé" : "Une erreur s'est produite lors de la connexion au serveur");
-                        $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
-                    }
-                },
-                // "ajax": "/assets/js/custom/data/categorie-article.txt",
-                columns: [{
-                        data: 'id',
-                        "class": "",
-                        "orderable": false,
-                        "searchable": false,
-                        "render": function(data, type, row, meta) {
-                            return `` +
-                                `<div class="form-check font-size-16">` +
-                                `<input type="checkbox" class="form-check-input" id="categorieArticlecheck${data}">` +
-                                `<label class="form-check-label" for="categorieArticlecheck${data}"></label>` +
-                                `</div>`;
-                        }
-                    },
-                    { data: 'id' },
-                    { data: 'libelle' },
-                    // { data: 'montant' },
-                    {
-                        "data": "id",
-                        "class": "",
-                        "orderable": false,
-                        "searchable": false,
-                        "render": function(data, type, row, meta) {
-                            let html = `<div class="dropdown">
+        listInitalizer: function() {
+                // $(".datatable").DataTable({ responsive: !1 }),
+                datatable = $(".datatable").DataTable({
+                            "language": {
+                                //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                                "url": "/assets/i18n/French.json"
+                            },
+                            "ajax": {
+                                "type": "POST",
+                                "url": URL_GLOBAL_REQUEST,
+                                data: function() {
+                                    return data = {
+                                        "url": URL_LIST_ITEM,
+                                        "method": "GET",
+                                    };
+                                },
+                                "dataSrc": "",
+                                error: function(xhr, status, error) {
+                                    (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
+                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des catégories d'article");
+                                    $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
+                                }
+                            },
+                            // "ajax": "/assets/js/custom/data/categorie-article.txt",
+                            columns: [{
+                                        data: 'id',
+                                        "class": "",
+                                        "orderable": false,
+                                        "searchable": false,
+                                        "render": function(data, type, row, meta) {
+                                            return `` +
+                                                `<div class="form-check font-size-16">` +
+                                                `<input type="checkbox" class="form-check-input" id="categorieArticlecheck${data}">` +
+                                                `<label class="form-check-label" for="categorieArticlecheck${data}"></label>` +
+                                                `</div>`;
+                                        }
+                                    },
+                                    { data: 'id' },
+                                    { data: 'libelle' },
+                                    // { data: 'montant' },
+                                    {
+                                        "data": "id",
+                                        "class": "",
+                                        "orderable": false,
+                                        "searchable": false,
+                                        "render": function(data, type, row, meta) {
+                                                let html = `<div class="dropdown">
                                                 <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="bx bx-dots-horizontal-rounded"></i>
                                                 </button>
@@ -55,12 +55,14 @@ let categorieArticle = {
                                                     <li>
                                                         <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                     </li>
-                                                    <li>
+                                                    ${ITEM_WRITABLE ?
+                                                    `<li>
                                                         <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier</a>
-                                                    </li>
-                                                    <li>
+                                                    </li>` : ""}
+                                                    ${ITEM_DELETABLE ? 
+                                                    `<li>
                                                         <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
-                                                    </li>
+                                                    </li>` : "" }
                                                 </ul>
                                             </div>`;
                             return html;
@@ -127,8 +129,9 @@ let categorieArticle = {
         var form = $("div.add-new-modal").find('form');
         var data = categorieArticle.dataFormat(form)
         let dataId = form.find("#item-id").val();
+        if(GlobalScript.traceFormChange(dataId)) return;
         console.log(data)
-        GlobalScript.request((data.id ? URL_PUT_ITEM.replace("__id__", data.id) : URL_POST_ITEM), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
+        GlobalScript.request((dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM), (dataId ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
             console.log(data)
             datatable.ajax.reload();
@@ -150,8 +153,7 @@ let categorieArticle = {
             console.log(data)
             var itemObj = data;
             categorieArticle.setShowingTable(itemObj);
-            $(".show-item-modal").modal('show')
-
+            $(".show-item-modal").modal('show')            
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "l'affichage");
@@ -168,7 +170,8 @@ let categorieArticle = {
             var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
             categorieArticle.setformData($("div.add-new-modal").find('form'), itemObj);
-            $(".add-new-modal").modal('show');
+            $(".add-new-modal").modal('show');    
+            GlobalScript.formChange($("div.add-new-modal").find('form'));        
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "la modification");
@@ -199,8 +202,8 @@ let categorieArticle = {
     dataFormat: function(form) {
         if (form.length) {
             data = {
-                'id': form.find("#item-id").val(),
-                'libelle': form.find("#libelle").val(),
+                'id': GlobalScript.checkBlank(form.find("#item-id").val()),
+                'libelle': GlobalScript.checkBlank(form.find("#libelle").val()),
             };
             return JSON.stringify(data);
         }
@@ -221,13 +224,14 @@ let categorieArticle = {
         var $showClasseTable = $('table.item-show-table');
         $showClasseTable.find('.td-reference').text(itemObj.id);
         $showClasseTable.find('.td-libelle').text(itemObj.libelle);
-    },
+    },    
 };
 $(document).ready(function() {
     categorieArticle.listInitalizer();
     // Edit record
     datatable.on('click', '.edit-item', function(e) {
         e.preventDefault();
+        formChange = false;
         categorieArticle.editItem($(this));
     });
 

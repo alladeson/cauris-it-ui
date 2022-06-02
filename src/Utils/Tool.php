@@ -11,11 +11,13 @@ class Tool
     {
         if ($strict) {
             foreach ($haystack as $item)
-                if (isset($item[$needle_field]) && $item[$needle_field] === $needle)
+                // if (isset($item[$needle_field]) && $item[$needle_field] === $needle)
+                if (isset($item->{$needle_field}) && $item->{$needle_field} === $needle)
                     return $item;
         } else {
             foreach ($haystack as $item)
-                if (isset($item[$needle_field]) && $item[$needle_field] == $needle)
+                // if (isset($item[$needle_field]) && $item[$needle_field] == $needle)
+                if (isset($item->{$needle_field}) && $item->{$needle_field} == $needle)
                     return $item;
         }
         return null; // false;

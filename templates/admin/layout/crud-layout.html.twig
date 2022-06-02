@@ -23,7 +23,10 @@
 	<!-- datepicker css -->
 	<link
 	href="{{ asset('assets/libs/flatpickr/flatpickr.min.css')}}" rel="stylesheet" type="text/css"/> <!-- Sweet Alert-->
+	<!-- Sweet Alerts css -->
 	<link href="{{ asset('assets/libs/sweetalert2/sweetalert2.min.css')}}" rel="stylesheet" type="text/css"/>
+	<!-- Jquery json viewer css -->
+	<link href="{{ asset('assets/js/plugins/json-viewer/jquery.json-viewer.css')}}" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
 {% block page_content %}{% endblock %}
@@ -35,24 +38,27 @@
 		const URL_GLOBAL_REQUEST = "{{ path('global_request_api') }}";
 		// URL global request post for file
 		const URL_GLOBAL_REQUEST_FILE = "{{ path('global_request_file_api') }}";
+		/* Controle d'accès : Gestion Globale */
+		{% if menu_code is defined %}
+			let ITEM_WRITABLE = {{ menu_writable(menu_code) == true ? true : "!1" }}
+			let ITEM_DELETABLE = {{ menu_deletable(menu_code) == true ? true : "!1" }}
+		{% endif %}
 		/* url GRUD Item */
 		{% if url_list_item is defined %}
-			const URL_LIST_ITEM = "{{url_list_item}}";
+			let URL_LIST_ITEM = "{{url_list_item}}";
 		{% endif %}
 		{% if url_post_item is defined %}
-			const URL_POST_ITEM = "{{url_post_item}}";
+			let URL_POST_ITEM = "{{url_post_item}}";
 		{% endif %}
 		{% if url_put_item is defined %}
-			const URL_PUT_ITEM = "{{url_put_item}}";
+			let URL_PUT_ITEM = "{{url_put_item}}";
 		{% endif %}
 		{% if url_get_item is defined %}
-			const URL_GET_ITEM = "{{url_get_item}}";
+			let URL_GET_ITEM = "{{url_get_item}}";
 		{% endif %}
 		{% if url_delete_item is defined %}
-			const URL_DELETE_ITEM = "{{url_delete_item}}";
-		{% endif %}
-		/* **** */
-		
+			let URL_DELETE_ITEM = "{{url_delete_item}}";
+		{% endif %}		
 	</script>
 	{# Les javascripts spécifiques à une page #}
 	<!-- Required datatable js -->
@@ -74,6 +80,8 @@
 	<script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
 	<!-- Sweet Alerts js -->
 	<script src="{{ asset('assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+	<!-- Jquery json viewer js -->
+	<script src="{{ asset('assets/js/plugins/json-viewer/jquery.json-viewer.js') }}"></script>
 	{# <!-- init js -->
 	<script src="{{ asset('assets/js/pages/datatable-pages.init.js') }}"></script>
 	<!-- init js -->

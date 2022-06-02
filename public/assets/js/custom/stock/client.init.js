@@ -1,93 +1,93 @@
 let datatable;
 let choices;
 let client = {
-    listInitalizer: function() {
-        // $(".datatable").DataTable({ responsive: !1 }),
-        datatable = $(".datatable").DataTable({
-                "language": {
-                    //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-                    "url": "/assets/i18n/French.json"
-                },
-                "ajax": {
-                    "type": "POST",
-                    "url": URL_GLOBAL_REQUEST,
-                    data: function() {
-                        return data = {
-                            "url": URL_LIST_ITEM,
-                            "method": "GET",
-                        };
-                    },
-                    "dataSrc": "",
-                    error: function(xhr, status, error) {
-                        (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
-                        alertify.error(status == 403 ? "Accès réfusé" : "Une erreur s'est produite lors de la connexion au serveur");
-                        $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
-                    }
-                },
-                // "ajax": "/assets/js/custom/data/categorie-article.txt",
-                columns: [{
-                        data: 'id',
-                        "class": "",
-                        "orderable": false,
-                        "searchable": false,
-                        "render": function(data, type, row, meta) {
-                            return `` +
-                                `<div class="form-check font-size-16">` +
-                                `<input type="checkbox" class="form-check-input" id="clientcheck${data}">` +
-                                `<label class="form-check-label" for="clientcheck${data}"></label>` +
-                                `</div>`;
-                        }
-                    },
-                    { data: 'id' },
-                    {
-                        data: 'name',
-                        render: function(data, type, row, meta) {
-                            return data ? data : "-";
-                        }
-                    },
-                    {
-                        data: 'ifu',
-                        render: function(data, type, row, meta) {
-                            return data ? data : "-";
-                        }
-                    },
-                    {
-                        data: 'rcm',
-                        render: function(data, type, row, meta) {
-                            return data ? data : "-";
-                        }
-                    },
-                    {
-                        data: 'telephone',
-                        render: function(data, type, row, meta) {
-                            return data ? data : "-";
-                        }
-                    },
-                    {
-                        data: 'email',
-                        render: function(data, type, row, meta) {
-                            return data ? data : "-";
-                        }
-                    },
-                    {
-                        data: 'address',
-                        render: function(data, type, row, meta) {
-                            return data ? data : "-";
-                        }
-                    },
-                    {
-                        data: 'ville',
-                        render: function(data, type, row, meta) {
-                            return data ? data : "-";
-                        }
-                    },
-                    {
-                        "data": "id",
-                        "class": "",
-                        "orderable": false,
-                        "searchable": false,
-                        "render": function(data, type, row, meta) {
-                            let html = `<div class="dropdown">
+        listInitalizer: function() {
+                // $(".datatable").DataTable({ responsive: !1 }),
+                datatable = $(".datatable").DataTable({
+                            "language": {
+                                //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                                "url": "/assets/i18n/French.json"
+                            },
+                            "ajax": {
+                                "type": "POST",
+                                "url": URL_GLOBAL_REQUEST,
+                                data: function() {
+                                    return data = {
+                                        "url": URL_LIST_ITEM,
+                                        "method": "GET",
+                                    };
+                                },
+                                "dataSrc": "",
+                                error: function(xhr, status, error) {
+                                    (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
+                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des clients");
+                                    $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
+                                }
+                            },
+                            // "ajax": "/assets/js/custom/data/categorie-article.txt",
+                            columns: [{
+                                        data: 'id',
+                                        "class": "",
+                                        "orderable": false,
+                                        "searchable": false,
+                                        "render": function(data, type, row, meta) {
+                                            return `` +
+                                                `<div class="form-check font-size-16">` +
+                                                `<input type="checkbox" class="form-check-input" id="clientcheck${data}">` +
+                                                `<label class="form-check-label" for="clientcheck${data}"></label>` +
+                                                `</div>`;
+                                        }
+                                    },
+                                    { data: 'id' },
+                                    {
+                                        data: 'name',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'ifu',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'rcm',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'telephone',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'email',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'address',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'ville',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        "data": "id",
+                                        "class": "",
+                                        "orderable": false,
+                                        "searchable": false,
+                                        "render": function(data, type, row, meta) {
+                                                let html = `<div class="dropdown">
                                                 <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="bx bx-dots-horizontal-rounded"></i>
                                                 </button>
@@ -95,12 +95,14 @@ let client = {
                                                     <li>
                                                         <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                     </li>
-                                                    <li>
+                                                    ${ITEM_WRITABLE ?
+                                                    `<li>
                                                         <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier</a>
-                                                    </li>
-                                                    <li>
+                                                    </li>` : ""}
+                                                    ${ITEM_DELETABLE ? 
+                                                    `<li>
                                                         <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
-                                                    </li>
+                                                    </li>` : "" }
                                                 </ul>
                                             </div>`;
                             return html;
@@ -167,8 +169,9 @@ let client = {
         var form = $("div.add-new-modal").find('form');
         var data = client.dataFormat(form)
         let dataId = form.find("#item-id").val();
+        if(GlobalScript.traceFormChange(dataId)) return;
         console.log(data)
-        GlobalScript.request((data.id ? URL_PUT_ITEM.replace("__id__", data.id) : URL_POST_ITEM), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
+        GlobalScript.request((dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM), (dataId ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
             console.log(data)
             datatable.ajax.reload();
@@ -209,6 +212,7 @@ let client = {
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
             client.setformData($("div.add-new-modal").find('form'), itemObj);
             $(".add-new-modal").modal('show');
+            GlobalScript.formChange($("div.add-new-modal").find('form'));  
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "la modification");
@@ -244,14 +248,14 @@ let client = {
     dataFormat: function(form) {
         if (form.length) {
             data = {
-                'id': form.find("#item-id").val(),
-                'name': form.find("#name").val(),
-                'ifu': form.find("#ifu").val(),
-                'rcm': form.find("#rcm").val(),
-                'telephone': form.find("#telephone").val(),
-                'email': form.find("#email").val(),
-                'address': form.find("#address").val(),
-                'ville': form.find("#ville").val(),
+                'id': GlobalScript.checkBlank(form.find("#item-id").val()),
+                'name': GlobalScript.checkBlank(form.find("#name").val()),
+                'ifu': GlobalScript.checkBlank(form.find("#ifu").val()),
+                'rcm': GlobalScript.checkBlank(form.find("#rcm").val()),
+                'telephone': GlobalScript.checkBlank(form.find("#telephone").val()),
+                'email': GlobalScript.checkBlank(form.find("#email").val()),
+                'address': GlobalScript.checkBlank(form.find("#address").val()),
+                'ville': GlobalScript.checkBlank(form.find("#ville").val()),
             };
             return JSON.stringify(data);
         }
@@ -285,6 +289,7 @@ $(document).ready(function() {
     // Edit record
     datatable.on('click', '.edit-item', function(e) {
         e.preventDefault();
+        formChange = false;
         client.editItem($(this));
     });
 

@@ -3,79 +3,79 @@ let choices = [];
 let categories = [];
 let taxes = [];
 let article = {
-    listInitalizer: function() {
-        // $(".datatable").DataTable({ responsive: !1 }),
-        datatable = $(".datatable").DataTable({
-                "language": {
-                    //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-                    "url": "/assets/i18n/French.json"
-                },
-                "ajax": {
-                    "type": "POST",
-                    "url": URL_GLOBAL_REQUEST,
-                    data: function() {
-                        return data = {
-                            "url": URL_LIST_ITEM,
-                            "method": "GET",
-                        };
-                    },
-                    "dataSrc": "",
-                    error: function(xhr, status, error) {
-                        (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
-                        alertify.error(status == 403 ? "Accès réfusé" : "Une erreur s'est produite lors de la connexion au serveur");
-                        $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
-                    }
-                },
-                // "ajax": "/assets/js/custom/data/article.txt",
-                columns: [{
-                        data: 'id',
-                        "class": "",
-                        "orderable": false,
-                        "searchable": false,
-                        "render": function(data, type, row, meta) {
-                            return `` +
-                                `<div class="form-check font-size-16">` +
-                                `<input type="checkbox" class="form-check-input" id="articlecheck${data}">` +
-                                `<label class="form-check-label" for="articlecheck${data}"></label>` +
-                                `</div>`;
-                        }
-                    },
-                    { data: 'id' },
-                    {
-                        data: 'categorie',
-                        "render": function(data, type, row, meta) {
-                            return data.libelle;
-                        }
-                    },
-                    { data: 'designation' },
-                    {
-                        data: 'prix',
-                        render: function(data, type, row, meta) {
-                            return data + " fcfa";
-                        }
-                    },
-                    {
-                        data: 'taxe',
-                        "render": function(data, type, row, meta) {
-                            return data.string;
-                        }
-                    },
-                    {
-                        data: 'taxeSpecifique',
-                        render: function(data, type, row, meta) {
-                            return data ? data : "-";
-                        }
-                    },
-                    { data: 'stock' },
-                    { data: 'stockSecurite' },
-                    // { data: 'montant' },
-                    {
-                        "data": "id",
-                        "class": "",
-                        "orderable": false,
-                        "searchable": false,
-                        "render": function(data, type, row, meta) {
-                            let html = `<div class="dropdown">
+        listInitalizer: function() {
+                // $(".datatable").DataTable({ responsive: !1 }),
+                datatable = $(".datatable").DataTable({
+                            "language": {
+                                //"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                                "url": "/assets/i18n/French.json"
+                            },
+                            "ajax": {
+                                "type": "POST",
+                                "url": URL_GLOBAL_REQUEST,
+                                data: function() {
+                                    return data = {
+                                        "url": URL_LIST_ITEM,
+                                        "method": "GET",
+                                    };
+                                },
+                                "dataSrc": "",
+                                error: function(xhr, status, error) {
+                                    (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
+                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des articles");
+                                    $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
+                                }
+                            },
+                            // "ajax": "/assets/js/custom/data/article.txt",
+                            columns: [{
+                                        data: 'id',
+                                        "class": "",
+                                        "orderable": false,
+                                        "searchable": false,
+                                        "render": function(data, type, row, meta) {
+                                            return `` +
+                                                `<div class="form-check font-size-16">` +
+                                                `<input type="checkbox" class="form-check-input" id="articlecheck${data}">` +
+                                                `<label class="form-check-label" for="articlecheck${data}"></label>` +
+                                                `</div>`;
+                                        }
+                                    },
+                                    { data: 'id' },
+                                    {
+                                        data: 'categorie',
+                                        "render": function(data, type, row, meta) {
+                                            return data.libelle;
+                                        }
+                                    },
+                                    { data: 'designation' },
+                                    {
+                                        data: 'prix',
+                                        render: function(data, type, row, meta) {
+                                            return data + " fcfa";
+                                        }
+                                    },
+                                    {
+                                        data: 'taxe',
+                                        "render": function(data, type, row, meta) {
+                                            return data.string;
+                                        }
+                                    },
+                                    {
+                                        data: 'taxeSpecifique',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    { data: 'stock' },
+                                    { data: 'stockSecurite' },
+                                    // { data: 'montant' },
+                                    {
+                                        "data": "id",
+                                        "class": "",
+                                        "orderable": false,
+                                        "searchable": false,
+                                        "render": function(data, type, row, meta) {
+                                                let html = `<div class="dropdown">
                                                 <button class="btn btn-link font-size-16 shadow-none py-0 text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="bx bx-dots-horizontal-rounded"></i>
                                                 </button>
@@ -83,12 +83,14 @@ let article = {
                                                     <li>
                                                         <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                     </li>
-                                                    <li>
+                                                    ${ITEM_WRITABLE ?
+                                                    `<li>
                                                         <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier</a>
-                                                    </li>
-                                                    <li>
+                                                    </li>` : ""}
+                                                    ${ITEM_DELETABLE ? 
+                                                    `<li>
                                                         <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
-                                                    </li>
+                                                    </li>` : "" }
                                                 </ul>
                                             </div>`;
                             return html;
@@ -171,12 +173,13 @@ let article = {
         var form = $("div.add-new-modal").find('form');
         var data = article.dataFormat(form)
         let dataId = form.find("#item-id").val();
+        if(GlobalScript.traceFormChange(dataId)) return;
         console.log(data)
         var categorieId = form.find("#categorie").val();
         var taxeId = form.find("#taxe").val();
-        var obj = { '__id__': data.id, '__cId__': categorieId, '__tId__': taxeId }
-        var submitUrl = data.id ? GlobalScript.textMultipleReplace(URL_PUT_ITEM, obj) : GlobalScript.textMultipleReplace(URL_POST_ITEM, obj);
-        GlobalScript.request(submitUrl, (data.id ? 'PUT' : 'POST'), data).then(function(data) {
+        var obj = { '__id__': dataId, '__cId__': categorieId, '__tId__': taxeId }
+        var submitUrl = dataId ? GlobalScript.textMultipleReplace(URL_PUT_ITEM, obj) : GlobalScript.textMultipleReplace(URL_POST_ITEM, obj);
+        GlobalScript.request(submitUrl, (dataId ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
             console.log(data)
             datatable.ajax.reload();
@@ -220,6 +223,7 @@ let article = {
             GlobalScript.getForeignsData(URL_LIST_CATEGORIE_ARTICLE, ['catégories', 'id', 'libelle'], 0, itemObj.categorie.id);
             GlobalScript.getForeignsData(URL_LIST_TAXE, ['taxes', 'id', 'string'], 1, itemObj.taxe.id);
             $(".add-new-modal").modal('show');
+            GlobalScript.formChange($("div.add-new-modal").find('form'));
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "la modification");
@@ -258,13 +262,13 @@ let article = {
     dataFormat: function(form) {
         if (form.length) {
             data = {
-                'id': form.find("#item-id").val(),
-                'designation': form.find("#designation").val(),
-                'prix': form.find("#prix").val(),
-                'taxeSpecifique': form.find("#taxe-specifique").val(),
-                'tsName': form.find("#ts-name").val(),
-                'stock': form.find("#stock").val(),
-                'stockSecurite': form.find("#stock-securite").val(),
+                'id': GlobalScript.checkBlank(form.find("#item-id").val()),
+                'designation': GlobalScript.checkBlank(form.find("#designation").val()),
+                'prix': GlobalScript.checkBlank(form.find("#prix").val()),
+                'taxeSpecifique': GlobalScript.checkBlank(form.find("#taxe-specifique").val()),
+                'tsName': GlobalScript.checkBlank(form.find("#ts-name").val()),
+                'stock': GlobalScript.checkBlank(form.find("#stock").val()),
+                'stockSecurite': GlobalScript.checkBlank(form.find("#stock-securite").val()),
             };
             return JSON.stringify(data);
         }
@@ -325,6 +329,7 @@ $(document).ready(function() {
     // Edit record
     datatable.on('click', '.edit-item', function(e) {
         e.preventDefault();
+        formChange = false;
         article.editItem($(this));
     });
 

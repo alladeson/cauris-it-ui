@@ -2,15 +2,45 @@
 
 {% block title %}
 	{{appName}}
-	- Utilisateurs
+	- Contrôle d'accès
 {% endblock %}
 
 {% block page_content %}
 
+	{# Filtre #}
+	<div class="mt-2">
+		<h5 class="font-size-14 mb-4">
+			<i class="mdi mdi-arrow-right text-primary me-1"></i>
+			Filtre : </h5>
+
+		<form class="row gx-3 gy-2 align-items-center filtre-form">
+			<div class="row">				
+				<div class="col-lg-4 col-md-5 col-sm-4 mb-sm-0 mb-2">
+					<label for="user-groupe" class="form-label font-size-13 text-muted">Groupe Utilisateur</label>
+					<select class="form-control form-select" data-trigger name="user-groupe" id="user-groupe" placeholder=""></select>
+				</div>
+				<div class="col-sm-2 mt-sm-4 mt-0 mb-sm-0 mb-0 d-flex justify-content-sm-center" style="margin-top: 35px!important;">
+                    <div class="form-check form-switch mb-3" dir="ltr">
+                        <input type="checkbox" class="form-check-input" id="getAll">
+                        <label class="form-check-label" for="getAll">Tous</label>
+                    </div>
+				</div>
+				<div class="col-auto mt-sm-4 mt-2 mb-sm-0 mb-4">
+					<button type="submit" class="btn btn-primary" style="margin-bottom: -22px;">
+						<i class="bx bx-search-alt align-middle"></i>
+						<span class="d-sm-none">Rechercher</span>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<br>
+	{# End Filtre #}
+
 	<div class="row align-items-center">
 		<div class="col-md-6 col-4">
 			<div class="mb-3">
-				<h5 class="card-title">Liste des utilisateurs
+				<h5 class="card-title">Liste des accès
 					<span class="text-muted fw-normal ms-2"></span>
 				</h5>
 			</div>
@@ -32,8 +62,8 @@
 						</li>
 					</ul>
 				</div> #}
-				<div onclick="user.newItemEvent(event)">
-					<a href="javascript:void(0);" class="btn btn-light" data-bs-toggle="modal" data-bs-target=".add-new-modal">
+				<div onclick="access.newItemEvent(event)">
+					<a href="javascript:void(0);" class="btn btn-light" {#data-bs-toggle="modal" data-bs-target=".add-new-modal"#}>
 						<i class="bx bx-plus me-1"></i>
 						Nouvel Ajout</a>
 				</div>
@@ -45,7 +75,7 @@
 
 					<ul class="dropdown-menu dropdown-menu-end">
 						<li>
-							<a class="dropdown-item" onclick="user.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+							<a class="dropdown-item" onclick="access.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
 						</li>
 						{# <li>
 							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
@@ -72,11 +102,11 @@
 						</div>
 					</th>
 					<th>Réf.</th>
-					<th>Idenfiant</th>
-					<th>Nom</th>
-					<th>Prenom</th>
-					<th>Téléphone</th>
-					<th>Rôle</th>
+					<th>Groupe</th>
+					<th>Fonctionnalité</th>
+					<th>Lecture</th>
+					<th>Écriture</th>
+					<th>Suppression</th>
 					<th style="width: 80px; min-width: 80px;">Action</th>
 				</tr>
 			</thead>
@@ -90,78 +120,58 @@
 	<div class="modal fade add-new-modal" id="add-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
-				<form method="post" class="" onsubmit="user.submitFormData(event)" >
+				<form method="post" class="" {#onsubmit="access.submitFormData(event)"#} >
 					<div class="modal-header">
 						<h5 class="modal-title">Nouvel ajout</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<div class="row">
-							<div class="col-md-6">
+						<div class="row">							
+							<div class="col-md-12">
 								<div class="mb-3 position-relative">
 									<input type="hidden" id="item-id" name="item-id" value="">
-									<label class="form-label" for="lastname">Nom</label>
-									<input type="text" id="lastname" name="lastname" class="form-control" placeholder="Le nom de l'utilisateur" required>
+									<label for="groupe" class="form-label">Groupe utilisateur</label>
+									<select data-trigger required class="form-control form-select" data-trigger name="groupe" id="groupe" placeholder="chercher...">
+									</select>
 								</div>
 							</div>							
-							<div class="col-md-6">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="firstname">Prénom</label>
-									<input type="text" id="firstname" name="firstname" class="form-control" placeholder="Le prenom de l'utilisateur">
-								</div>
-							</div>														
-						</div>
-						<div class="row">								
-							<div class="col-md-6">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="username">Idenfiant</label>
-									<div class="input-group">
-										<span class="input-group-text" id="usernamePrepend">@</i></span>
-										<input type="text" class="form-control" id="username" name="username" placeholder="L'idenfiant de l'utilisateur" value="" required aria-describedby="usernamePrepend">
-									</div>
-								</div>
-							</div>					
-							<div class="col-md-6">
-								<div class="mb-3 position-relative">
-									<label for="telephone" class="form-label">Téléphone</label>
-									<div class="input-group">
-										<span class="input-group-text" id="telephonePrepend"><i class="mdi mdi-phone"></i></span>
-										<input type="tel" pattern="[5-9]{1}[0-9]{1}[0-9]{2}[0-9]{2}[0-9]{2}" class="form-control" id="telephone" name="telephone" placeholder="Le téléphone de l'utilisateur" value="" aria-describedby="telephonePrepend">
-									</div>
-								</div>
-							</div>
 						</div>
 						<div class="row">							
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
-									<label for="role" class="form-label">Rôle</label>
-									<select data-trigger required class="form-control form-select" data-trigger name="role" id="role" placeholder="chercher...">
-										{# <option value="" selected>Sélectionner</option> #}
-										<option value="ADMIN" selected>Administrateur</option>
-										<option value="CAISSIER">Caissier(ère)</option>
-										<option value="COMMERCIALE">Commerciale</option>
-										{# <option value="SECRETAIRE">Secrétaire</option> #}
+									<label for="feature" class="form-label">Fonctionnalité</label>
+									<select data-trigger required class="form-control form-select" data-trigger name="feature" id="feature" placeholder="chercher...">
 									</select>
 								</div>
 							</div>							
 						</div>
 						<div class="row">						
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label for="password" class="form-label">Mot de passe</label>
-									<div class="input-group">
-                                        <label class="input-group-text"><i class="mdi mdi-lock-plus-outline"></i></label>
-										<input required type="password" class="form-control" id="password" name="password" placeholder="Entrez le mot de passe" value="">
-                                        <label class="input-group-text" id="password-icon" onclick="user.passwordShowToggle()" style="cursor: pointer !important;"><i class="mdi mdi-eye-outline"></i></label>
-                                    </div>
-								</div>							
+							<div class="d-flex flex-wrap justify-content-between justify-content-center mb-2 mt-2">
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" id="readable">
+									<label class="form-check-label" for="readable">
+											Lecture
+										</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" id="writable">
+									<label class="form-check-label" for="writable">
+											Écriture
+										</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" id="deletable">
+									<label class="form-check-label" for="deletable">
+											Suppression
+										</label>
+								</div>
 							</div>							
 						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
 						{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
-						<button type="submit" class="btn btn-primary">Enregistrer</button>
+						<button type="button" class="btn btn-primary submit-button">Enregistrer</button>
 					</div>
 				</form>
 			</div>
@@ -201,39 +211,39 @@
                                 </tr>                                                    
                                 <tr>
                                     <th scope="row">
-                                        Idenfiant
+                                        Groupe Utilisateur
                                     </th>
-                                    <td class="text-center td-username">
+                                    <td class="text-center td-userGroup">
                                     </td>
                                 </tr>                                                    
                                 <tr>
                                     <th scope="row">
-                                        Nom
+                                        Fonctionnalité
                                     </th>
-                                    <td class="text-center td-lastname">
+                                    <td class="text-center td-feature">
                                     </td>
                                 </tr>                                                    
                                 <tr>
-                                    <th scope="row">
-                                        Prenom
-                                    </th>
-                                    <td class="text-center td-firstname">
-                                    </td>
-                                </tr>                                               
-                                <tr>
-                                    <th scope="row">
-                                        Téléphone
-                                    </th>
-                                    <td class="text-center td-telephone">
-                                    </td>
-                                </tr>                                                
-                                <tr>
-                                    <th scope="row">
-                                        Rôle
-                                    </th>
-                                    <td class="text-center td-role">
-                                    </td>
-                                </tr>                                                
+									<th scope="row">
+										Lecture
+									</th>
+									<td class="text-center td-readable">
+									</td>
+								</tr> 
+								<tr>
+									<th scope="row">
+										Écriture
+									</th>
+									<td class="text-center td-writable">
+									</td>
+								</tr> 
+								<tr>
+									<th scope="row">
+										Suppression
+									</th>
+									<td class="text-center td-deletable">
+									</td>
+								</tr>                                                
                             </tbody>
                         </table>
                         <!-- end table -->
@@ -252,6 +262,19 @@
 {% endblock %}
 
 {% block page_custom_scripts %}
+
+	<script>
+		let AUTH_USER_GROUP_ID = {{authUser.group.id}};
+		let URL_LIST_USER_GROUP = "{{url_list_user_groupe}}";
+		let URL_LIST_FEATURES = "{{url_list_features}}";
+		let URL_LIST_ACCESS_BY_USER_GROUP = "{{url_list_item_by_user_group}}";
+		{% if authUser.sa %}
+			URL_LIST_ITEM = "{{url_list_item_sa}}";
+			URL_LIST_USER_GROUP = "{{url_list_user_groupe_sa}}";
+			URL_LIST_FEATURES = "{{url_list_features_sa}}";
+		{% endif %}
+	</script>
+
 	<!-- init js -->
-	<script src="{{ asset('assets/js/custom/parametres/user.init.js') }}"></script>
+	<script src="{{ asset('assets/js/custom/access/access.init.js') }}"></script>
 {% endblock %}

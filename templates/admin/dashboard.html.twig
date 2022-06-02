@@ -5,13 +5,47 @@
 	<link href="{{ asset('assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css')}}" rel="stylesheet" type="text/css"/>
 {% endblock %}
 
-{% block page_content %}
-
+{% block page_content %} 
+	<div class="row">
+		<div class="col-xl-7">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="card-title mb-0">Bilan des factures</h4>
+				</div>
+				<div class="card-body">
+					<div id="column_chart" data-colors='["#5156be", "#fd625e", "#2ab57d"]' class="apex-charts" dir="ltr"></div>                                      
+				</div>
+			</div><!--end card-->
+		</div>
+		<!-- end col -->	
+		<div class="col-xl-5">
+			<div class="card">
+				<div class="card-header">
+					<div class="d-flex flex-wrap align-items-center">
+						<h5 class="card-title me-2">Bilan des montants</h5>
+						<div class="ms-auto" id="date-select-wrapper">
+							<select class="form-select form-select-sm">
+								<option value="0">Aucun</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="card-body">
+					<div id="pie-chart" data-colors='["#5156be", "#fd625e", "#2ab57d"]' class="e-charts"></div>
+				</div>
+			</div>
+			<!-- end card -->
+		</div>
+		<!-- end col -->
+	</div>
+	<!-- end row -->
 {% endblock %}
 
 {% block page_javascripts %}
 	{# Les javascripts spécifiques à une page #}
 	<!-- apexcharts --><script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"> </script>
+	<!-- echarts js -->
+	<script src="{{ asset('assets/libs/echarts/echarts.min.js') }}"></script>
 	<!-- Plugins js-->
 	<script src="{{ asset('assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js') }}"></script>
 	<script src="{{ asset('assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js') }}"></script>
@@ -20,6 +54,14 @@
 {% endblock %}
 
 {% block page_custom_scripts %}
+<script>
+	// URL global request
+	const URL_GLOBAL_REQUEST = "{{ path('global_request_api') }}";
+	// URL global request post for file
+	const URL_GLOBAL_REQUEST_FILE = "{{ path('global_request_file_api') }}";
+	// URL Bilan
+	const URL_BILAN_DASHBOARD = "{{ url_bilan_dashboard }}";
+</script>
 	<!-- init js -->
-	{# <script src="{{ asset('assets/js/custom/dashboard/dashboard.init.js') }}"></script> #}
+	<script src="{{ asset('assets/js/custom/dashboard/dashboard.init.js') }}"></script>
 {% endblock %}

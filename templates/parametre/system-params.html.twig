@@ -52,112 +52,114 @@
                 </div>
             </div>
             <!-- end card -->
-            <div class="card">
-                <form class="" data-params="{{param|json_encode()}}" id="societe-form" {#onsubmit="systemParamsWizard.onSave(event)"#} enctype="multipart/form-data">
-                    <div class="card-header">
-                                <h5 class="card-title mb-0">
-                                Informations de la société
-                                </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row imageUpPreview d-flex justify-content-center flex-sm-row-reverse">
-                            <div class="col-md-3 col-sm-4 col-8 imgUp">
-                                <div class="imagePreview" style="background-image: url({{ url_get_file() | replace({'__fileName__': param.logo}) }})"></div>
-                                <label class="btn btn-primary imgUpBtn"> 
-                                    Changer votre logo
-                                    <input type="file" id="logo" name="logo" class="uploadFile img" accept="image/*" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
-                                </label>
-                                <i class="fa fa-times del" style="display:none;"></i>
-                            </div>
-                            <div class="col-md-9 col-sm-8">
-                                <div class="row">						
-                                    <div class="col-md-12">
-                                        <div class="mb-3 position-relative">
-                                            <label class="form-label" for="name">Nom ou Raison sociale</label>
-                                            <input type="text" id="name" name="name" value="{{param.name}}" class="form-control" placeholder="Le nom de la société" required>
-                                        </div>
-                                    </div>							
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="mb-3 position-relative">
-                                            <label class="form-label" for="ifu">IFU</label>
-                                            <input type="hidden" id="item-id" name="item-id" value="">
-                                            <input type="text"  pattern="[0-9]{13}" class="form-control" id="ifu" name="ifu" value="{{param.ifu}}" placeholder="L'IFU du de la société">
-                                        </div>
-                                    </div>														
-                                </div>
-                                <div class="row">						
-                                    <div class="col-md-12">
-                                        <div class="mb-3 position-relative">
-                                            <label class="form-label" for="rcm">RCM</label>
-                                            <input type="text" id="rcm" name="rcm" class="form-control" placeholder="Le numéro rcm du de la société" value="{{param.rcm}}">
-                                        </div>
-                                    </div>							
-                                </div>
-                            </div>
+            {% if authUser.sa %}
+                <div class="card">
+                    <form class="" data-params="{{param|json_encode()}}" id="societe-form" onsubmit="systemParamsWizard.onSave(event)" enctype="multipart/form-data">
+                        <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                    Informations de la société
+                                    </h5>
                         </div>
-                        <!-- row -->									
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="mb-3 position-relative">
-                                    <label class="form-label" for="telepohone">Téléphone</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="telephonePrepend">
-                                            <i class="mdi mdi-phone"></i>
-                                        </span>
-                                        <input type="tel" value="{{param.telephone}}" pattern="[5-9]{1}[0-9]{1}[0-9]{2}[0-9]{2}[0-9]{2}" class="form-control" id="telephone" name="telephone" placeholder="Numéro de téléphone" aria-describedby="telephonePrepend" required>
+                        <div class="card-body">
+                            <div class="row imageUpPreview d-flex justify-content-center flex-sm-row-reverse">
+                                <div class="col-md-3 col-sm-4 col-8 imgUp">
+                                    <div class="imagePreview" style="background-image: url({{ url_get_file() | replace({'__fileName__': param.logo}) }})"></div>
+                                    <label class="btn btn-primary imgUpBtn"> 
+                                        Changer votre logo
+                                        <input type="file" id="logo" name="logo" class="uploadFile img" accept="image/*" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                                    </label>
+                                    <i class="fa fa-times del" style="display:none;"></i>
+                                </div>
+                                <div class="col-md-9 col-sm-8">
+                                    <div class="row">						
+                                        <div class="col-md-12">
+                                            <div class="mb-3 position-relative">
+                                                <label class="form-label" for="name">Nom ou Raison sociale</label>
+                                                <input type="text" id="name" name="name" value="{{param.name}}" class="form-control" placeholder="Le nom de la société" required>
+                                            </div>
+                                        </div>							
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="mb-3 position-relative">
+                                                <label class="form-label" for="ifu">IFU</label>
+                                                <input type="hidden" id="item-id" name="item-id" value="">
+                                                <input type="text"  pattern="[0-9]{13}" class="form-control" id="ifu" name="ifu" value="{{param.ifu}}" placeholder="L'IFU du de la société">
+                                            </div>
+                                        </div>														
+                                    </div>
+                                    <div class="row">						
+                                        <div class="col-md-12">
+                                            <div class="mb-3 position-relative">
+                                                <label class="form-label" for="rcm">RCM</label>
+                                                <input type="text" id="rcm" name="rcm" class="form-control" placeholder="Le numéro rcm du de la société" value="{{param.rcm}}">
+                                            </div>
+                                        </div>							
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="mb-3 position-relative">
-                                    <label class="form-label" for="email">E-mail</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="emailPrepend">
-                                            <i class="mdi mdi-email"></i>
-                                        </span>
-                                        <input type="email" id="email" name="email" value="{{param.email}}" class="form-control" placeholder="Adresse e-mail" aria-describedby="emailPrepend" required>
+                            <!-- row -->									
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="mb-3 position-relative">
+                                        <label class="form-label" for="telepohone">Téléphone</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="telephonePrepend">
+                                                <i class="mdi mdi-phone"></i>
+                                            </span>
+                                            <input type="tel" value="{{param.telephone}}" pattern="[5-9]{1}[0-9]{1}[0-9]{2}[0-9]{2}[0-9]{2}" class="form-control" id="telephone" name="telephone" placeholder="Numéro de téléphone" aria-describedby="telephonePrepend" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="mb-3 position-relative">
+                                        <label class="form-label" for="email">E-mail</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="emailPrepend">
+                                                <i class="mdi mdi-email"></i>
+                                            </span>
+                                            <input type="email" id="email" name="email" value="{{param.email}}" class="form-control" placeholder="Adresse e-mail" aria-describedby="emailPrepend" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">						
+                                <div class="col-sm-6">
+                                    <div class="mb-3 position-relative">
+                                        <label class="form-label" for="pays">Pays</label>
+                                        <input disabled type="text" id="pays" name="pays" class="form-control" placeholder="Le pays de la société" value="{{param.pays}}">
+                                    </div>
+                                </div>							
+                                <div class="col-sm-6">
+                                    <div class="mb-3 position-relative">
+                                        <label class="form-label" for="ville">Ville</label>
+                                        <input type="text" id="ville" name="ville" value="{{param.ville}}" class="form-control" placeholder="La ville de la société">
+                                    </div>
+                                </div>							
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3 position-relative">
+                                        <label class="form-label" for="address">Adresse</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text" id="addressPrepend"><i class="mdi mdi-google-maps"></i></span>
+                                            <input type="text" class="form-control" id="address" name="address" value="{{param.address}}" placeholder="Adresse de la société" aria-describedby="addressPrepend" required>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">						
-                            <div class="col-sm-6">
-                                <div class="mb-3 position-relative">
-                                    <label class="form-label" for="pays">Pays</label>
-                                    <input disabled type="text" id="pays" name="pays" class="form-control" placeholder="Le pays de la société" value="{{param.pays}}">
-                                </div>
-                            </div>							
-                            <div class="col-sm-6">
-                                <div class="mb-3 position-relative">
-                                    <label class="form-label" for="ville">Ville</label>
-                                    <input type="text" id="ville" name="ville" value="{{param.ville}}" class="form-control" placeholder="La ville de la société">
-                                </div>
-                            </div>							
+                        <!-- end card body -->
+                        <div class="card-footer bg-transparent border-top d-flex justify-content-end">
+                            <button type="submit" class="btn btn-outline-info waves-effect waves-light" {#data-bs-toggle="modal" data-bs-target=".confirmModal"#}>
+                                Mettre à jour les informations
+                            </button>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-3 position-relative">
-                                    <label class="form-label" for="address">Adresse</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="addressPrepend"><i class="mdi mdi-google-maps"></i></span>
-                                        <input type="text" class="form-control" id="address" name="address" value="{{param.address}}" placeholder="Adresse de la société" aria-describedby="addressPrepend" required>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end card body -->
-                    <div class="card-footer bg-transparent border-top d-flex justify-content-end">
-                        <button type="button" class="btn btn-outline-info waves-effect waves-light"data-bs-toggle="modal" data-bs-target=".confirmModal">
-                            Mettre à jour les informations
-                        </button>
-                    </div>
-                    <!-- end card footer -->
-                </form>
-            </div>
-            <!-- end card -->
+                        <!-- end card footer -->
+                    </form>
+                </div>
+                <!-- end card -->
+            {% endif %}            
         </div>
         <!-- end col -->
         <div class="col-xl-3 col-lg-4">
@@ -231,7 +233,7 @@
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Fermer</button>
-                <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal" onclick="systemParamsWizard.onSave(event);">Confirmer</button>
+                <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal" onclick="systemParamsWizard.submitFormData(event);">Confirmer</button>
             </div>
         </div>
     </div>

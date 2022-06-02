@@ -75,6 +75,9 @@ class SecurityController extends AbstractController
                 // Récupération du paramètre du system et sauvegarde dans le session
                 $params = ApiDataService::getSystemParams();
                 $this->session->set("params", $params);
+                // Récupération des accès et sauvegarde dans le session
+                $access = ApiDataService::getAuthUserAccess();
+                $this->session->set("access", $access);
             }
             return new Response($response->getContent(false), $response->getStatusCode(false));
         } catch (TransportException $e) {

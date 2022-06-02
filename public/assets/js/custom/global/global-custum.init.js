@@ -1,5 +1,7 @@
 //Définition de la zone de loading
-let waitMe_zone = null;
+let waitMe_zone = "";
+// Variable d'observation de changement dans les formulaire : utile pour gérer les mise à jour
+let formChange = false;
 // Définition des variable d'url d'impression et de téléchargment de la facture
 let $pdf = "";
 let $pdfDowload = "";
@@ -97,9 +99,55 @@ let GlobalScript = {
     // Format month with label like 2022-04
     monthDateFormat(monthLabel) {
         var d = new Date(monthLabel);
-        var months = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juill.', 'août', 'sept.', 'oct.', 'nov.', 'déc'];
+        var months = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juill.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
 
         return months[d.getMonth()] + " " + d.getFullYear();
+    },
+    // Format month with label like 2022-04
+    statsMonthFormat(monthLabel) {
+        var d = new Date(monthLabel);
+        var months = ['janv', 'févr', 'mars', 'avr', 'mai', 'juin', 'juill', 'août', 'sept', 'oct', 'nov', 'déc'];
+        currentYear = new Date().getFullYear();
+        return $.trim(months[d.getMonth()] + " " + (currentYear == d.getFullYear() ? "" : (d.getFullYear() + "")).slice(2, 4));
+    },
+    /**
+     * Returns a date set to the begining of the month
+     * 
+     * @param {Date} myDate 
+     * @returns {Date}
+     */
+    beginningOfMonth: function(myDate) {
+        let date = new Date(myDate);
+        date.setDate(1)
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        return date;
+    },
+    /**
+     * Returns a date set to the end of the month
+     * 
+     * @param {Date} myDate 
+     * @returns {Date}
+     */
+    endOfMonth: function(myDate) {
+        let date = new Date(myDate);
+        date.setDate(1); // Avoids edge cases on the 31st day of some months
+        date.setMonth(date.getMonth() + 1);
+        date.setDate(0);
+        date.setHours(23);
+        date.setMinutes(59);
+        date.setSeconds(59);
+        return date;
+    },
+    /**
+     * Format un nombre en representation française
+     * @param {Number} number Le nombre à formatter
+     * @param {Number} decimal Le nombre de chiffre après la virgule
+     * @returns String The formatted number
+     */
+    numberFormat: function(number, decimal) {
+        return $.number(number, decimal, ',', '.')
     },
     request: function(url, method, sendData) {
         return new Promise(function(resolve, reject) {
@@ -183,6 +231,15 @@ let GlobalScript = {
             dataJon = data;
             console.log(dataJon);
             choices[choicePosition].clearChoices();
+            if (selectData[0] == "catégories") {
+                dataJon = $.map(data, function(obj) {
+                    obj.value = obj.id
+                    obj.label = obj.libelle
+                    obj.selected = true
+                    obj.disabled = true
+                    return obj
+                });
+            }
             choices[choicePosition].setChoices(dataJon, selectData[1], selectData[2]);
             if (itemId) choices[choicePosition].setChoiceByValue(itemId);
             return true;
@@ -203,6 +260,32 @@ let GlobalScript = {
             text = text.replace(new RegExp(x, 'g'), obj[x]);
         }
         return text;
+    },
+    formChange: function(form) {
+        form.on('input change paste', ':input', (e) => {
+            formChange = true;
+            console.log("change : " + e.type);
+        });
+    },
+    traceFormChange: function(dataId) {
+        if (dataId && !formChange) {
+            alertify.warning("Vous n'avez rien changé. Veuillez cliquer sur fermer pour quitter");
+            return true;
+        }
+        return false;
+    },
+    checkBlank: function(value) {
+        if (value)
+            return value;
+        else
+            return null;
+    },
+    traceUserProfileAndParamsFormChange: function(dataId) {
+        if (dataId && !formChange) {
+            alertify.warning("La mise à jour ne peut aboutir. Vous n'avez rien changé svp !");
+            return true;
+        }
+        return false;
     },
     saError: function(title, text) {
         Swal.fire({
@@ -226,6 +309,9 @@ let GlobalScript = {
         // Les erreur du serveur : backend (spring-boot)  ou frontend (symfony)
         if ($.inArray(err.status, [500, 502, 503, 504]) > -1)
             defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + " : le serveur ne répond pas. Si cela persiste, veuillez contacter votre administrateur ou votre fournisseur du SFE. Merci !";
+        // Les erreur légitime du serveur : frontend (symfony)
+        if ($.inArray(err.status, [200]) > -1)
+            defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + " : Votre session est expirée. Veuillez vous reconnecter svp. Merci !";
         // Essayons de transformer la réponse en objet json
         try {
             var responseText = JSON.parse(err.responseText);
@@ -277,8 +363,10 @@ let GlobalScript = {
             // Run this when your request was successful
             console.log("OK")
             layoutChange ? window.location.href = "" : "";
+            waitMe_zone = "";
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
+            waitMe_zone = "";
             console.log(err);
             // GlobalScript.ajxRqtErrHandler(err, "alertify", "la mise à jour des paramètre du layout");
         });
@@ -429,10 +517,20 @@ let GlobalScript = {
      * @param {Object} facture L'objet de la facture à afficher
      */
     showPrintedInvoice: function(facture) {
-            var printPdfUrl = URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id);
-            var pdfName = "facture-" + facture.numero + ".pdf";
-            var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", pdfName);
-            GlobalScript.pdfwebviewer(printPdfUrl, dowloadPdfUrl, pdfName)
-        }
-        /** Fin de l'affichage de la facture **/
+        var printPdfUrl = URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id);
+        var pdfName = "facture-" + facture.numero + ".pdf";
+        var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", pdfName);
+        GlobalScript.pdfwebviewer(printPdfUrl, dowloadPdfUrl, pdfName)
+    },
+    /** Fin de l'affichage de la facture **/
+
+    /**
+     * Afficher le bilan imprimé sur l'écran de l'application
+     * @param {String} fileName Le nom du fichier pdf à afficher
+     */
+    showPrintedBilan: function(fileName) {
+        var printPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
+        var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
+        GlobalScript.pdfwebviewer(printPdfUrl, dowloadPdfUrl, fileName)
+    }
 }

@@ -293,6 +293,9 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFunction('full_date', [$this, 'fullDate']),
             new TwigFunction('menu_exist', [$this, 'menuExist']),
+            new TwigFunction('menu_readable', [$this, 'menuReadable']),
+            new TwigFunction('menu_writable', [$this, 'menuWritable']),
+            new TwigFunction('menu_deletable', [$this, 'menuDeletable']),
             new TwigFunction('country_name', [$this, 'getCountryName']),
             new TwigFunction('statut_color', [$this, 'getStatutColor']),
             new TwigFunction('url_get_file', [$this, 'urlGetFile']),
@@ -316,6 +319,22 @@ class AppExtension extends AbstractExtension
         return $this->apiService->getUserAccess($codeMenu);
         // $user = $this->session->get('user');
         // return Tool::in_array_field($codeMenu, "menu", $user['group']['access']);
+    }
+
+    public function menuReadable($menu)
+    {
+        $access = $this->menuExist($menu);
+        return $access and $access->{'readable'};
+    }
+    public function menuWritable($menu)
+    {
+        $access = $this->menuExist($menu);
+        return $access and $access->{'writable'};
+    }
+    public function menuDeletable($menu)
+    {
+        $access = $this->menuExist($menu);
+        return $access and $access->{'deletable'};
     }
 
     public function getCountryName($code)

@@ -56,9 +56,11 @@ let userProfile = {
     },
     editItem: function(event = null) {
         if (event) event.preventDefault();
-        var data = userProfile.dataFormat()
         var userForm = $("form#user-form")
-        GlobalScript.request(URL_GET_ITEM.replace("__id__", JSON.parse(data).id), 'PUT', data).then(function(data) {
+        var data = userProfile.dataFormat()
+        var user = JSON.parse(data);
+        var url = URL_PUT_ITEM.replace("__id__", user.id);
+        GlobalScript.request(url.replace("__groupeId__", user.group.id), 'PUT', data).then(function(data) {
             // Run this when your request was successful
             console.log(data)
             if (userForm.find("input#photo").val()) userProfile.submitFormDataPhoto(data);
@@ -112,11 +114,11 @@ let userProfile = {
         var userForm = $("form#user-form")
         var user = userForm.data("user");
         if (userForm.length) {
-            user.username = userForm.find("#username").val()
-            user.lastname = userForm.find("#lastname").val()
-            user.firstname = userForm.find("#firstname").val()
-            user.phone = userForm.find("#telephone").val()
-            user.email = userForm.find("#email").val()
+            user.username = GlobalScript.checkBlank(userForm.find("#username").val())
+            user.lastname = GlobalScript.checkBlank(userForm.find("#lastname").val())
+            user.firstname = GlobalScript.checkBlank(userForm.find("#firstname").val())
+            user.phone = GlobalScript.checkBlank(userForm.find("#telephone").val())
+            user.email = GlobalScript.checkBlank(userForm.find("#email").val())
             return JSON.stringify(user);
         }
         return "";
@@ -138,11 +140,13 @@ let userProfile = {
     onSave: function(event) {
         event.preventDefault();
         // Vérification des infos importantes
-        var data = userProfile.dataFormat()
+        var data = userProfile.dataFormat();
+        // Vérification du changement dans le formulaire
+        if (GlobalScript.traceUserProfileAndParamsFormChange(JSON.parse(data).id)) return;
         console.log(data);
         if (data) {
             $.each(JSON.parse(data), function(key, value) {
-                if (!value && !($.inArray(key, ['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'defaultPassword', 'photo', 'telephone', 'phone', 'email', 'layout']) > -1)) {
+                if (!value && !($.inArray(key, ['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'defaultPassword', 'photo', 'telephone', 'phone', 'email', 'layout', "sa", "admin"]) > -1)) {
                     console.log(key)
                     userProfile.saError("Erreur !", "L'enregistrement ne peut aboutir pour manque d'informations. Veuillez bien renseigner votre nom, prénom et identifiant !")
                     save = false;
@@ -196,6 +200,8 @@ let userProfile = {
     }
 };
 $(document).ready(function() {
+    // Ecoute du changement du formulaire
+    GlobalScript.formChange($("form#user-form"));
     // Gestion de l'image
     $(document).on("click", "i.del", function() {
         userProfile.imageReset();

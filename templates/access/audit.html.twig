@@ -1,0 +1,190 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- Audit
+{% endblock %}
+
+{% block page_content %}
+
+	{# Filtre #}
+	<div class="mt-2">
+		<h5 class="font-size-14 mb-2">
+			<i class="mdi mdi-arrow-right text-primary me-1"></i>
+			Filtre : </h5>
+
+		<form class="row gx-3 gy-2 align-items-center filtre-form">
+			<div class="row mb-3 mt-3">
+				<div class="col-sm-4 col-6">
+					<div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="dateRadios" id="createddAt"  value="createdAt">
+                        <label class="form-check-label" for="createddAt">
+							Enregistré le
+						</label>
+					</div>
+                </div>
+				<div class="col-lg-3 col-sm-4 col-6">
+                    <div class="form-check form-switch mb-3" dir="ltr">
+                        <input type="checkbox" class="form-check-input" id="getAll">
+                        <label class="form-check-label" for="getAll">Toutes</label>
+                    </div>
+				</div>
+            </div>
+			<div class="row">
+				<div class="col-md-3 col-sm-3 mb-sm-0 mb-2">
+					<label class="form-label font-size-13 text-muted" for="date-debut">Début</label>
+					<input type="datetime-local" class="form-control" id="date-debut" name="date-debut" placeholder="" value="">
+				</div>
+				<div class="col-md-3 col-sm-3 mb-sm-0 mb-2">
+					<label class="form-label font-size-13 text-muted" for="date-fin">Fin</label>
+					<input type="datetime-local" class="form-control" id="date-fin" name="date-fin" placeholder="" value="">
+				</div>
+			</div>
+			<div class="row mt-sm-4">
+				<div class="col-lg-4 col-md-5 col-sm-4 mb-sm-0 mb-2">
+					<label for="user" class="form-label font-size-13 text-muted">Utilisateur</label>
+					<select class="form-control form-select" data-trigger name="user" id="user" placeholder=""></select>
+				</div>
+				<div class="col-lg-4 col-md-5 col-sm-4 mb-sm-0 mb-2">
+					<label for="operation" class="form-label font-size-13 text-muted">Opération</label>
+					<select class="form-control form-select" data-trigger name="operation" id="operation" placeholder="">
+						<option value="" selected>Sélectionner</option>
+						<option value="Création catégorie article">Création catégorie article</option>
+						<option value="Mis à jour catégorie article">Mis à jour catégorie article</option>
+						<option value="Suppression catégorie article">Suppression catégorie article</option>
+
+						<option value="Création article">Création article</option>
+						<option value="Mis à jour article">Mis à jour article</option>
+						<option value="Suppression article">Suppression article</option>
+
+						<option value="Création du client">Création du client</option>
+						<option value="Mis à jour du client">Mis à jour du client</option>
+						<option value="Suppression du client">Suppression du client</option>
+
+						<option value="Création facture de vente">Création facture de vente</option>
+						<option value="Création facture d'avoir">Création facture d'avoir</option>
+						<option value="Mis à jour facture">Mis à jour facture</option>
+						<option value="Validation facture de vente">Validation facture de vente</option>
+						<option value="Validation facture d'avoir">Validation facture d'avoir</option>
+						<option value="Validation détail facture">Validation détail facture</option>
+						<option value="Suppression facture">Suppression facture</option>
+						<option value="Suppression détail facture">Suppression détail facture</option>
+
+						{% if authUser.sa %}
+							<option value="Création des données du système">Création des données du système</option>
+						{% endif %}						
+						<option value="Mis à jour des données du système">Mis à jour des données du système</option>
+						<option value="Mis à jour du logo">Mis à jour du logo</option>
+						<option value="Suppression des données du système">Suppression des données du système</option>
+						
+						<option value="Création utilisateur">Création utilisateur</option>
+						<option value="Mis à jour utilisateur">Mis à jour utilisateur</option>
+						<option value="Suppression utilisateur">Suppression utilisateur</option>
+						{# <option value="Activation du compte utilisateur">Activation du compte utilisateur</option>
+						<option value="Désactivation du compte utilisateur">Désactivation du compte utilisateur</option> #}
+						<option value="Changement de mot de passe utilisateur">Changement de mot de passe utilisateur</option>
+						
+						<option value="Création d'un groupe d'utilisateur">Création d'un groupe d'utilisateur</option>
+						<option value="Mis à jour d'un groupe d'utilisateur">Mis à jour d'un groupe d'utilisateur</option>
+						<option value="Suppression d'un groupe d'utilisateur">Suppression d'un groupe d'utilisateur</option>
+						
+						<option value="Ajout de permission">Ajout de permission</option>
+						<option value="Mise à jour de permission">Mise à jour de permission</option>
+						<option value="Retrait de permission">Retrait de permission</option>
+
+						<option value="Création d'une fonctionnalité">Création d'une fonctionnalité</option>
+						<option value="Mis à jour d'une fonctionnalité">Mis à jour d'une fonctionnalité</option>
+						<option value="Suppression d'une fonctionnalité">Suppression d'une fonctionnalité</option>
+					</select>
+				</div>
+				<div class="col-auto mt-sm-4 mt-2 mb-sm-0 mb-2">
+					<button type="submit" class="btn btn-primary" style="margin-bottom: -22px;">
+						<i class="bx bx-search-alt align-middle"></i>
+						<span class="d-sm-none">Rechercher</span>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<br>
+	{# End Filtre #}
+
+	<div class="row align-items-center">
+		<div class="col-md-6 col-9">
+			<div class="mb-3">
+				<h5 class="card-title"> 
+					<i class="mdi mdi-arrow-right text-primary me-1"></i>
+						Tableau de liste des opérations
+					<span class="text-muted fw-normal ms-2"></span>
+				</h5>
+			</div>
+		</div>
+
+		<div class="col-md-6 col-3">
+			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+				<div class="dropdown">
+					<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bx bx-dots-horizontal-rounded"></i>
+					</a>
+
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li>
+							<a class="dropdown-item" onclick="audit.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+						</li>
+						{# <li>
+							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
+						</li> #}
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- end row -->
+
+	<div class="table-responsive mb-4">
+		<table data-order='[[1, "desc"]]' class="table align-middle datatable dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+			<thead>
+				<tr>
+					<th scope="col" style="width: 50px;">
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="checkAll">
+							<label class="form-check-label" for="checkAll"></label>
+						</div>
+					</th>
+					<th scope="col">#</th>
+					<th scope="col">Utilisateur</th>
+					<th scope="col">Rôle</th>
+					<th scope="col">Opération</th>
+					<th scope="col">Date</th>
+					<th scope="col">Valeur Avant</th>
+					<th scope="col">Valeur après</th>
+					<th style="width: 80px; min-width: 80px;">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<!-- end table -->
+	</div>
+	<!-- end table responsive -->
+
+	{% include "access/__audit_details.html.twig" %}
+	<!-- /.modal -->
+
+{% endblock %}
+
+{% block page_custom_scripts %}
+	<script>
+		const URL_LIST_AUDIT_BY_CONNECTED_USER = "{{ url_list_item_by_connected_user }}";
+		URL_LIST_USER = "{{url_list_user}}";
+		{% if authUser.sa %}
+			URL_LIST_USER = "{{url_list_user_sa}}";
+		{% endif %}		
+	</script>
+	<!-- init js -->
+	<script src="{{ asset('assets/js/custom/access/audit.init.js') }}"></script>
+{% endblock %}

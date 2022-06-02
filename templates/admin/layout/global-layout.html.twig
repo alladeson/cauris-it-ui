@@ -1,7 +1,33 @@
 {% extends "base.html.twig" %}
+{# Codes des menu #}
+{% set gestStock = 10000 %}
+{% set gestStockCategorie = 11000 %}
+{% set gestStockArticle = 12000 %}
+{% set facturation = 20000 %}
+{% set facturationFV = 21000 %}
+{% set facturationFA = 22000 %}
+{% set facturationListe = 23000 %}
+{% set facturationClient = 24000 %}
+{% set parametre = 30000 %}
+{% set parametreTaxe = 31000 %}
+{% set parametreTypeFacture = 32000 %}
+{% set parametreTypePaiement = 33000 %}
+{% set parametreSysteme = 34000 %}
+{% set parametreDonneSysteme = 35000 %}
+{% set accessCtrl = 40000 %}
+{% set accessCtrlUser = 41000 %}
+{% set accessCtrlUserGroup = 42000 %}
+{% set accessCtrlFeatures = 43000 %}
+{% set accessCtrlAccess = 44000 %}
+{% set audit = 50000 %}
+{% set stats = 60000 %}
+{% set statsBilanPeriodique = 61000 %}
+{# endset #}
+	
 {# Menu format #}
 {% set menus = [
 	{
+		readable: true,
 		id: "topnav-dashboard",
 		pathName: "dashboard",
 		title: "Tableau de bord",
@@ -11,6 +37,7 @@
 		children: [],
 	},
 	{
+		readable: menu_readable(gestStock),
 		id: "gestion-stock",
 		pathName: "",
 		title: "Gestion de Stock",
@@ -19,6 +46,7 @@
 		active: sidebar_code[0] == "GSTK" ? true : false,
 		children: [
 			{
+				readable: menu_readable(gestStockCategorie),
 				id: "gstk-categorie-article",
 				pathName: "gstk_categorie_article",
 				title: "Catégorie Articles",
@@ -27,6 +55,7 @@
 				children: [],
 			},                            
 			{
+				readable: menu_readable(gestStockArticle),
 				id: "gstk-article",
 				pathName: "gstk_article",
 				title: "Articles",
@@ -37,6 +66,7 @@
 		],
 	},
 	{
+		readable: menu_readable(facturation),
 		id: "facture",
 		pathName: "",
 		title: "Factures",
@@ -45,6 +75,7 @@
 		active: sidebar_code[0] == "FACT" ? true : false,
 		children: [
 			{
+				readable: menu_readable(facturationFV),
 				id: "facture-vente",
 				pathName: "new_facture_vente",
 				title: "Facture Ventes",
@@ -53,6 +84,7 @@
 				children: [],
 			},
 			{
+				readable: menu_readable(facturationFA),
 				id: "facture-avoir",
 				pathName: "new_facture_avoir",
 				title: "Facture d'avoir",
@@ -61,6 +93,7 @@
 				children: [],
 			},
 			{
+				readable: menu_readable(facturationListe),
 				id: "liste-factures",
 				pathName: "liste_facture",
 				title: "Liste des Factures",
@@ -69,6 +102,7 @@
 				children: [],
 			},
 			{
+				readable: menu_readable(facturationClient),
 				id: "gstk-client",
 				pathName: "gstk_client",
 				title: "Clients",
@@ -79,6 +113,27 @@
 		],
 	},
 	{
+		readable: menu_readable(stats),
+		id: "stats",
+		pathName: "",
+		title: "Statistiques",
+		icon: "bar-chart-2",
+		dataKey: "t-access",
+		active: sidebar_code[0] == "STATS" ? true : false,
+		children: [			                       
+			{
+				readable: menu_readable(statsBilanPeriodique),
+				id: "stats-bilan",
+				pathName: "stats_bilan",
+				title: "Bilan Périodique",
+				dataKey: "t-stats-bilan",
+				active: sidebar_code[1] == "BP" ? true : false,
+				children: [],
+			},            
+		],
+	},
+	{
+		readable: menu_readable(parametre),
 		id: "parametres",
 		pathName: "",
 		title: "Paramètres",
@@ -87,6 +142,7 @@
 		active: sidebar_code[0] == "PARAMS" ? true : false,
 		children: [
 			{
+				readable: menu_readable(parametreTaxe),
 				id: "taxe",
 				pathName: "parametre_taxe",
 				title: "Taxe",
@@ -95,6 +151,7 @@
 				children: [],
 			},    
 			{
+				readable: menu_readable(parametreTypeFacture),
 				id: "type-facture",
 				pathName: "parametre_type_facture",
 				title: "Type de facture",
@@ -103,22 +160,16 @@
 				children: [],
 			}, 
 			{
+				readable: menu_readable(parametreTypePaiement),
 				id: "type-paiement",
 				pathName: "parametre_type_paiement",
 				title: "Type de paiement",
 				dataKey: "t-params-type-paiement",
 				active: sidebar_code[1] == "TPP" ? true : false,
 				children: [],
-			},                       
-			{
-				id: "users",
-				pathName: "parametre_users",
-				title: "Utilisateurs",
-				dataKey: "t-params-users",
-				active: sidebar_code[1] == "USR" ? true : false,
-				children: [],
 			},
 			{
+				readable: menu_readable(parametreSysteme),
 				id: "update_params",
 				pathName: "parametre_update",
 				title: "Paramètre du système",
@@ -127,6 +178,7 @@
 				children: [],
 			},                       
 			{
+				readable: menu_readable(parametreDonneSysteme),
 				id: "new_params",
 				pathName: "parametre_new",
 				title: "Données du système",
@@ -134,6 +186,62 @@
 				active: sidebar_code[1] == "SYST" ? true : false,
 				children: [],
 			},                       
+		],
+	},
+	{
+		readable: menu_readable(accessCtrl),
+		id: "access",
+		pathName: "",
+		title: "Accès & Audit",
+		icon: "unlock",
+		dataKey: "t-access",
+		active: sidebar_code[0] == "ACCESS" ? true : false,
+		children: [			                       
+			{
+				readable: menu_readable(accessCtrlUserGroup),
+				id: "user-groups",
+				pathName: "access_user_group",
+				title: "Groupes Utilisateurs",
+				dataKey: "t-access-user-groups",
+				active: sidebar_code[1] == "GRPU" ? true : false,
+				children: [],
+			},                  
+			{
+				readable: menu_readable(accessCtrlFeatures),
+				id: "features",
+				pathName: "access_features",
+				title: "Fonctionnalités",
+				dataKey: "t-access-features",
+				active: sidebar_code[1] == "FEATURE" ? true : false,
+				children: [],
+			},                    
+			{
+				readable: menu_readable(accessCtrlAccess),
+				id: "accesses",
+				pathName: "access_accesses",
+				title: "Contrôle d'accès",
+				dataKey: "t-access-accesses",
+				active: sidebar_code[1] == "ACCESS" ? true : false,
+				children: [],
+			},
+			{
+				readable: menu_readable(accessCtrlUser),
+				id: "users",
+				pathName: "access_users",
+				title: "Utilisateurs",
+				dataKey: "t-access-users",
+				active: sidebar_code[1] == "USR" ? true : false,
+				children: [],
+			},                   
+			{
+				readable: menu_readable(audit),
+				id: "audit",
+				pathName: "access_audit",
+				title: "Audit",
+				dataKey: "t-access-audit",
+				active: sidebar_code[1] == "AUDIT" ? true : false,
+				children: [],
+			},                   
 		],
 	},
 ] %}
@@ -215,5 +323,10 @@
 		const URL_GLOBAL_UPDATE_FACTURE_VENTE = "{{ path('update_facture_vente', {id: '__id__'}) }}";
 		// URL global details invoice
 		const URL_GLOBAL_LAYOUT_SETTINGS = "{{ path('global_request_layout_settings') }}";
+		// SUPER_ADMIN
+		let user_sa = false;
+		{% if authUser.sa %}
+			user_sa = true;
+		{% endif %}
 	</script>
 {% endblock %}

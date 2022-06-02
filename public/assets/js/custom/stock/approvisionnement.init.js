@@ -131,7 +131,7 @@ let approvisionnement = {
         var form = $("div.add-new-modal").find('form');
         var data = approvisionnement.dataFormat(form)
         console.log(data)
-        approvisionnement.request((data.id ? URL_PUT_ITEM.replace("__id__", data.id) : URL_POST_ITEM), (data.id ? 'PUT' : 'POST'), data).then(function(data) {
+        approvisionnement.request((dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM), (dataId ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
             console.log(JSON.parse(data))
             datatable.ajax.reload();

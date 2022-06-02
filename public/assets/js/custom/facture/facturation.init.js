@@ -36,14 +36,8 @@ let facturation = {
                                 dataSrc: "details",
                                 error: function(xhr, status, error) {
                                     (waitMe_zone.length ? waitMe_zone : $("body")).waitMe("hide");
-                                    console.log(xhr.status)
-                                    xhr.status ? alertify.error(
-                                        xhr.status == 403 ?
-                                        "Accès réfusé" :
-                                        xhr.status == 404 ?
-                                        "Aucune facture trouvée" :
-                                        "Une erreur s'est produite lors de la connexion au serveur"
-                                    ) : '';
+                                    if (xhr.status)
+                                        GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération de la facture");
                                     xhr.status ? $(".datatable")
                                         .find("tbody td")
                                         .html('<span class="text-danger">Echec de chargement</span>') : "";
@@ -297,6 +291,10 @@ let facturation = {
     submitFormData: function (event) {
         event.preventDefault();
         var data = facturation.dataFormat(facturationForm);
+        // Vérification du changment dans le formulaire
+        let dataId = facturationForm.find("#item-id").val();
+        if (GlobalScript.traceUserProfileAndParamsFormChange(dataId)) return;
+        //
         console.log(data);
         var articleId = facturationForm.find("#article").val();
         var obj = {
@@ -368,6 +366,8 @@ let facturation = {
                 originalPrice = itemObj.remise ? itemObj.discount.originalPrice : itemObj.prixUnitaire;
                 // Mise à jour du formulaire de facturation
                 facturation.setformData(facturationForm, itemObj);
+                // Écoute de changement dans le formulaire
+                GlobalScript.formChange(facturationForm);
             })
             .catch(function (err) {
                 // Run this when promise was rejected via reject()
@@ -477,9 +477,9 @@ let facturation = {
             data = {
                 aibId: form.find("#aib").val(),
                 typePaiementId: form.find("#type-paiement").val(),
-                montantRecu: parseInt(form.find("#montant-recu").val()),
-                montantPayer: parseInt(form.find("#montant-payer").val()),
-                montantRendu: parseInt(form.find("#montant-rendu").val()),
+                montantRecu: Math.round(parseFloat(form.find("#montant-recu").val())),
+                montantPayer: Math.round(parseFloat(form.find("#montant-payer").val())),
+                montantRendu: Math.round(parseFloat(form.find("#montant-recu").val())) - Math.round(parseFloat(form.find("#montant-payer").val())),
                 description: $.trim(form.find("#description").val()),
             };
             return JSON.stringify(data);
@@ -976,8 +976,9 @@ let facturation = {
         event.preventDefault();
         var form = $("div.client-new-modal").find('form');
         var data = facturation.clientDataFormat(form)
+        let dataId = form.find("#item-id").val();
         console.log(data)
-        GlobalScript.request((data.id ? URL_PUT_CLIENT.replace("__id__", data.id) : URL_POST_CLIENT), (data.id ? 'PUT' : 'POST'), data).then(function (data) {
+        GlobalScript.request((dataId ? URL_PUT_CLIENT.replace("__id__", dataId) : URL_POST_CLIENT), (dataId ? 'PUT' : 'POST'), data).then(function (data) {
             // Run this when your request was successful
             console.log(data)
             client = data;
@@ -997,14 +998,14 @@ let facturation = {
     clientDataFormat: function (form) {
         if (form.length) {
             data = {
-                'id': form.find("#item-id").val(),
-                'name': form.find("#name").val(),
-                'ifu': form.find("#ifu").val(),
-                'rcm': form.find("#rcm").val(),
-                'telephone': form.find("#telephone").val(),
-                'email': form.find("#email").val(),
-                'address': form.find("#address").val(),
-                'ville': form.find("#ville").val(),
+                'id': GlobalScript.checkBlank(form.find("#item-id").val()),
+                'name': GlobalScript.checkBlank(form.find("#name").val()),
+                'ifu': GlobalScript.checkBlank(form.find("#ifu").val()),
+                'rcm': GlobalScript.checkBlank(form.find("#rcm").val()),
+                'telephone': GlobalScript.checkBlank(form.find("#telephone").val()),
+                'email': GlobalScript.checkBlank(form.find("#email").val()),
+                'address': GlobalScript.checkBlank(form.find("#address").val()),
+                'ville': GlobalScript.checkBlank(form.find("#ville").val()),
             };
             return JSON.stringify(data);
         }
@@ -1025,12 +1026,13 @@ let facturation = {
         event.preventDefault();
         var form = $("div.article-new-modal").find('form');
         var data = facturation.articleDataFormat(form)
+        let dataId = form.find("#item-id").val();
         console.log(data)
         var categorieId = form.find("#categorie").val();
         var taxeId = form.find("#taxe").val();
-        var obj = { '__id__': data.id, '__cId__': categorieId, '__tId__': taxeId }
-        var submitUrl = data.id ? GlobalScript.textMultipleReplace(URL_PUT_ARTICLE, obj) : GlobalScript.textMultipleReplace(URL_POST_ARTICLE, obj);
-        GlobalScript.request(submitUrl, (data.id ? 'PUT' : 'POST'), data).then(function (data) {
+        var obj = { '__id__': dataId, '__cId__': categorieId, '__tId__': taxeId }
+        var submitUrl = dataId ? GlobalScript.textMultipleReplace(URL_PUT_ARTICLE, obj) : GlobalScript.textMultipleReplace(URL_POST_ARTICLE, obj);
+        GlobalScript.request(submitUrl, (dataId ? 'PUT' : 'POST'), data).then(function (data) {
             // Run this when your request was successful
             console.log(data)
             article = data;
@@ -1051,13 +1053,13 @@ let facturation = {
     articleDataFormat: function (form) {
         if (form.length) {
             data = {
-                'id': form.find("#item-id").val(),
-                'designation': form.find("#designation").val(),
-                'prix': form.find("#prix").val(),
-                'taxeSpecifique': form.find("#taxe-specifique").val(),
-                'tsName': form.find("#ts-name").val(),
-                'stock': form.find("#stock").val(),
-                'stockSecurite': form.find("#stock-securite").val(),
+                'id': GlobalScript.checkBlank(form.find("#item-id").val()),
+                'designation': GlobalScript.checkBlank(form.find("#designation").val()),
+                'prix': GlobalScript.checkBlank(form.find("#prix").val()),
+                'taxeSpecifique': GlobalScript.checkBlank(form.find("#taxe-specifique").val()),
+                'tsName': GlobalScript.checkBlank(form.find("#ts-name").val()),
+                'stock': GlobalScript.checkBlank(form.find("#stock").val()),
+                'stockSecurite': GlobalScript.checkBlank(form.find("#stock-securite").val()),
             };
             return JSON.stringify(data);
         }
@@ -1084,13 +1086,14 @@ let facturation = {
             $("div.article-new-modal").find('form').find("input#ts-name").val(null);
             $("div.article-new-modal").find('form').find("input#ts-name").removeAttr("required");
         }
-    }
+    },
 };
 $(document).ready(function () {
     facturation.listInitalizer();
     // Edit record
     datatable.on("click", ".edit-item", function (e) {
         e.preventDefault();
+        formChange = false;
         facturation.editItem($(this));
     });
 
@@ -1187,6 +1190,8 @@ document.addEventListener("DOMContentLoaded", function () {
     facturation.choicesJsInit();
     facturationForm = $("div#facturationForm").find("form");
     factureValidationForm = $("div#validate-invoice-modal").find("form");
+    // Initilisation du formulaire
+    // facturation.resetFacturationForm();
     //Gestion des champs de remise
     facturation.remiseInputsToggle();
     //Gestion de la taxe spécifique

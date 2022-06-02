@@ -33,13 +33,7 @@ let factureAvoir = {
                                 dataSrc: "details",
                                 error: function(xhr, status, error) {
                                     (waitMe_zone.length ? waitMe_zone : $("body")).waitMe("hide");
-                                    alertify.error(
-                                        xhr.status == 403 ?
-                                        "Accès réfusé" :
-                                        xhr.status == 404 ?
-                                        "Aucune facture trouvée" :
-                                        "Une erreur s'est produite lors de la connexion au serveur"
-                                    );
+                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération de la facture");
                                     $(".datatable")
                                         .find("tbody td")
                                         .html('<span class="text-danger">Echec de chargement</span>');

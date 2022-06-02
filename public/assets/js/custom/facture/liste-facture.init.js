@@ -30,7 +30,7 @@ let listeFacture = {
                                 "dataSrc": "",
                                 error: function(xhr, status, error) {
                                     (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
-                                    alertify.error(status == 403 ? "Accès réfusé" : "Une erreur s'est produite lors de la connexion au serveur");
+                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des factures");
                                     $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
                                 }
                             },
@@ -84,20 +84,20 @@ let listeFacture = {
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                             ${row.confirm ?
-                            `<li>
+                                                `<li>
                                                     <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item print-item" href="javascript:void(0);" data-item-id="${data}">Générer Facture</a>
-                                                </li>` :
-                            `<li>
+                                                </li>` : 
+                                                ITEM_WRITABLE ?
+                                                `<li>
                                                     <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier et/ou valider</a>
-                                                </li>` }
-                                                ${(!row.confirm /*&& !row.details.length*/) ?
-                            `<li>
-                                                    <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
-                                                </li>` : ``
-                        }
+                                                </li>` : `` }
+                                                ${(!row.confirm && ITEM_DELETABLE /*&& !row.details.length*/) ?
+                                                    `<li>
+                                                        <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
+                                                    </li>` : `` }
                                             </ul>
                                         </div>`;
                     return html;
@@ -413,8 +413,10 @@ document.addEventListener("DOMContentLoaded", function () {
             // pas besoin de la transformer, on peut utiliser directement la valeur des champ
             else if (typeDate == "confirmedAt") {
                 // alertify.success("Date de confirmation des facture coché");
-                statsPayload.debut = filtreForm.find("input#date-debut").val();
-                statsPayload.fin = filtreForm.find("input#date-fin").val();
+                // statsPayload.debut = filtreForm.find("input#date-debut").val();
+                // statsPayload.fin = filtreForm.find("input#date-fin").val();
+                statsPayload.debut = (debut.toISOString()).slice(0, 19);
+                statsPayload.fin = (fin.toISOString()).slice(0, 19);
                 console.log(statsPayload);
                 url_list = URL_LIST_FACTURE_BY_CONFIRMED_DATE;
                 // Si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture

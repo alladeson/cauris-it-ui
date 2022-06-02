@@ -1,0 +1,247 @@
+<div class="card">
+    <div class="card-header">
+        {# <h4 class="card-title mb-0 flex-grow-1">Card Header Pills</h4> #}
+        <div class="flex-shrink-0">
+            <!-- Nav tabs -->
+            <ul class="nav nav-pills nav-justified" role="tablist">
+                <li class="nav-item waves-effect waves-light">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#facture-vente" role="tab">
+                        <span class="d-block d-sm-none"><i class="fas fa-money-bill-alt"></i></span>
+                        <span class="d-none d-sm-block">Bilan Factures de vente</span> 
+                    </a>
+                </li>
+                <li class="nav-item waves-effect waves-light">
+                    <a class="nav-link" data-bs-toggle="tab" href="#facture-avoir" role="tab">
+                        <span class="d-block d-sm-none"><i class="fas fa-money-bill-wave"></i></span>
+                        <span class="d-none d-sm-block">Bilan Facture d'avoir</span> 
+                    </a>
+                </li>
+                <li class="nav-item waves-effect waves-light">
+                    <a class="nav-link" data-bs-toggle="tab" href="#bilan-recapitulatif" role="tab">
+                        <span class="d-block d-sm-none"><i class="fas fa-money-check-alt"></i></span>
+                        <span class="d-none d-sm-block">Récapitulatif</span> 
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div><!-- end card header -->
+    
+    <div class="card-body">
+        <!-- Tab panes -->
+        <div class="tab-content p-3 text-muted">
+            <div class="tab-pane active" id="facture-vente" role="tabpanel">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-9">
+                        <div class="mb-3">
+                            <a class="" data-bs-toggle="collapse" href="#collapse-datatable-fv" aria-expanded="false" aria-controls="collapse-datatable-fv">
+                                <h5 class="card-title"> 
+                                    <i class="mdi mdi-arrow-right text-primary me-1"></i>
+                                        Liste des factures de vente
+                                    <span class="text-muted fw-normal ms-2"></span>
+                                </h5>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-3">
+                        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+                            <div class="dropdown">
+                                <a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-horizontal-rounded"></i>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" onclick="bilan.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- end row -->
+                <div class="table-responsive mb-4 collapse" id="collapse-datatable-fv">
+                    <table data-order='[[1, "desc"]]' class="table align-middle datatable-fv dt-responsive table-check nowrap" id="datatable-fv" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 50px;">
+                                    <div class="form-check font-size-16">
+                                        <input type="checkbox" class="form-check-input" id="checkAll">
+                                        <label class="form-check-label" for="checkAll"></label>
+                                    </div>
+                                </th>
+                                <th scope="col">#</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Client</th>
+                                <th scope="col">Montant Total</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col">Code MCeF</th>
+                                <th style="width: 80px; min-width: 80px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <!-- end table -->
+                </div>
+                <!-- end table responsive -->
+                <div class="row align-items-center">
+                    <div class="col-12 mt-3">
+                        <div class="mb-3">
+                            <h5 class="card-title"> 
+                                <i class="mdi mdi-arrow-right text-primary me-1"></i>
+                                    Bilan des montants des factures de vente
+                                <span class="text-muted fw-normal ms-2"></span>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+                {% include "stats/__bilan_facture_vente.html.twig" %}
+            </div>
+            <div class="tab-pane" id="facture-avoir" role="tabpanel">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-9">
+                        <div class="mb-3">
+                            <a class="" data-bs-toggle="collapse" href="#collapse-datatable-fa" aria-expanded="false" aria-controls="collapse-datatable-fa">
+                                <h5 class="card-title"> 
+                                    <i class="mdi mdi-arrow-right text-primary me-1"></i>
+                                        Liste des factures d'avoir
+                                    <span class="text-muted fw-normal ms-2"></span>
+                                </h5>
+                            </a>                            
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-3">
+                        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+                            <div class="dropdown">
+                                <a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-horizontal-rounded"></i>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" onclick="bilan.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- end row -->
+                <div class="table-responsive mb-4 collapse" id="collapse-datatable-fa">
+                    <table data-order='[[1, "desc"]]' class="table align-middle datatable-fa dt-responsive table-check nowrap" id="datatable-fa" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 50px;">
+                                    <div class="form-check font-size-16">
+                                        <input type="checkbox" class="form-check-input" id="checkAll">
+                                        <label class="form-check-label" for="checkAll"></label>
+                                    </div>
+                                </th>
+                                <th scope="col">#</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Client</th>
+                                <th scope="col">Montant Total</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col">Code MCeF</th>
+                                <th style="width: 80px; min-width: 80px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <!-- end table -->
+                </div>
+                <!-- end table responsive -->
+                <div class="row align-items-center">
+                    <div class="col-12 mt-3">
+                        <div class="mb-3">
+                            <h5 class="card-title"> 
+                                <i class="mdi mdi-arrow-right text-primary me-1"></i>
+                                    Bilan des montants des factures d'avoir
+                                <span class="text-muted fw-normal ms-2"></span>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+                {% include "stats/__bilan_facture_avoir.html.twig" %}
+            </div>
+            <div class="tab-pane" id="bilan-recapitulatif" role="tabpanel">
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-9">
+                        <div class="mb-3">
+                            <a class="" data-bs-toggle="collapse" href="#collapse-datatable-recap" aria-expanded="false" aria-controls="collapse-datatable-recap">
+                                <h5 class="card-title"> 
+                                    <i class="mdi mdi-arrow-right text-primary me-1"></i>
+                                        Liste récapitulatif des factures
+                                    <span class="text-muted fw-normal ms-2"></span>
+                                </h5>
+                            </a> 
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-3">
+                        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+                            <div class="dropdown">
+                                <a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-horizontal-rounded"></i>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" onclick="bilan.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- end row -->
+                <div class="table-responsive mb-4 collapse" id="collapse-datatable-recap">
+                    <table data-order='[[1, "desc"]]' class="table align-middle datatable-recap dt-responsive table-check nowrap" id="datatable-recap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 50px;">
+                                    <div class="form-check font-size-16">
+                                        <input type="checkbox" class="form-check-input" id="checkAll">
+                                        <label class="form-check-label" for="checkAll"></label>
+                                    </div>
+                                </th>
+                                <th scope="col">#</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Client</th>
+                                <th scope="col">Montant Total</th>
+                                <th scope="col">Statut</th>
+                                <th scope="col">Code MCeF</th>
+                                <th style="width: 80px; min-width: 80px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <!-- end table -->
+                </div>
+                <!-- end table responsive -->
+                <div class="row align-items-center">
+                    <div class="col-12 mt-3">
+                        <div class="mb-3">
+                            <h5 class="card-title"> 
+                                <i class="mdi mdi-arrow-right text-primary me-1"></i>
+                                    Récapitulatif des montants
+                                <span class="text-muted fw-normal ms-2"></span>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+                {% include "stats/__bilan_recapitulatif.html.twig" %}
+            </div>
+        </div>
+    </div><!-- end card-body -->
+</div><!-- end card -->

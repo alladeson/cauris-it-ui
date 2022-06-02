@@ -4,34 +4,43 @@
 		<div class="collapse navbar-collapse" id="topnav-menu-content">
 			<ul class="navbar-nav">
                 {% for menu in menus %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none {{menu.active ? 'active' : ''}}" href="{{ menu.children ? '#' : path(menu.pathName)}}" id="{{menu.id}}" role="button">
-                            <i data-feather="{{menu.icon}}"></i>
-                            <span data-key="{{menu.dataKey}}">{{menu.title}}</span>
-                            {{menu.children ? '<div class="arrow-down"></div>' : ''}}
-                        </a>
-                        {% if menu.children %}
-                            <div class="dropdown-menu" aria-labelledby="{{menu.id}}">
-                                {% for child in menu.children %}
-                                    {% if child.children %}
-                                        <div class="dropdown">
-                                            <a class="dropdown-item dropdown-toggle arrow-none {{child.active ? 'active' : ''}}" href="#" id="{{child.id}}" role="button">
-                                                <span data-key="{{child.dataKey}}">{{child.title}}</span>
-                                                <div class="arrow-down"></div>
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="{{child.id}}">
-                                                {% for child2 in child.children %}
-                                                    <a href="{{ child2.children ? '#' : path(child2.pathName)}}" class="dropdown-item {{child2.active ? 'active' : ''}}" data-key="{{child2.dataKey}}">{{child2.title}}</a>
-                                                {% endfor %}
-                                            </div>
-                                        </div>
-                                    {% else %}                                        
-                                        <a href="{{ child.children ? '#' : path(child.pathName)}}" class="dropdown-item {{child.active ? 'active' : ''}}" data-key="{{child.dataKey}}">{{child.title}}</a>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </li>
+					{# Contrôle d'accès #}
+					{% if menu.readable %}
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle arrow-none {{menu.active ? 'active' : ''}}" href="{{ menu.children ? '#' : path(menu.pathName)}}" id="{{menu.id}}" role="button">
+								<i data-feather="{{menu.icon}}"></i>
+								<span data-key="{{menu.dataKey}}">{{menu.title}}</span>
+								{{menu.children ? '<div class="arrow-down"></div>' : ''}}
+							</a>
+							{% if menu.children %}
+								<div class="dropdown-menu" aria-labelledby="{{menu.id}}">
+									{% for child in menu.children %}
+										{# Contrôle d'accès #}
+										{% if child.readable %}
+											{% if child.children %}
+												<div class="dropdown">
+													<a class="dropdown-item dropdown-toggle arrow-none {{child.active ? 'active' : ''}}" href="#" id="{{child.id}}" role="button">
+														<span data-key="{{child.dataKey}}">{{child.title}}</span>
+														<div class="arrow-down"></div>
+													</a>
+													<div class="dropdown-menu" aria-labelledby="{{child.id}}">
+														{% for child2 in child.children %}
+															{# Contrôle d'accès #}
+															{% if child2.readable %}
+																<a href="{{ child2.children ? '#' : path(child2.pathName)}}" class="dropdown-item {{child2.active ? 'active' : ''}}" data-key="{{child2.dataKey}}">{{child2.title}}</a>
+															{% endif %}															
+														{% endfor %}
+													</div>
+												</div>
+											{% else %}                                        
+												<a href="{{ child.children ? '#' : path(child.pathName)}}" class="dropdown-item {{child.active ? 'active' : ''}}" data-key="{{child.dataKey}}">{{child.title}}</a>
+											{% endif %}
+										{% endif %}										
+									{% endfor %}
+								</div>
+							{% endif %}
+						</li>
+					{% endif %}					
                 {% endfor %}
 
 				{# <li class="nav-item dropdown">

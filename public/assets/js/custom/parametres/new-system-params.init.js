@@ -79,18 +79,18 @@ let newSystemParamsWizard = {
         var emecefForm = $("form#emecef-form")
         if (societeForm.length && emecefForm.length) {
             data = {
-                'name': societeForm.find("#name").val(),
-                'raisonSociale': societeForm.find("#name").val(),
-                'ifu': societeForm.find("#ifu").val(),
-                'rcm': societeForm.find("#rcm").val(),
-                'telephone': societeForm.find("#telephone").val(),
-                'email': societeForm.find("#email").val(),
-                'address': societeForm.find("#address").val(),
-                'pays': societeForm.find("#pays").val(),
-                'ville': societeForm.find("#ville").val(),
-                'typeSystem': emecefForm.find("#type").val(),
-                'nim': emecefForm.find("#nim").val(),
-                'tokenTmp': $.trim(emecefForm.find("#token").val()),
+                'name': GlobalScript.checkBlank(societeForm.find("#name").val()),
+                'raisonSociale': GlobalScript.checkBlank(societeForm.find("#name").val()),
+                'ifu': GlobalScript.checkBlank(societeForm.find("#ifu").val()),
+                'rcm': GlobalScript.checkBlank(societeForm.find("#rcm").val()),
+                'telephone': GlobalScript.checkBlank(societeForm.find("#telephone").val()),
+                'email': GlobalScript.checkBlank(societeForm.find("#email").val()),
+                'address': GlobalScript.checkBlank(societeForm.find("#address").val()),
+                'pays': GlobalScript.checkBlank(societeForm.find("#pays").val()),
+                'ville': GlobalScript.checkBlank(societeForm.find("#ville").val()),
+                'typeSystem': GlobalScript.checkBlank(emecefForm.find("#type").val()),
+                'nim': GlobalScript.checkBlank(emecefForm.find("#nim").val()),
+                'tokenTmp': GlobalScript.checkBlank($.trim(emecefForm.find("#token").val())),
             };
             return JSON.stringify(data);
         }

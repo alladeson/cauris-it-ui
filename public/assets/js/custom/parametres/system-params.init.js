@@ -60,10 +60,12 @@ let systemParamsWizard = {
             GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
         });
     },
-    submitFormData: function() {
+    submitFormData: function(event = null) {
+        if (event) event.preventDefault();
         var data = systemParamsWizard.dataFormat()
         var societeForm = $("form#societe-form")
-        GlobalScript.request(URL_PUT_ITEM.replace("__id__", JSON.parse(data).id), 'PUT', data).then(function(data) {
+        let dataId = JSON.parse(data).id;
+        GlobalScript.request(URL_PUT_ITEM.replace("__id__", dataId), 'PUT', data).then(function(data) {
             // Run this when your request was successful
             console.log(data)
             if (societeForm.find("input#logo").val()) systemParamsWizard.submitFormDataLogo(data);
@@ -93,15 +95,15 @@ let systemParamsWizard = {
         var societeForm = $("form#societe-form")
         var params = societeForm.data("params");
         if (societeForm.length) {
-            params.name = societeForm.find("#name").val();
-            params.raisonSociale = societeForm.find("#name").val();
-            params.ifu = societeForm.find("#ifu").val();
-            params.rcm = societeForm.find("#rcm").val();
-            params.telephone = societeForm.find("#telephone").val();
-            params.email = societeForm.find("#email").val();
-            params.address = societeForm.find("#address").val();
-            params.pays = societeForm.find("#pays").val();
-            params.ville = societeForm.find("#ville").val();
+            params.name = GlobalScript.checkBlank(societeForm.find("#name").val());
+            params.raisonSociale = GlobalScript.checkBlank(societeForm.find("#name").val());
+            params.ifu = GlobalScript.checkBlank(societeForm.find("#ifu").val());
+            params.rcm = GlobalScript.checkBlank(societeForm.find("#rcm").val());
+            params.telephone = GlobalScript.checkBlank(societeForm.find("#telephone").val());
+            params.email = GlobalScript.checkBlank(societeForm.find("#email").val());
+            params.address = GlobalScript.checkBlank(societeForm.find("#address").val());
+            params.pays = GlobalScript.checkBlank(societeForm.find("#pays").val());
+            params.ville = GlobalScript.checkBlank(societeForm.find("#ville").val());
             return JSON.stringify(params);
         }
         return "";
@@ -109,9 +111,10 @@ let systemParamsWizard = {
     onSave: function(event) {
         event.preventDefault();
         var societeForm = $("form#societe-form")
-
-        // Vérification des infos importantes
-        var data = systemParamsWizard.dataFormat()
+            // Vérification des infos importantes
+        var data = systemParamsWizard.dataFormat();
+        // Vérification du changement dans le formulaire
+        if (GlobalScript.traceUserProfileAndParamsFormChange(JSON.parse(data).id)) return;
         console.log(data);
         if (data) {
             $.each(JSON.parse(data), function(key, value) {
@@ -125,13 +128,7 @@ let systemParamsWizard = {
                 }
             })
         }
-        // Vérification de la pressence du logo
-        // if (save && !(societeForm).find("input#logo").val()) {
-        //     systemParamsWizard.saError("Erreur !", "L'enregistrement ne peut aboutir pour manque d'informations. Veuillez charger le logo");
-        //     save = false;
-        //     return;
-        // }
-        if (save) systemParamsWizard.submitFormData();
+        if (save) $("div.confirmModal").modal("show");
     },
     imageReset: function() {
         // $(this).parent().remove();
@@ -142,6 +139,8 @@ let systemParamsWizard = {
     }
 };
 $(document).ready(function() {
+    // Ecoute du changement du formulaire
+    GlobalScript.formChange($("form#societe-form"));
     // Gestion de l'image
     $(document).on("click", "i.del", function() {
         systemParamsWizard.imageReset();

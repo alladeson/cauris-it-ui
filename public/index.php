@@ -50,7 +50,8 @@ return function (array $context) {
         // - Si le token a expiré, alors redirige à la page de connexion
         if ($interval->invert || str_starts_with($requestPath, "/auth/logout")) {
             // Récupération du layout de l'utilisateur
-            $layout = $user->{'layout'};
+            // $layout = $user->{'layout'};
+            $layout = is_array($user) ? $user['layout'] : $user->{'layout'};
             // Suppression des données de la session
             $session->clear();
             // Mise à jour du layout dans la session
@@ -72,7 +73,7 @@ return function (array $context) {
             return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
         }
         if (!$params && !str_starts_with($requestPath, $newSystemParamsUrl)) {
-            if ($user->{'role'} == "SUPER_ADMIN") {
+            if ($user->{'sa'}) {
                 return header("Location: " . $newSystemParamsUrl);
             }else {
                 throw new \Exception("Les informations du paramètre du système ne sont pas définies. Veuillez contacter votre fournisseur du SFE !", Response::HTTP_UNAUTHORIZED); 
