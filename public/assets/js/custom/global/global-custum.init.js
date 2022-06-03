@@ -232,11 +232,11 @@ let GlobalScript = {
             console.log(dataJon);
             choices[choicePosition].clearChoices();
             if (selectData[0] == "catégories") {
-                dataJon = $.map(data, function(obj) {
+                dataJon = $.map(data, function(obj, index) {
                     obj.value = obj.id
                     obj.label = obj.libelle
-                    obj.selected = true
-                    obj.disabled = true
+                    obj.selected = index ? false : true
+                        // obj.disabled = index ? false : true
                     return obj
                 });
             }
