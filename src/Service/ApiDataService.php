@@ -41,6 +41,8 @@ class ApiDataService extends AbstractController
                 'Authorization' => "Bearer {$token}",
                 'Content-Type' => "application/json",
             ],
+            'verify_peer'=>false,
+            'verify_host'=>false,
         ];
         // get authenticated user
         $response = $client->request(Request::METHOD_GET, $baseUrl . ApiConstant::GET_AUTH_USER_URL, $options);
@@ -90,7 +92,9 @@ class ApiDataService extends AbstractController
             'headers' => [
                 'Authorization' => "Bearer {$token}",
                 'Content-Type' => "application/json"
-            ]
+            ],
+            'verify_peer'=>false,
+            'verify_host'=>false,
         ];
         // get system params
         $response =  $client->request(Request::METHOD_GET, $baseUrl . ApiConstant::URL_GET_SYSTEM_PARAMS,  $options);
@@ -113,7 +117,9 @@ class ApiDataService extends AbstractController
             'headers' => [
                 'Authorization' => "Bearer {$token}",
                 'Content-Type' => "application/json"
-            ]
+            ],
+            'verify_peer'=>false,
+            'verify_host'=>false,
         ];
         // get accesses for connected user
         $response =  $client->request(Request::METHOD_GET, $baseUrl . ApiConstant::URL_LIST_ACCESS_BY_CONNECTED_USER,  $options);
@@ -184,12 +190,16 @@ class ApiDataService extends AbstractController
                     'Authorization' => 'Bearer ' . $this->apiBearerToken,
                     'Content-Type' => 'application/json',
                 ],
+                'verify_peer'=>false,
+                'verify_host'=>false,
             ];
         } else {
             $options = [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $this->apiBearerToken,
                 ],
+                'verify_peer'=>false,
+                'verify_host'=>false,
             ];
         }
         return $this->requestUrl($methode, $this->baseUrl . $route, $options);
@@ -223,6 +233,8 @@ class ApiDataService extends AbstractController
         $options = [
             'body' => $formData->bodyToIterable(),
             'headers' => $headers,
+            'verify_peer'=>false,
+            'verify_host'=>false,
         ];
         // Suppression du fichier temporairement enregistré
         $filesystem = new Filesystem();
