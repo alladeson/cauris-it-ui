@@ -5,5 +5,5 @@
 return array (
   'APP_ENV' => 'prod',
   'APP_SECRET' => 'de4be7a1990b1f5c9fefcb6ef20967a2',
-  'API_BASE_URL' => 'https://178.79.181.175:8443/',
+  'API_BASE_URL' => 'https://109.74.205.86:8443/',
 );
