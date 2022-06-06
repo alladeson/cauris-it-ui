@@ -210,14 +210,17 @@ let bilan = {
         });
     },
     printBilan: function () {
-        GlobalScript.request(URL_IMPRESSION_BILAN, 'GET', JSON.stringify(statsPayload)).then(function (data) {
-            // Run this when your request was successful
-            console.log(data)
-            GlobalScript.showPrintedBilan(data.fileName);
-        }).catch(function (err) {
-            // Run this when promise was rejected via reject()
-            GlobalScript.ajxRqtErrHandler(err, "sweet", "la génération du rapport du bilan");
-        });
+        var debut = filtreForm.find("input#date-debut").val();
+        var fin = filtreForm.find("input#date-fin").val();
+        console.log(debut)
+        console.log(fin)
+        var obj = {"-": "", "T": "_", ":": ""};
+        dateDebut = GlobalScript.textMultipleReplace(debut, obj);
+        dateFin = GlobalScript.textMultipleReplace(fin, obj);
+		reportName = "bilan_du_" + dateDebut + "_au_" + dateFin + ".pdf";
+        console.log(reportName);
+        //
+        GlobalScript.showPrintedBilan(URL_IMPRESSION_BILAN, 'GET', JSON.stringify(statsPayload), reportName);
     },
     reloadDatatable: function (event) {
         event.preventDefault();

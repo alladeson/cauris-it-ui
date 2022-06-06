@@ -203,6 +203,26 @@ let GlobalScript = {
             });
         });
     },
+    requestGetFile: function(url, method, fileName, sendData) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                url: URL_GLOBAL_GET_FILE,
+                method: "POST",
+                data: {
+                    "url": url,
+                    "method": method,
+                    "fileName": fileName,
+                    "data": sendData,
+                },
+                success: function(data) {
+                    resolve(data) // Resolve promise and go to then()
+                },
+                error: function(err) {
+                    reject(err) // Reject the promise and go to catch()
+                },
+            });
+        });
+    },
     /**
      * Smooth scrolling to a specific element 
      **/
@@ -231,7 +251,7 @@ let GlobalScript = {
             dataJon = data;
             console.log(dataJon);
             choices[choicePosition].clearChoices();
-            if (selectData[0] == "catégories") {
+            if ($.inArray(selectData[0], ["catégories", "types de facture", "types de paiement", 5]) > -1) {
                 dataJon = $.map(data, function(obj, index) {
                     obj.value = obj.id
                     obj.label = obj.libelle
@@ -519,8 +539,20 @@ let GlobalScript = {
     showPrintedInvoice: function(facture) {
         var printPdfUrl = URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id);
         var pdfName = "facture-" + facture.numero + ".pdf";
-        var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", pdfName);
-        GlobalScript.pdfwebviewer(printPdfUrl, dowloadPdfUrl, pdfName)
+        // var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", pdfName);
+        var dowloadPdfUrl = "/assets/downloads/" + pdfName;
+        // GlobalScript.pdfwebviewer(printPdfUrl, dowloadPdfUrl, pdfName)
+        //
+        GlobalScript.requestGetFile(printPdfUrl, "GET", pdfName, null).then(function(data) {
+                // Run this when your request was successful
+                console.log(data);
+                GlobalScript.pdfwebviewer(dowloadPdfUrl, dowloadPdfUrl, pdfName)
+            })
+            .catch(function(err) {
+                // Run this when promise was rejected via reject()
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la génération de la facture");
+            });
+
     },
     /** Fin de l'affichage de la facture **/
 
@@ -528,9 +560,19 @@ let GlobalScript = {
      * Afficher le bilan imprimé sur l'écran de l'application
      * @param {String} fileName Le nom du fichier pdf à afficher
      */
-    showPrintedBilan: function(fileName) {
-        var printPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
-        var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
-        GlobalScript.pdfwebviewer(printPdfUrl, dowloadPdfUrl, fileName)
+    showPrintedBilan: function(printPdfUrl, method, data, fileName) {
+        // var printPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
+        // var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
+        var dowloadPdfUrl = "/assets/downloads/" + fileName;
+        //
+        GlobalScript.requestGetFile(printPdfUrl, method, fileName, data).then(function(data) {
+                // Run this when your request was successful
+                console.log(data);
+                GlobalScript.pdfwebviewer(dowloadPdfUrl, dowloadPdfUrl, fileName)
+            })
+            .catch(function(err) {
+                // Run this when promise was rejected via reject()
+                GlobalScript.ajxRqtErrHandler(err, "alertify", "la génération du rapport du bilan");
+            });
     }
 }

@@ -22,11 +22,12 @@
 								<div class="mt-sm-5 mt-0 text-center">
 									<p class="mb-0">©
 										<script>
-											document.write(new Date().getFullYear())
+											var year = new Date().getFullYear()
+											document.write(year==2022 ? year : "2022 - " + year)
 										</script>
-										{{appName}}. Conçu avec
+										{# {{appName}}. Conçu avec
 										<i class="mdi mdi-heart text-danger"></i>
-										par <a href="#!" class="text-decoration-underline">alladeson</a></p>
+										par <a href="#!" class="text-decoration-underline">alladeson</a></p> #}
 								</div>
 							</div>
 						</div>

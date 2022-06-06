@@ -38,6 +38,8 @@
 		const URL_GLOBAL_REQUEST = "{{ path('global_request_api') }}";
 		// URL global request post for file
 		const URL_GLOBAL_REQUEST_FILE = "{{ path('global_request_file_api') }}";
+		// URL global GET file
+		const URL_GLOBAL_GET_FILE = "{{ path('global_get_file_api') }}";
 		/* Controle d'accès : Gestion Globale */
 		{% if menu_code is defined %}
 			let ITEM_WRITABLE = {{ menu_writable(menu_code) == true ? true : "!1" }}

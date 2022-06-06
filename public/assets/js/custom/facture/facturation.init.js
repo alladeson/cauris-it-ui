@@ -551,6 +551,15 @@ let facturation = {
                 dataJon = data;
                 console.log(dataJon);
                 choices[choicePosition].clearChoices();
+                if ($.inArray(selectData[0], ["catégories", "types de facture", "types de paiement", 5]) > -1) {
+                    dataJon = $.map(data, function(obj, index) {
+                        obj.value = obj.id
+                        obj.label = obj.libelle
+                        obj.selected = index ? false : true
+                            // obj.disabled = index ? false : true
+                        return obj
+                    });
+                }
                 choices[choicePosition].setChoices(
                     dataJon,
                     selectData[1],

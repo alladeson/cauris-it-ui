@@ -204,6 +204,40 @@ class ApiDataService extends AbstractController
         }
         return $this->requestUrl($methode, $this->baseUrl . $route, $options);
     }
+
+    /**
+     * Envoie une requête HTTP à l'API
+     *
+     * @param String $methode Méthode HTTP à exécuter
+     * @param String $route Route de l'API à exécuter
+     * @param object $data Donnée du body de la requète
+     * @return ResponseInterface Réponse de la requête
+     */
+    public function requestGetFile($methode, $route, $data = null): ResponseInterface
+    {
+        $options = [];
+        if (isset($data)) {
+            $options = [
+                'body' => is_string($data) ? $data : json_encode($data),
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->apiBearerToken,
+                    'Content-Type' => 'application/json',
+                ],
+                'verify_peer'=>false,
+                'verify_host'=>false,
+            ];
+        } else {
+            $options = [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->apiBearerToken,
+                ],
+                'verify_peer'=>false,
+                'verify_host'=>false,
+            ];
+        }
+        $response = $this->httpClient->request($methode, $route, $options);
+        return $response;
+    }
     /**
      * Envoie une requête HTTP à l'API
      *
@@ -375,6 +409,40 @@ class ApiDataService extends AbstractController
 
         $response = $this->request($method, $route, $data);
         return new Response($response->getContent(false), $response->getStatusCode(false));
+    }
+
+    /**
+     * Exécute une requête
+     */
+    public function getFileApi(Request $request): Response
+    {
+        $method = $request->request->get('method');
+        $route = $request->request->get('url');
+        $fileName = $request->request->get('fileName');
+        $data = $request->request->get('data');
+        //
+        $response = $this->requestGetFile($method, $route, $data);
+        //
+        $respContent = $fileName;
+        //
+        if($response->getStatusCode(false) == Response::HTTP_OK){            
+            // Récupération de la destination temporaire du fichier
+            $destination = $this->getParameter('kernel.project_dir').'/public/assets/downloads/';
+            // Création du fichier
+            $filesystem = new Filesystem();
+            $filesystem->touch($destination.$fileName);
+            // Ouverture du fichier pour l'écriture
+            $fileHandler = fopen($destination.$fileName, 'w');
+            // Incorporation dans le fichier créé le contenu du fichier uploadé
+            foreach ($this->httpClient->stream($response) as $chunk) {
+                fwrite($fileHandler, $chunk->getContent());
+            }
+
+            //fermeture du fichier créé
+            fclose($fileHandler);
+        }
+        // Envoie du nom du fichier à la vue
+        return new Response($respContent, $response->getStatusCode(false));
     }
 
     /**

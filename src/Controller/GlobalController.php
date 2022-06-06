@@ -35,4 +35,10 @@ class GlobalController extends AbstractController
         {
         return $this->apiService->executeLayoutSettings($request);
     }
+
+    #[Route('/__get/file/api', name:'global_get_file_api', methods:['POST'])]
+    function getFileApi(Request $request): Response
+    {
+        return $this->apiService->getFileApi($request);
+    }
 }
