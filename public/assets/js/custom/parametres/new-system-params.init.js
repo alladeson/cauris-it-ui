@@ -77,6 +77,7 @@ let newSystemParamsWizard = {
     dataFormat: function() {
         var societeForm = $("form#societe-form")
         var emecefForm = $("form#emecef-form")
+        var serialKeyForm = $("form#serialKey-form")
         if (societeForm.length && emecefForm.length) {
             data = {
                 'name': GlobalScript.checkBlank(societeForm.find("#name").val()),
@@ -91,6 +92,7 @@ let newSystemParamsWizard = {
                 'typeSystem': GlobalScript.checkBlank(emecefForm.find("#type").val()),
                 'nim': GlobalScript.checkBlank(emecefForm.find("#nim").val()),
                 'tokenTmp': GlobalScript.checkBlank($.trim(emecefForm.find("#token").val())),
+                'serialKey': GlobalScript.checkBlank($.trim(serialKeyForm.find("#serial-key").val())),
             };
             return JSON.stringify(data);
         }
@@ -115,6 +117,9 @@ let newSystemParamsWizard = {
         $showClasseTable.find('.td-type').html(emecefForm.find("#type").val() ? emecefForm.find("#type").val() : errorHtml);
         $showClasseTable.find('.td-nim').html(emecefForm.find("#nim").val() ? emecefForm.find("#nim").val() : errorHtml);
         $showClasseTable.find('.td-token').html(emecefForm.find("#token").val() ? `<span class="text-success badge badge-soft-success font-size-14">Fourni</span>` : errorHtml);
+        // Clé d'activation
+        var serialKeyForm = $("form#serialKey-form")
+        $showClasseTable.find('.td-serial-key').html(serialKeyForm.find("#serial-key").val() ? `<span class="text-success badge badge-soft-success font-size-14">Fourni</span>` : errorHtml);
     },
     onSave: function(event) {
         event.preventDefault();
