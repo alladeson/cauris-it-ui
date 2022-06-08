@@ -95,6 +95,12 @@
 						<option value="Création d'une fonctionnalité">Création d'une fonctionnalité</option>
 						<option value="Mis à jour d'une fonctionnalité">Mis à jour d'une fonctionnalité</option>
 						<option value="Suppression d'une fonctionnalité">Suppression d'une fonctionnalité</option>
+						{% if authUser.sa %}
+							<option value="Génération d'une clé de sécurité">Génération d'une clé de sécurité</option>
+							<option value="Mis à jour d'une clé de sécurité">Mis à jour d'une clé de sécurité</option>
+							<option value="Activation d'une clé de sécurité">Activation d'une clé de sécurité</option>
+							<option value="Suppression d'une clé de sécurité">Suppression d'une clé de sécurité</option>
+						{% endif %}	
 					</select>
 				</div>
 				<div class="col-auto mt-sm-4 mt-2 mb-sm-0 mb-2">
