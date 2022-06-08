@@ -40,6 +40,14 @@
 							</li>
 
 							<li class="nav-item">
+								<a href="#infos-serialKey" class="nav-link" data-toggle="tab">
+									<div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Clé d'activation">
+										<i class="bx bxs-key"></i>
+									</div>
+								</a>
+							</li>
+
+							<li class="nav-item">
 								<a href="#recap-system-params" class="nav-link" data-toggle="tab">
 									<div class="step-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Récapitulatif">
 										<i class="bx bx-notepad"></i>
@@ -63,7 +71,7 @@
 										<div class="col-lg-2 col-md-3 col-sm-4 col-8 imgUp">
 											<div class="imagePreview"></div>
 											<label class="btn btn-primary imgUpBtn" {#style="display:block !important; border-radius:0px;box-shadow:0px 4px 6px 2px rgba(0,0,0,0.2);margin-top:-5px;"#}> 
-												Charger votre logo
+												Charger le logo
 												<input type="file" id="logo" name="logo" class="uploadFile img" accept="image/*" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
 											</label>
 											<i class="fa fa-times del" style="display:none;"></i>
@@ -204,6 +212,36 @@
 									</ul>
 								</div>
 							</div>
+							<div class="tab-pane" id="infos-serialKey">
+								<div>
+									<div class="text-center mb-4">
+										<h5>Clé d'activation</h5>
+										<p class="card-title-desc">Veuillez renseigner la clé d'activation du logiciel</p>
+									</div>
+									<form class="form-wizard" id="serialKey-form" onsubmit="newSystemParamsWizard.submitFormData(event)">
+										<div class="row">						
+											<div class="col-12">
+												<div class="mb-3 position-relative">
+													<label class="form-label" for="token">clé d'activation</label>
+													<textarea onchange="newSystemParamsWizard.setRecapTable()" id="serial-key" name="serial-key" rows="4" class="form-control" placeholder="La clé d'activation du logiciel"></textarea>
+												</div>
+											</div>							
+										</div>
+									</form>
+									<ul class="pager wizard twitter-bs-wizard-pager-link">
+										<li class="previous">
+											<a href="javascript: void(0);" class="btn btn-primary">
+												<i class="bx bx-chevron-left me-1"></i>
+												Précédent</a>
+										</li>
+										<li class="next">
+											<a href="javascript: void(0);" class="btn btn-primary">Suivant
+												<i class="bx bx-chevron-right ms-1"></i>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
 							<div class="tab-pane" id="recap-system-params">
 								<div>
 									<div class="text-center mb-4">
@@ -320,6 +358,14 @@
 														Token
 													</th>
 													<td class="text-center td-token">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>												
+												<tr>
+													<th scope="row">
+														Clé d'activation
+													</th>
+													<td class="text-center td-serial-key">
 														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
 													</td>
 												</tr>												

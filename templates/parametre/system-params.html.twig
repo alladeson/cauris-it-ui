@@ -173,6 +173,8 @@
                         <dd class="col-sm-7 col-6">{{ param.nim}}</dd>
                         <dt class="col-sm-5 col-6"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Mode : </dt>
                         <dd class="col-sm-7 col-6">{{param.typeSystem}}</dd>
+                        <dt class="col-sm-5 col-6"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Expire : </dt>
+                        <dd class="col-sm-7 col-6">{{param.expiration |date('d/m/Y', "Europe/London") }} à {{param.expiration |date('H:i:s', "Europe/London") }}</dd>
                     </dl>
                 </div>
                 <!-- end card body -->
