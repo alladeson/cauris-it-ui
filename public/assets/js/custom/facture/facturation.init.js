@@ -752,11 +752,11 @@ let facturation = {
             "Êtes-vous sûr de vouloir valider cette facture ?",
             "Cette opération est irréversible !",
             "Oui, valider !",
-            "Non, annuller !",
+            "Non, annuler !",
             "Validée !",
             "Validation effectuée avec succès.",
-            "Annullée !",
-            "Opération annullée, rien n'a changé."
+            "annulée !",
+            "Opération annulée, rien n'a changé."
         );
     },
     setValidationForm: function (event = null) {
@@ -1115,11 +1115,11 @@ $(document).ready(function () {
             "Êtes-vous sûr de vouloir supprimer cette ligne de facture ?",
             "Cette opération est irréversible !",
             "Oui, supprimer !",
-            "Non, annuller !",
+            "Non, annuler !",
             "Supprimée !",
             "Suppression effectuée avec succès.",
-            "Annullée !",
-            "Opération annullée, rien n'a changé."
+            "annulée !",
+            "Opération annulée, rien n'a changé."
         );
     });
 
@@ -1138,11 +1138,11 @@ $(document).ready(function () {
             "Êtes-vous sûr de vouloir valider cette ligne de facture ?",
             "Cette opération est irréversible !",
             "Oui, valider !",
-            "Non, annuller !",
+            "Non, annuler !",
             "Validée !",
             "Validation effectuée avec succès.",
-            "Annullée !",
-            "Opération annullée, rien n'a changé."
+            "annulée !",
+            "Opération annulée, rien n'a changé."
         );
     });
 

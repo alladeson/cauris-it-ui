@@ -1,6 +1,6 @@
 let datatable;
 let choices;
-let client = {
+let serialKey = {
         listInitalizer: function() {
                 // $(".datatable").DataTable({ responsive: !1 }),
                 datatable = $(".datatable").DataTable({
@@ -20,7 +20,7 @@ let client = {
                                 "dataSrc": "",
                                 error: function(xhr, status, error) {
                                     (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
-                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des clients");
+                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des catégories d'article");
                                     $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
                                 }
                             },
@@ -33,52 +33,20 @@ let client = {
                                         "render": function(data, type, row, meta) {
                                             return `` +
                                                 `<div class="form-check font-size-16">` +
-                                                `<input type="checkbox" class="form-check-input" id="clientcheck${data}">` +
-                                                `<label class="form-check-label" for="clientcheck${data}"></label>` +
+                                                `<input type="checkbox" class="form-check-input" id="serialKeycheck${data}">` +
+                                                `<label class="form-check-label" for="serialKeycheck${data}"></label>` +
                                                 `</div>`;
                                         }
                                     },
                                     { data: 'id' },
+                                    { data: 'serialKey' },
                                     {
-                                        data: 'name',
+                                        data: 'status',
                                         render: function(data, type, row, meta) {
-                                            return data ? data : "-";
-                                        }
-                                    },
-                                    {
-                                        data: 'ifu',
-                                        render: function(data, type, row, meta) {
-                                            return data ? data : "-";
-                                        }
-                                    },
-                                    {
-                                        data: 'rcm',
-                                        render: function(data, type, row, meta) {
-                                            return data ? data : "-";
-                                        }
-                                    },
-                                    {
-                                        data: 'telephone',
-                                        render: function(data, type, row, meta) {
-                                            return data ? data : "-";
-                                        }
-                                    },
-                                    {
-                                        data: 'email',
-                                        render: function(data, type, row, meta) {
-                                            return data ? data : "-";
-                                        }
-                                    },
-                                    {
-                                        data: 'address',
-                                        render: function(data, type, row, meta) {
-                                            return data ? data : "-";
-                                        }
-                                    },
-                                    {
-                                        data: 'ville',
-                                        render: function(data, type, row, meta) {
-                                            return data ? data : "-";
+                                            if (data)
+                                                return `<span class="text-success">Déjà utilisé</span>`;
+                                            else
+                                                return `<span class="text-warning">Disponible</span>`;
                                         }
                                     },
                                     {
@@ -95,11 +63,11 @@ let client = {
                                                     <li>
                                                         <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                     </li>
-                                                    ${ITEM_WRITABLE ?
+                                                    ${ITEM_WRITABLE && !row.status ?
                                                     `<li>
                                                         <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier</a>
                                                     </li>` : ""}
-                                                    ${ITEM_DELETABLE ? 
+                                                    ${ITEM_DELETABLE && !row.status ? 
                                                     `<li>
                                                         <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
                                                     </li>` : "" }
@@ -141,9 +109,9 @@ let client = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                client.saSucces(oktitle, oktext) :
+                serialKey.saSucces(oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                client.saError(notitle, notext);
+                serialKey.saError(notitle, notext);
         });
     },
     saRemoveParams: function(el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
@@ -159,29 +127,29 @@ let client = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                client.removeItem(el, oktitle, oktext) :
+                serialKey.removeItem(el, oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                client.saError(notitle, notext);
+                serialKey.saError(notitle, notext);
         });
     },
     submitFormData: function(event) {
         event.preventDefault();
         var form = $("div.add-new-modal").find('form');
-        var data = client.dataFormat(form)
+        // var data = serialKey.dataFormat(form)
         let dataId = form.find("#item-id").val();
-        if(GlobalScript.traceFormChange(dataId)) return;
-        console.log(data)
-        GlobalScript.request((dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM), (dataId ? 'PUT' : 'POST'), data).then(function(data) {
+        // if(GlobalScript.traceFormChange(dataId)) return;
+        // console.log(data)
+        GlobalScript.request((dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM), (dataId ? 'PUT' : 'POST'), null).then(function(data) {
             // Run this when your request was successful
             console.log(data)
             datatable.ajax.reload();
-            // client.saSucces("Succès !", "Enregistrement effectué avec succès.")
-            alertify.success("Enregistrement effectué avec succès")
-            if (dataId) $("div.add-new-modal").modal('hide')
+            // serialKey.saSucces("Succès !", "Enregistrement effectué avec succès.")
+            alertify.success("Clé d'activation " + (dataId ? "modifiée" : "générée") + " avec succès")
+            $("div.add-new-modal").modal('hide')
             form[0].reset()
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
-            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "la " + (dataId ? "modification" : "génération") + " de la clé d'activation");
         });
     },
     showItem: function(el) {
@@ -192,9 +160,8 @@ let client = {
             // Run this when your request was successful
             console.log(data)
             var itemObj = data;
-            client.setShowingTable(itemObj);
-            $(".show-item-modal").modal('show')
-
+            serialKey.setShowingTable(itemObj);
+            $(".show-item-modal").modal('show')            
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "l'affichage");
@@ -210,9 +177,10 @@ let client = {
             console.log(data)
             var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
-            client.setformData($("div.add-new-modal").find('form'), itemObj);
-            $(".add-new-modal").modal('show');
-            GlobalScript.formChange($("div.add-new-modal").find('form'));  
+            $("div.add-new-modal").find('h5.confirmed-text').text("Confirmer la modification de la clé d'activation");
+            serialKey.setformData($("div.add-new-modal").find('form'), itemObj);
+            $(".add-new-modal").modal('show');    
+            GlobalScript.formChange($("div.add-new-modal").find('form'));        
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "la modification");
@@ -225,7 +193,7 @@ let client = {
         GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
             console.log(data)
-                // client.saSucces(oktitle, oktext);
+                // serialKey.saSucces(oktitle, oktext);
             alertify.success(oktext)
             datatable.ajax.reload();
         }).catch(function(err) {
@@ -236,26 +204,15 @@ let client = {
     setformData: function(form, item) {
         if (form.length) {
             form.find("#item-id").val(item.id)
-            form.find("#name").val(item.name)
-            form.find("#ifu").val(item.ifu)
-            form.find("#rcm").val(item.rcm)
-            form.find("#telephone").val(item.telephone)
-            form.find("#email").val(item.email)
-            form.find("#address").val(item.address)
-            form.find("#ville").val(item.ville)
+                //form.find("#reference").val(item.id)
+            // form.find("#libelle").val(item.libelle)
         }
     },
     dataFormat: function(form) {
         if (form.length) {
             data = {
                 'id': GlobalScript.checkBlank(form.find("#item-id").val()),
-                'name': GlobalScript.checkBlank(form.find("#name").val()),
-                'ifu': GlobalScript.checkBlank(form.find("#ifu").val()),
-                'rcm': GlobalScript.checkBlank(form.find("#rcm").val()),
-                'telephone': GlobalScript.checkBlank(form.find("#telephone").val()),
-                'email': GlobalScript.checkBlank(form.find("#email").val()),
-                'address': GlobalScript.checkBlank(form.find("#address").val()),
-                'ville': GlobalScript.checkBlank(form.find("#ville").val()),
+                'libelle': GlobalScript.checkBlank(form.find("#libelle").val()),
             };
             return JSON.stringify(data);
         }
@@ -264,6 +221,7 @@ let client = {
     newItemEvent: function(event) {
         event.preventDefault();
         $("div.add-new-modal").find('h5.modal-title').text('Nouvel ajout');
+        $("div.add-new-modal").find('h5.confirmed-text').text("Confirmer la génération de la clé d'activation");
         var form = $("div.add-new-modal").find('form');
         form[0].reset();
         form.find("#item-id").val("");
@@ -275,35 +233,33 @@ let client = {
     setShowingTable: function(itemObj) {
         var $showClasseTable = $('table.item-show-table');
         $showClasseTable.find('.td-reference').text(itemObj.id);
-        $showClasseTable.find('.td-name').text(itemObj.name ? itemObj.name : "-");
-        $showClasseTable.find('.td-ifu').text(itemObj.ifu ? itemObj.ifu : "-");
-        $showClasseTable.find('.td-rcm').text(itemObj.rcm ? itemObj.rcm : "-");
-        $showClasseTable.find('.td-telephone').text(itemObj.telephone ? itemObj.telephone : "-");
-        $showClasseTable.find('.td-email').text(itemObj.email ? itemObj.email : "-");
-        $showClasseTable.find('.td-address').text(itemObj.address ? itemObj.address : "-");
-        $showClasseTable.find('.td-ville').text(itemObj.ville ? itemObj.ville : "-");
-    },
+        $showClasseTable.find('.td-serial-key').text(itemObj.serialKey);
+        let html = ``;
+        if (itemObj.status) html = `<span class="text-success">Déjà utilisée</span>`;
+        else html = `<span class="text-warning">Disponible</span>`;
+        $showClasseTable.find(".td-status").html(html);
+    },    
 };
 $(document).ready(function() {
-    client.listInitalizer();
+    serialKey.listInitalizer();
     // Edit record
     datatable.on('click', '.edit-item', function(e) {
         e.preventDefault();
         formChange = false;
-        client.editItem($(this));
+        serialKey.editItem($(this));
     });
 
     // Delete a record
     datatable.on('click', '.remove-item', function(e) {
         e.preventDefault();
-        // client.removeItem($(this));
-        client.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce client ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuler !", "Supprimé !", "Client supprimé avec succès.", "annulée !", "Opération annulée, rien n'a changé.");
+        // serialKey.removeItem($(this));
+        serialKey.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cette clé d'activation ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuler !", "Supprimée !", "Clé d'activation supprimée avec succès.", "annulée !", "Opération annulée, rien n'a changé.");
     });
 
     //Show record
     datatable.on('click', '.show-item', function(e) {
         e.preventDefault();
-        client.showItem($(this));
+        serialKey.showItem($(this));
     });
 
     //Show Action
@@ -318,11 +274,5 @@ $(document).ready(function() {
             $(".dropdown-menu-end").css("position", position);
         });
         console.log(count + ' column(s) are hidden');
-    });
-
-    // Input mask pour l'ifu du client
-    $("div.add-new-modal").find('form').find("#ifu").inputmask({
-        mask: "*************",
-        casing: "upper",
     });
 });

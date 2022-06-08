@@ -143,8 +143,8 @@ let newFactureAvoir = {
             "Non, annuller !",
             "Créée !",
             "Facture d'avoir créée avec succès.",
-            "Annullée !",
-            "Opération annullée, rien n'a changé."
+            "annulée !",
+            "Opération annulée, rien n'a changé."
         );
     },
 };

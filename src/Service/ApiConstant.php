@@ -137,11 +137,19 @@ class ApiConstant
     public const URL_LIST_ACCESS_BY_CONNECTED_USER = "access/accesses/connected-user";
     public const URL_POST_ACCESS = "access/accesses/user-group/__groupeId__/feature/__featureId__";
     public const URL_GET_ACCESS = "access/accesses/__id__";
+    
+    // Les clés d'activation
+    public const URL_LIST_SERIAL_KEY = "access/serial-key";
+    public const URL_POST_SERIAL_KEY = "access/serial-key";
+    public const URL_PUT_SERIAL_KEY = "access/serial-key/__id__";
+    public const URL_GET_SERIAL_KEY = "access/serial-key/__id__";
+    public const URL_DELETE_SERIAL_KEY = "access/serial-key/__id__";
 
     // Les audits
     public const URL_LIST_AUDIT = "access/audit";
     public const URL_LIST_AUDIT_BY_CONNECTED_USER = "access/audit/connected-user";
     public const URL_GET_AUDIT = "access/audit/__auditId__";
+
 
     /** Gestion des statistiques **/
     // Bilan des factures
@@ -175,6 +183,8 @@ class ApiConstant
 	public const accessCtrlUserGroup = 42000;
 	public const accessCtrlFeatures = 43000;
 	public const accessCtrlAccess = 44000;
+	// Les clés d'activation
+	public const accessSerialKey = 45000;
 	// Les audits
 	public const audit = 50000;
     // Les statistiques

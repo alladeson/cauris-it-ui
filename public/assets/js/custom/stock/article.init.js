@@ -337,7 +337,7 @@ $(document).ready(function() {
     datatable.on('click', '.remove-item', function(e) {
         e.preventDefault();
         // article.removeItem($(this));
-        article.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cet article ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Article supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+        article.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cet article ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuler !", "Supprimé !", "Article supprimé avec succès.", "annulée !", "Opération annulée, rien n'a changé.");
     });
 
     //Show record

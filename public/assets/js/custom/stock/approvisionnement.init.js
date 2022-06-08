@@ -257,7 +257,7 @@ $(document).ready(function() {
     datatable.on('click', '.remove-item', function(e) {
         e.preventDefault();
         // approvisionnement.removeItem($(this));
-        approvisionnement.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce type de chambre ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Type de chambre supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+        approvisionnement.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce type de chambre ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuler !", "Supprimé !", "Type de chambre supprimé avec succès.", "annulée !", "Opération annulée, rien n'a changé.");
     });
 
     //Show record

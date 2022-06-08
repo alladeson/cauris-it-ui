@@ -306,7 +306,7 @@ $(document).ready(function () {
     // Delete a record
     datatable.on('click', '.remove-item', function (e) {
         e.preventDefault();
-        listeFacture.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cette facture ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimée !", "Facture supprimée avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+        listeFacture.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cette facture ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuler !", "Supprimée !", "Facture supprimée avec succès.", "annulée !", "Opération annulée, rien n'a changé.");
     });
 
     // Delete a record

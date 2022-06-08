@@ -233,7 +233,7 @@ $(document).ready(function() {
     // datatable.on('click', '.remove-item', function(e) {
     //     e.preventDefault();
     //     // typeFacture.removeItem($(this));
-    //     typeFacture.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cette catégorie d'articles ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimée !", "Catégorie d'articles supprimée avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+    //     typeFacture.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cette catégorie d'articles ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuler !", "Supprimée !", "Catégorie d'articles supprimée avec succès.", "annulée !", "Opération annulée, rien n'a changé.");
     // });
 
     //Show record

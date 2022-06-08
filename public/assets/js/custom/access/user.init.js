@@ -331,7 +331,7 @@ $(document).ready(function() {
     datatable.on('click', '.remove-item', function(e) {
         e.preventDefault();
         // user.removeItem($(this));
-        user.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce user ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Client supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+        user.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cet utilisateur ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Client supprimé avec succès.", "annulée !", "Opération annulée, rien n'a changé.");
     });
 
     //Show record

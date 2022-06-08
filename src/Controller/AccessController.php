@@ -153,4 +153,25 @@ class AccessController extends AbstractController
             "url_list_user_sa" => ApiConstant::URL_LIST_USER_SA,
         ]);
     }
+
+    /**
+     * Afficher l'interface de gestion des clé d'activation
+     *
+     * @return Response
+     */
+    #[Route('/serial-key', name: 'access_serial_key')]
+    public function serialKey(): Response
+    {       
+        return $this->render('access/serial-key.html.twig', [
+            'page_title' => 'Clés d\'activation',
+            'breadcrumb' => ['Accès & Audit', 'Clés d\'activation'],
+            "sidebar_code" => ['ACCESS', 'SKEY', ''],
+            'menu_code' =>  ApiConstant::accessSerialKey,
+            "url_list_item" => ApiConstant::URL_LIST_SERIAL_KEY,
+            "url_post_item" => ApiConstant::URL_POST_SERIAL_KEY,
+            "url_put_item" => ApiConstant::URL_PUT_SERIAL_KEY,
+            "url_get_item" => ApiConstant::URL_GET_SERIAL_KEY,
+            "url_delete_item" => ApiConstant::URL_DELETE_SERIAL_KEY,
+        ]);
+    }
 }

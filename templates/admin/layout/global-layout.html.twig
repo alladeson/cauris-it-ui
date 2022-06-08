@@ -19,6 +19,7 @@
 {% set accessCtrlUserGroup = 42000 %}
 {% set accessCtrlFeatures = 43000 %}
 {% set accessCtrlAccess = 44000 %}
+{% set accessSerialKey = 45000 %}
 {% set audit = 50000 %}
 {% set stats = 60000 %}
 {% set statsBilanPeriodique = 61000 %}
@@ -240,6 +241,15 @@
 				title: "Audit",
 				dataKey: "t-access-audit",
 				active: sidebar_code[1] == "AUDIT" ? true : false,
+				children: [],
+			},                   
+			{
+				readable: menu_readable(accessSerialKey),
+				id: "serial-key",
+				pathName: "access_serial_key",
+				title: "Clés d\'activation",
+				dataKey: "t-access-serial-key",
+				active: sidebar_code[1] == "SKEY" ? true : false,
 				children: [],
 			},                   
 		],
