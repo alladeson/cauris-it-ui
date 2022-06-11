@@ -61,6 +61,7 @@ let newSystemParamsWizard = {
         let formData = new FormData();
         let file = societeForm.find("input#logo")[0].files[0];
         formData.append("file", file);
+        formData.append("fileName", "logo_" + param.id);
         formData.append("method", "PUT");
         formData.append("url", URL_PUT_SYSTEM_PARAMS_LOGO.replace("__id__", param.id));
         GlobalScript.requestFile(formData).then(function(data) {

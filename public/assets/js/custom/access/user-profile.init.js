@@ -89,6 +89,7 @@ let userProfile = {
         let formData = new FormData();
         let file = userForm.find("input#photo")[0].files[0];
         formData.append("file", file);
+        formData.append("fileName", "photo_" + user.id);
         formData.append("method", "PUT");
         formData.append("url", URL_PUT_USER_PHOTO.replace("__id__", user.id));
         GlobalScript.requestFile(formData).then(function(data) {

@@ -210,6 +210,8 @@ var dashboard = {
     },
 };
 document.addEventListener("DOMContentLoaded", function() {
+    // Mise à jour de waitMe element
+    waitMe_zone = $("div.dashboard-data");
     // var date = new Date();
     var date = GlobalScript.beginningOfMonth(new Date());
     payload = dashboard.setBilanPayload(date);
