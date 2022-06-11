@@ -22,7 +22,8 @@
             <div class="card">
                 <div class="row d-flex justify-content-center">
                     <div class="col-sm-3 col-8">
-                        <img class="card-img img-fluid" src="{{ url_get_file() | replace({'__fileName__': param.logo}) }}" alt="Logo">
+                        {# <img class="card-img img-fluid" src="{{ url_get_file() | replace({'__fileName__': param.logo}) }}" alt="Logo"> #}
+                        <img class="card-img img-fluid" src="{{ asset('assets/uploads/' ~ param.logo) }}" alt="Logo">
                     </div>
                     <div class="col-sm-9 col-8">
                         <div class="card-body">
@@ -63,7 +64,8 @@
                         <div class="card-body">
                             <div class="row imageUpPreview d-flex justify-content-center flex-sm-row-reverse">
                                 <div class="col-md-3 col-sm-4 col-8 imgUp">
-                                    <div class="imagePreview" style="background-image: url({{ url_get_file() | replace({'__fileName__': param.logo}) }})"></div>
+                                    {# <div class="imagePreview" style="background-image: url({{ url_get_file() | replace({'__fileName__': param.logo}) }})"></div> #}
+                                    <div class="imagePreview" style="background-image: url({{ asset('assets/uploads/' ~ param.logo) }})"></div>
                                     <label class="btn btn-primary imgUpBtn"> 
                                         Changer votre logo
                                         <input type="file" id="logo" name="logo" class="uploadFile img" accept="image/*" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
@@ -191,7 +193,8 @@
                         <a href="javascript:void();" class="list-group-item list-group-item-action">
                             <div class="d-flex align-items-center">
                                 <div class="avatar-sm flex-shrink-0 me-3">
-                                    <img src="{{ user.photo ? (url_get_file() | replace({'__fileName__': user.photo})) : asset('assets/images/default-user-img.png') }}"
+                                    {# <img src="{{ user.photo ? (url_get_file() | replace({'__fileName__': user.photo})) : asset('assets/images/default-user-img.png') }}" #}
+                                    <img src="{{ user.photo ? asset('assets/uploads/' ~ user.photo) : asset('assets/images/default-user-img.png') }}"
                                         alt=""
                                         class="img-thumbnail rounded-circle" />
                                 </div>

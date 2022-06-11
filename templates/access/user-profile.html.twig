@@ -26,7 +26,8 @@
                             <div class="d-flex align-items-start mt-3 mt-sm-0">
                                 <div class="flex-shrink-0">
                                     <div class="avatar-xl me-3">
-                                        <img src="{{ user.photo ? (url_get_file() | replace({'__fileName__': user.photo})) : asset('assets/images/default-user-img.png') }}" alt="photo profil" class="img-fluid rounded-circle d-block">
+                                        {# <img src="{{ user.photo ? (url_get_file() | replace({'__fileName__': user.photo})) : asset('assets/images/default-user-img.png') }}" alt="photo profil" class="img-fluid rounded-circle d-block"> #}
+                                        <img src="{{ user.photo ? asset('assets/uploads/' ~ user.photo) : asset('assets/images/default-user-img.png') }}" alt="photo profil" class="img-fluid rounded-circle d-block">
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
@@ -60,7 +61,8 @@
                     <div class="card-body">
                         <div class="row imageUpPreview d-flex justify-content-center flex-sm-row-reverse">
                             <div class="col-md-3 col-sm-4 col-8 imgUp">
-                                <div class="imagePreview" style="background-image: url({{ user.photo ? (url_get_file() | replace({'__fileName__': user.photo})) : asset('assets/images/default-user-img.png') }})"></div>
+                                {# <div class="imagePreview" style="background-image: url({{ user.photo ? (url_get_file() | replace({'__fileName__': user.photo})) : asset('assets/images/default-user-img.png') }})"></div> #}
+                                <div class="imagePreview" style="background-image: url({{ user.photo ? asset('assets/uploads/' ~ user.photo) : asset('assets/images/default-user-img.png') }})"></div>
                                 <label class="btn btn-primary imgUpBtn"> 
                                     Changer votre photo
                                     <input type="file" id="photo" name="photo" class="uploadFile img" accept="image/*" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">

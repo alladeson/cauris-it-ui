@@ -246,16 +246,17 @@ class ApiDataService extends AbstractController
      * @param UploadedFile $file Le fichier à envoyer
      * @return ResponseInterface Réponse de la requête
      */
-    public function requestFile($methode, $route, $file): ResponseInterface
+    public function requestFile($methode, $route, $file, $fileName): ResponseInterface
     {
         // Récupération de la destination temporaire du fichier
         $destination = $this->getParameter('kernel.project_dir').'/public/assets/uploads';
         // Enregistrement temporaire du fichier
-        $file->move($destination, $file->getClientOriginalName());
+        $fileName = $fileName.'.'.pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+        $file->move($destination, $fileName);
         // Formation des données à envoyer au serveur distant
         $formFields = [
             // Récupération du fichier
-            'file' => DataPart::fromPath($destination. "/" . $file->getClientOriginalName()),
+            'file' => DataPart::fromPath($destination. "/" . $fileName),
         ]; 
         $formData = new FormDataPart($formFields);
         // Formatage du header de la requête
@@ -271,8 +272,8 @@ class ApiDataService extends AbstractController
             'verify_host'=>false,
         ];
         // Suppression du fichier temporairement enregistré
-        $filesystem = new Filesystem();
-        $filesystem->remove([$destination. "/" . $file->getClientOriginalName()]);
+        // $filesystem = new Filesystem();
+        // $filesystem->remove([$destination. "/" . $file->getClientOriginalName()]);
         // Exécution de la requête vers l'api
         return $this->requestUrl($methode, $this->baseUrl . $route, $options);
     }
@@ -455,8 +456,9 @@ class ApiDataService extends AbstractController
     {
         $method = $request->request->get('method');
         $route = $request->request->get('url');
+        $fileName = $request->request->get('fileName');
         $file = $request->files->get('file');
-        $response = $this->requestFile($method, $route, $file);
+        $response = $this->requestFile($method, $route, $file, $fileName);
         return new Response($response->getContent(false), $response->getStatusCode(false));
     }
     /**
