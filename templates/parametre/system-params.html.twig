@@ -152,7 +152,13 @@
                             </div>
                         </div>
                         <!-- end card body -->
-                        <div class="card-footer bg-transparent border-top d-flex justify-content-end">
+                        <div class="card-footer bg-transparent border-top d-flex justify-content-between">
+                            <button type="button" class="btn btn-success print-config-report" style="margin-top: 5px;" 
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Imprimer le rapport de configuration" 
+                                onclick="systemParamsWizard.confirmPrintConfigReport(event)">
+                                <i class="bx bx-printer align-middle"></i>
+                                {# <span class="d-sm-none">Imprimer</span> #}
+							</button>
                             <button type="submit" class="btn btn-outline-info waves-effect waves-light" {#data-bs-toggle="modal" data-bs-target=".confirmModal"#}>
                                 Mettre à jour les informations
                             </button>
@@ -223,33 +229,69 @@
 
     <!-- Modal -->
 	<div class="modal fade confirmModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-bottom-0">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="text-center">
-                    <div class="mb-3">
-                        <i class="bx bx-check-circle display-4 text-success"></i>
-                    </div>
-                    <h5>Confirmer la modification des informations de la société</h5>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Fermer</button>
-                <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal" onclick="systemParamsWizard.submitFormData(event);">Confirmer</button>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bx bx-check-circle display-4 text-success"></i>
+                        </div>
+                        <h5>Confirmer la modification des informations de la société</h5>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal" onclick="systemParamsWizard.submitFormData(event);">Confirmer</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- end modal -->
+    <!-- end modal -->
+
+    <!-- Config Report Modal -->
+	<div class="modal fade configReportModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bx bx-check-circle display-4 text-success"></i>
+                        </div>
+                        <h5>Confirmer l'impression du rapport de configuration</h5>
+                    </div>
+                    <form>
+                        <div class="row d-flex justify-content-center">						
+                            <div class="col-sm-6 col-10">
+                                <div class="form-check form-switch mb-3" dir="ltr">
+                                    <input type="checkbox" class="form-check-input" id="sendMail">
+                                    <label class="form-check-label" for="sendMail">Reessayer l'envoie du mail</label>
+                                </div>
+                            </div>							
+						</div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-light w-md" data-bs-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary w-md" data-bs-dismiss="modal" onclick="systemParamsWizard.printConfigReport(event);">Confirmer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->
 {% endblock %}
 
 {% block page_custom_scripts %}
   <script>
     const URL_PUT_SYSTEM_PARAMS_LOGO = "{{ url_put_item_logo }}";
     const URL_GET_EMCEF_INFOS = "{{ url_get_emcef_infos }}";
+    const URL_PRINT_CONFIG_REPORT = "{{ url_print_config_report | replace({'__id__': param.id}) }}";
+    const CONFIG_REPORT_NAME = "{{'rapport_configuration_' ~ param.serialKey|slice(0, 10) ~ '.pdf'}}";
   </script>
 
   <!-- init js -->

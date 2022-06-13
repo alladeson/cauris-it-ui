@@ -119,6 +119,7 @@ class ParametreController extends AbstractController
             "url_put_item" => ApiConstant::URL_PUT_SYSTEM_PARAMS,
             "url_put_item_logo" => ApiConstant::URL_PUT_SYSTEM_PARAMS_LOGO,
             "url_get_emcef_infos" => ApiConstant::URL_GET_EMCEF_INFOS,
+            "url_print_config_report" => ApiConstant::URL_PRINT_CONFIG_REPORT,
             "param" => $param,
             "emcef" => $emcef,
             "users" => $users,

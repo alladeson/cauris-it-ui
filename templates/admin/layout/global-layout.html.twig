@@ -333,6 +333,7 @@
 		const URL_GLOBAL_UPDATE_FACTURE_VENTE = "{{ path('update_facture_vente', {id: '__id__'}) }}";
 		// URL global details invoice
 		const URL_GLOBAL_LAYOUT_SETTINGS = "{{ path('global_request_layout_settings') }}";
+		const API_BASE_URL = "{{ api_base_url() }}";
 		// SUPER_ADMIN
 		let user_sa = false;
 		{% if authUser.sa %}
