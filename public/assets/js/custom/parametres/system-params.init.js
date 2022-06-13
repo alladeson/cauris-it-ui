@@ -137,6 +137,20 @@ let systemParamsWizard = {
         $("div.imageUpPreview").find("input.img").val("");
         $("div.imageUpPreview").find("div.imagePreview").replaceWith(`<div class="imagePreview"></div>`);
         $("div.imageUpPreview").find("i.del").hide();
+    },
+    confirmPrintConfigReport: function(event = null) {
+        if (event) event.preventDefault();
+        $("div.configReportModal").modal("toggle");
+    },
+    printConfigReport: function(event = null) {
+        if (event) event.preventDefault();
+        var sendMail = $("div.configReportModal").find("form").find("input#sendMail").is(":checked");
+        console.log("sendMail = " + sendMail);
+        // Url d'impression et nom du fichier
+        var printPdfUrl = URL_PRINT_CONFIG_REPORT.replace("__status__", sendMail);
+        var reportName = CONFIG_REPORT_NAME;
+        // Lancement de l'impression du rapport et de son affichage
+        GlobalScript.showPrintedFile(printPdfUrl, "GET", null, reportName, "l'impression du rapport", "alertify");
     }
 };
 $(document).ready(function() {

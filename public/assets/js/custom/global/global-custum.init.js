@@ -5,6 +5,7 @@ let formChange = false;
 // Définition des variable d'url d'impression et de téléchargment de la facture
 let $pdf = "";
 let $pdfDowload = "";
+var dowloadPdfBaseUrl = "/assets/downloads/";
 // Instanciation de l'objet d'état de l'affichage de la facture
 const $initialState = {
     pdfDoc: null,
@@ -540,7 +541,7 @@ let GlobalScript = {
         var printPdfUrl = URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id);
         var pdfName = "facture-" + facture.numero + ".pdf";
         // var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", pdfName);
-        var dowloadPdfUrl = "/assets/downloads/" + pdfName;
+        var dowloadPdfUrl = dowloadPdfBaseUrl + pdfName;
         // GlobalScript.pdfwebviewer(printPdfUrl, dowloadPdfUrl, pdfName)
         //
         GlobalScript.requestGetFile(printPdfUrl, "GET", pdfName, null).then(function(data) {
@@ -563,7 +564,7 @@ let GlobalScript = {
     showPrintedBilan: function(printPdfUrl, method, data, fileName) {
         // var printPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
         // var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
-        var dowloadPdfUrl = "/assets/downloads/" + fileName;
+        var dowloadPdfUrl = dowloadPdfBaseUrl + fileName;
         //
         GlobalScript.requestGetFile(printPdfUrl, method, fileName, data).then(function(data) {
                 // Run this when your request was successful
@@ -573,6 +574,31 @@ let GlobalScript = {
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
                 GlobalScript.ajxRqtErrHandler(err, "alertify", "la génération du rapport du bilan");
+            });
+    },
+
+    /**
+     * Afficher le fichier pdf imprimé sur l'écran de l'application
+     * @param {String} printPdfUrl Le lien d'impression du fichier pdf
+     * @param {String} method La méthode de la requête d'impression
+     * @param {String} data Le corps de la requête
+     * @param {String} fileName Le nom du fichier pdf à afficher
+     * @param {String} errorMessage Message d'erreur en cas d'erreur
+     * @param {String} errorAlertType Le type d'alert pour le message d'erreur
+     */
+    showPrintedFile: function(printPdfUrl, method, data, fileName, errorMessage, errorAlertType) {
+        // var printPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
+        // var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
+        var dowloadPdfUrl = dowloadPdfBaseUrl + fileName;
+        //
+        GlobalScript.requestGetFile(API_BASE_URL + printPdfUrl, method, fileName, data).then(function(data) {
+                // Run this when your request was successful
+                console.log(data);
+                GlobalScript.pdfwebviewer(dowloadPdfUrl, dowloadPdfUrl, fileName)
+            })
+            .catch(function(err) {
+                // Run this when promise was rejected via reject()
+                GlobalScript.ajxRqtErrHandler(err, errorAlertType, errorMessage);
             });
     }
 }

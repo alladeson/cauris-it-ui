@@ -26,6 +26,7 @@ class ApiConstant
     public const URL_GET_SYSTEM_PARAMS = "parametre/params/one";
     public const URL_DELETE_SYSTEM_PARAMS = "parametre/params/__id__";
     public const URL_GET_EMCEF_INFOS = "parametre/emcef/api/info/status";
+    public const URL_PRINT_CONFIG_REPORT = "parametre/config-report/param/__id__/sendMail/__status__";
 
     // Les taxes
     public const URL_LIST_TAXE = "parametre/taxe";

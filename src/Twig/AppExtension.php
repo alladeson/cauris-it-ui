@@ -302,6 +302,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('url_print_invoice', [$this, 'urlPrintInvoice']),
             new TwigFunction('url_print_bilan_periodique', [$this, 'urlPrintBilanPeriodique']),
             new TwigFunction('url_details_invoice', [$this, 'urlDetailsInvoice']),
+            new TwigFunction('api_base_url', [$this, 'ApiBaseUrl']),
         ];
     }
 
@@ -346,6 +347,11 @@ class AppExtension extends AbstractExtension
     public function getStatutColor($statut)
     {
         return $this->statutColors[$statut];
+    }
+
+    public function ApiBaseUrl()
+    {
+        return $_ENV["API_BASE_URL"];
     }
 
     public function urlGetFile()
