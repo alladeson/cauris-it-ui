@@ -149,6 +149,8 @@ let systemParamsWizard = {
         // Url d'impression et nom du fichier
         var printPdfUrl = URL_PRINT_CONFIG_REPORT.replace("__status__", sendMail);
         var reportName = CONFIG_REPORT_NAME;
+        // Mise à jour du titre du modal d'affichage
+        $pdfWebviwerModal.find('h5.card-title').text("Rapport de configuration");
         // Lancement de l'impression du rapport et de son affichage
         GlobalScript.showPrintedFile(printPdfUrl, "GET", null, reportName, "l'impression du rapport", "alertify");
     }
