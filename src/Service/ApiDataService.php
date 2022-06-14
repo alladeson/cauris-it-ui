@@ -97,7 +97,7 @@ class ApiDataService extends AbstractController
             'verify_host'=>false,
         ];
         // get system params
-        $response =  $client->request(Request::METHOD_GET, $baseUrl . ApiConstant::URL_GET_SYSTEM_PARAMS,  $options);
+        $response =  $client->request(Request::METHOD_GET, $baseUrl . ApiConstant::URL_GET_SYSTEM_PARAMS_ONE,  $options);
         
         $content = $response->getContent(false);
         $status = $response->getStatusCode(false);

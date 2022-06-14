@@ -101,7 +101,7 @@ class ParametreController extends AbstractController
         $param = null; $emcef = null; $users = null;
         try {
             // Tentative de récupération du paramètre du système
-            $param = $this->apiService->get(ApiConstant::URL_GET_SYSTEM_PARAMS);
+            $param = $this->apiService->get(ApiConstant::URL_GET_SYSTEM_PARAMS_ONE);
             // Tentative de récupération des infos du emcef
             // $emcef = $this->apiService->get(ApiConstant::URL_GET_EMCEF_INFOS);
             // Tentative de récupération des utilisateurs de l'application
@@ -115,7 +115,7 @@ class ParametreController extends AbstractController
             'breadcrumb' => ['Paramètres', 'Paramètres du système'],
             "sidebar_code" => ['PARAMS', 'SYSTU', ''],
             'menu_code' =>  ApiConstant::parametreSysteme,
-            "url_get_item" => ApiConstant::URL_GET_SYSTEM_PARAMS,
+            "url_get_item" => ApiConstant::URL_GET_SYSTEM_PARAMS_ONE,
             "url_put_item" => ApiConstant::URL_PUT_SYSTEM_PARAMS,
             "url_put_item_logo" => ApiConstant::URL_PUT_SYSTEM_PARAMS_LOGO,
             "url_get_emcef_infos" => ApiConstant::URL_GET_EMCEF_INFOS,

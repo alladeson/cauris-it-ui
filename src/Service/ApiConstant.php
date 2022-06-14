@@ -22,8 +22,8 @@ class ApiConstant
     public const URL_POST_SYSTEM_PARAMS = "parametre/params";
     public const URL_PUT_SYSTEM_PARAMS = "parametre/params/__id__";
     public const URL_PUT_SYSTEM_PARAMS_LOGO = "parametre/params/__id__/logo";
-    // public const URL_GET_SYSTEM_PARAMS = "parametre/params/__id__";
-    public const URL_GET_SYSTEM_PARAMS = "parametre/params/one";
+    public const URL_GET_SYSTEM_PARAMS = "parametre/params/__id__";
+    public const URL_GET_SYSTEM_PARAMS_ONE = "parametre/params/one";
     public const URL_DELETE_SYSTEM_PARAMS = "parametre/params/__id__";
     public const URL_GET_EMCEF_INFOS = "parametre/emcef/api/info/status";
     public const URL_PRINT_CONFIG_REPORT = "parametre/config-report/param/__id__/sendMail/__status__";
@@ -144,6 +144,9 @@ class ApiConstant
     public const URL_POST_SERIAL_KEY = "access/serial-key";
     public const URL_PUT_SERIAL_KEY = "access/serial-key/__id__";
     public const URL_GET_SERIAL_KEY = "access/serial-key/__id__";
+    public const URL_GET_SERIAL_KEY_BY_KEY = "access/serial-key/key/__serialKey__";
+    public const URL_GET_SERIAL_KEYS_AUTOCOMPLETE_DEMANDE = "demande/serial-key/autocomplete";
+    public const URL_LIST_SERIAL_KEYS_DEMANDE = "demande/serial-key/all";
     public const URL_DELETE_SERIAL_KEY = "access/serial-key/__id__";
 
     // Les audits
@@ -159,6 +162,16 @@ class ApiConstant
     public const URL_LIST_FACTURE_RECAP_BY_CONFIRMED_DATE = "stats/bilan-periodique/facture-recap";
     public const URL_IMPRESSION_BILAN_PERIODIQUE_BY_CONFIRMED_DATE = "stats/bilan-periodique/report";
     public const URL_BILAN_DASHBOARD = "stats/bilan-periodique/dashboard";
+
+    /*** Demandes ***/
+    //Les demandes
+    public const URL_LIST_DEMANDES = "demande";
+    public const URL_POST_DEMANDES = "demande";
+    public const URL_GET_DEMANDES = "demande/__id__";
+    public const URL_PUT_DEMANDES_SERIAL_KEY = "demande/__id__/serialKey/__serialKeyId__";
+    public const URL_PUT_DEMANDES_FILES = "demande/__id__/fileName/__fileName__";
+    public const URL_PUT_DEMANDES_STATUS = "demande/__id__/statusName/__statusName__";
+    public const URL_DELETE_DEMANDES = "demande/__id__";
 
     // Les codes des fonctionnalités
     // Gestion de stock
@@ -191,4 +204,8 @@ class ApiConstant
     // Les statistiques
 	public const stats = 60000;
 	public const statsBilanPeriodique = 61000;
+    // Les demandes
+	public const demandes = 70000;
+	public const demandesList = 71000;
+	public const parametreList = 72000;
 }

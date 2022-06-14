@@ -3,9 +3,11 @@ let waitMe_zone = "";
 // Variable d'observation de changement dans les formulaire : utile pour gérer les mise à jour
 let formChange = false;
 // Définition des variable d'url d'impression et de téléchargment de la facture
+let $pdfWebviwerModal = $("div.webviwer-invoice-modal");
 let $pdf = "";
-let $pdfDowload = "";
-var dowloadPdfBaseUrl = "/assets/downloads/";
+let $pdfDownload = "";
+var downloadPdfBaseUrl = "/assets/downloads/";
+var uploadPdfBaseUrl = "/assets/uploads/";
 // Instanciation de l'objet d'état de l'affichage de la facture
 const $initialState = {
     pdfDoc: null,
@@ -424,7 +426,7 @@ let GlobalScript = {
     pdfwebviewer: function(printPdfUrl, dowloadPdfUrl, pdfName) {
         // Mise à jour des url d'impression et de téléchargement
         $pdf = printPdfUrl;
-        $pdfDowload = dowloadPdfUrl;
+        $pdfDownload = dowloadPdfUrl;
         // Lancement de waiteMe
         GlobalScript.run_waitMe($('body'), 1, 'stretch')
             // Lancement de l'impression de la facture
@@ -440,7 +442,7 @@ let GlobalScript = {
                 // Fonction qui rend l'affichage de la facture 
                 GlobalScript.renderPage();
                 // Affichage du modal contenant la facture, ce modal est inclus dans templates/admin/global-layout.html.twig
-                $("div.webviwer-invoice-modal").modal("show");
+                $pdfWebviwerModal.modal("toggle");
 
                 // Gestion des évènements essentiels et utils dans notre cas
                 // Button events : Les touches de direction pour passer d'une page à l'autre
@@ -461,12 +463,12 @@ let GlobalScript = {
                 });
                 // La touche pour l'impression physique de la facture
                 $('#pdf_printer').on('click', () => {
-                    printJS({ printable: $pdfDowload, type: 'pdf', showModal: true });
+                    printJS({ printable: $pdfDownload, type: 'pdf', showModal: true });
                 });
                 // La touche pour le téléchargement de la facture en version pdf
                 $("#pdf_download").click(function(event) {
                     event.preventDefault()
-                    GlobalScript.saveFile(pdfName, $pdfDowload);
+                    GlobalScript.saveFile(pdfName, $pdfDownload);
                 });
 
                 // Mise en pause de waitMe
@@ -541,12 +543,15 @@ let GlobalScript = {
         var printPdfUrl = URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id);
         var pdfName = "facture-" + facture.numero + ".pdf";
         // var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", pdfName);
-        var dowloadPdfUrl = dowloadPdfBaseUrl + pdfName;
+        var dowloadPdfUrl = downloadPdfBaseUrl + pdfName;
         // GlobalScript.pdfwebviewer(printPdfUrl, dowloadPdfUrl, pdfName)
-        //
+        // Envoie de la requête d'impression de la facture
         GlobalScript.requestGetFile(printPdfUrl, "GET", pdfName, null).then(function(data) {
                 // Run this when your request was successful
                 console.log(data);
+                // Mise à jour du titre du modal d'affichage de la facture
+                $pdfWebviwerModal.find('h5.card-title').text("Facture générée");
+                // Affichage de la facture
                 GlobalScript.pdfwebviewer(dowloadPdfUrl, dowloadPdfUrl, pdfName)
             })
             .catch(function(err) {
@@ -564,11 +569,14 @@ let GlobalScript = {
     showPrintedBilan: function(printPdfUrl, method, data, fileName) {
         // var printPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
         // var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
-        var dowloadPdfUrl = dowloadPdfBaseUrl + fileName;
-        //
+        var dowloadPdfUrl = downloadPdfBaseUrl + fileName;
+        // Envoie de la requête d'impression
         GlobalScript.requestGetFile(printPdfUrl, method, fileName, data).then(function(data) {
                 // Run this when your request was successful
                 console.log(data);
+                // Mise à jour du titre du modal d'affichage
+                $pdfWebviwerModal.find('h5.card-title').text("Bilan périodique");
+                // Affichage
                 GlobalScript.pdfwebviewer(dowloadPdfUrl, dowloadPdfUrl, fileName)
             })
             .catch(function(err) {
@@ -589,11 +597,12 @@ let GlobalScript = {
     showPrintedFile: function(printPdfUrl, method, data, fileName, errorMessage, errorAlertType) {
         // var printPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
         // var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
-        var dowloadPdfUrl = dowloadPdfBaseUrl + fileName;
-        //
+        var dowloadPdfUrl = downloadPdfBaseUrl + fileName;
+        // Envoie de la requête d'impression
         GlobalScript.requestGetFile(API_BASE_URL + printPdfUrl, method, fileName, data).then(function(data) {
                 // Run this when your request was successful
                 console.log(data);
+                // Affichage
                 GlobalScript.pdfwebviewer(dowloadPdfUrl, dowloadPdfUrl, fileName)
             })
             .catch(function(err) {

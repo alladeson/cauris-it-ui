@@ -1,0 +1,267 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- {{page_title}}
+{% endblock %}
+
+{% block page_content %}
+
+	<div class="row align-items-center">
+		<div class="col-md-6 col-5">
+			<div class="mb-3">
+				<h5 class="card-title">Liste des demandes
+					<span class="text-muted fw-normal ms-2"></span>
+				</h5>
+			</div>
+		</div>
+
+		<div class="col-md-6 col-7">
+			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+				{# <div>
+					<ul class="nav nav-pills">
+						<li class="nav-item">
+							<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
+								<i class="bx bx-list-ul"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
+								<i class="bx bx-grid-alt"></i>
+							</a>
+						</li>
+					</ul>
+				</div> #}
+				<div onclick="listDemandes.newItemEvent(event)">
+					<a href="javascript:void(0);" class="btn btn-light" data-bs-toggle="modal" data-bs-target=".add-new-modal">
+						<i class="bx bx-plus me-1"></i>
+						Nouvel Ajout</a>
+				</div>
+
+				<div class="dropdown">
+					<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bx bx-dots-horizontal-rounded"></i>
+					</a>
+
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li>
+							<a class="dropdown-item" onclick="listDemandes.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+						</li>
+						{# <li>
+							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
+						</li> #}
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- end row -->
+
+	<div class="table-responsive mb-4">
+		<table class="table align-middle datatable dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+			<thead>
+				<tr>
+					<th>
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="checkAll">
+							<label class="form-check-label" for="checkAll"></label>
+						</div>
+					</th>
+					<th>Réf.</th>
+					<th>Clé d'activation</th>
+					<th>Formulaire de demandes</th>
+					<th>Récapitulatif DGI</th>
+					<th>Rapport de Configuration</th>
+					<th>Traitement</th>
+					<th>Validation</th>
+					{# <th>Montant</th> #}
+					<th style="width: 80px; min-width: 80px;">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<!-- end table -->
+	</div>
+	<!-- end table responsive -->
+
+	<div class="modal fade add-new-modal" id="add-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<form method="post" class="" onsubmit="listDemandes.submitFormData(event)" >
+					<div class="modal-header">
+						<h5 class="modal-title">Nouvel ajout</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">						
+							<input type="hidden" id="item-id" name="item-id" value="">
+						</div>
+						<div class="text-center">
+							<div class="mb-3">
+								<i class="bx bx-check-circle display-4 text-success"></i>
+							</div>
+							<h5 class="confirmed-text">Confirmer l'ajout d'une nouvelle demandes</h5>
+						</div>	
+					</div>
+					<div class="modal-footer">
+						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Annuler</button>
+						<button type="submit" class="btn btn-primary">Confirmer</button>
+					</div>
+				</form>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Affichage</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="table-responsive">
+                        <table class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
+                            <tbody>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Référence
+                                    </th>
+                                    <td class="text-center td-reference">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        Clé d'activation
+                                    </th>
+                                    <td class="text-center td-serial-key">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        Formulaire de la demandes
+                                    </th>
+                                    <td class="text-center td-formulaire">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        Recapitulatif DGI
+                                    </th>
+                                    <td class="text-center td-formulaire-dgi">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        Rapport de Configuration
+                                    </th>
+                                    <td class="text-center td-config-report">
+                                    </td>
+                                </tr>                                                
+                            </tbody>
+                        </table>
+                        <!-- end table -->
+                    </div>
+				</div>
+				<div class="modal-footer d-flex justify-content-center">
+					<button type="button" class="btn btn-info" data-bs-dismiss="modal">Fermer</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div class="modal fade add-serialKey-modal" id="add-serialKey-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<form method="post" class="" onsubmit="listDemandes.submitSerialKeyData(event)" >
+					<div class="modal-header">
+						<h5 class="modal-title">Ajout de la clé d'activation</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">						
+							<div class="col-md-12">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="serialKey">Clé d'activation</label>
+									{# <div class="input-group"> #}
+										{# <span class="input-group-text" id="serialKeyPrepend"><i class="mdi mdi-key-variant"></i></span> #}
+										<input type="hidden" id="item-id" name="item-id" value="">
+										<select class="form-control form-select" data-trigger name="serialKey" id="serialKey" placeholder=""></select>
+										{# <input type="text" id="serialKey" name="serialKey" class="form-control" placeholder="Clé d'activation" aria-describedby="serialKeyPrepend" required> #}
+									{# </div> #}
+								</div>
+							</div>							
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
+						<button type="submit" class="btn btn-primary">Enregistrer</button>
+					</div>
+				</form>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div class="modal fade add-files-modal" id="add-files-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<form method="post" class="" onsubmit="listDemandes.submitFilesData(event)" >
+					<div class="modal-header">
+						<h5 class="modal-title">Mise à jour de fichier</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">						
+							<div class="col-md-12">
+								<div class="mb-3 position-relative">
+									<label class="form-label file-label" for="file">Fichier</label>
+									<div class="input-group">
+										<span class="input-group-text" id="filePrepend"><i class="mdi mdi-file-pdf-outline"></i></span>
+										<input type="hidden" id="item-id" name="item-id" value="">
+										<input type="hidden" id="filename" name="filename" value="">
+										<input type="file" accept=".pdf" id="file" name="file" class="form-control" aria-describedby="filePrepend" required>
+									</div>
+								</div>
+							</div>							
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
+						<button type="submit" class="btn btn-primary">Enregistrer</button>
+					</div>
+				</form>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+{% endblock %}
+
+{% block page_custom_scripts %}
+	<script>		
+		const URL_PUT_DEMANDES_SERIAL_KEY = "{{ url_put_item_serial_key }}";
+		const URL_PUT_DEMANDES_FILES = "{{ url_put_item_files }}";
+		const URL_PUT_DEMANDES_STATUS = "{{ url_put_item_status }}";
+		const URL_GET_SERIAL_KEY_BY_KEY = "{{ url_get_serial_key_by_key }}";
+		const URL_GET_SERIAL_KEYS_AUTOCOMPLETE = "{{ url_get_serial_keys_autocomplete }}";
+		const URL_LIST_SERIAL_KEYS_DEMANDE = "{{ url_list_serial_keys }}";
+	</script>
+	<!-- init js -->
+	<script src="{{ asset('assets/js/custom/demandes/list-demandes.init.js') }}"></script>
+{% endblock %}

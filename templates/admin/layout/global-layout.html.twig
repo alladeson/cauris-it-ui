@@ -23,6 +23,9 @@
 {% set audit = 50000 %}
 {% set stats = 60000 %}
 {% set statsBilanPeriodique = 61000 %}
+{% set demandes = 70000 %}
+{% set demandesList = 71000 %}
+{% set parametreList = 72000 %}
 {# endset #}
 	
 {# Menu format #}
@@ -250,6 +253,35 @@
 				title: "Clés d\'activation",
 				dataKey: "t-access-serial-key",
 				active: sidebar_code[1] == "SKEY" ? true : false,
+				children: [],
+			},                   
+		],
+	},
+	{
+		readable: menu_readable(demandes),
+		id: "demandes",
+		pathName: "",
+		title: "Demandes",
+		icon: "folder",
+		dataKey: "t-demandes",
+		active: sidebar_code[0] == "DEMANDES" ? true : false,
+		children: [			                       
+			{
+				readable: menu_readable(demandesList),
+				id: "demandes-list",
+				pathName: "demandes_list",
+				title: "Listes des demandes",
+				dataKey: "t-demandes-list",
+				active: sidebar_code[1] == "DMDLST" ? true : false,
+				children: [],
+			},                  
+			{
+				readable: menu_readable(parametreList),
+				id: "parametre-list",
+				pathName: "parametre_list",
+				title: "Paramètres des contribuables",
+				dataKey: "t-parametre-list",
+				active: sidebar_code[1] == "PARAMLST" ? true : false,
 				children: [],
 			},                   
 		],
