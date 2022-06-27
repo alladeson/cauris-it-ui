@@ -73,6 +73,12 @@ let listeFacture = {
                                         }
                                     },
                                     {
+                                        data: 'date',
+                                        render: function(data, type, row, meta) {
+                                            return data ? GlobalScript.dateFormat(data) : "-";
+                                        }
+                                    },
+                                    {
                                         "data": "id",
                                         "class": "",
                                         "orderable": false,
@@ -342,7 +348,8 @@ document.addEventListener("DOMContentLoaded", function () {
         URL_LIST_TYPE_FACTURE,
         ["types de facture", "id", "description"],
         0,
-        null
+        null,
+        false,
     );
     // Récupération du formulaire du filtre
     filtreForm = $("form.filtre-form");

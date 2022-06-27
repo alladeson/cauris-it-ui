@@ -480,7 +480,7 @@ let facturation = {
                 montantRecu: Math.round(parseFloat(form.find("#montant-recu").val())),
                 montantPayer: Math.round(parseFloat(form.find("#montant-payer").val())),
                 montantRendu: Math.round(parseFloat(form.find("#montant-recu").val())) - Math.round(parseFloat(form.find("#montant-payer").val())),
-                description: $.trim(form.find("#description").val()),
+                description:  GlobalScript.checkBlank($.trim(form.find("#description").val())),
             };
             return JSON.stringify(data);
         }

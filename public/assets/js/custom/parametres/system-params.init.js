@@ -10,11 +10,12 @@ let systemParamsWizard = {
                 loadingText: 'Chargement...',
                 noResultsText: 'Aucun résultat trouvé',
                 noChoicesText: 'Pas de choix à effectuer',
-                itemSelectText: 'Appuyez pour sélectionner',
+                itemSelectText: '',
                 position: "auto",
-                removeItemButton: true,
+                removeItemButton: $.inArray(i, [0]) > -1 ? false : true,
                 duplicateItemsAllowed: !1,
                 shouldSort: false,
+                searchEnabled: $.inArray(i, [0]) > -1 ? false : true,
             });
         }
     },
@@ -43,6 +44,24 @@ let systemParamsWizard = {
             icon: "error",
             confirmButtonColor: "#5156be",
         })
+    },
+    saSetFormatFacture: function(title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: "warning",
+            showCancelButton: !0,
+            confirmButtonText: confirmButtonText,
+            cancelButtonText: cancelButtonText,
+            confirmButtonClass: "btn btn-success mt-2",
+            cancelButtonClass: "btn btn-danger ms-2 mt-2",
+            buttonsStyling: !1,
+        }).then(function(e) {
+            e.value ?
+                systemParamsWizard.setFormatFactureRequest(oktitle, oktext) :
+                e.dismiss === Swal.DismissReason.cancel &&
+                systemParamsWizard.saError(notitle, notext);
+        });
     },
     submitFormDataNew: function() {
         var data = systemParamsWizard.dataFormat()
@@ -153,9 +172,28 @@ let systemParamsWizard = {
         $pdfWebviwerModal.find('h5.card-title').text("Rapport de configuration");
         // Lancement de l'impression du rapport et de son affichage
         GlobalScript.showPrintedFile(printPdfUrl, "GET", null, reportName, "l'impression du rapport", "alertify");
-    }
+    },
+    setFormatFacture: function(event = null) {
+        if (event) event.preventDefault();
+        systemParamsWizard.saSetFormatFacture("Êtes-vous sûr de vouloir changer le format de la facture ?", "Cette opération aura un impact global sur le système !", "Oui, changer !", "Non, annuler !", "Changé !", "Le format de la facture a été changé avec succès.", "Annulée !", "Opération annulée, rien n'a changé.");
+    },
+    setFormatFactureRequest: function(oktitle, oktext) {
+        // Récupération de l'id de l'objet
+        var format = $("#format-facture").val();
+        // console.log(format);
+        GlobalScript.request(URL_PUT_SYSTEM_PARAMS_FORMAT_FACTURE.replace("__format__", format), 'PUT', null).then(function(data) {
+            // Run this when your request was successful
+            console.log(data)
+            systemParamsWizard.saSuccesSystemParams(oktitle, oktext)
+        }).catch(function(err) {
+            // Run this when promise was rejected via reject()
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "la mise à jour du format de la facture");
+        });
+    },
 };
 $(document).ready(function() {
+    // Initiation des champs de sélection
+    systemParamsWizard.choicesJsInit();
     // Ecoute du changement du formulaire
     GlobalScript.formChange($("form#societe-form"));
     // Gestion de l'image

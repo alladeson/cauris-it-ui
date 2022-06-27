@@ -71,13 +71,13 @@ class SecurityController extends AbstractController
 
                 // Récupération de l'utilisateur connecté
                 $user = ApiDataService::getAuthUser();
-                $this->session->set("user", $user);
+                // $this->session->set("user", $user);
                 // Récupération du paramètre du system et sauvegarde dans le session
                 $params = ApiDataService::getSystemParams();
-                $this->session->set("params", $params);
+                // $this->session->set("params", $params);
                 // Récupération des accès et sauvegarde dans le session
                 $access = ApiDataService::getAuthUserAccess();
-                $this->session->set("access", $access);
+                // $this->session->set("access", $access);
             }
             return new Response($response->getContent(false), $response->getStatusCode(false));
         } catch (TransportException $e) {

@@ -10,11 +10,12 @@ let newSystemParamsWizard = {
                 loadingText: 'Chargement...',
                 noResultsText: 'Aucun résultat trouvé',
                 noChoicesText: 'Pas de choix à effectuer',
-                itemSelectText: 'Appuyez pour sélectionner',
+                itemSelectText: '', //'Appuyez pour sélectionner',
                 position: "auto",
                 removeItemButton: true,
                 duplicateItemsAllowed: !1,
                 shouldSort: false,
+                searchEnabled: !1,
             });
         }
     },
@@ -90,8 +91,9 @@ let newSystemParamsWizard = {
                 'address': GlobalScript.checkBlank(societeForm.find("#address").val()),
                 'pays': GlobalScript.checkBlank(societeForm.find("#pays").val()),
                 'ville': GlobalScript.checkBlank(societeForm.find("#ville").val()),
-                'typeSystem': GlobalScript.checkBlank(emecefForm.find("#type").val()),
                 'nim': GlobalScript.checkBlank(emecefForm.find("#nim").val()),
+                'typeSystem': GlobalScript.checkBlank(emecefForm.find("#type").val()),
+                'formatFacture': GlobalScript.checkBlank(emecefForm.find("#format-facture").val()),
                 'tokenTmp': GlobalScript.checkBlank($.trim(emecefForm.find("#token").val())),
                 'serialKey': GlobalScript.checkBlank($.trim(serialKeyForm.find("#serial-key").val())),
             };
@@ -99,12 +101,15 @@ let newSystemParamsWizard = {
         }
         return "";
     },
-    setRecapTable: function() {
+    setRecapTable: function(event = null) {
+        if (event) event.preventDefault();
+        //
         var $showClasseTable = $('table.item-show-table');
         var societeForm = $("form#societe-form")
         var errorText = "Doit contenir une valeur";
-        var errorHtml = `<span class="text-danger badge badge-soft-danger font-size-14">${errorText}</span>`
-            // Société
+        var errorHtml = `<span class="text-danger badge badge-soft-danger font-size-14">${errorText}</span>`;
+        // Société
+        $showClasseTable.find('.td-logo').html(societeForm.find("#logo").val() ? `<span class="text-success badge badge-soft-success font-size-14">Fourni</span>` : errorHtml);
         $showClasseTable.find('.td-name').html(societeForm.find("#name").val() ? societeForm.find("#name").val() : errorHtml);
         $showClasseTable.find('.td-ifu').html(societeForm.find("#ifu").val() ? societeForm.find("#ifu").val() : errorHtml);
         $showClasseTable.find('.td-rcm').html(societeForm.find("#rcm").val() ? societeForm.find("#rcm").val() : "-");
@@ -115,8 +120,9 @@ let newSystemParamsWizard = {
         $showClasseTable.find('.td-ville').html(societeForm.find("#ville").val() ? societeForm.find("#ville").val() : errorHtml);
         // e-MECeF
         var emecefForm = $("form#emecef-form")
-        $showClasseTable.find('.td-type').html(emecefForm.find("#type").val() ? emecefForm.find("#type").val() : errorHtml);
         $showClasseTable.find('.td-nim').html(emecefForm.find("#nim").val() ? emecefForm.find("#nim").val() : errorHtml);
+        $showClasseTable.find('.td-type').html(emecefForm.find("#type").val() ? emecefForm.find("#type").val() : errorHtml);
+        $showClasseTable.find('.td-format-facture').html(emecefForm.find("#format-facture").val() ? emecefForm.find("#format-facture").val() : errorHtml);
         $showClasseTable.find('.td-token').html(emecefForm.find("#token").val() ? `<span class="text-success badge badge-soft-success font-size-14">Fourni</span>` : errorHtml);
         // Clé d'activation
         var serialKeyForm = $("form#serialKey-form")

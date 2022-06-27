@@ -24,6 +24,9 @@ class ApiConstant
     public const URL_PUT_SYSTEM_PARAMS_LOGO = "parametre/params/__id__/logo";
     public const URL_GET_SYSTEM_PARAMS = "parametre/params/__id__";
     public const URL_GET_SYSTEM_PARAMS_ONE = "parametre/params/one";
+    public const URL_PUT_SYSTEM_PARAMS_FORMAT_FACTURE = "parametre/params/__id__/format-facture/__format__";
+    // public const URL_GET_SYSTEM_PARAMS = "parametre/params/__id__";
+    public const URL_GET_SYSTEM_PARAMS = "parametre/params/one";
     public const URL_DELETE_SYSTEM_PARAMS = "parametre/params/__id__";
     public const URL_GET_EMCEF_INFOS = "parametre/emcef/api/info/status";
     public const URL_PRINT_CONFIG_REPORT = "parametre/config-report/param/__id__/sendMail/__status__";

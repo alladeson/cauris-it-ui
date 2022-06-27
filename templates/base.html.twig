@@ -2,6 +2,9 @@
 
 {% set authUser = app.session.get('user') %}
 {% set userLayout = authUser ? authUser.layout : null %}
+{% set params = app.session.get('params') %}
+{% set formatFacture = params ? params.formatFacture : 'A4' %}
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -113,6 +116,7 @@
             <!-- jquery number format -->
             <script src="{{ asset('assets/js/plugins/jquery-number-format/jquery.number.js') }}"></script>
             <!-- gloabl js script for application -->
+			<script> let formatFacture = '{{formatFacture}}'</script>
 			<script src="{{ asset('assets/js/custom/global/global-custum.init.js') }}"></script>
 
             {% block page_javascripts %}
