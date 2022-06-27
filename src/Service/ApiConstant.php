@@ -22,6 +22,7 @@ class ApiConstant
     public const URL_POST_SYSTEM_PARAMS = "parametre/params";
     public const URL_PUT_SYSTEM_PARAMS = "parametre/params/__id__";
     public const URL_PUT_SYSTEM_PARAMS_LOGO = "parametre/params/__id__/logo";
+    public const URL_PUT_SYSTEM_PARAMS_FORMAT_FACTURE = "parametre/params/__id__/format-facture/__format__";
     // public const URL_GET_SYSTEM_PARAMS = "parametre/params/__id__";
     public const URL_GET_SYSTEM_PARAMS = "parametre/params/one";
     public const URL_DELETE_SYSTEM_PARAMS = "parametre/params/__id__";

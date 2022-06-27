@@ -13,7 +13,8 @@ const $initialState = {
     pdfDoc: null,
     currentPage: 1,
     pageCount: 0,
-    zoom: 1,
+    // Le format de la facture est définie dans base.html.twig juste avant l'importation de global-custum.init.js
+    zoom: formatFacture == 'A4' ? 1 : 3,
 };
 
 /**
@@ -248,13 +249,13 @@ let GlobalScript = {
      * @param {Number} choicePosition la position du champ de sélection sur la vue
      * @param {Number} itemId L'identifiant de l'objet à sélectionner si existant
      */
-    getForeignsData: function(url, selectData = [], choicePosition, itemId) {
+    getForeignsData: function(url, selectData = [], choicePosition, itemId, preselect = true) {
         GlobalScript.request(url, 'GET', null).then(function(data) {
             // Run this when your request was successful
             dataJon = data;
             console.log(dataJon);
             choices[choicePosition].clearChoices();
-            if ($.inArray(selectData[0], ["catégories", "types de facture", "types de paiement", 5]) > -1) {
+            if ($.inArray(selectData[0], ["catégories", "types de facture", "types de paiement", 5]) > -1 && preselect) {
                 dataJon = $.map(data, function(obj, index) {
                     obj.value = obj.id
                     obj.label = obj.libelle
@@ -451,14 +452,14 @@ let GlobalScript = {
                 // Zoom functionality : Les touches de zoom de l'affichage
                 $('#zoom_in').on('click', () => {
                     if ($initialState.pdfDoc === null) return;
-                    $initialState.zoom *= 4 / 3;
+                    $initialState.zoom *= 3 / 2;
 
                     GlobalScript.renderPage();
                 });
 
                 $('#zoom_out').on('click', () => {
                     if ($initialState.pdfDoc === null) return;
-                    $initialState.zoom *= 2 / 3;
+                    $initialState.zoom *= 1 / 2;
                     GlobalScript.renderPage();
                 });
                 // La touche pour l'impression physique de la facture

@@ -191,6 +191,27 @@
 
             <div class="card">
                 <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        Format de la facture
+                    </h5>
+                    <div class="row">
+						<div class="col-sm-12">
+							<div class="mb-0">
+								{# <label for="format-facture" class="form-label font-size-13 text-muted">Format de la facture</label> #}
+								<select onchange="systemParamsWizard.setFormatFacture(event)" required class="form-control form-select" data-trigger name="format-facture" id="format-facture" placeholder="chercher...">
+									<option value="A4" {{ param.formatFacture == 'A4' ? 'selected' : ''}}>Format A4</option>
+									<option value="A8" {{ param.formatFacture == 'A8' ? 'selected' : ''}}>Petit ticket - A8</option>
+								</select>
+							</div>
+						</div>
+					</div>
+                </div>
+                <!-- end card body -->
+            </div>
+            <!-- end card -->
+
+            <div class="card">
+                <div class="card-body">
                 <h5 class="card-title mb-3">
                     Profils des Utilisateurs
                 </h5>
@@ -289,6 +310,7 @@
 {% block page_custom_scripts %}
   <script>
     const URL_PUT_SYSTEM_PARAMS_LOGO = "{{ url_put_item_logo }}";
+    const URL_PUT_SYSTEM_PARAMS_FORMAT_FACTURE = "{{ url_put_item_format_facture | replace({'__id__': param.id}) }}";
     const URL_GET_EMCEF_INFOS = "{{ url_get_emcef_infos }}";
     const URL_PRINT_CONFIG_REPORT = "{{ url_print_config_report | replace({'__id__': param.id}) }}";
     const CONFIG_REPORT_NAME = "{{'rapport_configuration_' ~ param.serialKey|slice(0, 10) ~ '.pdf'}}";

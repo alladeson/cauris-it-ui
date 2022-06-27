@@ -49,7 +49,7 @@ class ApiDataService extends AbstractController
         $content = $response->getContent(false);
         $status = $response->getStatusCode(false);
         if ($status == 200) {
-            $user = json_decode($content, true);
+            $user = json_decode($content);
             $session->set("user", $user);
         } else {
             $session->clear();
@@ -101,8 +101,14 @@ class ApiDataService extends AbstractController
         
         $content = $response->getContent(false);
         $status = $response->getStatusCode(false);
+        $params = json_decode($content);
+        if ($status == Response::HTTP_OK) {
+            $session->set("params", $params);
+        } else {
+            $session->clear();
+        }
 
-        return $status == Response::HTTP_OK ? json_decode($content) : null;
+        return $status == Response::HTTP_OK ? $params : null;
     }
 
     public static function getAuthUserAccess()
@@ -126,8 +132,13 @@ class ApiDataService extends AbstractController
         
         $content = $response->getContent(false);
         $status = $response->getStatusCode(false);
-
-        return $status == Response::HTTP_OK ? json_decode($content) : null;
+        $access = json_decode($content);
+        if ($status == Response::HTTP_OK) {
+            $session->set("access", $access);
+        } else {
+            $session->clear();
+        }
+        return $status == Response::HTTP_OK ? $access : null;
     }
 
     //

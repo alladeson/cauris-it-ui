@@ -387,6 +387,15 @@
 							<div class="col-lg-6 col-sm-12">
 								<h5 class="font-size-14 mt-2">
 									<i class="mdi mdi-arrow-right text-primary me-1"></i>Formulaire de validation</h5>
+								
+								<div class="row">
+									<div class="col-12">
+										<div class="mb-3 position-relative">
+											<label class="form-label" for="description">Objet de la facture</label>
+											<textarea id="description" name="description" rows="2" class="form-control" placeholder="Entrez une description pour la facture"></textarea>
+										</div>
+									</div>
+								</div>
 								<div class="row">
 									<div class="col-lg-12 col-sm-6">
 										<div class="mb-3">
@@ -420,14 +429,6 @@
 										<div class="mb-3 position-relative">
 											<label class="form-label font-size-13 text-muted" for="montant-rendu">Montant rendu</label>
 											<input onchange="facturation.setValidationForm(event)" type="number" step="0.01" min="0" class="form-control" id="montant-rendu" name="montant-rendu" placeholder="" value="" required>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-12">
-										<div class="mb-3 position-relative">
-											<label class="form-label" for="description">Description</label>
-											<textarea id="description" name="description" rows="2" class="form-control" placeholder="Entrez une description pour la facture"></textarea>
 										</div>
 									</div>
 								</div>

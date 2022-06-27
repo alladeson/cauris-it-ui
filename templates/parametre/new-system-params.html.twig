@@ -81,7 +81,7 @@
 												<div class="col-md-12">
 													<div class="mb-3 position-relative">
 														<label class="form-label" for="name">Nom ou Raison sociale</label>
-														<input onchange="newSystemParamsWizard.setRecapTable()" type="text" id="name" name="name" class="form-control" placeholder="Le nom de la société" required>
+														<input onchange="newSystemParamsWizard.setRecapTable(event)" type="text" id="name" name="name" class="form-control" placeholder="Le nom de la société" required>
 													</div>
 												</div>							
 											</div>
@@ -90,7 +90,7 @@
 													<div class="mb-3 position-relative">
 														<label class="form-label" for="ifu">IFU</label>
 														<input type="hidden" id="item-id" name="item-id" value="">
-														<input type="text" onchange="newSystemParamsWizard.setRecapTable()" pattern="[0-9]{13}" class="form-control" id="ifu" name="ifu" placeholder="L'IFU de la société" value="">
+														<input type="text" onchange="newSystemParamsWizard.setRecapTable(event)" pattern="[0-9]{13}" class="form-control" id="ifu" name="ifu" placeholder="L'IFU de la société" value="">
 													</div>
 												</div>														
 											</div>
@@ -98,7 +98,7 @@
 												<div class="col-md-12">
 													<div class="mb-3 position-relative">
 														<label class="form-label" for="rcm">RCM</label>
-														<input onchange="newSystemParamsWizard.setRecapTable()" type="text" id="rcm" name="rcm" class="form-control" placeholder="Le numéro rcm de la société">
+														<input onchange="newSystemParamsWizard.setRecapTable(event)" type="text" id="rcm" name="rcm" class="form-control" placeholder="Le numéro rcm de la société">
 													</div>
 												</div>							
 											</div>
@@ -113,7 +113,7 @@
 													<span class="input-group-text" id="telephonePrepend">
 														<i class="mdi mdi-phone"></i>
 													</span>
-													<input onchange="newSystemParamsWizard.setRecapTable()" type="tel" pattern="[5-9]{1}[0-9]{1}[0-9]{2}[0-9]{2}[0-9]{2}" class="form-control" id="telephone" name="telephone" placeholder="Numéro de téléphone" aria-describedby="telephonePrepend" required>
+													<input onchange="newSystemParamsWizard.setRecapTable(event)" type="tel" pattern="[5-9]{1}[0-9]{1}[0-9]{2}[0-9]{2}[0-9]{2}" class="form-control" id="telephone" name="telephone" placeholder="Numéro de téléphone" aria-describedby="telephonePrepend" required>
 												</div>
 											</div>
 										</div>
@@ -124,7 +124,7 @@
 													<span class="input-group-text" id="emailPrepend">
 														<i class="mdi mdi-email"></i>
 													</span>
-													<input onchange="newSystemParamsWizard.setRecapTable()" type="email" id="email" name="email" class="form-control" placeholder="Adresse e-mail" aria-describedby="emailPrepend" required>
+													<input onchange="newSystemParamsWizard.setRecapTable(event)" type="email" id="email" name="email" class="form-control" placeholder="Adresse e-mail" aria-describedby="emailPrepend" required>
 												</div>
 											</div>
 										</div>
@@ -133,13 +133,13 @@
 										<div class="col-sm-6">
 											<div class="mb-3 position-relative">
 												<label class="form-label" for="pays">Pays</label>
-												<input onchange="newSystemParamsWizard.setRecapTable()" disabled type="text" id="pays" name="pays" class="form-control" placeholder="Le pays de la société" value="Bénin">
+												<input onchange="newSystemParamsWizard.setRecapTable(event)" disabled type="text" id="pays" name="pays" class="form-control" placeholder="Le pays de la société" value="Bénin">
 											</div>
 										</div>							
 										<div class="col-sm-6">
 											<div class="mb-3 position-relative">
 												<label class="form-label" for="ville">Ville</label>
-												<input onchange="newSystemParamsWizard.setRecapTable()" type="text" id="ville" name="ville" class="form-control" placeholder="La ville de la société">
+												<input onchange="newSystemParamsWizard.setRecapTable(event)" type="text" id="ville" name="ville" class="form-control" placeholder="La ville de la société">
 											</div>
 										</div>							
 									</div>
@@ -149,7 +149,7 @@
 												<label class="form-label" for="address">Adresse</label>
 												<div class="input-group">
 													<span class="input-group-text" id="addressPrepend"><i class="mdi mdi-google-maps"></i></span>
-													<input onchange="newSystemParamsWizard.setRecapTable()" type="text" class="form-control" id="address" name="address" placeholder="Adresse de la société" aria-describedby="addressPrepend" required>
+													<input onchange="newSystemParamsWizard.setRecapTable(event)" type="text" class="form-control" id="address" name="address" placeholder="Adresse de la société" aria-describedby="addressPrepend" required>
 												</div>
 											</div>
 										</div>
@@ -171,29 +171,38 @@
 									</div>
 									<form class="form-wizard" id="emecef-form" onsubmit="newSystemParamsWizard.submitFormData(event)">
 										<div class="row">
-											<div class="col-sm-6">
+											<div class="col-sm-4">
+												<div class="mb-3">
+													<label for="nim" class="form-label font-size-13 text-muted">NIM</label>
+													<input onchange="newSystemParamsWizard.setRecapTable(event)" type="text" id="nim" name="nim" class="form-control" placeholder="Le nim de l'e-MECeF">
+												</div>
+											</div>
+											<div class="col-sm-4">
 												<div class="mb-3">
 													<label for="type" class="form-label font-size-13 text-muted">Type de Système</label>
-													<select onchange="newSystemParamsWizard.setRecapTable()" required class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher...">
+													<select onchange="newSystemParamsWizard.setRecapTable(event)" required class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher...">
 														<option value="">Sélectionner</option>
 														<option value="Test">Test</option>
 														<option value="Production">Production</option>
 													</select>
 												</div>
 											</div>
-
-											<div class="col-sm-6">
+											<div class="col-sm-4">
 												<div class="mb-3">
-													<label for="nim" class="form-label font-size-13 text-muted">NIM</label>
-													<input onchange="newSystemParamsWizard.setRecapTable()" type="text" id="nim" name="nim" class="form-control" placeholder="Le nim de l'e-MECeF">
+													<label for="format-facture" class="form-label font-size-13 text-muted">Format de la facture</label>
+													<select onchange="newSystemParamsWizard.setRecapTable(event)" required class="form-control form-select" data-trigger name="format-facture" id="format-facture" placeholder="chercher...">
+														<option value="">Sélectionner</option>		
+														<option value="A4">Format A4</option>
+														<option value="A8">Petit ticket - A8</option>
+													</select>
 												</div>
 											</div>
 										</div>
 										<div class="row">						
 											<div class="col-12">
 												<div class="mb-3 position-relative">
-													<label class="form-label" for="token">Token</label>
-													<textarea onchange="newSystemParamsWizard.setRecapTable()" id="token" name="token" rows="4" class="form-control" placeholder="Le token d'authentification à l'e-MECef"></textarea>
+													<label class="form-label font-size-13 text-muted" for="token">Token</label>
+													<textarea onchange="newSystemParamsWizard.setRecapTable(event)" id="token" name="token" rows="4" class="form-control" placeholder="Le token d'authentification à l'e-MECef"></textarea>
 												</div>
 											</div>							
 										</div>
@@ -223,7 +232,7 @@
 											<div class="col-12">
 												<div class="mb-3 position-relative">
 													<label class="form-label" for="token">clé d'activation</label>
-													<textarea onchange="newSystemParamsWizard.setRecapTable()" id="serial-key" name="serial-key" rows="4" class="form-control" placeholder="La clé d'activation du logiciel"></textarea>
+													<textarea onchange="newSystemParamsWizard.setRecapTable(event)" id="serial-key" name="serial-key" rows="4" class="form-control" placeholder="La clé d'activation du logiciel"></textarea>
 												</div>
 											</div>							
 										</div>
@@ -270,7 +279,15 @@
 												</tr>
 												<tr>
 													<th scope="row">
-														Nom
+														Logo
+													</th>
+													<td class="text-center td-logo">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row">
+														Nom / Raison sociale
 													</th>
 													<td class="text-center td-name">
 														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
@@ -339,6 +356,14 @@
 												</tr>
 												<tr>
 													<th scope="row">
+														NIM
+													</th>
+													<td class="text-center td-nim">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row">
 														Type de système
 													</th>
 													<td class="text-center td-type">
@@ -347,9 +372,9 @@
 												</tr>
 												<tr>
 													<th scope="row">
-														NIM
+														Format de la facture
 													</th>
-													<td class="text-center td-nim">
+													<td class="text-center td-format-facture">
 														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
 													</td>
 												</tr>
