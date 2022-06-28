@@ -14,7 +14,7 @@ const $initialState = {
     currentPage: 1,
     pageCount: 0,
     // Le format de la facture est définie dans base.html.twig juste avant l'importation de global-custum.init.js
-    zoom: formatFacture == 'A4' ? 1 : 3,
+    zoom: formatFacture == 'A4' ? (3 / 2) : 4,
 };
 
 /**
