@@ -124,6 +124,7 @@ let systemParamsWizard = {
             params.address = GlobalScript.checkBlank(societeForm.find("#address").val());
             params.pays = GlobalScript.checkBlank(societeForm.find("#pays").val());
             params.ville = GlobalScript.checkBlank(societeForm.find("#ville").val());
+            params.tokenTmp = GlobalScript.checkBlank($.trim(societeForm.find("#tokenTmp").val()));
             return JSON.stringify(params);
         }
         return "";
