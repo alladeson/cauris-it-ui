@@ -104,9 +104,10 @@ class ApiDataService extends AbstractController
         $params = json_decode($content);
         if ($status == Response::HTTP_OK) {
             $session->set("params", $params);
-        } else {
-            $session->clear();
-        }
+        } 
+        // else {
+        //     $session->clear();
+        // }
 
         return $status == Response::HTTP_OK ? $params : null;
     }
