@@ -477,10 +477,14 @@ let facturation = {
             data = {
                 aibId: form.find("#aib").val(),
                 typePaiementId: form.find("#type-paiement").val(),
-                montantRecu: Math.round(parseFloat(form.find("#montant-recu").val())),
-                montantPayer: Math.round(parseFloat(form.find("#montant-payer").val())),
-                montantRendu: Math.round(parseFloat(form.find("#montant-recu").val())) - Math.round(parseFloat(form.find("#montant-payer").val())),
-                description:  GlobalScript.checkBlank($.trim(form.find("#description").val())),
+                montantPayer: Math.round(parseFloat(form.find("#avance").val())),
+                objet:  GlobalScript.checkBlank($.trim(form.find("#objet").val())),
+                dossier:  GlobalScript.checkBlank($.trim(form.find("#dossier").val())),
+                numeroBl:  GlobalScript.checkBlank($.trim(form.find("#numero-bl").val())),
+                numeroPo:  GlobalScript.checkBlank($.trim(form.find("#numero-po").val())),
+                montantTotal: Math.round(parseFloat(form.find("#montant-total").val())),
+                avance: Math.round(parseFloat(form.find("#avance").val())),
+                solde: Math.round(parseFloat(form.find("#montant-total").val())) - Math.round(parseFloat(form.find("#avance").val())),
             };
             return JSON.stringify(data);
         }
@@ -761,20 +765,20 @@ let facturation = {
     },
     setValidationForm: function (event = null) {
         if (event) event.preventDefault();
-        var montantRecu = factureValidationForm.find("#montant-recu").val();
-        if (!montantRecu || montantRecu < facture.montantTtc) {
+        var montantTotal = factureValidationForm.find("#montant-total").val();
+        if (!montantTotal || montantTotal < facture.montantTtc) {
             alertify.error(
-                "Le montant reçu doit être supérieur ou égal au montant T.T.C de la facture"
+                "Le montant total doit être supérieur ou égal au montant T.T.C de la facture"
             );
-            factureValidationForm.find("#montant-payer").val(null);
-            factureValidationForm.find("#montant-rendu").val(null);
+            factureValidationForm.find("#avance").val(null);
+            factureValidationForm.find("solde").val(null);
             return false;
         }
-        var montantRendu = montantRecu - facture.montantTtc;
+        var solde = montantTotal - facture.montantTtc;
 
-        factureValidationForm.find("#montant-recu").val(montantRecu);
-        factureValidationForm.find("#montant-payer").val(facture.montantTtc);
-        factureValidationForm.find("#montant-rendu").val(montantRendu);
+        factureValidationForm.find("#montant-total").val(montantTotal);
+        factureValidationForm.find("#avance").val(facture.montantTtc);
+        factureValidationForm.find("#solde").val(solde);
     },
     setValidatonFormRecapTable: function () {
         var $validationFormRecpaTable = $("table.invoice-validation-table");
@@ -803,10 +807,13 @@ let facturation = {
 
         // Mise à jour du formulaire de validation  en fonction de la valeur du règlement de la facture
         if (factureReglement) {
-            factureValidationForm.find("#montant-recu").val(factureReglement.montantRecu);
-            factureValidationForm.find("#montant-payer").val(factureReglement.montantPayer);
-            factureValidationForm.find("#montant-rendu").val(factureReglement.montantRendu);
-            factureValidationForm.find("#description").val(factureReglement.description);
+            factureValidationForm.find("#objet").val(factureReglement.objet);
+            factureValidationForm.find("#dossier").val(factureReglement.dossier);
+            factureValidationForm.find("#numero-bl").val(factureReglement.numeroBl);
+            factureValidationForm.find("#numero-po").val(factureReglement.numeroPo);
+            factureValidationForm.find("#montant-total").val(factureReglement.montantTotal);
+            factureValidationForm.find("#avance").val(factureReglement.avance);
+            factureValidationForm.find("#solde").val(factureReglement.solde);
         }
     },
     setRecapTableOnAibChange: function (event = null) {
@@ -892,8 +899,8 @@ let facturation = {
         if (!factureValidationForm.find("#type-paiement").val()) {
             alertify.warning("Veuillez sélectionner un type de paiement svp !");
             return;
-        } else if (parseFloat(factureValidationForm.find("#montant-payer").val()) != parseFloat(facture.montantTtc)) {
-            alertify.warning("Veuillez mettre à jour les montant du règlement de la facture svp !");
+        } else if (parseFloat(factureValidationForm.find("#avance").val()) != parseFloat(facture.montantTtc)) {
+            alertify.warning("Veuillez mettre à jour les montants total, avance et solde svp!");
             return;
         }
         else {
@@ -994,7 +1001,9 @@ let facturation = {
             // Mise à jour du champ de selection du client
             choices[1].setChoices([{ value: data.id, label: data.name, selected: true }])
             //
-            datatable.ajax.reload();
+            // datatable.ajax.reload();
+            datatable.destroy();
+            facturation.listInitalizer();
             // facturation.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
             $("div.client-new-modal").modal('hide')
