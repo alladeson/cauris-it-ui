@@ -428,6 +428,8 @@ let GlobalScript = {
         // Mise à jour des url d'impression et de téléchargement
         $pdf = printPdfUrl;
         $pdfDownload = dowloadPdfUrl;
+        // The workerSrc property shall be specified.
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "/assets/js/plugins/pdfjs/pdf.worker.min.js";
         // Lancement de waiteMe
         GlobalScript.run_waitMe($('body'), 1, 'stretch')
             // Lancement de l'impression de la facture
@@ -464,7 +466,7 @@ let GlobalScript = {
                 });
                 // La touche pour l'impression physique de la facture
                 $('#pdf_printer').on('click', () => {
-                    printJS({ printable: $pdfDownload, type: 'pdf', showModal: true });
+                    printJS({ printable: $pdfDownload, type: 'pdf', showModal: false });
                 });
                 // La touche pour le téléchargement de la facture en version pdf
                 $("#pdf_download").click(function(event) {

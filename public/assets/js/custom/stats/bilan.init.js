@@ -300,7 +300,7 @@ let bilan = {
         
 		if (recapdgi.taa != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -315,7 +315,7 @@ let bilan = {
 		// Pour le groupe de taxation B (18%)
 		if (recapdgi.tab != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -330,7 +330,7 @@ let bilan = {
 		// Pour le groupe C (Exportation de produits taxables) 0%
 		if (recapdgi.tac != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -345,7 +345,7 @@ let bilan = {
 		// Pour le groupe de taxation D (18%)
 		if (recapdgi.tad != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -359,6 +359,12 @@ let bilan = {
 		}
 		// Pour le groupe E (Régime fiscal TPS) 0%
 		if (recapdgi.tae != 0) {
+			var recap = {
+                "taxe_group": '',
+                "total": 0,
+                "imposable": 0,
+                "impot": 0,
+            };
 			recap.taxe_group = "E - TPS";
 			recap.total = fa ? (recapdgi.tae * (-1)) : recapdgi.tae;
 			recap.imposable = 0;
@@ -369,7 +375,7 @@ let bilan = {
 		// Pour le groupe F (Réservé) 0%
 		if (recapdgi.taf != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -384,7 +390,7 @@ let bilan = {
 		// Pour la taxe spécifique
 		if (recapdgi.ts != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -400,7 +406,7 @@ let bilan = {
 		// Pour le groupe Aib
 		if (recapdgi.aib != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
