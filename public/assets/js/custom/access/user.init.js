@@ -175,12 +175,12 @@ let user = {
         var groupeId = form.find("#groupe").val();
         // Vérification du changment dans le formulaire
         if (GlobalScript.traceFormChange(dataId)) return;
-        console.log(data)
+        // console.log(data)
         var url = dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM;
         var method = dataId ? 'PUT' : 'POST';
         GlobalScript.request(url.replace("__groupeId__", groupeId), method, data).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             datatable.ajax.reload();
             // user.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
@@ -194,10 +194,10 @@ let user = {
     showItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             var itemObj = data;
             user.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
@@ -210,11 +210,11 @@ let user = {
     editItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         //var response = GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
             user.setformData($("div.add-new-modal").find('form'), itemObj);
@@ -235,10 +235,10 @@ let user = {
     removeItem: function(el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        // console.log(id);
+        // // console.log(id);
         GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
                 // user.saSucces(oktitle, oktext);
             alertify.success(oktext)
             datatable.ajax.reload();
@@ -351,7 +351,7 @@ $(document).ready(function() {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);
         });
-        console.log(count + ' column(s) are hidden');
+        // console.log(count + ' column(s) are hidden');
     });
 
     $("div.add-new-modal").find('form').on("click", ".submit-button", function(event) {

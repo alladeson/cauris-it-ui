@@ -24,12 +24,25 @@ let facturation = {
                                 type: "POST",
                                 url: URL_GLOBAL_REQUEST,
                                 data: function() {
+                                    // Récupération du type de la facture choisi par l'utilisateur
+                                    typeFactureId = facturationForm.find("#type").val();
+                                    // Attention, le type de la facture peut-être null au chargement de la page,
+                                    // dans ce cas, attribuer zéro (0) comme valeur
+                                    typeFactureId = typeFactureId ? typeFactureId : 0;
+                                    // Mise à jour de l'url de récupération de la facture du client
+                                    // Ceci est utile quand aucune facture n'est en cours pour le client
+                                    url_facture_client = URL_GET_FACTURE_CLIENT.replace(
+                                        "__clientId__",
+                                        client ? client.id : 0
+                                    ).replace("__typeId__", typeFactureId)                                    
+                                    //Récupération de la facture
+                                    // console.log(`Url de récupération de la facture : ${url_facture_client}`);
                                     return (data = {
+                                        // Si le client à déjà une facture en cours, alors le système la récupère, 
+                                        // Sinon, le système récupère la nouvelle facture du client qui peut-être null selon
+                                        // que l'utilisateur ait déjà ajouté un article pour le client ou pas.
                                         url: FACTURE_ID ?
-                                            URL_GET_ITEM.replace("__id__", FACTURE_ID) : URL_GET_FACTURE_CLIENT.replace(
-                                                "__clientId__",
-                                                client ? client.id : 0
-                                            ).replace("__typeId__", typeFactureId),
+                                            URL_GET_ITEM.replace("__id__", FACTURE_ID) : url_facture_client,
                                         method: "GET",
                                     });
                                 },
@@ -295,7 +308,7 @@ let facturation = {
         let dataId = facturationForm.find("#item-id").val();
         if (GlobalScript.traceUserProfileAndParamsFormChange(dataId)) return;
         //
-        console.log(data);
+        // console.log(data);
         var articleId = facturationForm.find("#article").val();
         var obj = {
             __clientId__: client ? client.id : 0,
@@ -314,10 +327,10 @@ let facturation = {
                 // Le montant ttc réel est le montant ttc sans aib : utile lors de la mises à jour du formulaire de validation
                 if (facture.aib) factureMontantTtc = facture.montantTtc - facture.montantAib;
                 //
-                console.log(facture);
+                // console.log(facture);
                 datatable.ajax.reload();
                 alertify.success("Ajout effectué avec succès.");
-                // Mise à jour des articles (les servicies internes)
+                // Mise à jour des articles (les services internes)
                 facturation.getForeignsData(
                     URL_LIST_ARTICLE,
                     ["articles", "id", "designation"],
@@ -343,7 +356,7 @@ let facturation = {
     editItem: function (el) {
         // Récupération de l'id de l'objet
         let detailId = el.data("item-id");
-        //console.log(id);
+        // console.log(id);
         //var response = GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
         GlobalScript.request(
             URL_GET_DETAIL_FACTURE.replace(
@@ -357,7 +370,7 @@ let facturation = {
                 // Run this when your request was successful
                 GlobalScript.scrollToTop();
                 var itemObj = data;
-                console.log(itemObj);
+                // console.log(itemObj);
                 // Mise à jour de l'article 
                 article = data.article;
                 // Sauvegarde la taxe spécifique si existante sinon null
@@ -377,7 +390,7 @@ let facturation = {
     showItem: function (el) {
         // Récupération de l'id de l'objet
         let detailId = el.data("item-id");
-        //console.log(id);
+        // console.log(id);
         GlobalScript.request(
             URL_GET_DETAIL_FACTURE.replace(
                 "__id__",
@@ -389,7 +402,7 @@ let facturation = {
             .then(function (data) {
                 // Run this when your request was successful
                 var itemObj = data;
-                console.log(itemObj);
+                // console.log(itemObj);
                 // Sauvegarde la taxe spécifique si existante sinon null
                 taxeSpecifique = itemObj.ts ? itemObj.ts.tsUnitaire : null;
                 facturation.setShowingTable(itemObj);
@@ -403,7 +416,7 @@ let facturation = {
     removeItem: function (el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let detailId = el.data("item-id");
-        // console.log(id);
+        // // console.log(id);
         GlobalScript.request(
             URL_DELETE_ITEM.replace(
                 "__id__",
@@ -414,7 +427,7 @@ let facturation = {
         )
             .then(function (data) {
                 // Run this when your request was successful
-                console.log(data);
+                // console.log(data);
                 alertify.success(oktext);
                 datatable.ajax.reload();
             })
@@ -489,7 +502,7 @@ let facturation = {
     validateItem: function (el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let detailId = el.data("item-id");
-        // console.log(id);
+        // // console.log(id);
         GlobalScript.request(
             URL_VALIDER_DETAIL_FACTURE.replace(
                 "__id__",
@@ -500,7 +513,7 @@ let facturation = {
         )
             .then(function (data) {
                 // Run this when your request was successful
-                console.log(data);
+                // console.log(data);
                 alertify.success(oktext);
                 datatable.ajax.reload();
             })
@@ -511,7 +524,7 @@ let facturation = {
     },
     validateFacture: function (oktitle, oktext) {
         var data = facturation.validationDataFormat(factureValidationForm);
-        console.log(data);
+        // console.log(data);
         GlobalScript.request(
             URL_VALIDER_FACTURE.replace(
                 "__id__",
@@ -530,7 +543,7 @@ let facturation = {
                 // Le montant ttc réel est le montant ttc sans aib : utile lors de la mises à jour du formulaire de validation
                 if (facture.aib) factureMontantTtc = facture.montantTtc - facture.montantAib;
                 //
-                console.log(facture);
+                // console.log(facture);
                 alertify.success(oktext);
                 datatable.ajax.reload();
                 facturation.saSuccesFactureValider(
@@ -549,7 +562,6 @@ let facturation = {
             .then(function (data) {
                 // Run this when your request was successful
                 dataJon = data;
-                console.log(dataJon);
                 choices[choicePosition].clearChoices();
                 if ($.inArray(selectData[0], ["catégories", "types de facture", "types de paiement", 5]) > -1) {
                     dataJon = $.map(data, function(obj, index) {
@@ -590,7 +602,7 @@ let facturation = {
         typeFactureId = facturationForm.find("#type").val();
         // Récupération de l'id du client
         var clientId = facturationForm.find("#client").val();
-        console.log("client id : " + clientId);
+        // console.log("client id : " + clientId);
         if (clientId) facturation.getEntity(URL_GET_CLIENT, clientId, "client");
         else {
             client = null;
@@ -649,7 +661,7 @@ let facturation = {
             .then(function (data) {
                 // Run this when your request was successful
                 dataJson = data;
-                console.log(dataJson);
+                // console.log(dataJson);
                 if (dataname == "client") {
                     client = dataJson;
                     datatable.ajax.reload();
@@ -728,7 +740,7 @@ let facturation = {
         GlobalScript.request(URL_GET_ITEM.replace("__id__", factureId), "GET", null)
             .then(function (data) {
                 // Run this when your request was successful
-                console.log(data);
+                // console.log(data);
                 facture = data;
                 client = facture.client;
                 choices[0].setChoiceByValue(facture.type.id);
@@ -817,7 +829,7 @@ let facturation = {
                 .then(function (data) {
                     // Run this when your request was successful
                     var aib = data;
-                    console.log(aib);
+                    // console.log(aib);
                     // Mise à jour de l'aib de la facture
                     facture.aib = data;
                     // Mise à jour du montant aib
@@ -986,10 +998,10 @@ let facturation = {
         var form = $("div.client-new-modal").find('form');
         var data = facturation.clientDataFormat(form)
         let dataId = form.find("#item-id").val();
-        console.log(data)
+        // console.log(data)
         GlobalScript.request((dataId ? URL_PUT_CLIENT.replace("__id__", dataId) : URL_POST_CLIENT), (dataId ? 'PUT' : 'POST'), data).then(function (data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             client = data;
             // Mise à jour du champ de selection du client
             choices[1].setChoices([{ value: data.id, label: data.name, selected: true }])
@@ -1036,14 +1048,14 @@ let facturation = {
         var form = $("div.article-new-modal").find('form');
         var data = facturation.articleDataFormat(form)
         let dataId = form.find("#item-id").val();
-        console.log(data)
+        // console.log(data)
         var categorieId = form.find("#categorie").val();
         var taxeId = form.find("#taxe").val();
         var obj = { '__id__': dataId, '__cId__': categorieId, '__tId__': taxeId }
         var submitUrl = dataId ? GlobalScript.textMultipleReplace(URL_PUT_ARTICLE, obj) : GlobalScript.textMultipleReplace(URL_POST_ARTICLE, obj);
         GlobalScript.request(submitUrl, (dataId ? 'PUT' : 'POST'), data).then(function (data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             article = data;
             // Mise à jour du champ de selection de l'article
             choices[2].setChoices([{ value: data.id, label: data.designation, selected: true }])
@@ -1149,7 +1161,7 @@ $(document).ready(function () {
     //Validate facture
     $("a.validate-facture").click(function (e) {
         e.preventDefault();
-        console.log("ici");
+        // console.log("ici");
         if (facture && facture.valid) {
             alertify.warning("Cette facture est déjà validée");
         } else if (facture && facture.details.length) {
@@ -1192,7 +1204,7 @@ $(document).ready(function () {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);
         });
-        console.log(count + ' column(s) are hidden');
+        // console.log(count + ' column(s) are hidden');
     });
 });
 document.addEventListener("DOMContentLoaded", function () {

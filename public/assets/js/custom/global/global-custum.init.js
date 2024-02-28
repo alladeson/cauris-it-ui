@@ -253,7 +253,7 @@ let GlobalScript = {
         GlobalScript.request(url, 'GET', null).then(function(data) {
             // Run this when your request was successful
             dataJon = data;
-            console.log(dataJon);
+            // console.log(dataJon);
             choices[choicePosition].clearChoices();
             if ($.inArray(selectData[0], ["catégories", "types de facture", "types de paiement", 5]) > -1 && preselect) {
                 dataJon = $.map(data, function(obj, index) {
@@ -288,7 +288,7 @@ let GlobalScript = {
     formChange: function(form) {
         form.on('input change paste', ':input', (e) => {
             formChange = true;
-            console.log("change : " + e.type);
+            // console.log("change : " + e.type);
         });
     },
     traceFormChange: function(dataId) {
@@ -327,7 +327,7 @@ let GlobalScript = {
      * @param {String} errTopic L'opération qui a suscité l'erreur
      */
     ajxRqtErrHandler: function(err, alert, errTopic) {
-        console.log(err);
+        // console.log(err);
         // Meessage d'erreur par défaut
         var defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + ". Si cela persiste, veuillez contacter votre administrateur ou votre fournisseur du SFE. Merci !";
         // Les erreur du serveur : backend (spring-boot)  ou frontend (symfony)
@@ -385,13 +385,13 @@ let GlobalScript = {
         waitMe_zone = layoutChange ? "" : null;
         GlobalScript.requestLayoutSettings(JSON.stringify(layout)).then(function(data) {
             // Run this when your request was successful
-            console.log("OK")
+            // console.log("OK")
             layoutChange ? window.location.href = "" : "";
             waitMe_zone = "";
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             waitMe_zone = "";
-            console.log(err);
+            // console.log(err);
             // GlobalScript.ajxRqtErrHandler(err, "alertify", "la mise à jour des paramètre du layout");
         });
     },
@@ -438,7 +438,7 @@ let GlobalScript = {
             .promise.then((doc) => {
                 // Une fois imprimée, la facture est récupérée pour la faire visionner
                 $initialState.pdfDoc = doc;
-                console.log('pdfDocument', $initialState.pdfDoc);
+                // console.log('pdfDocument', $initialState.pdfDoc);
 
                 $('#page_count').html($initialState.pdfDoc.numPages);
 
@@ -551,7 +551,7 @@ let GlobalScript = {
         // Envoie de la requête d'impression de la facture
         GlobalScript.requestGetFile(printPdfUrl, "GET", pdfName, null).then(function(data) {
                 // Run this when your request was successful
-                console.log(data);
+                // console.log(data);
                 // Mise à jour du titre du modal d'affichage de la facture
                 $pdfWebviwerModal.find('h5.card-title').text("Facture générée");
                 // Affichage de la facture
@@ -576,7 +576,7 @@ let GlobalScript = {
         // Envoie de la requête d'impression
         GlobalScript.requestGetFile(printPdfUrl, method, fileName, data).then(function(data) {
                 // Run this when your request was successful
-                console.log(data);
+                // console.log(data);
                 // Mise à jour du titre du modal d'affichage
                 $pdfWebviwerModal.find('h5.card-title').text("Bilan périodique");
                 // Affichage
@@ -604,7 +604,7 @@ let GlobalScript = {
         // Envoie de la requête d'impression
         GlobalScript.requestGetFile(API_BASE_URL + printPdfUrl, method, fileName, data).then(function(data) {
                 // Run this when your request was successful
-                console.log(data);
+                // console.log(data);
                 // Affichage
                 GlobalScript.pdfwebviewer(dowloadPdfUrl, dowloadPdfUrl, fileName)
             })
