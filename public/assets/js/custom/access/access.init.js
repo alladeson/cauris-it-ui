@@ -182,7 +182,9 @@ let access = {
             // access.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
             if (dataId) $("div.add-new-modal").modal('hide')
-            form[0].reset()
+            // form[0].reset()
+            // Réinitialisation du champ des fonctionnalités
+            choices[2].removeActiveItems();
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
