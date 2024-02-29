@@ -130,10 +130,10 @@ let approvisionnement = {
         event.preventDefault();
         var form = $("div.add-new-modal").find('form');
         var data = approvisionnement.dataFormat(form)
-        console.log(data)
+        // console.log(data)
         approvisionnement.request((dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM), (dataId ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
+            // console.log(JSON.parse(data))
             datatable.ajax.reload();
             approvisionnement.saSucces("Succès !", "Enregistrement effectué avec succès.")
             $("div.add-new-modal").modal('hide')
@@ -146,10 +146,10 @@ let approvisionnement = {
     showItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         approvisionnement.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
+            // console.log(JSON.parse(data))
             var itemObj = JSON.parse(data);
             approvisionnement.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
@@ -162,11 +162,11 @@ let approvisionnement = {
     editItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         //var response = approvisionnement.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
         approvisionnement.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
+            // console.log(JSON.parse(data))
             var itemObj = JSON.parse(data);
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
             approvisionnement.setformData($("div.add-new-modal").find('form'), itemObj);
@@ -179,10 +179,10 @@ let approvisionnement = {
     removeItem: function(el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        // console.log(id);
+        // // console.log(id);
         approvisionnement.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
-            console.log(JSON.parse(data))
+            // console.log(JSON.parse(data))
             approvisionnement.saSucces(oktitle, oktext);
             datatable.ajax.reload();
         }).catch(function(err) {
@@ -277,6 +277,6 @@ $(document).ready(function() {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);
         });
-        console.log(count + ' column(s) are hidden');
+        // console.log(count + ' column(s) are hidden');
     });
 });

@@ -170,10 +170,10 @@ let client = {
         var data = client.dataFormat(form)
         let dataId = form.find("#item-id").val();
         if(GlobalScript.traceFormChange(dataId)) return;
-        console.log(data)
+        // console.log(data)
         GlobalScript.request((dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM), (dataId ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             datatable.ajax.reload();
             // client.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
@@ -187,10 +187,10 @@ let client = {
     showItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             var itemObj = data;
             client.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
@@ -203,11 +203,11 @@ let client = {
     editItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         //var response = GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
             client.setformData($("div.add-new-modal").find('form'), itemObj);
@@ -221,10 +221,10 @@ let client = {
     removeItem: function(el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        // console.log(id);
+        // // console.log(id);
         GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
                 // client.saSucces(oktitle, oktext);
             alertify.success(oktext)
             datatable.ajax.reload();
@@ -317,7 +317,7 @@ $(document).ready(function() {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);
         });
-        console.log(count + ' column(s) are hidden');
+        // console.log(count + ' column(s) are hidden');
     });
 
     // Input mask pour l'ifu du client

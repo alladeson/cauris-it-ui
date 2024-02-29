@@ -185,10 +185,10 @@ let listeFacture = {
     showItem: function (el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function (data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             listeFacture.setDetailsFactureRecapTable(data);
             $(".show-item-modal").modal('show')
 
@@ -200,10 +200,10 @@ let listeFacture = {
     editItem: function (el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function (data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             if (data.type.groupe == "FV") {
                 location.href = URL_GLOBAL_UPDATE_FACTURE_VENTE.replace("__id__", data.id);
             } else if (data.type.groupe == "FA") {
@@ -217,10 +217,10 @@ let listeFacture = {
     printItem: function (el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function (data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             GlobalScript.showPrintedInvoice(data);
         }).catch(function (err) {
             // Run this when promise was rejected via reject()
@@ -230,10 +230,10 @@ let listeFacture = {
     removeItem: function (el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        // console.log(id);
+        // // console.log(id);
         GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function (data) {
             // Run this when your request was successful
-            console.log(data);
+            // console.log(data);
             alertify.success(oktext)
             datatable.ajax.reload();
         }).catch(function (err) {
@@ -337,7 +337,7 @@ $(document).ready(function () {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);
         });
-        console.log(count + ' column(s) are hidden');
+        // console.log(count + ' column(s) are hidden');
     });
 });
 document.addEventListener("DOMContentLoaded", function () {
@@ -406,7 +406,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // alertify.success("Date d'émission des facture coché");
                 statsPayload.debutAt = debut.toISOString();
                 statsPayload.finAt = fin.toISOString();
-                console.log(statsPayload);
+                // console.log(statsPayload);
                 url_list = URL_LIST_FACTURE_BY_CREATED_DATE;
                 // Si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
                 if (typeFactureId)
@@ -424,7 +424,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // statsPayload.fin = filtreForm.find("input#date-fin").val();
                 statsPayload.debut = (debut.toISOString()).slice(0, 19);
                 statsPayload.fin = (fin.toISOString()).slice(0, 19);
-                console.log(statsPayload);
+                // console.log(statsPayload);
                 url_list = URL_LIST_FACTURE_BY_CONFIRMED_DATE;
                 // Si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
                 if (typeFactureId)

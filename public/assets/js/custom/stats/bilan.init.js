@@ -167,10 +167,10 @@ let bilan = {
     showItem: function (el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function (data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             bilan.setDetailsFactureRecapTable(data);
             $(".show-item-modal").modal('show')
 
@@ -182,10 +182,10 @@ let bilan = {
     editItem: function (el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function (data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             if (data.type.groupe == "FV") {
                 location.href = URL_GLOBAL_UPDATE_FACTURE_VENTE.replace("__id__", data.id);
             } else if (data.type.groupe == "FA") {
@@ -199,10 +199,10 @@ let bilan = {
     printItem: function (el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function (data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             GlobalScript.showPrintedInvoice(data);
         }).catch(function (err) {
             // Run this when promise was rejected via reject()
@@ -212,13 +212,13 @@ let bilan = {
     printBilan: function () {
         var debut = filtreForm.find("input#date-debut").val();
         var fin = filtreForm.find("input#date-fin").val();
-        console.log(debut)
-        console.log(fin)
+        // console.log(debut)
+        // console.log(fin)
         var obj = {"-": "", "T": "_", ":": ""};
         dateDebut = GlobalScript.textMultipleReplace(debut, obj);
         dateFin = GlobalScript.textMultipleReplace(fin, obj);
 		reportName = "bilan_du_" + dateDebut + "_au_" + dateFin + ".pdf";
-        console.log(reportName);
+        // console.log(reportName);
         //
         GlobalScript.showPrintedBilan(URL_IMPRESSION_BILAN, 'GET', JSON.stringify(statsPayload), reportName);
     },
@@ -279,10 +279,10 @@ let bilan = {
         $("div#facture-details-modal").modal('show');
     },
     getBilanMontant: function (url, tableSelector, typeFacture) {        
-        //console.log(id);
+        //// console.log(id);
         GlobalScript.request(url + "/montant", 'GET', JSON.stringify(statsPayload)).then(function (data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             // Formatage du tableau de données de bilan des montants
             var arrayData = bilan.setBilanMontantArrayData(data, url, tableSelector, typeFacture)            
         }).catch(function (err) {
@@ -300,7 +300,7 @@ let bilan = {
         
 		if (recapdgi.taa != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -315,7 +315,7 @@ let bilan = {
 		// Pour le groupe de taxation B (18%)
 		if (recapdgi.tab != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -330,7 +330,7 @@ let bilan = {
 		// Pour le groupe C (Exportation de produits taxables) 0%
 		if (recapdgi.tac != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -345,7 +345,7 @@ let bilan = {
 		// Pour le groupe de taxation D (18%)
 		if (recapdgi.tad != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -359,6 +359,12 @@ let bilan = {
 		}
 		// Pour le groupe E (Régime fiscal TPS) 0%
 		if (recapdgi.tae != 0) {
+			var recap = {
+                "taxe_group": '',
+                "total": 0,
+                "imposable": 0,
+                "impot": 0,
+            };
 			recap.taxe_group = "E - TPS";
 			recap.total = fa ? (recapdgi.tae * (-1)) : recapdgi.tae;
 			recap.imposable = 0;
@@ -369,7 +375,7 @@ let bilan = {
 		// Pour le groupe F (Réservé) 0%
 		if (recapdgi.taf != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -384,7 +390,7 @@ let bilan = {
 		// Pour la taxe spécifique
 		if (recapdgi.ts != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -400,7 +406,7 @@ let bilan = {
 		// Pour le groupe Aib
 		if (recapdgi.aib != 0) {
             var recap = {
-                "taxe_group": 0,
+                "taxe_group": '',
                 "total": 0,
                 "imposable": 0,
                 "impot": 0,
@@ -412,7 +418,7 @@ let bilan = {
 			// Ajout à la liste des recaps
 			recaps.push(recap);
 		}
-        console.log(recaps);
+        // console.log(recaps);
 
         // Mis à jour du tableau d'affichage
         bilan.updateBilanMontantTable(recapdgi, recaps, tableSelector, typeFacture, url);
@@ -489,7 +495,7 @@ $(document).ready(function () {
                 e.preventDefault();
                 $(".dropdown-menu-end").css("position", position);
             });
-            console.log(count + ' column(s) are hidden');
+            // console.log(count + ' column(s) are hidden');
         });
     });
 });
@@ -522,7 +528,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // statsPayload.fin = filtreForm.find("input#date-fin").val();
             statsPayload.debut = (debut.toISOString()).slice(0, 19);
             statsPayload.fin = (fin.toISOString()).slice(0, 19);
-            console.log(statsPayload);
+            // console.log(statsPayload);
             // Réchargement des tableaux de liste des factures
             url_list = URL_LIST_FV_CONFIRMED_DATE;
             bilan.getBilanMontant(url_list, "#bilan-facture-vente", "fv")
@@ -547,7 +553,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // statsPayload.fin = filtreForm.find("input#date-fin").val();
             statsPayload.debut = (debut.toISOString()).slice(0, 19);
             statsPayload.fin = (fin.toISOString()).slice(0, 19);
-            console.log(statsPayload);
+            // console.log(statsPayload);
             // Lancement de l'impression du rapport du bilant
             bilan.printBilan();
             return;

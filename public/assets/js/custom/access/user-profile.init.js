@@ -62,7 +62,7 @@ let userProfile = {
         var url = URL_PUT_ITEM.replace("__id__", user.id);
         GlobalScript.request(url.replace("__groupeId__", user.group.id), 'PUT', data).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             if (userForm.find("input#photo").val()) userProfile.submitFormDataPhoto(data);
             else {
                 userProfile.resetAuthUser();
@@ -77,7 +77,7 @@ let userProfile = {
         var data = userProfile.passwordDataFormat()
         GlobalScript.request(URL_PUT_USER_PASSWORD_RESET.replace("__id__", JSON.parse(data).id), 'PUT', data).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             userProfile.saSuccesPasswordReset("Succès !", "Modification effectuée avec succès. Vous allez être déconnecté !")
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
@@ -94,7 +94,7 @@ let userProfile = {
         formData.append("url", URL_PUT_USER_PHOTO.replace("__id__", user.id));
         GlobalScript.requestFile(formData).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             userProfile.saSuccesEditUser("Succès !", "Modification effectuée avec succès.")
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
@@ -104,7 +104,7 @@ let userProfile = {
     resetAuthUser: function() {
         GlobalScript.requestLocal(URL_RESET_AUTH_USER, 'POST', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             userProfile.saSuccesEditUser("Succès !", "Modification effectuée avec succès.")
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
@@ -144,11 +144,11 @@ let userProfile = {
         var data = userProfile.dataFormat();
         // Vérification du changement dans le formulaire
         if (GlobalScript.traceUserProfileAndParamsFormChange(JSON.parse(data).id)) return;
-        console.log(data);
+        // console.log(data);
         if (data) {
             $.each(JSON.parse(data), function(key, value) {
                 if (!value && !($.inArray(key, ['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'defaultPassword', 'photo', 'telephone', 'phone', 'email', 'layout', "sa", "admin"]) > -1)) {
-                    console.log(key)
+                    // console.log(key)
                     userProfile.saError("Erreur !", "L'enregistrement ne peut aboutir pour manque d'informations. Veuillez bien renseigner votre nom, prénom et identifiant !")
                     save = false;
                     return save;
@@ -163,11 +163,11 @@ let userProfile = {
         event.preventDefault();
         // Vérification des infos importantes
         var data = userProfile.passwordDataFormat()
-        console.log(data);
+        // console.log(data);
         if (data) {
             $.each(JSON.parse(data), function(key, value) {
                 if (!value) {
-                    console.log(key)
+                    // console.log(key)
                     userProfile.saError("Erreur !", "La modification ne peut aboutir. Veuillez bien remplir le formulaire du mot de passe !")
                     save = false;
                     return save;

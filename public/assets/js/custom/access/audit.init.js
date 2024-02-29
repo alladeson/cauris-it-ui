@@ -128,10 +128,10 @@ let audit = {
     showItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__auditId__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             audit.setDetailsFactureRecapTable(data);
             $(".show-item-modal").modal('show')
 
@@ -180,7 +180,7 @@ $(document).ready(function() {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);
         });
-        console.log(count + ' column(s) are hidden');
+        // console.log(count + ' column(s) are hidden');
     });
 });
 document.addEventListener("DOMContentLoaded", function() {
@@ -221,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function() {
             auditPayload.fin = null;
             auditPayload.desc = GlobalScript.checkBlank(filtreForm.find("#operation").val());
             auditPayload.userId = GlobalScript.checkBlank(filtreForm.find("#user").val());
-            console.log(auditPayload);
+            // console.log(auditPayload);
             // Réchargement du tableau de liste de la facture
             datatable.ajax.reload();
             return;
@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 auditPayload.fin = (fin.toISOString()).slice(0, 19);
                 auditPayload.desc = GlobalScript.checkBlank(filtreForm.find("#operation").val());
                 auditPayload.userId = GlobalScript.checkBlank(filtreForm.find("#user").val());
-                console.log(auditPayload);
+                // console.log(auditPayload);
                 // Réchargement du tableau de liste de la facture
                 datatable.ajax.reload();
                 return;
