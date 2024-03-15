@@ -127,7 +127,7 @@
 									<div class="col-sm-6">
 										<div class="mb-3 position-relative">
 											<label class="form-label font-size-13 text-muted" for="remise_prix_u">Prix Unitaire Originale</label>
-											<input onchange="facturation.setRemiseFormOnPricesChange(event)" type="number" step="0.001" min="0" class="form-control" id="remise_prix_u" name="remise_prix_u" placeholder="" value="">
+											<input onchange="facturation.setRemiseFormOnTauxChange(event)" type="number" step="0.001" min="0" class="form-control" id="remise_prix_u" name="remise_prix_u" placeholder="" value="">
 										</div>
 									</div>
 									<div class="col-12">
@@ -138,8 +138,8 @@
 									</div>
 								</div>
 							</div>
+							<!-- End Remise -->
 						</div>
-						<!-- End Remise -->
 						<div class="modal-footer d-flex justify-content-center">
 							<button type="submit" class="btn btn-outline-info waves-effect waves-light">Ajouter</button>
 							<button type="reset" class="btn btn-outline-danger waves-effect waves-light btn-sm">Annuler</button>
@@ -162,19 +162,19 @@
 			<div
 				class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
 				{# <div>
-																																																																																																													<ul class="nav nav-pills">
-																																																																																																														<li class="nav-item">
-																																																																																																															<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
-																																																																																																																<i class="bx bx-list-ul"></i>
-																																																																																																															</a>
-																																																																																																														</li>
-																																																																																																														<li class="nav-item">
-																																																																																																															<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
-																																																																																																																<i class="bx bx-grid-alt"></i>
-																																																																																																															</a>
-																																																																																																														</li>
-																																																																																																													</ul>
-																																																																																																												</div> #}
+					<ul class="nav nav-pills">
+						<li class="nav-item">
+							<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
+								<i class="bx bx-list-ul"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
+								<i class="bx bx-grid-alt"></i>
+							</a>
+						</li>
+					</ul>
+				</div> #}
 				<div>
 					<a href="javascript:void(0);" class="btn btn-outline-success waves-effect waves-light validate-facture">
 						<i class="bx bx-list-check me-1"></i>
@@ -182,21 +182,21 @@
 				</div>
 
 				{# <div class="dropdown">
-																																																																																																													<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-																																																																																																														<i class="bx bx-dots-horizontal-rounded"></i>
-																																																																																																													</a>
-																																																																																																													<ul class="dropdown-menu dropdown-menu-end">
-																																																																																																														<li>
-																																																																																																															<a class="dropdown-item" href="javascript:void(0);">Actualiser</a>
-																																																																																																														</li>
-																																																																																																														<li>
-																																																																																																															<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
-																																																																																																														</li>
-																																																																																																														<li>
-																																																																																																															<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
-																																																																																																														</li>
-																																																																																																													</ul>
-																																																																																																												</div> #}
+					<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bx bx-dots-horizontal-rounded"></i>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Actualiser</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
+						</li>
+					</ul>
+				</div> #}
 			</div>
 
 		</div>
@@ -508,7 +508,7 @@
 
 	{# client new form #}
 	<div class="modal fade client-new-modal" id="client-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		{% include "stock/__client_form.html.twig" %}
+		{% include "facture/__client_form.html.twig" %}
 	</div>
 	<!-- /.modal -->
 

@@ -7,6 +7,24 @@
 
 {% block page_content %}
 
+	{# Filtre #}
+	<div class="mt-2">
+		<h5 class="font-size-14 mb-2">
+			<i class="mdi mdi-arrow-right text-primary me-1"></i>
+			Filtre : </h5>
+
+		<form class="row gx-3 gy-2 align-items-center filtre-form">
+			<div class="row mt-3">
+				<div class="col-lg-4 col-md-5 col-sm-4 mb-sm-0 mb-2">
+					<label for="filtre-article" class="form-label font-size-13 text-muted">Article</label>
+					<select onchange="approvisionnement.reloadDatatable(event)" class="form-control form-select" data-trigger name="filtre-article" id="filtre-article" placeholder=""></select>
+				</div>
+			</div>
+		</form>
+	</div>
+	<br>
+	{# End Filtre #}
+
 	<div class="row align-items-center">
 		<div class="col-md-6 col-5">
 			<div class="mb-3">
@@ -71,13 +89,15 @@
 							<label class="form-check-label" for="checkAll"></label>
 						</div>
 					</th>
-					<th>Référence Article/Produit</th>
+					<th>Réf. Article</th>
 					<th>Désignation</th>
-					<th>Quantité</th>
-					<th>Taxe</th>
 					<th>Prix HT</th>
-					<th>montant HT</th>
-					<th>montant TTC</th>
+					<th>Qte</th>
+					<th>Remise</th>
+					<th>Taxe</th>
+					<th>Mtn HT</th>
+					{#<th>Mtn TTC</th>#}
+					<th>Statut</th>
 					<th style="width: 80px; min-width: 80px;">Action</th>
 				</tr>
 			</thead>
@@ -89,117 +109,126 @@
 	<!-- end table responsive -->
 
 	<div class="modal fade add-new-modal" id="add-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<form method="post" class="" onsubmit="approvisionnement.submitFormData(event)" >
-					<div class="modal-header">
-						<h5 class="modal-title">Nouvel ajout</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						{# <div class="row">
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="reference">Référence</label>
-									<input type="text" class="form-control" id="reference" name="reference" placeholder="Référence de la chambre" value="" required>
-									<div class="valid-tooltip">
-										Parfait !
-									</div>
-								</div>
-							</div>														
-						</div> #}
-						<div class="row">						
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="libelle">Libellé</label>
-									<div class="input-group">
-										{# <span class="input-group-text" id="libellePrepend"><i class="mdi mdi-money"></i></span> #}
-										<input type="hidden" id="item-id" name="item-id" value="">
-										<input type="text" id="libelle" name="libelle" class="form-control" placeholder="Type de chambre" aria-describedby="libellePrepend" required>
-										{# <div class="invalid-tooltip">
-											Please choose a unique and valid username.
-										</div> #}
-									</div>
-								</div>
-							</div>							
-						</div>
-						<div class="row">						
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="montant">Montant</label>
-									<div class="input-group">
-										<span class="input-group-text" id="montantPrepend"><i class="mdi mdi-money"></i></span>
-										<input type="number" id="montant" name="montant" class="form-control" placeholder="Montant des chambres" aria-describedby="montantPrepend" required>
-										{# <div class="invalid-tooltip">
-											Please choose a unique and valid username.
-										</div> #}
-									</div>
-								</div>
-							</div>							
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
-						{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
-						<button type="submit" class="btn btn-primary">Enregistrer</button>
-					</div>
-				</form>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
+		{% include "stock/__approvisionnement_form.html.twig" %}
 	</div>
-	<!-- /.modal -->
 
 	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-dialog modal-dialog-centered modal-xl">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Affichage</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div class="table-responsive">
-                        <table class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
-                            {# <thead>
-                                <tr>
-                                    <th scope="col" style="width: 50%;">
-                                        Sweet Alert Type
-                                    </th>
-                                    <th scope="col" class="text-center">
-                                        Sweet Alert Examples
-                                    </th>
-                                </tr>
-                            </thead> #}
-                            <tbody>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Référence
-                                    </th>
-                                    <td class="text-center td-reference">
-										14
-                                    </td>
-                                </tr>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Libellé
-                                    </th>
-                                    <td class="text-center td-libelle">
-										<a href="#" class="badge badge-soft-primary">VIP</a>
-                                    </td>
-                                </tr>
-								<tr>
-                                    <th scope="row">
-                                        Montant
-                                    </th>
-                                    <td class="text-center td-montant">
-										10.000
-                                    </td>
-                                </tr>                                                      
-                            </tbody>
-                        </table>
-                        <!-- end table -->
-                    </div>
+					<div class="row">
+						<div class="col-lg-6 col-sm-12">
+							<h5 class="font-size-14 mt-2">
+								<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif générale</h5>
+							<div class="table-responsive">
+								<table class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
+									<thead>
+										<tr>
+											<th scope="col" colspan="2"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th scope="row">
+												Réf. Article
+											</th>
+											<td class="text-center td-detail-reference"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Désignation
+											</th>
+											<td class="text-center td-detail-designation"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Quantité
+											</th>
+											<td class="text-center td-detail-quantite"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Taxe
+											</th>
+											<td class="text-center td-detail-taxe"></td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- end table -->
+							</div>
+						</div>
+						<div class="col-lg-6 col-sm-12">
+							<h5 class="font-size-14 mt-lg-2 mt-4">
+								<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif des montants</h5>
+							<div class="table-responsive">
+								<table class="table table-nowrap align-middle justify-content-center mb-0 detail-recap-montant-table">
+									<thead>
+										<tr>
+											<th scope="col" colspan="2" class="text-center"></th>
+										</tr>
+									</thead>
+									<tbody>										
+										<tr>
+											<th scope="row">
+												Prix Unitaire HT
+											</th>
+											<td class="text-center td-detail-prixUnitaire"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Montant Total HT
+											</th>
+											<td class="text-center td-detail-mht"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Montant Total TVA
+											</th>
+											<td class="text-center td-detail-mtva"></td>
+										</tr>										
+										<tr>
+											<th scope="row">
+												Montant Total T.T.C
+											</th>
+											<td class="text-center td-detail-mttc"></td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- end table -->
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<h5 class="font-size-14 mt-4">
+								<i class="mdi mdi-arrow-right text-primary me-1"></i>Remise</h5>
+							<div class="table-responsive">
+								<table class="table table-nowrap align-middle justify-content-center mb-0 ts-remise-show-table">
+									<thead>
+										<tr>
+											<th scope="col" class="text-center">Remise</th>
+											<th scope="col" class="text-center tr-detail-remise">Taux</th>
+											<th scope="col" class="text-center tr-detail-remise">Prix originale</th>
+											<th scope="col" class="text-center tr-detail-remise">Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="text-center td-detail-remise"></td>
+											<td class="text-center td-detail-remise-taux tr-detail-remise"></td>
+											<td class="text-center td-detail-remise-prix-u tr-detail-remise"></td>
+											<td class="text-center td-detail-remise-description tr-detail-remise"></td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- end table -->
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="modal-footer d-flex justify-content-center">
 					<button type="button" class="btn btn-info" data-bs-dismiss="modal">Fermer</button>
@@ -211,9 +240,57 @@
 	</div>
 	<!-- /.modal -->
 
+	<div class="modal fade validation-modal" id="validation-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal">
+			<div class="modal-content">
+				<form method="post" class="" onsubmit="approvisionnement.customMessageOnValidationFormSubmit(event)">
+					<div class="modal-header">
+						<h5 class="modal-title">Validation de la facture</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-lg-12 col-sm-12">
+								<h5 class="font-size-14 mt-2">
+									<i class="mdi mdi-arrow-right text-primary me-1"></i>Formulaire de validation</h5>
+								
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="mb-3 position-relative">
+											<label class="form-label font-size-13 text-muted" for="reference-facture">Référence de la facture</label>
+											<input type="text" class="form-control" id="reference-facture" name="reference-facture" placeholder="Référence de la facture de l'approvisionnement" value="" required>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer d-flex justify-content-center">
+						<button type="reset" class="btn btn-light btn-sm" data-bs-dismiss="modal">Annuler</button>
+						<button type="submit" class="btn btn-primary">Valider</button>
+					</div>
+				</form>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
 {% endblock %}
 
 {% block page_custom_scripts %}
+	<script>
+		const URL_LIST_ITEM_PAR_ARTICLE = "{{ url_list_item_per_article }}";
+		const URL_PUT_ITEM_VALIDER = "{{ url_put_item_valider }}";
+		<!-- Foreign Data -->
+		const URL_LIST_ARTICLE = "{{ url_list_article }}";
+		const URL_GET_ARTICLE = "{{ url_get_article }}";
+		const URL_POST_ARTICLE = "{{ url_post_article }}";
+		const URL_PUT_ARTICLE = "{{ url_put_article }}";
+		const URL_LIST_TAXE = "{{ url_list_taxe }}";
+		const URL_GET_TAXE = "{{ url_get_taxe }}";
+	</script>
 	<!-- init js -->
 	<script src="{{ asset('assets/js/custom/stock/approvisionnement.init.js') }}"></script>
 {% endblock %}

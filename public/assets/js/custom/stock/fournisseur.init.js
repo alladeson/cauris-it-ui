@@ -1,8 +1,6 @@
 let datatable;
-let choices = [];
-let categories = [];
-let taxes = [];
-let article = {
+let choices;
+let fournisseur = {
         listInitalizer: function() {
                 // $(".datatable").DataTable({ responsive: !1 }),
                 datatable = $(".datatable").DataTable({
@@ -22,11 +20,11 @@ let article = {
                                 "dataSrc": "",
                                 error: function(xhr, status, error) {
                                     (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
-                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des articles");
+                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des fournisseurs");
                                     $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
                                 }
                             },
-                            // "ajax": "/assets/js/custom/data/article.txt",
+                            // "ajax": "/assets/js/custom/data/categorie-article.txt",
                             columns: [{
                                         data: 'id',
                                         "class": "",
@@ -35,40 +33,54 @@ let article = {
                                         "render": function(data, type, row, meta) {
                                             return `` +
                                                 `<div class="form-check font-size-16">` +
-                                                `<input type="checkbox" class="form-check-input" id="articlecheck${data}">` +
-                                                `<label class="form-check-label" for="articlecheck${data}"></label>` +
+                                                `<input type="checkbox" class="form-check-input" id="fournisseurcheck${data}">` +
+                                                `<label class="form-check-label" for="fournisseurcheck${data}"></label>` +
                                                 `</div>`;
                                         }
                                     },
-                                    { data: 'reference' },
+                                    { data: 'id' },
                                     {
-                                        data: 'categorie',
-                                        "render": function(data, type, row, meta) {
-                                            return data.libelle;
-                                        }
-                                    },
-                                    { data: 'designation' },
-                                    {
-                                        data: 'prix',
-                                        render: function(data, type, row, meta) {
-                                            return data + " fcfa";
-                                        }
-                                    },
-                                    {
-                                        data: 'taxe',
-                                        "render": function(data, type, row, meta) {
-                                            return data.string;
-                                        }
-                                    },
-                                    {
-                                        data: 'taxeSpecifique',
+                                        data: 'name',
                                         render: function(data, type, row, meta) {
                                             return data ? data : "-";
                                         }
                                     },
-                                    { data: 'stock' },
-                                    { data: 'stockSecurite' },
-                                    // { data: 'montant' },
+                                    {
+                                        data: 'ifu',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'rcm',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'telephone',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'email',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'address',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'ville',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
                                     {
                                         "data": "id",
                                         "class": "",
@@ -100,22 +112,6 @@ let article = {
             }),
             $(".dataTables_length select").addClass("form-select form-select-sm");
     },
-    choicesJsInit: function() {
-        var e = document.querySelectorAll("[data-trigger]");
-        for (i = 0; i < e.length; ++i) {
-            var a = e[i];
-            choices[i] = new Choices(a, {
-                loadingText: 'Chargement...',
-                noResultsText: 'Aucun résultat trouvé',
-                noChoicesText: 'Pas de choix à effectuer',
-                itemSelectText: 'Appuyez pour sélectionner',
-                position: "bottom",
-                removeItemButton: true,
-                duplicateItemsAllowed: !1,
-                shouldSort: false,
-            });
-        }
-    },
     saSucces: function(title, text) {
         Swal.fire({
             title: title,
@@ -145,9 +141,9 @@ let article = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                article.saSucces(oktitle, oktext) :
+                fournisseur.saSucces(oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                article.saError(notitle, notext);
+                fournisseur.saError(notitle, notext);
         });
     },
     saRemoveParams: function(el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
@@ -163,31 +159,26 @@ let article = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                article.removeItem(el, oktitle, oktext) :
+                fournisseur.removeItem(el, oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                article.saError(notitle, notext);
+                fournisseur.saError(notitle, notext);
         });
     },
     submitFormData: function(event) {
         event.preventDefault();
         var form = $("div.add-new-modal").find('form');
-        var data = article.dataFormat(form)
+        var data = fournisseur.dataFormat(form)
         let dataId = form.find("#item-id").val();
         if(GlobalScript.traceFormChange(dataId)) return;
         // console.log(data)
-        var categorieId = form.find("#categorie").val();
-        var taxeId = form.find("#taxe").val();
-        var obj = { '__id__': dataId, '__cId__': categorieId, '__tId__': taxeId }
-        var submitUrl = dataId ? GlobalScript.textMultipleReplace(URL_PUT_ITEM, obj) : GlobalScript.textMultipleReplace(URL_POST_ITEM, obj);
-        GlobalScript.request(submitUrl, (dataId ? 'PUT' : 'POST'), data).then(function(data) {
+        GlobalScript.request((dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM), (dataId ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
             // console.log(data)
             datatable.ajax.reload();
-            // article.saSucces("Succès !", "Enregistrement effectué avec succès.")
+            // fournisseur.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
             if (dataId) $("div.add-new-modal").modal('hide')
-                // form[0].reset()
-            article.resetFormData(form);
+            form[0].reset()
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
@@ -201,7 +192,7 @@ let article = {
             // Run this when your request was successful
             // console.log(data)
             var itemObj = data;
-            article.setShowingTable(itemObj);
+            fournisseur.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
 
         }).catch(function(err) {
@@ -219,11 +210,9 @@ let article = {
             // console.log(data)
             var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
-            article.setformData($("div.add-new-modal").find('form'), itemObj);
-            GlobalScript.getForeignsData(URL_LIST_CATEGORIE_ARTICLE, ['catégories', 'id', 'libelle'], 0, itemObj.categorie.id);
-            GlobalScript.getForeignsData(URL_LIST_TAXE, ['taxes', 'id', 'string'], 1, itemObj.taxe.id);
+            fournisseur.setformData($("div.add-new-modal").find('form'), itemObj);
             $(".add-new-modal").modal('show');
-            GlobalScript.formChange($("div.add-new-modal").find('form'));
+            GlobalScript.formChange($("div.add-new-modal").find('form'));  
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "la modification");
@@ -236,7 +225,7 @@ let article = {
         GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
             // console.log(data)
-                // article.saSucces(oktitle, oktext);
+                // fournisseur.saSucces(oktitle, oktext);
             alertify.success(oktext)
             datatable.ajax.reload();
         }).catch(function(err) {
@@ -247,33 +236,30 @@ let article = {
     setformData: function(form, item) {
         if (form.length) {
             form.find("#item-id").val(item.id)
-            form.find("#reference").val(item.reference)
-            form.find("#designation").val(item.designation)
-            form.find("#prix").val(item.prix)
-            form.find("#taxe-specifique").val(item.taxeSpecifique)
-            form.find("#ts-name").val(item.tsName);
-            // Gestion du nom de la taxe
-            article.setTsName(form.find("#taxe-specifique"));
-            //
-            form.find("#stock").val(item.stock)
-            form.find("#stock-securite").val(item.stockSecurite)
+            form.find("#name").val(item.name)
+            form.find("#ifu").val(item.ifu)
+            form.find("#rcm").val(item.rcm)
+            form.find("#telephone").val(item.telephone)
+            form.find("#email").val(item.email)
+            form.find("#address").val(item.address)
+            form.find("#ville").val(item.ville)
         }
     },
     dataFormat: function(form) {
         if (form.length) {
             data = {
                 'id': GlobalScript.checkBlank(form.find("#item-id").val()),
-                'reference': GlobalScript.checkBlank(form.find("#reference").val()),
-                'designation': GlobalScript.checkBlank(form.find("#designation").val()),
-                'prix': GlobalScript.checkBlank(form.find("#prix").val()),
-                'taxeSpecifique': GlobalScript.checkBlank(form.find("#taxe-specifique").val()),
-                'tsName': GlobalScript.checkBlank(form.find("#ts-name").val()),
-                'stock': GlobalScript.checkBlank(form.find("#stock").val()),
-                'stockSecurite': GlobalScript.checkBlank(form.find("#stock-securite").val()),
+                'name': GlobalScript.checkBlank(form.find("#name").val()),
+                'ifu': GlobalScript.checkBlank(form.find("#ifu").val()),
+                'rcm': GlobalScript.checkBlank(form.find("#rcm").val()),
+                'telephone': GlobalScript.checkBlank(form.find("#telephone").val()),
+                'email': GlobalScript.checkBlank(form.find("#email").val()),
+                'address': GlobalScript.checkBlank(form.find("#address").val()),
+                'ville': GlobalScript.checkBlank(form.find("#ville").val()),
             };
             return JSON.stringify(data);
         }
-        return null;
+        return "";
     },
     newItemEvent: function(event) {
         event.preventDefault();
@@ -281,8 +267,6 @@ let article = {
         var form = $("div.add-new-modal").find('form');
         form[0].reset();
         form.find("#item-id").val("");
-        GlobalScript.getForeignsData(URL_LIST_CATEGORIE_ARTICLE, ['catégories', 'id', 'libelle'], 0, null);
-        GlobalScript.getForeignsData(URL_LIST_TAXE, ['taxes', 'id', 'string'], 1, null);
     },
     reloadDatatable: function(event) {
         event.preventDefault();
@@ -290,62 +274,36 @@ let article = {
     },
     setShowingTable: function(itemObj) {
         var $showClasseTable = $('table.item-show-table');
-        $showClasseTable.find('.td-reference').text(itemObj.reference);
-        $showClasseTable.find('.td-categorie').text(itemObj.categorie.libelle);
-        $showClasseTable.find('.td-designation').text(itemObj.designation);
-        $showClasseTable.find('.td-prix').text(itemObj.prix);
-        $showClasseTable.find('.td-taxe').text(itemObj.taxe.string);
-        $showClasseTable.find('.td-ts').text(itemObj.taxeSpecifique ? itemObj.taxeSpecifique : "-");
-        $showClasseTable.find('.td-stock').text(itemObj.stock);
-        $showClasseTable.find('.td-stock-securite').text(itemObj.stockSecurite);
+        $showClasseTable.find('.td-reference').text(itemObj.id);
+        $showClasseTable.find('.td-name').text(itemObj.name ? itemObj.name : "-");
+        $showClasseTable.find('.td-ifu').text(itemObj.ifu ? itemObj.ifu : "-");
+        $showClasseTable.find('.td-rcm').text(itemObj.rcm ? itemObj.rcm : "-");
+        $showClasseTable.find('.td-telephone').text(itemObj.telephone ? itemObj.telephone : "-");
+        $showClasseTable.find('.td-email').text(itemObj.email ? itemObj.email : "-");
+        $showClasseTable.find('.td-address').text(itemObj.address ? itemObj.address : "-");
+        $showClasseTable.find('.td-ville').text(itemObj.ville ? itemObj.ville : "-");
     },
-    /**
-     * Réinitialiser le formulaire après un ajout, ceci permet à l'utilisateur de faire plusieurs ajout sans fermer le formulaire
-     * @param {Object} form Le formulaire d'ajout d'un article
-     */
-    resetFormData: function(form) {
-        form.find("#item-id").val("")
-        form.find("#reference").val("")
-        form.find("#designation").val("")
-        form.find("#prix").val("")
-        form.find("#taxe-specifique").val("")
-        form.find("#stock").val("")
-        form.find("#stock-securite").val("")
-    },
-    setTsName: function(tsElement) {
-        if (tsElement.val()) {
-            $("div.ts-name").show();
-            if (!$("input#ts-name").val())
-                $("input#ts-name").val("Taxe spécifique");
-            $("input#ts-name").attr("required", "required");
-        } else {
-            $("div.ts-name").hide();
-            $("input#ts-name").val(null);
-            $("input#ts-name").removeAttr("required");
-        }
-    }
 };
 $(document).ready(function() {
-    article.listInitalizer();
-    article.choicesJsInit();
+    fournisseur.listInitalizer();
     // Edit record
     datatable.on('click', '.edit-item', function(e) {
         e.preventDefault();
         formChange = false;
-        article.editItem($(this));
+        fournisseur.editItem($(this));
     });
 
     // Delete a record
     datatable.on('click', '.remove-item', function(e) {
         e.preventDefault();
-        // article.removeItem($(this));
-        article.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cet article ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Article supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+        // fournisseur.removeItem($(this));
+        fournisseur.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce fournisseur ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Fournisseur supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
     });
 
     //Show record
     datatable.on('click', '.show-item', function(e) {
         e.preventDefault();
-        article.showItem($(this));
+        fournisseur.showItem($(this));
     });
 
     //Show Action
@@ -361,11 +319,10 @@ $(document).ready(function() {
         });
         // console.log(count + ' column(s) are hidden');
     });
-});
-document.addEventListener("DOMContentLoaded", function() {
-    // GEstion de la taxe spécifique de l'article 
-    $("input#taxe-specifique").keyup(function(event) {
-        event.preventDefault();
-        article.setTsName($(this));
-    })
+
+    // Input mask pour l'ifu du fournisseur
+    $("div.add-new-modal").find('form').find("#ifu").inputmask({
+        mask: "*************",
+        casing: "upper",
+    });
 });

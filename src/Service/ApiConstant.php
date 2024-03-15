@@ -65,15 +65,28 @@ class ApiConstant
     public const URL_PUT_ARTICLE = "stock/article/__id__/categorie-article/__cId__/taxe/__tId__";
     public const URL_GET_ARTICLE = "stock/article/__id__";
     public const URL_DELETE_ARTICLE = "stock/article/__id__";
+    // Les fournisseurs
+    public const URL_LIST_FOURNISSEUR = "stock/fournisseur";
+    public const URL_POST_FOURNISSEUR = "stock/fournisseur";
+    public const URL_PUT_FOURNISSEUR = "stock/fournisseur/__id__";
+    public const URL_GET_FOURNISSEUR = "stock/fournisseur/__id__";
+    public const URL_DELETE_FOURNISSEUR = "stock/fournisseur/__id__";
+    // Les approvisionnements
+    public const URL_LIST_APPROVISIONNEMENT = "stock/approvisionnement";
+    public const URL_LIST_APPROVISIONNEMENT_PAR_ARTICLE = "stock/approvisionnement/article/__artId__";
+    public const URL_POST_APPROVISIONNEMENT = "stock/approvisionnement/article/__artId__";
+    public const URL_PUT_APPROVISIONNEMENT = "stock/approvisionnement/__id__/article/__artId__";
+    public const URL_PUT_APPROVISIONNEMENT_VALIDER = "stock/approvisionnement/__id__/valider";
+    public const URL_GET_APPROVISIONNEMENT = "stock/approvisionnement/__id__";
+    public const URL_DELETE_APPROVISIONNEMENT = "stock/approvisionnement/__id__";
 
+    /*** Module Caisse ***/
     //Les clients
     public const URL_LIST_CLIENT = "stock/client";
     public const URL_POST_CLIENT = "stock/client";
     public const URL_PUT_CLIENT = "stock/client/__id__";
     public const URL_GET_CLIENT = "stock/client/__id__";
     public const URL_DELETE_CLIENT = "stock/client/__id__";
-
-    /*** Module Caisse ***/
     // Facturation et liste des factures
     public const URL_LIST_FACTURE = "factures";
     public const URL_LIST_FACTURE_BY_TYPE = "factures/type/__typeId__";
@@ -158,6 +171,9 @@ class ApiConstant
 	public const gestStock = 10000;
 	public const gestStockCategorie = 11000;
 	public const gestStockArticle = 12000;
+	public const gestStockApprovisionnement = 13000;
+	public const gestStockFournisseur = 14000;
+	public const gestStockCmdFournisseur = 15000;
 	// Emission des factures
 	public const facturation = 20000;
 	public const facturationFV = 21000;
