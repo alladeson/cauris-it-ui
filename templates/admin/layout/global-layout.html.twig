@@ -84,6 +84,15 @@
 				active: sidebar_code[1] == "FNS" ? true : false,
 				children: [],
 			},
+			{
+				readable: menu_readable(gestStockCmdFournisseur),
+				id: "gstk-cmd-fournisseur-index",
+				pathName: "gstk_cmd_fournisseur_index",
+				title: "Ordre d'achat",
+				dataKey: "t-cmd-fournisseur-index",
+				active: sidebar_code[1] == "CMDF" ? true : false,
+				children: [],
+			},
 			
 		],
 	},
@@ -351,5 +360,7 @@
 		{% if authUser.sa %}
 			user_sa = true;
 		{% endif %}
+		// URL global upadate commande fournisseur
+		const URL_GLOBAL_UPDATE_CMD_FOURNISSEUR = "{{ path('gstk_cmd_fournisseur_update', {id: '__id__'}) }}";
 	</script>
 {% endblock %}

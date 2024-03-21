@@ -108,9 +108,9 @@ let approvisionnement = {
             $(".dataTables_length select").addClass("form-select form-select-sm");
     },
     choicesJsInit: function() {
-        var e = document.querySelectorAll("[data-trigger]");
+        let e = document.querySelectorAll("[data-trigger]");
         for (i = 0; i < e.length; ++i) {
-            var a = e[i];
+            let a = e[i];
             choices[i] = new Choices(a, {
                 loadingText: 'Chargement...',
                 noResultsText: 'Aucun résultat trouvé',
@@ -196,15 +196,15 @@ let approvisionnement = {
     },
     submitFormData: function(event) {
         event.preventDefault();
-        var form = $("div.add-new-modal").find('form');
-        var data = approvisionnement.dataFormat(form)
+        let form = $("div.add-new-modal").find('form');
+        let data = approvisionnement.dataFormat(form)
         let dataId = form.find("#item-id").val();
         if(GlobalScript.traceFormChange(dataId)) return;
         // Récupération de l'article
-        var articleId = form.find("#article").val();
-        var obj = { '__id__': dataId, '__artId__': articleId }
+        let articleId = form.find("#article").val();
+        let obj = { '__id__': dataId, '__artId__': articleId }
         // Formatage de URL de création et/ou de mise à jour
-        var submitUrl = dataId ? GlobalScript.textMultipleReplace(URL_PUT_ITEM, obj) : GlobalScript.textMultipleReplace(URL_POST_ITEM, obj);
+        let submitUrl = dataId ? GlobalScript.textMultipleReplace(URL_PUT_ITEM, obj) : GlobalScript.textMultipleReplace(URL_POST_ITEM, obj);
         GlobalScript.request(submitUrl, (dataId ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
             datatable.ajax.reload();
@@ -225,7 +225,7 @@ let approvisionnement = {
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
             console.log(data)
-            var itemObj = data;
+            let itemObj = data;
             approvisionnement.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
 
@@ -239,11 +239,11 @@ let approvisionnement = {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         //// console.log(id);
-        //var response = GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
+        //let response = GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
             // console.log(data)
-            var itemObj = data;
+            let itemObj = data;
             // Mise à jour de l'item
             approvisionnementItem = data;
             //
@@ -292,7 +292,7 @@ let approvisionnement = {
     },
     dataFormat: function(form) {
         if (form.length) {
-            var remise = form.find("#remise-check").is(":checked");
+            let remise = form.find("#remise-check").is(":checked");
             data = {
                 'id': GlobalScript.checkBlank(form.find("#item-id").val()),
                 'quantite': GlobalScript.checkBlank(form.find("#quantite").val()),
@@ -313,7 +313,7 @@ let approvisionnement = {
         approvisionnementItem = null;
         //
         $("div.add-new-modal").find('h5.modal-title').text('Nouvel ajout');
-        var form = $("div.add-new-modal").find('form');
+        let form = $("div.add-new-modal").find('form');
         form[0].reset();
         //Gestion des champs de remise
         approvisionnement.remiseInputsToggle();
@@ -340,7 +340,7 @@ let approvisionnement = {
         datatable.ajax.reload();
     },
     setShowingTable: function(itemObj) {
-        var $showClasseTable = $("table.item-show-table");
+        let $showClasseTable = $("table.item-show-table");
         //Affichage générale
         $showClasseTable.find(".td-detail-reference").text(itemObj.article.reference);
         $showClasseTable
@@ -350,34 +350,42 @@ let approvisionnement = {
         $showClasseTable.find(".td-detail-taxe").text(itemObj.taxe.string);
 
          // Affichage des montants
-         var $detailRecpMontantTable = $("table.detail-recap-montant-table");
+         let $detailRecpMontantTable = $("table.detail-recap-montant-table");
          $detailRecpMontantTable
              .find(".td-detail-prixUnitaire")
              .text(itemObj.prixUht);
          $detailRecpMontantTable
              .find(".td-detail-mht")
-             .text(itemObj.montantHt ? itemObj.montantHt : "-");
+             .text(itemObj.montantHt ? itemObj.montantHt : "0");
          $detailRecpMontantTable
              .find(".td-detail-mtva")
-             .text(itemObj.montantTva ? itemObj.montantTva : "-");
+             .text(itemObj.montantTva ? itemObj.montantTva : "0");
          $detailRecpMontantTable
              .find(".td-detail-mttc")
-             .text(itemObj.montantTtc ? itemObj.montantTtc : "-");
+             .text(itemObj.montantTtc ? itemObj.montantTtc : "0");
 
         // Affichage taxe spécifique et remise
-        var $tsRemmiseShowTable = $("table.ts-remise-show-table");
-        $tsRemmiseShowTable.find(".td-detail-remise").text(itemObj.remise ? "Oui" : "Non");
-        $tsRemmiseShowTable.find(".td-detail-remise-taux").text(itemObj.remise ? itemObj.discount.taux + "%" : "-");
-        $tsRemmiseShowTable.find(".td-detail-remise-prix-u").text(itemObj.remise ? itemObj.discount.originalPrice : "-");
-        $tsRemmiseShowTable.find(".td-detail-remise-description").text(itemObj.remise ? itemObj.discount.priceModification : "-");
-        if (!itemObj.remise) $tsRemmiseShowTable.find(".tr-detail-remise").hide();
+        let $tsRemmiseShowTable = $("table.ts-remise-show-table");
+        let remiseFalseText = $("#remise-false-text");
+        if(itemObj.remise) {
+            remiseFalseText.hide();
+            $tsRemmiseShowTable.show();
+            $tsRemmiseShowTable.find(".td-detail-remise").text(itemObj.remise ? "Oui" : "Non");
+            $tsRemmiseShowTable.find(".td-detail-remise-taux").text(itemObj.remise ? itemObj.discount.taux + "%" : "-");
+            $tsRemmiseShowTable.find(".td-detail-remise-prix-u").text(itemObj.remise ? itemObj.discount.originalPrice : "-");
+            $tsRemmiseShowTable.find(".td-detail-remise-description").text(itemObj.remise ? itemObj.discount.priceModification : "-");
+        } else {
+            $tsRemmiseShowTable.hide();
+            remiseFalseText.show();
+        }
+        // if (!itemObj.remise) $tsRemmiseShowTable.find(".tr-detail-remise").hide();
 
     },
     validateItem: function (el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
         //
-        var form = $("div.validation-modal").find('form');
+        let form = $("div.validation-modal").find('form');
         form[0].reset();
         form.attr("onsubmit", `approvisionnement.saValidationParams(event, ${id}, "Êtes-vous sûr de vouloir valider cet approvisionnement ?", "Cette opération est irréversible !", "Oui, valider !", "Non, annuller !", "Supprimé !", "Approvisionnement validé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.")`);
         $("div.validation-modal").modal("show")
@@ -456,11 +464,11 @@ let approvisionnement = {
     },
     setRemiseFormOnPricesChange: function (event = null) {
         if (event) event.preventDefault()
-        var remise = approvisionnementForm.find("#remise-check").is(":checked");
+        let remise = approvisionnementForm.find("#remise-check").is(":checked");
         if (remise) {
-            var prixUnitaire = parseInt(approvisionnementForm.find("#prix").val());
-            var prixOriginale = parseInt(approvisionnementForm.find("#remise_prix_u").val());
-            var taux = ((prixOriginale && prixUnitaire) && prixUnitaire < prixOriginale) ? Math.round(((prixOriginale - prixUnitaire) * 100) / prixOriginale) : 0;
+            let prixUnitaire = parseInt(approvisionnementForm.find("#prix").val());
+            let prixOriginale = parseInt(approvisionnementForm.find("#remise_prix_u").val());
+            let taux = ((prixOriginale && prixUnitaire) && prixUnitaire < prixOriginale) ? Math.round(((prixOriginale - prixUnitaire) * 100) / prixOriginale) : 0;
             approvisionnementForm.find("#remise_taux").val(taux);
             approvisionnementForm.find("#remise_description").val("Une remise de " + taux + "%");
         } else {
@@ -469,11 +477,11 @@ let approvisionnement = {
     },
     setRemiseFormOnTauxChange: function (event = null) {
         if (event) event.preventDefault()
-        var remise = approvisionnementForm.find("#remise-check").is(":checked");
+        let remise = approvisionnementForm.find("#remise-check").is(":checked");
         if (remise) {
-            var prixOriginale = parseInt(approvisionnementForm.find("#remise_prix_u").val());
-            var taux = parseInt(approvisionnementForm.find("#remise_taux").val());
-            var prixUnitaire = prixOriginale ? (prixOriginale - Math.round((prixOriginale * taux) / 100)) : 0;
+            let prixOriginale = parseInt(approvisionnementForm.find("#remise_prix_u").val());
+            let taux = parseInt(approvisionnementForm.find("#remise_taux").val());
+            let prixUnitaire = prixOriginale ? (prixOriginale - Math.round((prixOriginale * taux) / 100)) : 0;
             approvisionnementForm.find("#prix").val(prixUnitaire);
             approvisionnementForm.find("#remise_description").val("Une remise de " + taux + "%");
         } else {
@@ -516,10 +524,10 @@ $(document).ready(function() {
     //Show Action
     datatable.on('responsive-resize', function(e, datatable, columns) {
         e.preventDefault();
-        var count = columns.reduce(function(a, b) {
+        let count = columns.reduce(function(a, b) {
             return b === false ? a + 1 : a;
         }, 0);
-        var position = count ? "relative" : "absolute";
+        let position = count ? "relative" : "absolute";
         datatable.on('click', 'button.dropdown-toggle', function(e) {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);

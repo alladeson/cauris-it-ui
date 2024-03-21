@@ -79,6 +79,20 @@ class ApiConstant
     public const URL_PUT_APPROVISIONNEMENT_VALIDER = "stock/approvisionnement/__id__/valider";
     public const URL_GET_APPROVISIONNEMENT = "stock/approvisionnement/__id__";
     public const URL_DELETE_APPROVISIONNEMENT = "stock/approvisionnement/__id__";
+    // CommandeFournisseur et liste des commandes
+    public const URL_LIST_CMD_FOURNISSEUR = "stock/commande-fournisseur";
+    public const URL_LIST_CMD_BY_FOURNISSEUR = "stock/commande-fournisseur/fournisseur/__fId__/list";
+    public const URL_GET_CMD_FOURNISSEUR = "stock/commande-fournisseur/__id__";
+    public const URL_GET_CMD_FOURNISSEUR_BY_NUMERO = "stock/commande-fournisseur/numero/__numero__";
+    public const URL_GET_CMD_BY_FOURNISSEUR = "stock/commande-fournisseur/fournisseur/__fId__";
+    public const URL_GET_DETAIL_CMD_FOURNISSEUR = "stock/commande-fournisseur/__id__/detail/__detailId__";
+    public const URL_POST_CMD_FOURNISSEUR = "stock/commande-fournisseur/fournisseur/__fId__/article/__articleId__";
+    public const URL_DELETE_DETAIL_CMD_FOURNISSEUR = "stock/commande-fournisseur/__id__/detail/__detailId__";
+    public const URL_VALIDER_CMD_FOURNISSEUR = "stock/commande-fournisseur/__id__/valider";
+    public const URL_DELETE_CMD_FOURNISSEUR = "stock/commande-fournisseur/__id__";
+    public const URL_PUT_CMD_FOURNISSEUR_INFOS_ADD = "stock/commande-fournisseur/__id__/infos-additionnelles";    
+    public const URL_PUT_CMD_FOURNISSEUR_EXPEDITION = "stock/commande-fournisseur/__id__/expedition-data";    
+    public const URL_IMPRIMER_CMD_FOURNISSEUR = "stock/commande-fournisseur/__id__/imprimer";
 
     /*** Module Caisse ***/
     //Les clients

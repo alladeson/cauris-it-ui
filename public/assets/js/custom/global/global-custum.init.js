@@ -79,7 +79,7 @@ let GlobalScript = {
         el.waitMe({
             effect: effect,
             text: text,
-            bg: 'rgba(255,255,255,0.7)',
+            bg: 'rgba(255,255,255,0.3)',
             color: '#5156be',
             maxSize: maxSize,
             waitTime: -1,
