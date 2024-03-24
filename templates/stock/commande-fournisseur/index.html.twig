@@ -2,7 +2,7 @@
 
 {% block title %}
 	{{appName}}
-	- Ordre d'achat
+	- Bon de commande
 {% endblock %}
 
 {% block page_content %}
@@ -61,8 +61,8 @@
                                     <th>Date</th>
                                     <th>Fournisseur</th>
                                     <th>Mnt Total</th>
+                                    <th style="width: 150px;">Générer Pdf</th>
                                     <th>Status</th>
-                                    {# <th style="width: 150px;">Télécharger Pdf</th> #}
                                     <th style="width: 90px;">Action</th>
                                 </tr>
                             </thead>
@@ -87,7 +87,10 @@
 		const URL_LIST_ITEM_BY_FOURNISSEUR = "{{ url_list_item_by_fournisseur }}";
 		const URL_LIST_FOURNISSEUR = "{{ url_list_fournisseur }}";
 		const URL_ITEM_DETAIL = "{{ path('gstk_cmd_fournisseur_detail', {id: '0'})|escape('js') }}";
+        const URL_IMPRIMER_CMD_FOURNISSEUR = "{{ url_imprimer_item }}";
 	</script>
 	<!-- init js -->
 	<script src="{{ asset('assets/js/custom/stock/commande-fournisseur/index.init.js') }}"></script>
+    <!-- printer init js -->
+	<script src="{{ asset('assets/js/custom/stock/commande-fournisseur/printer.init.js') }}"></script>
 {% endblock %}

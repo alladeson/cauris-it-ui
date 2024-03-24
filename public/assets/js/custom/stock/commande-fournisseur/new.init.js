@@ -41,7 +41,7 @@ let cmdFournisseur = {
                                 error: function(xhr, status, error) {
                                     (waitMe_zone.length ? waitMe_zone : $("body")).waitMe("hide");
                                     if (xhr.status)
-                                        GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération de l'ordre d'achat");
+                                        GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération du bon de commande");
                                     xhr.status ? $(".datatable")
                                         .find("tbody td")
                                         .html('<span class="text-danger">Echec de chargement</span>') : "";
@@ -314,19 +314,15 @@ let cmdFournisseur = {
             submitUrl = URL_CMD_EXPEDITION_DATA.replace("__id__", commande.id);
             method = "PUT";
         }
-        // Pour les données d'expédition
-        if(sectionFormCmdFournisseur == "infos-generales") {
-            data = cmdFournisseur.dataFormatInfosGenerales(infosGeneralesFormForm);
-            submitUrl = URL_CMD_INFOS_ADD.replace("__id__", commande.id);
-            method = "PUT";
-        }
         // GlobalScript.request((data.id ? (URL_PUT_ITEM.replace("__id__", commande ? commande.id ? commande.id : 0 : 0)).replace("__detailId__", data.id) : URL_POST_ITEM.replace("__fId__", fournisseur ? fournisseur.id : 0)), (data.id ? 'PUT' : 'POST'), data).then(function (data) {
         GlobalScript.request(submitUrl, method, data)
             .then(function (data) {
                 // Run this when your request was successful
                 commande = data;
+                // Mise à jour des sections du forumulaire du bon de commande
+                cmdFournisseur.resetFormSection();
                 // Mise à jour des infos générale de la commande dans le formulaire
-                cmdFournisseur.setInfosGeneralesForm(null);
+                cmdFournisseur.setInfosGeneralesForm(infosGeneralesForm);
                 // Recharge du tableau de liste des détails de la commande
                 datatable.ajax.reload();
                 alertify.success("Ajout effectué avec succès.");
@@ -371,8 +367,8 @@ let cmdFournisseur = {
             .then(function (data) {
                 // Run this when your request was successful
                 commande = data;
-                // Mise à jour des infos générale de la commande dans le formulaire
-                cmdFournisseur.setInfosGeneralesForm(null);
+                // Mise à jour des sections du forumulaire du bon de commande
+                cmdFournisseur.resetFormSection();
                 // Notification de succès
                 alertify.success("Enregistrement effectué avec succès.");                
             })
@@ -401,7 +397,7 @@ let cmdFournisseur = {
                 article = data.article;       
                 //Mise à jour du prix originale de l'article
                 originalPrice = itemObj.remise ? itemObj.discount.originalPrice : itemObj.prixUnitaire;
-                // Mise à jour du formulaire de l'ordre d'achat (ajout d'un article)
+                // Mise à jour du formulaire du bon de commande (ajout d'un article)
                 cmdFournisseur.setformData(cmdFournisseurForm, itemObj);
                 // Écoute de changement dans le formulaire
                 GlobalScript.formChange(cmdFournisseurForm);
@@ -523,27 +519,19 @@ let cmdFournisseur = {
     },
     dataFormatInfosGenerales: function (form) {
         if (form.length) {
+            let dateLivraison = form.find("#date-livraison").val() ? new Date(form.find("#date-livraison").val()) : null;
             data = {
-                referenceExterne: form.find("#reference-externe").val(),
-                notes: form.find("#notes").val(),
-            };
-            return JSON.stringify(data);
-        }
-        return "";
-    },
-    validationDataFormat: function (form) {
-        if (form.length) {
-            let dateCreation = new Date(form.find("#date-livraison").val());
-            data = {
-                dateLivraison: (dateCreation.toISOString()).slice(0, 19),
-                referenceFactureFournisseur: form.find("#reference-facture").val(),
+                referenceExterne: form.find("#reference-externe").val() ? form.find("#reference-externe").val() : null,
+                dateLivraison: dateLivraison ? (dateLivraison.toISOString()).slice(0, 19) : null,
+                referenceFactureFournisseur: form.find("#reference-facture").val() ? form.find("#reference-facture").val() : null,
+                notes: form.find("#notes").val() ? form.find("#notes").val() : null,
             };
             return JSON.stringify(data);
         }
         return "";
     },
     validateCmdFournisseur: function (oktitle, oktext) {
-        let data = cmdFournisseur.validationDataFormat(cmdFournisseurValidationForm);
+        let data = cmdFournisseur.dataFormatInfosGenerales(cmdFournisseurValidationForm);
         // console.log(data);
         GlobalScript.request(
             URL_VALIDER_CMD_FOURNISSEUR.replace(
@@ -556,8 +544,8 @@ let cmdFournisseur = {
             // Run this when your request was successful
             commande = data;
             // // Mise à jour des infos générale de la commande dans le formulaire
-            // cmdFournisseur.setInfosGeneralesForm(null);
-            // Mise à jour des sections du forumulaire del'ordre d'achat
+            // cmdFournisseur.setInfosGeneralesForm(infosGeneralesForm);
+            // Mise à jour des sections du forumulaire du bon de commande
             cmdFournisseur.resetFormSection();
             //
             alertify.success(oktext);
@@ -565,7 +553,7 @@ let cmdFournisseur = {
             $("#validate-commande-modal").modal("toggle");
             // cmdFournisseur.saSuccesCmdFournisseurValider(
             //     "Validée !",
-            //     "Ordre d'achat validé avec succès ! Cliquer sur 'OK' pour générer le pdf de l'ordre d'achat."
+            //     "Bon de commande validé avec succès ! Cliquer sur 'OK' pour générer le pdf du bon de commande."
             // );
             location.href = URL_CMD_FOURNISSEUR_INDEX;
         }).catch(function (err) {
@@ -623,7 +611,7 @@ let cmdFournisseur = {
         cmdFournisseur.getEntity(
             URL_GET_ITEM_BY_FOURNISSEUR.replace("__fId__", fournisseurId ? fournisseurId : 0),
             fournisseurId,
-            "l'ordre d'achat"
+            "le bon de commande"
         );        
     },
     getArticle: function (event = null) {
@@ -682,9 +670,9 @@ let cmdFournisseur = {
                     cmdFournisseur.setFormOnArticleChange();
                 }
 
-                if (dataname == "l'ordre d'achat") {
+                if (dataname == "le bon de commande") {
                     commande = dataJson;
-                    // Mise à jour des sections du forumulaire del'ordre d'achat
+                    // Mise à jour des sections du forumulaire du bon de commande
                     cmdFournisseur.resetFormSection();
                 }
                 return dataJson;
@@ -743,7 +731,7 @@ let cmdFournisseur = {
                 // console.log(data);
                 commande = data;
                 // Mise à jour des infos générale de la commande dans le formulaire
-                cmdFournisseur.setInfosGeneralesForm(null);
+                cmdFournisseur.setInfosGeneralesForm(infosGeneralesForm);
                 //
                 fournisseur = commande.fournisseur;
                 choices[0].setChoiceByValue(fournisseur.id);
@@ -757,7 +745,7 @@ let cmdFournisseur = {
     confirmCmdFournisseurValidation: function (event) {
         event.preventDefault();
         cmdFournisseur.saValidateCmdFournisseurParams(
-            "Êtes-vous sûr de vouloir valider cet ordre d'achat ?",
+            "Êtes-vous sûr de vouloir valider ce bon de commande ?",
             "Cette opération est irréversible !",
             "Oui, valider !",
             "Non, annuller !",
@@ -768,6 +756,9 @@ let cmdFournisseur = {
         );
     },
     setValidatonFormRecapTable: function () {
+        // Mise à jour des champs du formulaire de validation
+        this.setInfosGeneralesForm(cmdFournisseurValidationForm);
+        // Mise à jour du tableau des montants
         let $validationFormRecpaTable = $("table.commande-validation-table");
         $validationFormRecpaTable
             .find(".td-commande-remise")
@@ -825,6 +816,10 @@ let cmdFournisseur = {
             alertify.warning("Veuillez ajouter la référence de la facture du fournisseur !");
             return;
         } 
+        if (!cmdFournisseurValidationForm.find("#notes").val()) {
+            alertify.warning("Veuillez ajouter une note pour le bon de commande !");
+            return;
+        } 
         
         cmdFournisseur.confirmCmdFournisseurValidation(event);
     },
@@ -843,7 +838,7 @@ let cmdFournisseur = {
         // Vérification de l'état de la commande du fournisseur
         if(sectionFormCmdFournisseur != "article" && (!commande?.id || !commande.details.length)) {
             alertify.warning(
-                "Veuillez d'abord ajouter un article à l'ordre d'achat !"
+                "Veuillez d'abord ajouter un article au bon de commande !"
             );
             el = $("div.section-wrapper").find("#articleSectionRadio").prop("checked", true);
             $articleWrapper.removeClass("d-none");
@@ -878,13 +873,30 @@ let cmdFournisseur = {
             infosGeneralesForm.removeClass("d-none");
         }
     },
-    setInfosGeneralesForm: function(event=null) {
+    setInfosGeneralesForm: function(form) {
         if(event) event.preventDefault();
         if(commande.id) {
-            infosGeneralesForm.find("#date-creation").val(commande.dateCreation.slice(0, 19));
-            infosGeneralesForm.find("#reference-externe").val(commande.referenceExterne);
-            infosGeneralesForm.find("#notes").val(commande.notes);
+            form.find("#date-creation").val(cmdFournisseur.dateFormatTolocalString(commande.dateCreation));
+            form.find("#date-livraison").val(commande.dateLivraison ? cmdFournisseur.dateFormatTolocalString(commande.dateLivraison) : "");
+            form.find("#reference-externe").val(commande.referenceExterne);
+            form.find("#reference-facture").val(commande.referenceFactureFournisseur);
+            form.find("#notes").val(commande.notes);
         }
+    },
+    dateFormatTolocalString: function(dateString) {
+        // La date au format : 21/03/2024 21:34:38
+        let localStr = (new Date(dateString)).toLocaleString();
+        // La date en tableau : [date, time] = ['21/03/2024', '21:34:38']
+        let dateTimeArray = localStr.split(" ");
+        // Reformattage de la date au format YYYY-MM-DD
+        // 1. Conversion de la date en tableau : [DD, MM, YYYY] = [21, 03, 2024]
+        let dateArray = dateTimeArray[0].split("/");
+        // 2. Reformattage de la date : YYYY-MM-DD = 2024-03-21
+        let dateStr = `${dateArray[2]}-${dateArray[1]}-${dateArray[0]}`;
+        // Reformattage de la dateTime au format yyyy-mm-ddThh:mm:ss
+        let dateTimeStr = `${dateStr}T${dateTimeArray[1]}`;
+        // Renvoie du format de la dateTime
+        return dateTimeStr;
     },
     resetFormSection: function() {
         // Mise à jour de la section du formulaire
@@ -897,7 +909,7 @@ let cmdFournisseur = {
         // Mise à jour du formulaire suite au choix des sections
         cmdFournisseur.choixSectionFormulaireCmdf(null, el);
         // Mise à jour des infos générale de la commande dans le formulaire
-        cmdFournisseur.setInfosGeneralesForm(null);
+        cmdFournisseur.setInfosGeneralesForm(infosGeneralesForm);
     },
     /**
      * Gestion du formulaire de remise
@@ -1109,7 +1121,7 @@ $(document).ready(function () {
         //cmdFournisseur.removeItem($(this));
         cmdFournisseur.saRemoveParams(
             $(this),
-            "Êtes-vous sûr de vouloir supprimer cette ligne de l'ordre d'achat ?",
+            "Êtes-vous sûr de vouloir supprimer cette ligne du bon de commande ?",
             "Cette opération est irréversible !",
             "Oui, supprimer !",
             "Non, annuller !",
@@ -1131,22 +1143,22 @@ $(document).ready(function () {
         e.preventDefault();
         // console.log("ici");
         if (commande && commande.valid) {
-            alertify.warning("Cette commande est déjà validée");
+            cmdFournisseur.saError("Validation du bon de commande","Cette commande est déjà validée");
         } else if (commande && commande.details.length) {
             // Vérification des données des infos générales
-            if(!commande.notes){
-                alertify.warning(
-                    "Veuillez séléctionner la section 'Infos Générale' et remplissez tout au-moins le champ 'Notes'."
-                );
-                return;
-            }
+            // if(!commande.notes){
+            //     cmdFournisseur.saError("Validation du bon de commande",
+            //         "Veuillez séléctionner la section 'Infos Générale' du formulaire du bon de commande et remplissez tout au-moins le champ 'Notes'."
+            //     );
+            //     return;
+            // }
             // Mise à jour du modal de validation
             cmdFournisseur.setValidatonFormRecapTable();
             // Affichage du modal de validation de la commande            
             $("#validate-commande-modal").modal("toggle");
         } else {
-            alertify.warning(
-                "Veuillez ajouter un article à l'ordre d'achat en remplissant le formulaire ci-dessus."
+            cmdFournisseur.saError("Validation du bon de commande",
+                "Veuillez ajouter un article en remplissant le formulaire du bon de commande."
             );
             // Scroller la page vers le haut
             GlobalScript.scrollToTop();

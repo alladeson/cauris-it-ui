@@ -95,8 +95,8 @@ class StockController extends AbstractController
     function commandeFournisseurIndex(): Response
     {
         return $this->render('stock/commande-fournisseur/index.html.twig', [
-            'page_title' => "Ordre d'achat",
-            'breadcrumb' => ["Gestion de Stock", "Ordre d'achat"],
+            'page_title' => "Bon de commande",
+            'breadcrumb' => ["Gestion de Stock", "Bon de commande"],
             "sidebar_code" => ['GSTK', 'CMDF', ''],
             "menu_code" => ApiConstant::gestStockCmdFournisseur,
             "url_list_item" => ApiConstant::URL_LIST_CMD_FOURNISSEUR,
@@ -106,6 +106,7 @@ class StockController extends AbstractController
             "url_get_item_by_numero" => ApiConstant::URL_GET_CMD_FOURNISSEUR_BY_NUMERO,
             "url_get_item_by_fournisseur" => ApiConstant::URL_GET_CMD_BY_FOURNISSEUR,
             "url_delete_item" => ApiConstant::URL_DELETE_CMD_FOURNISSEUR,
+            "url_imprimer_item" => ApiConstant::URL_IMPRIMER_CMD_FOURNISSEUR,
         ]);
     }
 
@@ -114,13 +115,13 @@ class StockController extends AbstractController
     {
         // Tentative de récupération du paramètre du système
         $param = $this->apiService->getSystemParams();
-        // Récupération de l'ordre d'achat
+        // Récupération du bon de commande
         $url_get_item = str_replace("__id__", $id, ApiConstant::URL_GET_CMD_FOURNISSEUR);
         $cmdf = $this->apiService->get($url_get_item);
         // Rendre l'interface du détail
         return $this->render('stock/commande-fournisseur/detail.html.twig', [
-            'page_title' => "Détail ordre d'achat",
-            'breadcrumb' => ["Gestion de Stock", "Détail ordre d'achat"],
+            'page_title' => "Détail bon de commande",
+            'breadcrumb' => ["Gestion de Stock", "Détail bon de commande"],
             "sidebar_code" => ['GSTK', 'CMDFD', ''],
             "menu_code" => ApiConstant::gestStockCmdFournisseur,
             "url_imprimer_item" => ApiConstant::URL_IMPRIMER_CMD_FOURNISSEUR,
@@ -136,7 +137,7 @@ class StockController extends AbstractController
     }
 
     /**
-     * Pour afficher la page de création et de mise à jour de l'ordre d'achat
+     * Pour afficher la page de création et de mise à jour du bon de commande
      *
      * @param int $id
      * @return Response
@@ -144,8 +145,8 @@ class StockController extends AbstractController
     function cmdfRender($id = null): Response
     {
         return $this->render('stock/commande-fournisseur/new.html.twig', [
-            "page_title" => "Ordre d'achat",
-            "breadcrumb" => ["Gestion de Stock", "Ordre d'achat"],
+            "page_title" => "Bon de commande",
+            "breadcrumb" => ["Gestion de Stock", "Bon de commande"],
             "sidebar_code" => ['GSTK', 'CMDFN', ''],
             "menu_code" => ApiConstant::gestStockCmdFournisseur,
             // Commande Fournisseur
@@ -160,7 +161,7 @@ class StockController extends AbstractController
             "url_valider_cmd_fournisseur" => ApiConstant::URL_VALIDER_CMD_FOURNISSEUR,
             "url_put_item_infos_add" => ApiConstant::URL_PUT_CMD_FOURNISSEUR_INFOS_ADD,
             "url_put_item_expedition" => ApiConstant::URL_PUT_CMD_FOURNISSEUR_EXPEDITION,
-            "url_imprimer_item" => $_ENV['API_BASE_URL'] . ApiConstant::URL_IMPRIMER_CMD_FOURNISSEUR,
+            "url_imprimer_item" => ApiConstant::URL_IMPRIMER_CMD_FOURNISSEUR,
             //Fournisseur
             "url_list_fournisseur" => ApiConstant::URL_LIST_FOURNISSEUR,
             "url_post_fournisseur" => ApiConstant::URL_POST_FOURNISSEUR,

@@ -1,23 +1,41 @@
 <form method="post" class="infos-generales d-none" onsubmit="cmdFournisseur.submitInfosGeneralesFormData(event)">
-    <div class="row d-flex justify-content-center">							
-        <div class="col-md-4 col-sm-6">
-            <div class="mb-3 position-relative">
-                <label class="form-label font-size-13 text-muted" for="date-creation">Date de création</label>
-				<input disabled type="datetime-local" class="form-control" id="date-creation" name="date-creation" placeholder="" value="" step=1 required>
+    <div class="row d-flex justify-content-center">
+        <div class="row d-flex justify-content-center">							
+            <div class="col-md-4 col-sm-6">
+                <div class="mb-3 position-relative">
+                    <label class="form-label font-size-13 text-muted" for="date-creation">Date de création</label>
+                    <input disabled type="datetime-local" class="form-control" id="date-creation" name="date-creation" placeholder="" value="" step=1 required>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6" id="">
+                <div class="mb-3 position-relative">
+                    <label class="form-label font-size-13 text-muted" for="reference-externe">Référence externe</label>
+                    <input type="texte" class="form-control" id="reference-externe" name="reference-externe" placeholder="Saisissez la référence externe" value="">
+                </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-6" id="">
-            <div class="mb-3 position-relative">
-                <label class="form-label font-size-13 text-muted" for="reference-externe">Référence externe</label>
-                <input type="texte" class="form-control" id="reference-externe" name="reference-externe" placeholder="Saisissez la référence externe de l'ordre achat" value="">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-4 col-sm-6">
+                <div class="mb-3 position-relative">
+                    <label class="form-label font-size-13 text-muted" for="date-livraison">Date de livraison</label>
+                    <input type="datetime-local" class="form-control" id="date-livraison" name="date-livraison" placeholder="" value="" step=1>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="mb-3 position-relative">
+                    <label class="form-label font-size-13 text-muted" for="reference-facture">Référence de la facture</label>
+                    <input type="text" class="form-control" id="reference-facture" name="reference-facture" placeholder="Référence de la facture du fournisseur" value="">
+                </div>
             </div>
         </div>
-        <div class="col-md-8 col-sm-12">
-            <div class="mb-3 position-relative">
-                <label class="form-label font-size-13 text-muted" for="notes">
-                    Notes <i class="bx bx-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title data-bs-original-title="Ajoutez les conditions d'achat, de paiement terms (i.e. Net 30 jours) et les détails de la livraison."></i>
-                </label>
-                <textarea class="form-control" id="notes" name="notes" placeholder="Ajoutez les conditions d'achat, de paiement terms (i.e. Net 30 jours) et les détails de la livraison" required></textarea>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8 col-sm-12">
+                <div class="mb-3 position-relative">
+                    <label class="form-label font-size-13 text-muted" for="notes">
+                        Notes <i class="bx bx-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title data-bs-original-title="Ajoutez les conditions d'achat, de paiement terms (i.e. Net 30 jours) et les détails de la livraison."></i>
+                    </label>
+                    <textarea class="form-control" id="notes" name="notes" placeholder="Ajoutez les conditions d'achat, de paiement terms (i.e. Net 30 jours) et les détails de la livraison" required></textarea>
+                </div>
             </div>
         </div>
     </div>

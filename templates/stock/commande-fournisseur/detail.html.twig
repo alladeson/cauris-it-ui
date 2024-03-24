@@ -2,7 +2,7 @@
 
 {% block title %}
 	{{appName}}
-	- Détail Ordre d'achat
+	- Détail Bon de commande
 {% endblock %}
 
 {% block page_content %}
@@ -20,7 +20,7 @@
                             <div class="flex-shrink-0">
                                 <div class="mb-4">
                                     <h2 class="float-end">
-                                        Ordre d'achat
+                                        Bon de commande
                                         <div class="badge badge-soft-{{cmdf.valid ? 'success' : 'warning'}} font-size-12">{{cmdf.valid ? 'Validé' : 'En attente'}}</div>
                                     </h2>
                                 </div>
@@ -28,7 +28,7 @@
                         </div>  
                         <dl class="row mb-0">
                             <div class="row justify-content-end"> 
-                                <dt class="col-sm-2  text-end">N° d'ordre d'achat :</dt>
+                                <dt class="col-sm-2  text-end">N° Bon de commande :</dt>
                                 <dd class="col-sm-2  text-end">{{ "#" ~ cmdf.numero }}</dd>
                             </div> 
                             <div class="row justify-content-end"> 
@@ -41,7 +41,7 @@
                             </div>
                             <div class="row justify-content-end"> 
                                 <dt class="col-sm-2  text-end text-truncate">Références extermes :</dt>
-                                <dd class="col-sm-2  text-end">{{ cmdf.referenceFactureFournisseur ? ("#" ~ cmdf.referenceFactureFournisseur) : "-" }}</dd>
+                                <dd class="col-sm-2  text-end">{{ cmdf.referenceExterne ? ("#" ~ cmdf.referenceExterne) : "-" }}</dd>
                             </div>
                         </dl>
                     </div>
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                     <div class="py-2 mt-3">
-                        <h5 class="font-size-15">Récapitulatif de l'ordre d'achat</h5>
+                        <h5 class="font-size-15">Récapitulatif du bon de commande</h5>
                     </div>
                     <div class="p-4 border rounded">
                         <div class="table-responsive">
@@ -93,7 +93,7 @@
                                                 <th scope="row">{{ detail.reference }}</th>
                                                 <td>{{ detail.name }}</td>
                                                 <td>{{ detail.quantite }}</td>
-                                                <td>{{ detail.prixUht }}</td>
+                                                <td>{{ detail.remise ? detail.discount.originalPrice : detail.prixUht }}</td>
                                                 <td>{{ detail.remise ? (detail.discount.taux ~ '%') : '0%' }}</td>
                                                 <td>{{ detail.taxe ? (detail.taxe.valeur ~ '%') : '0%'}}</td>
                                                 <td class="text-end">{{ detail.montantHt }}</td>
@@ -105,7 +105,7 @@
                                             <th scope="row">{{ detailExpedition.reference ? detailExpedition.reference : '-' }}</th>
                                             <td>{{ detailExpedition.name }}</td>
                                             <td>{{ detailExpedition.quantite }}</td>
-                                            <td>{{ detailExpedition.prixUht }}</td>
+                                            <td>{{ detailExpedition.remise ? detailExpedition.discount.originalPrice : detailExpedition.prixUht }}</td>
                                             <td>{{ detailExpedition.remise ? (detailExpedition.discount.taux ~ '%') : '0%' }}</td>
                                             <td>{{ detailExpedition.taxe ? (detailExpedition.taxe.valeur ~ '%') : '0%'}}</td>
                                             <td class="text-end">{{ detailExpedition.montantHt }}</td>
@@ -143,9 +143,9 @@
                     </div>
                     <div class="d-print-none mt-3">
                         <div class="float-end">
-                            <a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i class="fa fa-print"></i></a>
+                            <a href="javascript:window.print()" class="btn btn-success cmdf-printer waves-effect waves-light me-1"><i class="fa fa-print"></i></a>
                             {% if cmdf.valid == false %}  
-                                <a href="#" class="btn btn-primary w-md waves-effect waves-light">Valider</a>
+                                <a href="#" class="btn btn-primary edit-item w-md waves-effect waves-light">Modifier et/ou Valider</a>
                             {% endif %}
                         </div>
                     </div>
@@ -158,8 +158,26 @@
 
 {% block page_custom_scripts %}
 	<script>
-		
+		const URL_IMPRIMER_CMD_FOURNISSEUR = "{{ url_imprimer_item }}";
+        <!-- initialisation de l'object commande fournisseur pour les fonctions javascript -->
+        const cmdf = {
+            id: {{cmdf.id}},
+            numero: "{{cmdf.numero}}", 
+            valid: {{cmdf.valid ? 1 : 0}},           
+        };
+        <!-- Gestion de click sur le bouton d'impression -->
+        $("a.cmdf-printer").on("click", function(e) {
+            printer.printCmdFournisseur(e, cmdf);
+        });
+        <!-- Gestion de click sur le bouton de mise à jour/validation -->
+        $("a.edit-item").on("click", function(e) {
+            GlobalScript.run_waitMe($('body'), 1, 'stretch');
+            location.href = URL_GLOBAL_UPDATE_CMD_FOURNISSEUR.replace("__id__", cmdf.id);
+            setTimeout(()=>{
+                $('body').waitMe('hide');
+            }, 10000);
+        });
 	</script>
-	<!-- init js -->
-	{# <script src="{{ asset('assets/js/custom/stock/commande-fournisseur/detail.init.js') }}"></script> #}
+	<!-- printer init js -->
+	<script src="{{ asset('assets/js/custom/stock/commande-fournisseur/printer.init.js') }}"></script>
 {% endblock %}

@@ -92,7 +92,7 @@ class ApiConstant
     public const URL_DELETE_CMD_FOURNISSEUR = "stock/commande-fournisseur/__id__";
     public const URL_PUT_CMD_FOURNISSEUR_INFOS_ADD = "stock/commande-fournisseur/__id__/infos-additionnelles";    
     public const URL_PUT_CMD_FOURNISSEUR_EXPEDITION = "stock/commande-fournisseur/__id__/expedition-data";    
-    public const URL_IMPRIMER_CMD_FOURNISSEUR = "stock/commande-fournisseur/__id__/imprimer";
+    public const URL_IMPRIMER_CMD_FOURNISSEUR = "public/commande-fournisseur/__id__/imprimer";
 
     /*** Module Caisse ***/
     //Les clients

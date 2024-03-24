@@ -2,7 +2,7 @@
 
 {% block title %}
 	{{appName}}
-	- Ordre d'achat
+	- Bon de commande
 {% endblock %}
 
 {% block page_content %}
@@ -11,7 +11,7 @@
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="flush-headingOne">
 				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
-					Formulaire de l'ordre d'achat
+					Formulaire du bon de commande
 				</button>
 			</h2>
 			<div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#cmdFournisseurForm">
@@ -57,7 +57,7 @@
 	<div class="row align-items-center">
 		<div class="col-md-6 col-7">
 			<div class="mb-3">
-				<h5 class="card-title">Détails de l'ordre d'achat
+				<h5 class="card-title">Détails du bon de commande
 					<span class="text-muted fw-normal ms-2"></span>
 				</h5>
 			</div>
@@ -253,7 +253,7 @@
 			<div class="modal-content">
 				<form method="post" class="" onsubmit="cmdFournisseur.customMessageOnValidationFormSubmit(event)">
 					<div class="modal-header">
-						<h5 class="modal-title">Validation de l'ordre d'achat</h5>
+						<h5 class="modal-title">Validation du bon de commande</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -262,16 +262,36 @@
 								<h5 class="font-size-14 mt-2">
 									<i class="mdi mdi-arrow-right text-primary me-1"></i>Formulaire de validation</h5>
 								<div class="row">
-									<div class="col-lg-12 col-sm-6">
+									<div class="col-sm-6">
+										<div class="mb-3 position-relative">
+											<label class="form-label font-size-13 text-muted" for="date-creation">Date de création</label>
+											<input disabled type="datetime-local" class="form-control" id="date-creation" name="date-creation" placeholder="" value="" step=1 required>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mb-3 position-relative">
+											<label class="form-label font-size-13 text-muted" for="reference-externe">Référence externe</label>
+											<input type="texte" class="form-control" id="reference-externe" name="reference-externe" placeholder="Saisissez la référence externe" value="">
+										</div>
+									</div>
+									<div class="col-sm-6">
 										<div class="mb-3 position-relative">
 											<label class="form-label font-size-13 text-muted" for="date-livraison">Date de livraison</label>
 											<input type="datetime-local" class="form-control" id="date-livraison" name="date-livraison" placeholder="" value="" step=1 required>
 										</div>
 									</div>
-									<div class="col-lg-12 col-sm-6">
+									<div class="col-sm-6">
 										<div class="mb-3 position-relative">
-											<label class="form-label font-size-13 text-muted" for="reference-facture">Référence de la facture</label>
+											<label class="form-label font-size-13 text-muted" for="reference-facture">Référence de la facture du fournisseur</label>
 											<input type="text" class="form-control" id="reference-facture" name="reference-facture" placeholder="Référence de la facture du fournisseur" value="" required>
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="mb-3 position-relative">
+											<label class="form-label font-size-13 text-muted" for="notes">
+												Notes <i class="bx bx-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title data-bs-original-title="Ajoutez les conditions d'achat, de paiement terms (i.e. Net 30 jours) et les détails de la livraison."></i>
+											</label>
+											<textarea class="form-control" id="notes" name="notes" placeholder="Ajoutez les conditions d'achat, de paiement terms (i.e. Net 30 jours) et les détails de la livraison" required></textarea>
 										</div>
 									</div>
 								</div>
@@ -342,7 +362,7 @@
 		const URL_VALIDER_CMD_FOURNISSEUR = "{{ url_valider_cmd_fournisseur }}";
 		const URL_CMD_INFOS_ADD = "{{ url_put_item_infos_add }}";
 		const URL_CMD_EXPEDITION_DATA = "{{ url_put_item_expedition }}";
-		const URL_IMPRIMER_FOURNISSEUR = "{{ url_imprimer_item }}";
+		const URL_IMPRIMER_CMD_FOURNISSEUR = "{{ url_imprimer_item }}";
 		<!-- Fournisseur -->
 		const URL_LIST_FOURNISSEUR = "{{ url_list_fournisseur }}";
 		const URL_GET_FOURNISSEUR = "{{ url_get_fournisseur }}";

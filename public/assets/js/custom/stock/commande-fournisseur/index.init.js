@@ -50,6 +50,14 @@ let cmdFournisseur = {
                     { data: 'fournisseur.name' },
                     { data: 'montantTtc' },
                     {
+                        data: 'id',
+                        "render": function(data, type, row, meta) {
+                            return `<div>
+                                        <button type="button" class="btn btn-soft-light btn-sm pdf-download w-xs waves-effect btn-label waves-light" data-item-id="${data}"><i class="bx bx-download label-icon"></i> Pdf</button>
+                                    </div>`;
+                        }
+                    },
+                    {
                         data: 'valid',
                         "render": function(data, type, row, meta) {
                             if (data)
@@ -81,7 +89,7 @@ let cmdFournisseur = {
                                     <li>
                                         <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
                                     </li>`
-                                    : "" }
+                                    : `<a class="dropdown-item print-item" href="javascript:void(0);" data-item-id="${data}">Générer PDF</a>` }
                                 </ul>
                             </div>`;
                             return html;
@@ -204,6 +212,18 @@ let cmdFournisseur = {
             GlobalScript.ajxRqtErrHandler(err, "sweet", "la suppression");
         });
     },
+    printItem: function(el) {
+        // Récupération de l'id de l'objet
+        let id = el.data("item-id");
+        //
+        GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
+            // Run this when your request was successful
+            printer.printCmdFournisseur(null, data);
+        }).catch(function (err) {
+            // Run this when promise was rejected via reject()
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'impression du bon de commande");
+        });
+    },
     reloadDatatable: function(event) {
         // Prevent event
         event.preventDefault();
@@ -234,7 +254,7 @@ $(document).ready(function() {
     datatable.on('click', '.remove-item', function(e) {
         e.preventDefault();
         // cmdFournisseur.removeItem($(this));
-        cmdFournisseur.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cet ordre d'achat ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Ordre d'achat supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+        cmdFournisseur.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce bon de commande ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Bon de commande supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
     });
 
     //Show record
@@ -243,7 +263,13 @@ $(document).ready(function() {
         GlobalScript.run_waitMe($('body'), 1, 'stretch');
         setTimeout(()=>{
             $('body').waitMe('hide');
-        }, 10000)
+        }, 10000);
+    });
+
+    // Print record
+    datatable.on('click', '.print-item, .pdf-download', function(e) {
+        e.preventDefault();
+        cmdFournisseur.printItem($(this));
     });
 
     //Show Action
