@@ -23,6 +23,7 @@ class ApiConstant
     public const URL_PUT_SYSTEM_PARAMS = "parametre/params/__id__";
     public const URL_PUT_SYSTEM_PARAMS_LOGO = "parametre/params/__id__/logo";
     public const URL_PUT_SYSTEM_PARAMS_FORMAT_FACTURE = "parametre/params/__id__/format-facture/__format__";
+    public const URL_PUT_SYSTEM_PARAMS_GESTION_STOCK_PROPERTIES = "parametre/params/__id__/gestion-stock/__gestionStock__/stock-et-facture/__stockEtFacture__";
     // public const URL_GET_SYSTEM_PARAMS = "parametre/params/__id__";
     public const URL_GET_SYSTEM_PARAMS = "parametre/params/one";
     public const URL_DELETE_SYSTEM_PARAMS = "parametre/params/__id__";
@@ -93,6 +94,8 @@ class ApiConstant
     public const URL_PUT_CMD_FOURNISSEUR_INFOS_ADD = "stock/commande-fournisseur/__id__/infos-additionnelles";    
     public const URL_PUT_CMD_FOURNISSEUR_EXPEDITION = "stock/commande-fournisseur/__id__/expedition-data";    
     public const URL_IMPRIMER_CMD_FOURNISSEUR = "public/commande-fournisseur/__id__/imprimer";
+   // Inventaire de stock 
+    public const URL_IMPRIMER_FICHE_INVENTAIRE = "public/inventaire-stock/imprimer";
 
     /*** Module Caisse ***/
     //Les clients
@@ -188,6 +191,7 @@ class ApiConstant
 	public const gestStockApprovisionnement = 13000;
 	public const gestStockFournisseur = 14000;
 	public const gestStockCmdFournisseur = 15000;
+	public const gestStockInventaire = 16000;
 	// Emission des factures
 	public const facturation = 20000;
 	public const facturationFV = 21000;

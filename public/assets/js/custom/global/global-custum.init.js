@@ -6,8 +6,8 @@ let formChange = false;
 let $pdfWebviwerModal = $("div.webviwer-invoice-modal");
 let $pdf = "";
 let $pdfDownload = "";
-var downloadPdfBaseUrl = "/assets/downloads/";
-var uploadPdfBaseUrl = "/assets/uploads/";
+let downloadPdfBaseUrl = "/assets/downloads/";
+let uploadPdfBaseUrl = "/assets/uploads/";
 // Instanciation de l'objet d'état de l'affichage de la facture
 const $initialState = {
     pdfDoc: null,
@@ -37,7 +37,7 @@ $(document).on({
  * Gestion des élément de rigthbar pour la mise en page de l'écran
  */
 $(document).ready(function() {
-    var rightbar = $("div.right-bar")
+    let rightbar = $("div.right-bar")
     rightbar.on("change", "input[name='layout-mode'], input[name='layout-width'], input[name='layout-position'], input[name='topbar-color'], input[name='sidebar-size'], input[name='sidebar-color']", function(event) {
         GlobalScript.layoutSettings(event);
     });
@@ -49,7 +49,7 @@ $(document).ready(function() {
 // $(document).on(
 //     "click", ".sidebar .sidebar-wrapper ul.nav li a, .navbar ul.navbar-nav li a",
 //     function() {
-//         var href = $(this).attr('href');
+//         let href = $(this).attr('href');
 //         if (!href.startsWith('#') && href !== 'javascript:;') {
 //             GlobalScript.run_waitMe($('body'), 1, 'bounce');
 //         }
@@ -90,27 +90,47 @@ let GlobalScript = {
         });
     },
     dateFormat(dateValue, datetime = true) {
-        var d = new Date(dateValue);
-        var month = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juill.', 'août', 'sept.', 'oct.', 'nov.', 'déc'];
+        let d = new Date(dateValue);
+        let month = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juill.', 'août', 'sept.', 'oct.', 'nov.', 'déc'];
 
-        var date = d.getDate() + " " + month[d.getMonth()] + " " + d.getFullYear();
-        var time = d.toLocaleTimeString().toLowerCase();
+        let date = d.getDate() + " " + month[d.getMonth()] + " " + d.getFullYear();
+        let time = d.toLocaleTimeString().toLowerCase();
         if (datetime)
             return date + ' à ' + time
         else
             return date
     },
+    dateFormatTolocalString: function(dateString=null) {
+        // La date au format : 21/03/2024 21:34:38
+        // Par défaut, c'est la date du jour
+        let localStr = null;
+        if(dateString==null)
+            localStr = (new Date()).toLocaleString();
+        else 
+            localStr = (new Date(dateString)).toLocaleString();    
+        // La date en tableau : [date, time] = ['21/03/2024', '21:34:38']
+        let dateTimeArray = localStr.split(" ");
+        // Reformattage de la date au format YYYY-MM-DD
+        // 1. Conversion de la date en tableau : [DD, MM, YYYY] = [21, 03, 2024]
+        let dateArray = dateTimeArray[0].split("/");
+        // 2. Reformattage de la date : YYYY-MM-DD = 2024-03-21
+        let dateStr = `${dateArray[2]}-${dateArray[1]}-${dateArray[0]}`;
+        // Reformattage de la dateTime au format yyyy-mm-ddThh:mm:ss
+        let dateTimeStr = `${dateStr}T${dateTimeArray[1]}`;
+        // Renvoie du format de la dateTime
+        return dateTimeStr;
+    },
     // Format month with label like 2022-04
     monthDateFormat(monthLabel) {
-        var d = new Date(monthLabel);
-        var months = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juill.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+        let d = new Date(monthLabel);
+        let months = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juill.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
 
         return months[d.getMonth()] + " " + d.getFullYear();
     },
     // Format month with label like 2022-04
     statsMonthFormat(monthLabel) {
-        var d = new Date(monthLabel);
-        var months = ['janv', 'févr', 'mars', 'avr', 'mai', 'juin', 'juill', 'août', 'sept', 'oct', 'nov', 'déc'];
+        let d = new Date(monthLabel);
+        let months = ['janv', 'févr', 'mars', 'avr', 'mai', 'juin', 'juill', 'août', 'sept', 'oct', 'nov', 'déc'];
         currentYear = new Date().getFullYear();
         return $.trim(months[d.getMonth()] + " " + (currentYear == d.getFullYear() ? "" : (d.getFullYear() + "")).slice(2, 4));
     },
@@ -280,7 +300,7 @@ let GlobalScript = {
      * @returns String Retourne le texte formaté
      */
     textMultipleReplace: function(text, obj) {
-        for (var x in obj) {
+        for (let x in obj) {
             text = text.replace(new RegExp(x, 'g'), obj[x]);
         }
         return text;
@@ -329,7 +349,7 @@ let GlobalScript = {
     ajxRqtErrHandler: function(err, alert, errTopic) {
         // console.log(err);
         // Meessage d'erreur par défaut
-        var defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + ". Si cela persiste, veuillez contacter votre administrateur ou votre fournisseur du SFE. Merci !";
+        let defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + ". Si cela persiste, veuillez contacter votre administrateur ou votre fournisseur du SFE. Merci !";
         // Les erreur du serveur : backend (spring-boot)  ou frontend (symfony)
         if ($.inArray(err.status, [500, 502, 503, 504]) > -1)
             defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + " : le serveur ne répond pas. Si cela persiste, veuillez contacter votre administrateur ou votre fournisseur du SFE. Merci !";
@@ -338,7 +358,7 @@ let GlobalScript = {
             defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + " : Votre session est expirée. Veuillez vous reconnecter svp. Merci !";
         // Essayons de transformer la réponse en objet json
         try {
-            var responseText = JSON.parse(err.responseText);
+            let responseText = JSON.parse(err.responseText);
             // Utilisateur non authentifié
             if (responseText.status == 401 && responseText.message.startsWith("Full authentication is required")) {
                 defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + " : Authentification requise.";
@@ -360,9 +380,9 @@ let GlobalScript = {
      */
     layoutSettings: function(event = null, layoutChange = false) {
         if (event) event.preventDefault();
-        var layout = $("div#layout-wrapper").data('userLayout');
+        let layout = $("div#layout-wrapper").data('userLayout');
         // Le right bar element
-        var rightbar = $("div.right-bar");
+        let rightbar = $("div.right-bar");
         // Formatage de données du layout
         data = {
             'id': null, // Si c'est pour la 1ère fois, le layout sera créé par le backend et mis à jour en session par Symfony
@@ -543,10 +563,10 @@ let GlobalScript = {
      * @param {Object} facture L'objet de la facture à afficher
      */
     showPrintedInvoice: function(facture) {
-        var printPdfUrl = URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id);
-        var pdfName = "facture-" + facture.numero + ".pdf";
-        // var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", pdfName);
-        var dowloadPdfUrl = downloadPdfBaseUrl + pdfName;
+        let printPdfUrl = URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id);
+        let pdfName = "facture-" + facture.numero + ".pdf";
+        // let dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", pdfName);
+        let dowloadPdfUrl = downloadPdfBaseUrl + pdfName;
         // GlobalScript.pdfwebviewer(printPdfUrl, dowloadPdfUrl, pdfName)
         // Envoie de la requête d'impression de la facture
         GlobalScript.requestGetFile(printPdfUrl, "GET", pdfName, null).then(function(data) {
@@ -570,9 +590,9 @@ let GlobalScript = {
      * @param {String} fileName Le nom du fichier pdf à afficher
      */
     showPrintedBilan: function(printPdfUrl, method, data, fileName) {
-        // var printPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
-        // var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
-        var dowloadPdfUrl = downloadPdfBaseUrl + fileName;
+        // let printPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
+        // let dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
+        let dowloadPdfUrl = downloadPdfBaseUrl + fileName;
         // Envoie de la requête d'impression
         GlobalScript.requestGetFile(printPdfUrl, method, fileName, data).then(function(data) {
                 // Run this when your request was successful
@@ -598,9 +618,9 @@ let GlobalScript = {
      * @param {String} errorAlertType Le type d'alert pour le message d'erreur
      */
     showPrintedFile: function(printPdfUrl, method, data, fileName, errorMessage, errorAlertType) {
-        // var printPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
-        // var dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
-        var dowloadPdfUrl = downloadPdfBaseUrl + fileName;
+        // let printPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
+        // let dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
+        let dowloadPdfUrl = downloadPdfBaseUrl + fileName;
         // Envoie de la requête d'impression
         GlobalScript.requestGetFile(API_BASE_URL + printPdfUrl, method, fileName, data).then(function(data) {
                 // Run this when your request was successful

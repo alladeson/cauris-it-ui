@@ -876,28 +876,13 @@ let cmdFournisseur = {
     setInfosGeneralesForm: function(form) {
         if(event) event.preventDefault();
         if(commande.id) {
-            form.find("#date-creation").val(cmdFournisseur.dateFormatTolocalString(commande.dateCreation));
-            form.find("#date-livraison").val(commande.dateLivraison ? cmdFournisseur.dateFormatTolocalString(commande.dateLivraison) : "");
+            form.find("#date-creation").val(GlobalScript.dateFormatTolocalString(commande.dateCreation));
+            form.find("#date-livraison").val(commande.dateLivraison ? GlobalScript.dateFormatTolocalString(commande.dateLivraison) : "");
             form.find("#reference-externe").val(commande.referenceExterne);
             form.find("#reference-facture").val(commande.referenceFactureFournisseur);
             form.find("#notes").val(commande.notes);
         }
-    },
-    dateFormatTolocalString: function(dateString) {
-        // La date au format : 21/03/2024 21:34:38
-        let localStr = (new Date(dateString)).toLocaleString();
-        // La date en tableau : [date, time] = ['21/03/2024', '21:34:38']
-        let dateTimeArray = localStr.split(" ");
-        // Reformattage de la date au format YYYY-MM-DD
-        // 1. Conversion de la date en tableau : [DD, MM, YYYY] = [21, 03, 2024]
-        let dateArray = dateTimeArray[0].split("/");
-        // 2. Reformattage de la date : YYYY-MM-DD = 2024-03-21
-        let dateStr = `${dateArray[2]}-${dateArray[1]}-${dateArray[0]}`;
-        // Reformattage de la dateTime au format yyyy-mm-ddThh:mm:ss
-        let dateTimeStr = `${dateStr}T${dateTimeArray[1]}`;
-        // Renvoie du format de la dateTime
-        return dateTimeStr;
-    },
+    },    
     resetFormSection: function() {
         // Mise à jour de la section du formulaire
         // Sélection du bouton radio de la secton Article

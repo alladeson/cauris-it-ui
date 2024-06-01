@@ -6,6 +6,7 @@
 {% set gestStockApprovisionnement = 13000 %}
 {% set gestStockFournisseur = 14000 %}
 {% set gestStockCmdFournisseur = 15000 %}
+{% set gestStockInventaire = 16000 %}
 {% set facturation = 20000 %}
 {% set facturationFV = 21000 %}
 {% set facturationFA = 22000 %}
@@ -91,6 +92,15 @@
 				title: "Bon de commande",
 				dataKey: "t-cmd-fournisseur-index",
 				active: sidebar_code[1] == "CMDF" ? true : false,
+				children: [],
+			},
+			{
+				readable: menu_readable(gestStockInventaire),
+				id: "gstk-inventaire",
+				pathName: "gstk_inventaire",
+				title: "Inventaire",
+				dataKey: "t-cmd-inventaire",
+				active: sidebar_code[1] == "INVTR" ? true : false,
 				children: [],
 			},
 			

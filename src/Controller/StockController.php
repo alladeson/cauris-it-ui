@@ -184,4 +184,17 @@ class StockController extends AbstractController
     {
         return $this->cmdfRender($id);
     }
+
+    #[Route('/inventaire', name: 'gstk_inventaire')]
+    function inventaire(): Response
+    {
+        return $this->render('stock/inventaire.html.twig', [
+            'page_title' => 'Inventaire de stock',
+            'breadcrumb' => ['Gestion de Stock', 'Inventaire de stock'],
+            "sidebar_code" => ['GSTK', 'INVTR', ''],
+            'menu_code' => ApiConstant::gestStockInventaire,
+            "url_list_item" => ApiConstant::URL_LIST_ARTICLE,
+            "url_imprimer_fiche_inventaire" => ApiConstant::URL_IMPRIMER_FICHE_INVENTAIRE,
+        ]);
+    }
 }
