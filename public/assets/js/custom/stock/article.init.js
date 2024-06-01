@@ -268,8 +268,8 @@ let article = {
                 'prix': GlobalScript.checkBlank(form.find("#prix").val()),
                 'taxeSpecifique': GlobalScript.checkBlank(form.find("#taxe-specifique").val()),
                 'tsName': GlobalScript.checkBlank(form.find("#ts-name").val()),
-                'stock': GlobalScript.checkBlank(form.find("#stock").val()),
-                'stockSecurite': GlobalScript.checkBlank(form.find("#stock-securite").val()),
+                'stock': GlobalScript.checkBlank(form.find("#stock").val()) ?? 0,
+                'stockSecurite': GlobalScript.checkBlank(form.find("#stock-securite").val()) ?? 0,
             };
             return JSON.stringify(data);
         }
