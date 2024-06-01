@@ -2,7 +2,7 @@
 
 {% block title %}
 	{{appName}}
-	- Groupes Utilisateurs
+	- Fournisseurs
 {% endblock %}
 
 {% block page_content %}
@@ -10,7 +10,7 @@
 	<div class="row align-items-center">
 		<div class="col-md-6 col-4">
 			<div class="mb-3">
-				<h5 class="card-title">Liste des groupes utilisateurs
+				<h5 class="card-title">Liste des fournisseurs
 					<span class="text-muted fw-normal ms-2"></span>
 				</h5>
 			</div>
@@ -32,7 +32,7 @@
 						</li>
 					</ul>
 				</div> #}
-				<div onclick="userGroup.newItemEvent(event)">
+				<div onclick="fournisseur.newItemEvent(event)">
 					<a href="javascript:void(0);" class="btn btn-light" data-bs-toggle="modal" data-bs-target=".add-new-modal">
 						<i class="bx bx-plus me-1"></i>
 						Nouvel Ajout</a>
@@ -45,7 +45,7 @@
 
 					<ul class="dropdown-menu dropdown-menu-end">
 						<li>
-							<a class="dropdown-item" onclick="userGroup.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+							<a class="dropdown-item" onclick="fournisseur.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
 						</li>
 						{# <li>
 							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
@@ -73,8 +73,12 @@
 					</th>
 					<th>Réf.</th>
 					<th>Nom</th>
-					<th>Description</th>
-					<th>Rôle</th>
+					<th>IFU</th>
+					<th>RCCM</th>
+					<th>Téléphone</th>
+					<th>Email</th>
+					<th>Adresse</th>
+					<th>Ville</th>
 					<th style="width: 80px; min-width: 80px;">Action</th>
 				</tr>
 			</thead>
@@ -86,59 +90,7 @@
 	<!-- end table responsive -->
 
 	<div class="modal fade add-new-modal" id="add-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<form method="post" class="" {#onsubmit="userGroup.submitFormData(event)"#} >
-					<div class="modal-header">
-						<h5 class="modal-title">Nouvel ajout</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<input type="hidden" id="item-id" name="item-id" value="">
-									<label class="form-label" for="name">Nom</label>
-									<input type="text" id="name" name="name" class="form-control" placeholder="Le nom du groupe" required>
-								</div>
-							</div>														
-						</div>
-						<div class="row">								
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="description">Description</label>
-									<input type="text" id="description" name="description" class="form-control" placeholder="La description du groupoe" required>
-								</div>
-							</div>
-						</div><div class="row">							
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label for="role" class="form-label">Rôle</label>
-									<select data-trigger required class="form-control form-select" data-trigger name="role" id="role" placeholder="chercher...">
-										<option value="" selected>Sélectionner</option>
-										{% if authUser.sa %}
-											<option value="SUPER_ADMIN">Super Administrateur</option>
-										{% endif %}										
-										<option value="ADMIN">Administrateur</option>
-										<option value="SECRETAIRE">Vendeur</option>
-										<option value="VENDEUR">Secrétaire</option>
-										<option value="COMPTABLE">Comptable</option>
-										<option value="USER">Autre</option>
-									</select>
-								</div>
-							</div>							
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
-						{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
-						<button type="button" class="btn btn-primary submit-button">Enregistrer</button>
-					</div>
-				</form>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
+		{% include "stock/__fournisseur_form.html.twig" %}
 	</div>
 	<!-- /.modal -->
 
@@ -179,16 +131,44 @@
                                 </tr>                                                    
                                 <tr>
                                     <th scope="row">
-                                        Description
+                                        IFU
                                     </th>
-                                    <td class="text-center td-description">
+                                    <td class="text-center td-ifu">
                                     </td>
-                                </tr>                                                 
+                                </tr>                                                
                                 <tr>
                                     <th scope="row">
-                                        Rôle
+                                        RCM
                                     </th>
-                                    <td class="text-center td-role">
+                                    <td class="text-center td-rcm">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        Téléphone
+                                    </th>
+                                    <td class="text-center td-telephone">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        Email
+                                    </th>
+                                    <td class="text-center td-email">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        Adresse
+                                    </th>
+                                    <td class="text-center td-address">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        Ville
+                                    </th>
+                                    <td class="text-center td-ville">
                                     </td>
                                 </tr>                                                
                             </tbody>
@@ -209,13 +189,6 @@
 {% endblock %}
 
 {% block page_custom_scripts %}
-
-	<script>
-		{% if authUser.sa %}
-			URL_LIST_ITEM = "{{url_list_item_sa}}";
-		{% endif %}
-	</script>
-
 	<!-- init js -->
-	<script src="{{ asset('assets/js/custom/access/user-group.init.js') }}"></script>
+	<script src="{{ asset('assets/js/custom/stock/fournisseur.init.js') }}"></script>
 {% endblock %}

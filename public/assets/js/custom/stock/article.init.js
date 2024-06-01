@@ -40,7 +40,7 @@ let article = {
                                                 `</div>`;
                                         }
                                     },
-                                    { data: 'id' },
+                                    { data: 'reference' },
                                     {
                                         data: 'categorie',
                                         "render": function(data, type, row, meta) {
@@ -174,14 +174,14 @@ let article = {
         var data = article.dataFormat(form)
         let dataId = form.find("#item-id").val();
         if(GlobalScript.traceFormChange(dataId)) return;
-        console.log(data)
+        // console.log(data)
         var categorieId = form.find("#categorie").val();
         var taxeId = form.find("#taxe").val();
         var obj = { '__id__': dataId, '__cId__': categorieId, '__tId__': taxeId }
         var submitUrl = dataId ? GlobalScript.textMultipleReplace(URL_PUT_ITEM, obj) : GlobalScript.textMultipleReplace(URL_POST_ITEM, obj);
         GlobalScript.request(submitUrl, (dataId ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             datatable.ajax.reload();
             // article.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
@@ -196,10 +196,10 @@ let article = {
     showItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             var itemObj = data;
             article.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
@@ -212,11 +212,11 @@ let article = {
     editItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         //var response = GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
             article.setformData($("div.add-new-modal").find('form'), itemObj);
@@ -232,10 +232,10 @@ let article = {
     removeItem: function(el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        // console.log(id);
+        // // console.log(id);
         GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
                 // article.saSucces(oktitle, oktext);
             alertify.success(oktext)
             datatable.ajax.reload();
@@ -247,7 +247,7 @@ let article = {
     setformData: function(form, item) {
         if (form.length) {
             form.find("#item-id").val(item.id)
-                //form.find("#reference").val(item.id)
+            form.find("#reference").val(item.reference)
             form.find("#designation").val(item.designation)
             form.find("#prix").val(item.prix)
             form.find("#taxe-specifique").val(item.taxeSpecifique)
@@ -263,12 +263,13 @@ let article = {
         if (form.length) {
             data = {
                 'id': GlobalScript.checkBlank(form.find("#item-id").val()),
+                'reference': GlobalScript.checkBlank(form.find("#reference").val()),
                 'designation': GlobalScript.checkBlank(form.find("#designation").val()),
                 'prix': GlobalScript.checkBlank(form.find("#prix").val()),
                 'taxeSpecifique': GlobalScript.checkBlank(form.find("#taxe-specifique").val()),
                 'tsName': GlobalScript.checkBlank(form.find("#ts-name").val()),
-                'stock': GlobalScript.checkBlank(form.find("#stock").val()),
-                'stockSecurite': GlobalScript.checkBlank(form.find("#stock-securite").val()),
+                'stock': GlobalScript.checkBlank(form.find("#stock").val()) ?? 0,
+                'stockSecurite': GlobalScript.checkBlank(form.find("#stock-securite").val()) ?? 0,
             };
             return JSON.stringify(data);
         }
@@ -289,7 +290,7 @@ let article = {
     },
     setShowingTable: function(itemObj) {
         var $showClasseTable = $('table.item-show-table');
-        $showClasseTable.find('.td-reference').text(itemObj.id);
+        $showClasseTable.find('.td-reference').text(itemObj.reference);
         $showClasseTable.find('.td-categorie').text(itemObj.categorie.libelle);
         $showClasseTable.find('.td-designation').text(itemObj.designation);
         $showClasseTable.find('.td-prix').text(itemObj.prix);
@@ -304,6 +305,7 @@ let article = {
      */
     resetFormData: function(form) {
         form.find("#item-id").val("")
+        form.find("#reference").val("")
         form.find("#designation").val("")
         form.find("#prix").val("")
         form.find("#taxe-specifique").val("")
@@ -357,7 +359,7 @@ $(document).ready(function() {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);
         });
-        console.log(count + ' column(s) are hidden');
+        // console.log(count + ' column(s) are hidden');
     });
 });
 document.addEventListener("DOMContentLoaded", function() {

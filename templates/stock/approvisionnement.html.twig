@@ -2,10 +2,28 @@
 
 {% block title %}
 	{{appName}}
-	- Type chambre
+	- Approvisionnement
 {% endblock %}
 
 {% block page_content %}
+
+	{# Filtre #}
+	<div class="mt-2">
+		<h5 class="font-size-14 mb-2">
+			<i class="mdi mdi-arrow-right text-primary me-1"></i>
+			Filtre : </h5>
+
+		<form class="row gx-3 gy-2 align-items-center filtre-form">
+			<div class="row mt-3">
+				<div class="col-lg-4 col-md-5 col-sm-4 mb-sm-0 mb-2">
+					<label for="filtre-article" class="form-label font-size-13 text-muted">Article</label>
+					<select onchange="approvisionnement.reloadDatatable(event)" class="form-control form-select" data-trigger name="filtre-article" id="filtre-article" placeholder=""></select>
+				</div>
+			</div>
+		</form>
+	</div>
+	<br>
+	{# End Filtre #}
 
 	<div class="row align-items-center">
 		<div class="col-md-6 col-5">
@@ -47,12 +65,6 @@
 						<li>
 							<a class="dropdown-item" onclick="approvisionnement.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
 						</li>
-						<li>
-							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
-						</li>
 					</ul>
 				</div>
 			</div>
@@ -71,13 +83,15 @@
 							<label class="form-check-label" for="checkAll"></label>
 						</div>
 					</th>
-					<th>Référence Article/Produit</th>
+					<th>Réf. Article</th>
 					<th>Désignation</th>
-					<th>Quantité</th>
-					<th>Taxe</th>
 					<th>Prix HT</th>
-					<th>montant HT</th>
-					<th>montant TTC</th>
+					<th>Qte</th>
+					<th>Remise</th>
+					<th>Taxe</th>
+					<th>Mnt HT</th>
+					{#<th>Mnt TTC</th>#}
+					<th>Statut</th>
 					<th style="width: 80px; min-width: 80px;">Action</th>
 				</tr>
 			</thead>
@@ -89,131 +103,32 @@
 	<!-- end table responsive -->
 
 	<div class="modal fade add-new-modal" id="add-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<form method="post" class="" onsubmit="approvisionnement.submitFormData(event)" >
-					<div class="modal-header">
-						<h5 class="modal-title">Nouvel ajout</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						{# <div class="row">
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="reference">Référence</label>
-									<input type="text" class="form-control" id="reference" name="reference" placeholder="Référence de la chambre" value="" required>
-									<div class="valid-tooltip">
-										Parfait !
-									</div>
-								</div>
-							</div>														
-						</div> #}
-						<div class="row">						
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="libelle">Libellé</label>
-									<div class="input-group">
-										{# <span class="input-group-text" id="libellePrepend"><i class="mdi mdi-money"></i></span> #}
-										<input type="hidden" id="item-id" name="item-id" value="">
-										<input type="text" id="libelle" name="libelle" class="form-control" placeholder="Type de chambre" aria-describedby="libellePrepend" required>
-										{# <div class="invalid-tooltip">
-											Please choose a unique and valid username.
-										</div> #}
-									</div>
-								</div>
-							</div>							
-						</div>
-						<div class="row">						
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="montant">Montant</label>
-									<div class="input-group">
-										<span class="input-group-text" id="montantPrepend"><i class="mdi mdi-money"></i></span>
-										<input type="number" id="montant" name="montant" class="form-control" placeholder="Montant des chambres" aria-describedby="montantPrepend" required>
-										{# <div class="invalid-tooltip">
-											Please choose a unique and valid username.
-										</div> #}
-									</div>
-								</div>
-							</div>							
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
-						{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
-						<button type="submit" class="btn btn-primary">Enregistrer</button>
-					</div>
-				</form>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
+		{% include "stock/__approvisionnement_form.html.twig" %}
+	</div>
+
+	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		{% include "stock/__approvisionnement_show_item.html.twig" %}
 	</div>
 	<!-- /.modal -->
 
-	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Affichage</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="table-responsive">
-                        <table class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
-                            {# <thead>
-                                <tr>
-                                    <th scope="col" style="width: 50%;">
-                                        Sweet Alert Type
-                                    </th>
-                                    <th scope="col" class="text-center">
-                                        Sweet Alert Examples
-                                    </th>
-                                </tr>
-                            </thead> #}
-                            <tbody>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Référence
-                                    </th>
-                                    <td class="text-center td-reference">
-										14
-                                    </td>
-                                </tr>                                                    
-                                <tr>
-                                    <th scope="row">
-                                        Libellé
-                                    </th>
-                                    <td class="text-center td-libelle">
-										<a href="#" class="badge badge-soft-primary">VIP</a>
-                                    </td>
-                                </tr>
-								<tr>
-                                    <th scope="row">
-                                        Montant
-                                    </th>
-                                    <td class="text-center td-montant">
-										10.000
-                                    </td>
-                                </tr>                                                      
-                            </tbody>
-                        </table>
-                        <!-- end table -->
-                    </div>
-				</div>
-				<div class="modal-footer d-flex justify-content-center">
-					<button type="button" class="btn btn-info" data-bs-dismiss="modal">Fermer</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
+	<div class="modal fade validation-modal" id="validation-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		{% include "stock/__approvisionnement_validation_form.html.twig" %}
 	</div>
-	<!-- /.modal -->
 
 {% endblock %}
 
 {% block page_custom_scripts %}
+	<script>
+		const URL_LIST_ITEM_PAR_ARTICLE = "{{ url_list_item_per_article }}";
+		const URL_PUT_ITEM_VALIDER = "{{ url_put_item_valider }}";
+		<!-- Foreign Data -->
+		const URL_LIST_ARTICLE = "{{ url_list_article }}";
+		const URL_GET_ARTICLE = "{{ url_get_article }}";
+		const URL_POST_ARTICLE = "{{ url_post_article }}";
+		const URL_PUT_ARTICLE = "{{ url_put_article }}";
+		const URL_LIST_TAXE = "{{ url_list_taxe }}";
+		const URL_GET_TAXE = "{{ url_get_taxe }}";
+	</script>
 	<!-- init js -->
 	<script src="{{ asset('assets/js/custom/stock/approvisionnement.init.js') }}"></script>
 {% endblock %}

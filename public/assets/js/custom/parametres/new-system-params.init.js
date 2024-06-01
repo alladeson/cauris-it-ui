@@ -50,7 +50,7 @@ let newSystemParamsWizard = {
         var data = newSystemParamsWizard.dataFormat()
         GlobalScript.request(URL_POST_ITEM, 'POST', data).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             newSystemParamsWizard.submitFormDataLogo(data);
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
@@ -67,7 +67,7 @@ let newSystemParamsWizard = {
         formData.append("url", URL_PUT_SYSTEM_PARAMS_LOGO.replace("__id__", param.id));
         GlobalScript.requestFile(formData).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             newSystemParamsWizard.saSuccesSystemParams("Succès !", "Enregistrement effectué avec succès. Pour continuer, vous devez vous connecter à nouveau. Cliquer sur OK pour continuer...")
             $("form#societe-form")[0].reset()
             $("form#emecef-form")[0].reset()
@@ -134,7 +134,7 @@ let newSystemParamsWizard = {
 
         // Vérification des infos importantes
         var data = newSystemParamsWizard.dataFormat()
-        console.log(data);
+        // console.log(data);
         if (data) {
             $.each(JSON.parse(data), function(key, value) {
                 if (!value && key != "rcm") {

@@ -76,14 +76,14 @@ let newFactureAvoir = {
     },
     createFactureAvoir: function(oktitle, oktext) {
         var typeId = facturationForm.find("#type").val()
-        console.log(typeId);
+        // console.log(typeId);
         // var fvId = factureValidationForm.find("#fv_ref").val();
-        console.log(facture.id);
+        // console.log(facture.id);
         var obj = { __typeId__: typeId, __fvId__: facture.id };
         var submitUrl = GlobalScript.textMultipleReplace(URL_POST_ITEM, obj);
         GlobalScript.request(submitUrl, "POST", null).then(function(data) {
                 // Run this when your request was successful
-                console.log(data);
+                // console.log(data);
                 facture = data;
                 newFactureAvoir.saSuccesShowFA("Validée !", "Facture d'avoir créée avec succès ! Cliquer sur 'OK' pour afficher les détails.");
             })
@@ -98,7 +98,7 @@ let newFactureAvoir = {
             .then(function(data) {
                 // Run this when your request was successful
                 dataJon = data;
-                console.log(dataJon);
+                // console.log(dataJon);
                 choices[choicePosition].clearChoices();
                 choices[choicePosition].setChoices(
                     dataJon,
@@ -116,13 +116,13 @@ let newFactureAvoir = {
         event.preventDefault();
         var reference = facturationForm.find("#fv_ref").val();
         var term = Inputmask.unmask(reference, { mask: "****-****-****-****-****-****" });
-        console.log(reference);
+        // console.log(reference);
         waitMe_zone = facturationForm;
         GlobalScript.request(URL_GET_FACTURE_BY_REF.replace("__ref__", term), "GET", null)
             .then(function(data) {
                 // Run this when your request was successful
                 facture = data;
-                console.log(data);
+                // console.log(data);
                 newFactureAvoir.confirmInvoiceCreation(event);
                 waitMe_zone = facturationForm;
             })
@@ -167,9 +167,9 @@ $(document).ready(function() {
     $("#fv_ref").autocomplete({
         source: function(request, response) {
             var typeId = facturationForm.find("#type").val();
-            console.log("type : " + typeId)
+            // console.log("type : " + typeId)
             var term = Inputmask.unmask(request.term, { mask: "****-****-****-****-****-****" });
-            console.log("search : " + term)
+            // console.log("search : " + term)
             if (!typeId) {
                 alertify.warning("Veuillez choisir un type de facture et reprenez svp !")
                 return;
@@ -177,7 +177,7 @@ $(document).ready(function() {
             waitMe_zone = null
             return GlobalScript.request(URL_LIST_FACTURE_AUTOCOMPLETE.replace("__typeId__", typeId) + "?search=" + term, 'GET', null).then(function(data) {
                 // Run this when your request was successful
-                console.log(data)
+                // console.log(data)
                 items = data;
                 response(data);
                 waitMe_zone = ""

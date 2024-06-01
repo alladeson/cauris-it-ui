@@ -169,7 +169,7 @@ let access = {
         var featureId = form.find("#feature").val();
         // Vérification du changment dans le formulaire
         if (GlobalScript.traceFormChange(dataId)) return;
-        console.log(data);
+        // console.log(data);
         // var url = dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM;
         var obj = { "__groupeId__": groupeId, "__featureId__": featureId };
         var url = GlobalScript.textMultipleReplace(URL_POST_ITEM, obj);
@@ -177,12 +177,14 @@ let access = {
         var method = 'POST';
         GlobalScript.request(url, method, data).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             datatable.ajax.reload();
             // access.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
             if (dataId) $("div.add-new-modal").modal('hide')
-            form[0].reset()
+            // form[0].reset()
+            // Réinitialisation du champ des fonctionnalités
+            choices[2].removeActiveItems();
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement");
@@ -191,10 +193,10 @@ let access = {
     showItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        // console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             var itemObj = data;
             access.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
@@ -207,11 +209,11 @@ let access = {
     editItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        // console.log(id);
         //var response = GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
             access.setformData($("div.add-new-modal").find('form'), itemObj);
@@ -230,10 +232,10 @@ let access = {
     removeItem: function(el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        // console.log(id);
+        // // console.log(id);
         GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
                 // access.saSucces(oktitle, oktext);
             alertify.success(oktext)
             datatable.ajax.reload();
@@ -327,7 +329,7 @@ $(document).ready(function() {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);
         });
-        console.log(count + ' column(s) are hidden');
+        // console.log(count + ' column(s) are hidden');
     });
 
     // Récupération des groupes d'utilisateur pour la liste

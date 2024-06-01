@@ -152,7 +152,7 @@ var dashboard = {
         GlobalScript.request(URL_BILAN_DASHBOARD, 'GET', JSON.stringify(bilanPayload)).then(function(data) {
             // Run this when your request was successful
             bilanData = data;
-            console.log(bilanData);
+            // console.log(bilanData);
             // Mise à jour des données des charts
             dashboard.apexchartsDataFormatter();
             dashboard.echartsDataFormatter(0);
@@ -175,7 +175,7 @@ var dashboard = {
             var bilan = bilanData[month];
             data.push(bilan[0]);
         });
-        console.log("bilan fv : " + data);
+        // console.log("bilan fv : " + data);
         apexchartsData.push(data);
         // Facture d'avoir
         data = [];
@@ -183,7 +183,7 @@ var dashboard = {
             var bilan = bilanData[month];
             data.push(bilan[1]);
         });
-        console.log("bilan fa : " + data);
+        // console.log("bilan fa : " + data);
         apexchartsData.push(data);
         // Récapitulatif
         data = [];
@@ -191,7 +191,7 @@ var dashboard = {
             var bilan = bilanData[month];
             data.push(bilan[2]);
         });
-        console.log("bilan recap : " + data);
+        // console.log("bilan recap : " + data);
         apexchartsData.push(data);
 
         // initialize charts

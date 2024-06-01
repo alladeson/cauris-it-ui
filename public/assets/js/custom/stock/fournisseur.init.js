@@ -1,6 +1,6 @@
 let datatable;
 let choices;
-let client = {
+let fournisseur = {
         listInitalizer: function() {
                 // $(".datatable").DataTable({ responsive: !1 }),
                 datatable = $(".datatable").DataTable({
@@ -20,7 +20,7 @@ let client = {
                                 "dataSrc": "",
                                 error: function(xhr, status, error) {
                                     (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
-                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des clients");
+                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des fournisseurs");
                                     $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
                                 }
                             },
@@ -33,8 +33,8 @@ let client = {
                                         "render": function(data, type, row, meta) {
                                             return `` +
                                                 `<div class="form-check font-size-16">` +
-                                                `<input type="checkbox" class="form-check-input" id="clientcheck${data}">` +
-                                                `<label class="form-check-label" for="clientcheck${data}"></label>` +
+                                                `<input type="checkbox" class="form-check-input" id="fournisseurcheck${data}">` +
+                                                `<label class="form-check-label" for="fournisseurcheck${data}"></label>` +
                                                 `</div>`;
                                         }
                                     },
@@ -141,9 +141,9 @@ let client = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                client.saSucces(oktitle, oktext) :
+                fournisseur.saSucces(oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                client.saError(notitle, notext);
+                fournisseur.saError(notitle, notext);
         });
     },
     saRemoveParams: function(el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
@@ -159,23 +159,23 @@ let client = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                client.removeItem(el, oktitle, oktext) :
+                fournisseur.removeItem(el, oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                client.saError(notitle, notext);
+                fournisseur.saError(notitle, notext);
         });
     },
     submitFormData: function(event) {
         event.preventDefault();
         var form = $("div.add-new-modal").find('form');
-        var data = client.dataFormat(form)
+        var data = fournisseur.dataFormat(form)
         let dataId = form.find("#item-id").val();
         if(GlobalScript.traceFormChange(dataId)) return;
-        console.log(data)
+        // console.log(data)
         GlobalScript.request((dataId ? URL_PUT_ITEM.replace("__id__", dataId) : URL_POST_ITEM), (dataId ? 'PUT' : 'POST'), data).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             datatable.ajax.reload();
-            // client.saSucces("Succès !", "Enregistrement effectué avec succès.")
+            // fournisseur.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
             if (dataId) $("div.add-new-modal").modal('hide')
             form[0].reset()
@@ -187,12 +187,12 @@ let client = {
     showItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             var itemObj = data;
-            client.setShowingTable(itemObj);
+            fournisseur.setShowingTable(itemObj);
             $(".show-item-modal").modal('show')
 
         }).catch(function(err) {
@@ -203,14 +203,14 @@ let client = {
     editItem: function(el) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        //console.log(id);
+        //// console.log(id);
         //var response = GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
-            client.setformData($("div.add-new-modal").find('form'), itemObj);
+            fournisseur.setformData($("div.add-new-modal").find('form'), itemObj);
             $(".add-new-modal").modal('show');
             GlobalScript.formChange($("div.add-new-modal").find('form'));  
         }).catch(function(err) {
@@ -221,11 +221,11 @@ let client = {
     removeItem: function(el, oktitle, oktext) {
         // Récupération de l'id de l'objet
         let id = el.data("item-id");
-        // console.log(id);
+        // // console.log(id);
         GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
-                // client.saSucces(oktitle, oktext);
+            // console.log(data)
+                // fournisseur.saSucces(oktitle, oktext);
             alertify.success(oktext)
             datatable.ajax.reload();
         }).catch(function(err) {
@@ -285,25 +285,25 @@ let client = {
     },
 };
 $(document).ready(function() {
-    client.listInitalizer();
+    fournisseur.listInitalizer();
     // Edit record
     datatable.on('click', '.edit-item', function(e) {
         e.preventDefault();
         formChange = false;
-        client.editItem($(this));
+        fournisseur.editItem($(this));
     });
 
     // Delete a record
     datatable.on('click', '.remove-item', function(e) {
         e.preventDefault();
-        // client.removeItem($(this));
-        client.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce client ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuler !", "Supprimé !", "Client supprimé avec succès.", "annulée !", "Opération annulée, rien n'a changé.");
+        // fournisseur.removeItem($(this));
+        fournisseur.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce fournisseur ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Fournisseur supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
     });
 
     //Show record
     datatable.on('click', '.show-item', function(e) {
         e.preventDefault();
-        client.showItem($(this));
+        fournisseur.showItem($(this));
     });
 
     //Show Action
@@ -317,10 +317,10 @@ $(document).ready(function() {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);
         });
-        console.log(count + ' column(s) are hidden');
+        // console.log(count + ' column(s) are hidden');
     });
 
-    // Input mask pour l'ifu du client
+    // Input mask pour l'ifu du fournisseur
     $("div.add-new-modal").find('form').find("#ifu").inputmask({
         mask: "*************",
         casing: "upper",

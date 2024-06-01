@@ -27,9 +27,9 @@ class FactureController extends AbstractController {
     }
 
     /**
-     * Undocumented function
+     * Pour afficher la page de création et de mise à jour de la facture
      *
-     * @param [type] $id
+     * @param int $id
      * @return Response
      */
     function fvRender($id = null): Response {
@@ -38,30 +38,34 @@ class FactureController extends AbstractController {
             'breadcrumb' => [ 'Facture', 'Facture Ventes' ],
             'sidebar_code' => [ 'FACT', 'FACTV', '' ],
             'menu_code' =>  ApiConstant::facturationFV,
+            //  Facture
             'url_post_item' => ApiConstant::URL_POST_FACTURE,
             'url_put_item' => ApiConstant::URL_PUT_FACTURE,
             'url_get_item' => ApiConstant::URL_GET_FACTURE,
-            'url_delete_item' => ApiConstant::URL_DELETE_DETAIL_FACTURE,
+            'url_get_detail_facture' => ApiConstant::URL_GET_DETAIL_FACTURE,
+            'url_delete_item' => ApiConstant::URL_DELETE_DETAIL_FACTURE,            
+            'url_valider_detail_facture' => ApiConstant::URL_VALIDER_DETAIL_FACTURE,
+            'url_valider_facture' => ApiConstant::URL_VALIDER_FACTURE,
+            'url_list_type_facture_vente' => ApiConstant::URL_LIST_TYPE_FACTURE_VENTE,
+            'url_list_type_paiement' => ApiConstant::URL_LIST_TYPE_PAIEMENT,
+            'url_imprimer_facture' => $_ENV[ 'API_BASE_URL' ] . ApiConstant::URL_IMPRIMER_FACTURE,
+            'facture_id' => $id,
+            // Client
             'url_list_client' => ApiConstant::URL_LIST_CLIENT,
             'url_get_client' => ApiConstant::URL_GET_CLIENT,
             'url_post_client' => ApiConstant::URL_POST_CLIENT,
             'url_put_client' => ApiConstant::URL_PUT_CLIENT,
             'url_get_facture_client' => ApiConstant::URL_GET_FACTURE_CLIENT,
+            // Article
             "url_list_categorie_article" => ApiConstant::URL_LIST_CATEGORIE_ARTICLE,
             'url_list_article' => ApiConstant::URL_LIST_ARTICLE,
             'url_get_article' => ApiConstant::URL_GET_ARTICLE,
             'url_post_article' => ApiConstant::URL_POST_ARTICLE,
             'url_put_article' => ApiConstant::URL_PUT_ARTICLE,
-            'url_get_detail_facture' => ApiConstant::URL_GET_DETAIL_FACTURE,
-            'url_valider_detail_facture' => ApiConstant::URL_VALIDER_DETAIL_FACTURE,
-            'url_valider_facture' => ApiConstant::URL_VALIDER_FACTURE,
+             // Taxe
             'url_list_taxe' => ApiConstant::URL_LIST_TAXE_IMPOT,
             'url_get_taxe' => ApiConstant::URL_GET_TAXE,
-            'url_list_taxe_aib' => ApiConstant::URL_LIST_TAXE_AIB,
-            'url_list_type_facture_vente' => ApiConstant::URL_LIST_TYPE_FACTURE_VENTE,
-            'url_list_type_paiement' => ApiConstant::URL_LIST_TYPE_PAIEMENT,
-            'url_imprimer_facture' => $_ENV[ 'API_BASE_URL' ] . ApiConstant::URL_IMPRIMER_FACTURE,
-            'facture_id' => $id,
+            'url_list_taxe_aib' => ApiConstant::URL_LIST_TAXE_AIB,            
         ] );
     }
 
@@ -135,6 +139,22 @@ class FactureController extends AbstractController {
             "url_get_item" => ApiConstant::URL_GET_FACTURE,
             "url_delete_item" => ApiConstant::URL_DELETE_FACTURE,
             "url_list_type_facture" => ApiConstant::URL_LIST_TYPE_FACTURE,
+        ]);
+    }
+
+    #[Route('/clients', name: 'facture_client')]
+    function client(): Response
+    {
+        return $this->render('facture/client.html.twig', [
+            'page_title' => 'Clients',
+            'breadcrumb' => ['Gestion de Stock', 'Clients'],
+            "sidebar_code" => ['FACT', 'CLT', ''],
+            'menu_code' => ApiConstant::facturationClient,
+            "url_list_item" => ApiConstant::URL_LIST_CLIENT,
+            "url_post_item" => ApiConstant::URL_POST_CLIENT,
+            "url_put_item" => ApiConstant::URL_PUT_CLIENT,
+            "url_get_item" => ApiConstant::URL_GET_CLIENT,
+            "url_delete_item" => ApiConstant::URL_DELETE_CLIENT,
         ]);
     }
 }

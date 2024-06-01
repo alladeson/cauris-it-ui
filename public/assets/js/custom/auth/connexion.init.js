@@ -6,13 +6,13 @@ let connexion = {
         var form = $("form#signin_form");
         var queryParam = form.find("#query_param").val();
         var data = form.serialize();
-        console.log(data);
+        // console.log(data);
         // Set waitme zone to form (waitMe plugin)
         waitMe_zone = form;
         connexion.sendData(form).then(function(data) {
             // Run this when your request was successful
             alertify.success("Connexion réussie");
-            console.log(data)
+            // console.log(data)
             window.location.href = queryParam ? queryParam : "/";
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
