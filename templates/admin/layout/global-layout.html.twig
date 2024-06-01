@@ -3,6 +3,10 @@
 {% set gestStock = 10000 %}
 {% set gestStockCategorie = 11000 %}
 {% set gestStockArticle = 12000 %}
+{% set gestStockApprovisionnement = 13000 %}
+{% set gestStockFournisseur = 14000 %}
+{% set gestStockCmdFournisseur = 15000 %}
+{% set gestStockInventaire = 16000 %}
 {% set facturation = 20000 %}
 {% set facturationFV = 21000 %}
 {% set facturationFA = 22000 %}
@@ -63,6 +67,43 @@
 				active: sidebar_code[1] == "A/P" ? true : false,
 				children: [],
 			},
+			{
+				readable: menu_readable(gestStockApprovisionnement),
+				id: "gstk-approvisionnement",
+				pathName: "gstk_approvisionnement",
+				title: "Approvisionnement",
+				dataKey: "t-approvisionnement",
+				active: sidebar_code[1] == "APPR" ? true : false,
+				children: [],
+			},
+			{
+				readable: menu_readable(gestStockFournisseur),
+				id: "gstk-fournisseur",
+				pathName: "gstk_fournisseur",
+				title: "Fournisseurs",
+				dataKey: "t-fournisseurs",
+				active: sidebar_code[1] == "FNS" ? true : false,
+				children: [],
+			},
+			{
+				readable: menu_readable(gestStockCmdFournisseur),
+				id: "gstk-cmd-fournisseur-index",
+				pathName: "gstk_cmd_fournisseur_index",
+				title: "Bon de commande",
+				dataKey: "t-cmd-fournisseur-index",
+				active: sidebar_code[1] == "CMDF" ? true : false,
+				children: [],
+			},
+			{
+				readable: menu_readable(gestStockInventaire),
+				id: "gstk-inventaire",
+				pathName: "gstk_inventaire",
+				title: "Inventaire",
+				dataKey: "t-cmd-inventaire",
+				active: sidebar_code[1] == "INVTR" ? true : false,
+				children: [],
+			},
+			
 		],
 	},
 	{
@@ -103,8 +144,8 @@
 			},
 			{
 				readable: menu_readable(facturationClient),
-				id: "gstk-client",
-				pathName: "gstk_client",
+				id: "facture-client",
+				pathName: "facture_client",
 				title: "Clients",
 				dataKey: "t-clients",
 				active: sidebar_code[1] == "CLT" ? true : false,
@@ -329,5 +370,7 @@
 		{% if authUser.sa %}
 			user_sa = true;
 		{% endif %}
+		// URL global upadate commande fournisseur
+		const URL_GLOBAL_UPDATE_CMD_FOURNISSEUR = "{{ path('gstk_cmd_fournisseur_update', {id: '__id__'}) }}";
 	</script>
 {% endblock %}

@@ -1,0 +1,76 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- Inventaire de stock
+{% endblock %}
+
+{% block page_content %}
+
+	<div class="row align-items-center">
+		<div class="col-md-6 col-5">
+			<div class="mb-3">
+				<h5 class="card-title">Liste des articles
+					<span class="text-muted fw-normal ms-2"></span>
+				</h5>
+			</div>
+		</div>
+
+		<div class="col-md-6 col-7">
+			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+				<div onclick="inventaire.printFicheInventaire(event)" data-bs-toggle="tooltip" data-bs-placement="top" title data-bs-original-title="Imprimer la fiche d'inventaire de stock">
+					<a href="javascript:window.print()" class="btn btn-success waves-effect waves-light me-1"><i class="fa fa-print"></i></a>
+				</div>
+
+				<div class="dropdown">
+					<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bx bx-dots-horizontal-rounded"></i>
+					</a>
+
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li>
+							<a class="dropdown-item" onclick="inventaire.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- end row -->
+
+	<div class="table-responsive mb-4">
+		<table data-order='[[1, "desc"]]' class="table align-middle datatable dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+			<thead>
+				<tr>
+					<th>
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="checkAll">
+							<label class="form-check-label" for="checkAll"></label>
+						</div>
+					</th>
+					<th>Référence</th>
+					<th>Catégorie</th>
+					<th>Désignation</th>
+					<th>Stock</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<!-- end table -->
+	</div>
+	<!-- end table responsive -->
+
+{% endblock %}
+
+{% block page_custom_scripts %}
+
+    <!-- Liste des constantes -->
+	<script>	
+		const URL_IMPRIMER_FICHE_INVENTAIRE = "{{url_imprimer_fiche_inventaire}}";
+	</script>
+
+	<!-- init js -->
+	<script src="{{ asset('assets/js/custom/stock/inventaire.init.js') }}"></script>
+{% endblock %}

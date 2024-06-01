@@ -1,0 +1,385 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- Bon de commande
+{% endblock %}
+
+{% block page_content %}
+
+	<div class="accordion accordion-flush mb-2" id="cmdFournisseurForm">
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="flush-headingOne">
+				<button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
+					Formulaire du bon de commande
+				</button>
+			</h2>
+			<div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#cmdFournisseurForm">
+				<div class="accordion-body text-muted">
+					<h5 class="font-size-14 mb-3"><i class="mdi mdi-arrow-right text-primary me-1"></i>Choisissez une section</h5>
+					<div class="row mb-2 section-wrapper">
+						<div class="col-sm-4">
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="sectionRadios" id="articleSectionRadio" checked="" data-section="article">
+								<label class="form-check-label" for="articleSectionRadio">
+									Ajouter un Article
+								</label>
+							</div>							
+						</div>
+						<div class="col-sm-4">
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="sectionRadios" id="expeditionSectionRadio" data-section="expedition">
+								<label class="form-check-label" for="expeditionSectionRadio">
+									Expédition/Manutention
+								</label>
+							</div>							
+						</div>
+						<div class="col-sm-4">
+							<div class="form-check">
+								<input class="form-check-input" type="radio" name="sectionRadios" id="infosAGeneralesSectionRadio" data-section="infos-generales">
+								<label class="form-check-label" for="infosAGeneralesSectionRadio">
+									Infos Générale
+								</label>
+							</div>							
+						</div>
+					</div>
+					<hr/>
+					<br>
+					{# Formulaire d'ajout d'un article et d'expédition/manutention #}
+					{% include "stock/commande-fournisseur/__ajout_article_form.html.twig" %}
+					{# Formulaire d'ajout des donnés générale de la commande #}
+					{% include "stock/commande-fournisseur/__infos_generales_form.html.twig" %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end accordion -->
+	<div class="row align-items-center">
+		<div class="col-md-6 col-7">
+			<div class="mb-3">
+				<h5 class="card-title">Détails du bon de commande
+					<span class="text-muted fw-normal ms-2"></span>
+				</h5>
+			</div>
+		</div>
+		<div class="col-md-6 col-5">
+			<div
+				class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+				<div>
+					<a href="javascript:void(0);" class="btn btn-outline-success waves-effect waves-light validate-commande">
+						<i class="bx bx-list-check me-1"></i>
+						Valider</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- end row -->
+
+	<div class="table-responsive mb-4">
+		<table class="table align-middle datatable dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+			<thead>
+				<tr>
+					<th scope="col" style="width: 50px;">
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="checkAll">
+							<label class="form-check-label" for="checkAll"></label>
+						</div>
+					</th>
+					<th scope="col">Réf.</th>
+					<th scope="col">Désignation</th>
+					<th scope="col">Qté</th>
+					<th scope="col">Prix U</th>
+					<th scope="col">Remise</th>
+					<th scope="col">Taxe</th>
+					<th scope="col">Mt HT</th>
+					<th scope="col">Mt TVA</th>
+					<th scope="col">Mt TTC</th>
+					<th style="width: 80px; min-width: 80px;">Action</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		<!-- end table -->
+	</div>
+	<!-- end table responsive -->
+
+	{# fournisseur new form #}
+	<div class="modal fade fournisseur-new-modal" id="fournisseur-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		{% include "stock/__fournisseur_form.html.twig" %}
+	</div>
+	<!-- /.modal -->
+
+	{# Article new form #}
+	<div class="modal fade article-new-modal" id="article-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		{% include "stock/__article_form.html.twig" %}
+	</div>
+	<!-- /.modal -->
+
+	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Affichage</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-6 col-sm-12">
+							<h5 class="font-size-14 mt-2">
+								<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif générale</h5>
+							<div class="table-responsive">
+								<table class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
+									<thead>
+										<tr>
+											<th scope="col" colspan="2"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th scope="row">
+												Référence
+											</th>
+											<td class="text-center td-detail-reference"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Désignation
+											</th>
+											<td class="text-center td-detail-designation"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Quantité
+											</th>
+											<td class="text-center td-detail-quantite"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Taxe
+											</th>
+											<td class="text-center td-detail-taxe"></td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- end table -->
+							</div>
+						</div>
+						<div class="col-lg-6 col-sm-12">
+							<h5 class="font-size-14 mt-lg-2 mt-4">
+								<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif des montants</h5>
+							<div class="table-responsive">
+								<table class="table table-nowrap align-middle justify-content-center mb-0 detail-recap-montant-table">
+									<thead>
+										<tr>
+											<th scope="col" colspan="2" class="text-center"></th>
+										</tr>
+									</thead>
+									<tbody>										
+										<tr>
+											<th scope="row">
+												Prix Unitaire HT
+											</th>
+											<td class="text-center td-detail-prixUnitaire"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Montant Total HT
+											</th>
+											<td class="text-center td-detail-mht"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Montant Total TVA
+											</th>
+											<td class="text-center td-detail-mtva"></td>
+										</tr>										
+										<tr>
+											<th scope="row">
+												Montant Total T.T.C
+											</th>
+											<td class="text-center td-detail-mttc"></td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- end table -->
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<h5 class="font-size-14 mt-4">
+								<i class="mdi mdi-arrow-right text-primary me-1"></i>Remise</h5>
+							<div class="table-responsive">
+								<table class="table table-nowrap align-middle justify-content-center mb-0 ts-remise-show-table">
+									<thead>
+										<tr>
+											<th scope="col" class="text-center">Remise</th>
+											<th scope="col" class="text-center tr-detail-remise">Taux</th>
+											<th scope="col" class="text-center tr-detail-remise">Prix originale</th>
+											<th scope="col" class="text-center tr-detail-remise">Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="text-center td-detail-remise"></td>
+											<td class="text-center td-detail-remise-taux tr-detail-remise"></td>
+											<td class="text-center td-detail-remise-prix-u tr-detail-remise"></td>
+											<td class="text-center td-detail-remise-description tr-detail-remise"></td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- end table -->
+								<!-- No remise message -->
+								<p id="remise-false-text">
+									Pas de remise définie.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer d-flex justify-content-center">
+					<button type="button" class="btn btn-info" data-bs-dismiss="modal">Fermer</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div class="modal fade validate-commande-modal" id="validate-commande-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-xl">
+			<div class="modal-content">
+				<form method="post" class="" onsubmit="cmdFournisseur.customMessageOnValidationFormSubmit(event)">
+					<div class="modal-header">
+						<h5 class="modal-title">Validation du bon de commande</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-lg-6 col-sm-12">
+								<h5 class="font-size-14 mt-2">
+									<i class="mdi mdi-arrow-right text-primary me-1"></i>Formulaire de validation</h5>
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="mb-3 position-relative">
+											<label class="form-label font-size-13 text-muted" for="date-creation">Date de création</label>
+											<input disabled type="datetime-local" class="form-control" id="date-creation" name="date-creation" placeholder="" value="" step=1 required>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mb-3 position-relative">
+											<label class="form-label font-size-13 text-muted" for="reference-externe">Référence externe</label>
+											<input type="texte" class="form-control" id="reference-externe" name="reference-externe" placeholder="Saisissez la référence externe" value="">
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mb-3 position-relative">
+											<label class="form-label font-size-13 text-muted" for="date-livraison">Date de livraison</label>
+											<input type="datetime-local" class="form-control" id="date-livraison" name="date-livraison" placeholder="" value="" step=1 required>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="mb-3 position-relative">
+											<label class="form-label font-size-13 text-muted" for="reference-facture">Référence de la facture du fournisseur</label>
+											<input type="text" class="form-control" id="reference-facture" name="reference-facture" placeholder="Référence de la facture du fournisseur" value="" required>
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="mb-3 position-relative">
+											<label class="form-label font-size-13 text-muted" for="notes">
+												Notes <i class="bx bx-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title data-bs-original-title="Ajoutez les conditions d'achat, de paiement terms (i.e. Net 30 jours) et les détails de la livraison."></i>
+											</label>
+											<textarea class="form-control" id="notes" name="notes" placeholder="Ajoutez les conditions d'achat, de paiement terms (i.e. Net 30 jours) et les détails de la livraison" required></textarea>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6 col-sm-12">
+								<h5 class="font-size-14 mt-lg-2 mt-4">
+									<i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif</h5>
+								<div class="table-responsive">
+									<table class="table table-nowrap align-middle justify-content-center mb-0 commande-validation-table">
+										<thead>
+											<tr>
+												<th scope="col" colspan="2" class="text-center"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr id="tr-commande-remise">
+												<th scope="row">
+													Montant Remise
+												</th>
+												<td class="text-center td-commande-remise"></td>
+											</tr>
+											<tr id="tr-commande-mht">
+												<th scope="row">
+													Montant Total HT
+												</th>
+												<td class="text-center td-commande-mht"></td>
+											</tr>
+											<tr id="tr-commande-mtva">
+												<th scope="row">
+													Montant Total TVA
+												</th>
+												<td class="text-center td-commande-mtva"></td>
+											</tr>											
+											<tr id="tr-commande-mttc">
+												<th scope="row">
+													Montant Total T.T.C
+												</th>
+												<td class="text-center td-commande-mttc"></td>
+											</tr>
+										</tbody>
+									</table>
+									<!-- end table -->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer d-flex justify-content-center">
+						<button type="reset" class="btn btn-light btn-sm" data-bs-dismiss="modal">Annuler</button>
+						{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
+						<button type="submit" class="btn btn-primary">Valider</button>
+					</div>
+				</form>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+{% endblock %}
+
+{% block page_custom_scripts %}
+	<script>
+		<!-- Commande fournissseur -->
+		let CMDF_ID = "{{ cmdf_id }}";
+		const URL_GET_CMD_FOURNISSEUR = "{{ url_get_cmd_fournisseur }}";
+		const URL_GET_ITEM_BY_FOURNISSEUR = "{{ url_get_item_by_fournisseur }}";
+		const URL_VALIDER_CMD_FOURNISSEUR = "{{ url_valider_cmd_fournisseur }}";
+		const URL_CMD_INFOS_ADD = "{{ url_put_item_infos_add }}";
+		const URL_CMD_EXPEDITION_DATA = "{{ url_put_item_expedition }}";
+		const URL_IMPRIMER_CMD_FOURNISSEUR = "{{ url_imprimer_item }}";
+		<!-- Fournisseur -->
+		const URL_LIST_FOURNISSEUR = "{{ url_list_fournisseur }}";
+		const URL_GET_FOURNISSEUR = "{{ url_get_fournisseur }}";
+		const URL_POST_FOURNISSEUR = "{{ url_post_fournisseur }}";
+		const URL_PUT_FOURNISSEUR = "{{ url_put_fournisseur }}";
+		<!-- Article -->
+		const URL_LIST_ARTICLE = "{{ url_list_article }}";
+		const URL_LIST_CATEGORIE_ARTICLE = "{{url_list_categorie_article}}";
+		const URL_GET_ARTICLE = "{{ url_get_article }}";
+		const URL_POST_ARTICLE = "{{ url_post_article }}";
+		const URL_PUT_ARTICLE = "{{ url_put_article }}";
+		<!-- Taxe -->
+		const URL_LIST_TAXE = "{{ url_list_taxe }}";
+		const URL_GET_TAXE = "{{ url_get_taxe }}";
+		<!-- Commande fournisseur index -->
+		const URL_CMD_FOURNISSEUR_INDEX = "{{ path('gstk_cmd_fournisseur_index')|escape('js') }}";
+	</script>
+	<!-- init js -->
+	<script src="{{ asset('assets/js/custom/stock/commande-fournisseur/new.init.js') }}"></script>
+{% endblock %}

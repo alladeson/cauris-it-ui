@@ -1,0 +1,89 @@
+<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<form method="post" class="" onsubmit="approvisionnement.submitFormData(event)" >
+					<div class="modal-header">
+						<h5 class="modal-title">Nouvel ajout</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="mb-3 position-relative">
+									<input type="hidden" id="item-id" name="item-id" value="">
+									<label for="article" class="form-label">Article</label>
+									<select required data-trigger class="form-control form-select" name="article" id="article" placeholder="chercher...">
+									</select>
+								</div>
+							</div>
+						</div>						
+						<div class="row">
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label for="stock" class="form-label">Quantité</label>
+									<input required type="number" min="0" class="form-control" id="quantite" name="quantite" placeholder="La quantité de l'article" value="">
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="prix">Prix HT</label>
+									<div class="input-group">
+										<span class="input-group-text" id="prixPrepend">FCFA</i></span>
+										<input type="number" onchange="approvisionnement.setRemiseFormOnPricesChange(event);" id="prix" name="prix" min="0" class="form-control" placeholder="Le prix unitaire HT" aria-describedby="prixPrepend" required>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">						
+							<div class="col-md-12">
+								<div class="mb-3 position-relative">
+									<label for="taxe" class="form-label">Taxe</label>
+									<select data-trigger required class="form-control form-select" name="taxe" id="taxe" placeholder="chercher...">
+									</select>
+								</div>								
+							</div>							
+						</div>
+						<!-- Start Remise -->
+						<div class="row">
+							<div class="mb-3">
+								<div class="form-check">
+									<input onchange="approvisionnement.remiseInputsToggle(event)" class="form-check-input" type="checkbox" id="remise-check">
+									<label class="form-check-label" for="remise-check">
+										<h5 class="font-size-14">
+											<i class="mdi mdi-arrow-right text-primary me-1"></i>Remise</h5>
+									</label>
+								</div>
+							</div>
+							<div class="row" id="remiseInputsToggle">
+								<div class="col-sm-6">
+									<div class="mb-3 position-relative">
+										<label class="form-label font-size-13 text-muted" for="remise_taux">Taux (en %)</label>
+										<input type="number" onchange="approvisionnement.setRemiseFormOnTauxChange(event)" step="1" min="1" class="form-control" id="remise_taux" name="remise_taux" placeholder="" value="">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="mb-3 position-relative">
+										<label class="form-label font-size-13 text-muted" for="remise_prix_u">Prix Unitaire Originale</label>
+										<input onchange="approvisionnement.setRemiseFormOnTauxChange(event)" type="number" step="0.001" min="0" class="form-control" id="remise_prix_u" name="remise_prix_u" placeholder="" value="">
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="mb-3 position-relative">
+										<label class="form-label font-size-13 text-muted" for="remise_description">Description remise</label>
+										<input type="texte" class="form-control" id="remise_description" name="remise_description" placeholder="" value="">
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- End Remise -->						
+					</div>
+					<div class="modal-footer">
+						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
+						{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
+						<button type="submit" class="btn btn-primary">Enregistrer</button>
+					</div>
+				</form>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->

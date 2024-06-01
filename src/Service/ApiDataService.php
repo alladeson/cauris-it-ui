@@ -167,9 +167,9 @@ class ApiDataService extends AbstractController
     /**
      * Retourne l'url de base de l'api
      *
-     * @return String
+     * @return string
      */
-    public function getBaseUrl(): String
+    public function getBaseUrl(): string
     {
         return $this->baseUrl;
     }
@@ -187,8 +187,8 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP à l'API
      *
-     * @param String $methode Méthode HTTP à exécuter
-     * @param String $route Route de l'API à exécuter
+     * @param string $methode Méthode HTTP à exécuter
+     * @param string $route Route de l'API à exécuter
      * @param object $data Donnée du body de la requète
      * @return ResponseInterface Réponse de la requête
      */
@@ -220,8 +220,8 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP à l'API
      *
-     * @param String $methode Méthode HTTP à exécuter
-     * @param String $route Route de l'API à exécuter
+     * @param string $methode Méthode HTTP à exécuter
+     * @param string $route Route de l'API à exécuter
      * @param object $data Donnée du body de la requète
      * @return ResponseInterface Réponse de la requête
      */
@@ -253,8 +253,8 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP à l'API
      *
-     * @param String $methode Méthode HTTP à exécuter
-     * @param String $route Route de l'API à exécuter
+     * @param string $methode Méthode HTTP à exécuter
+     * @param string $route Route de l'API à exécuter
      * @param UploadedFile $file Le fichier à envoyer
      * @return ResponseInterface Réponse de la requête
      */
@@ -293,8 +293,8 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP à l'API et reçoie les données sous forme de tableau.
      *
-     * @param String $methode
-     * @param String $route
+     * @param string $methode
+     * @param string $route
      * @param object $data
      * @return array
      */
@@ -307,8 +307,8 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP GET à l'API et reçoie les données sous forme de tableau.
      *
-     * @param String $route
-     * @return object
+     * @param string $route
+     * @return array
      */
     public function getToArray($route)
     {
@@ -318,7 +318,7 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP POST à l'API et reçoie les données sous forme de tableau.
      *
-     * @param String $route
+     * @param string $route
      * @param object $data
      * @return array
      */
@@ -330,7 +330,7 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP PUT à l'API et reçoie les données sous forme de tableau.
      *
-     * @param String $route
+     * @param string $route
      * @param object $data
      * @return array
      */
@@ -342,7 +342,7 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP DELETE à l'API et reçoie les données sous forme de tableau.
      *
-     * @param String $route
+     * @param string $route
      * @param object $data
      * @return array
      */
@@ -354,8 +354,8 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP à l'API et reçoie les données sous forme d'objet.
      *
-     * @param String $methode
-     * @param String $route
+     * @param string $methode
+     * @param string $route
      * @param object $data
      */
     public function requestToJson($methode, $route, $data = null)
@@ -367,7 +367,7 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP GET à l'API et reçoie les données sous forme d'objet.
      *
-     * @param String $route
+     * @param string $route
      * @return object
      */
     public function get($route)
@@ -378,7 +378,7 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP POST à l'API et reçoie les données sous forme d'objet.
      *
-     * @param String $route
+     * @param string $route
      * @param object $data
      * @return object
      */
@@ -390,7 +390,7 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP PUT à l'API et reçoie les données sous forme d'objet.
      *
-     * @param String $route
+     * @param string $route
      * @param object $data
      * @return object
      */
@@ -402,7 +402,7 @@ class ApiDataService extends AbstractController
     /**
      * Envoie une requête HTTP DELETE à l'API et reçoie les données sous forme d'objet.
      *
-     * @param String $route
+     * @param string $route
      * @param object $data
      * @return object
      */
@@ -520,7 +520,7 @@ class ApiDataService extends AbstractController
     /**
      * Mettre à jour le fichier de log
      *
-     * @param String $message
+     * @param string $message
      * @param Array $context, default Null
      * @return void
      */
@@ -532,8 +532,8 @@ class ApiDataService extends AbstractController
     /**
      * Méthode de récupération des données depuis l'API
      *
-     * @param String $methode La méthode http à utilisé
-     * @param String $route L'url à appeler
+     * @param string $methode La méthode http à utilisé
+     * @param string $route L'url à appeler
      * @return Array Tableau de la valeur de retour et du code du statut de la reponse
      */
     public function getData($methode, $route): ResponseInterface
@@ -550,8 +550,8 @@ class ApiDataService extends AbstractController
     /**
      * Envoie de données l'API pour la création et la mise à jour des entités
      *
-     * @param String $methode La méthode http à utilisé
-     * @param String $route L'url à appeler
+     * @param string $methode La méthode http à utilisé
+     * @param string $route L'url à appeler
      * @param object $data la donnée du body de la requète
      * @return Array Tableau de la valeur de retour et du code du statut de la reponse
      */

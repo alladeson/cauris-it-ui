@@ -1,6 +1,6 @@
 let datatable;
 let choices;
-let categorieArticle = {
+let client = {
         listInitalizer: function() {
                 // $(".datatable").DataTable({ responsive: !1 }),
                 datatable = $(".datatable").DataTable({
@@ -20,7 +20,7 @@ let categorieArticle = {
                                 "dataSrc": "",
                                 error: function(xhr, status, error) {
                                     (waitMe_zone.length ? waitMe_zone : $('body')).waitMe('hide')
-                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des catégories d'article");
+                                    GlobalScript.ajxRqtErrHandler(xhr, "alertify", "la récupération des clients");
                                     $(".datatable").find('tbody td').html('<span class="text-danger">Echec de chargement</span>');
                                 }
                             },
@@ -33,14 +33,54 @@ let categorieArticle = {
                                         "render": function(data, type, row, meta) {
                                             return `` +
                                                 `<div class="form-check font-size-16">` +
-                                                `<input type="checkbox" class="form-check-input" id="categorieArticlecheck${data}">` +
-                                                `<label class="form-check-label" for="categorieArticlecheck${data}"></label>` +
+                                                `<input type="checkbox" class="form-check-input" id="clientcheck${data}">` +
+                                                `<label class="form-check-label" for="clientcheck${data}"></label>` +
                                                 `</div>`;
                                         }
                                     },
                                     { data: 'id' },
-                                    { data: 'libelle' },
-                                    // { data: 'montant' },
+                                    {
+                                        data: 'name',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'ifu',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'rcm',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'telephone',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'email',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'address',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
+                                    {
+                                        data: 'ville',
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        }
+                                    },
                                     {
                                         "data": "id",
                                         "class": "",
@@ -101,9 +141,9 @@ let categorieArticle = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                categorieArticle.saSucces(oktitle, oktext) :
+                client.saSucces(oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                categorieArticle.saError(notitle, notext);
+                client.saError(notitle, notext);
         });
     },
     saRemoveParams: function(el, title, text, confirmButtonText, cancelButtonText, oktitle, oktext, notitle, notext) {
@@ -119,15 +159,15 @@ let categorieArticle = {
             buttonsStyling: !1,
         }).then(function(e) {
             e.value ?
-                categorieArticle.removeItem(el, oktitle, oktext) :
+                client.removeItem(el, oktitle, oktext) :
                 e.dismiss === Swal.DismissReason.cancel &&
-                categorieArticle.saError(notitle, notext);
+                client.saError(notitle, notext);
         });
     },
     submitFormData: function(event) {
         event.preventDefault();
         var form = $("div.add-new-modal").find('form');
-        var data = categorieArticle.dataFormat(form)
+        var data = client.dataFormat(form)
         let dataId = form.find("#item-id").val();
         if(GlobalScript.traceFormChange(dataId)) return;
         // console.log(data)
@@ -135,7 +175,7 @@ let categorieArticle = {
             // Run this when your request was successful
             // console.log(data)
             datatable.ajax.reload();
-            // categorieArticle.saSucces("Succès !", "Enregistrement effectué avec succès.")
+            // client.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
             if (dataId) $("div.add-new-modal").modal('hide')
             form[0].reset()
@@ -152,8 +192,9 @@ let categorieArticle = {
             // Run this when your request was successful
             // console.log(data)
             var itemObj = data;
-            categorieArticle.setShowingTable(itemObj);
-            $(".show-item-modal").modal('show')            
+            client.setShowingTable(itemObj);
+            $(".show-item-modal").modal('show')
+
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "l'affichage");
@@ -169,9 +210,9 @@ let categorieArticle = {
             // console.log(data)
             var itemObj = data;
             $("div.add-new-modal").find('h5.modal-title').text('Modification');
-            categorieArticle.setformData($("div.add-new-modal").find('form'), itemObj);
-            $(".add-new-modal").modal('show');    
-            GlobalScript.formChange($("div.add-new-modal").find('form'));        
+            client.setformData($("div.add-new-modal").find('form'), itemObj);
+            $(".add-new-modal").modal('show');
+            GlobalScript.formChange($("div.add-new-modal").find('form'));  
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "sweet", "la modification");
@@ -184,7 +225,7 @@ let categorieArticle = {
         GlobalScript.request(URL_DELETE_ITEM.replace("__id__", id), 'DELETE', null).then(function(data) {
             // Run this when your request was successful
             // console.log(data)
-                // categorieArticle.saSucces(oktitle, oktext);
+                // client.saSucces(oktitle, oktext);
             alertify.success(oktext)
             datatable.ajax.reload();
         }).catch(function(err) {
@@ -195,15 +236,26 @@ let categorieArticle = {
     setformData: function(form, item) {
         if (form.length) {
             form.find("#item-id").val(item.id)
-                //form.find("#reference").val(item.id)
-            form.find("#libelle").val(item.libelle)
+            form.find("#name").val(item.name)
+            form.find("#ifu").val(item.ifu)
+            form.find("#rcm").val(item.rcm)
+            form.find("#telephone").val(item.telephone)
+            form.find("#email").val(item.email)
+            form.find("#address").val(item.address)
+            form.find("#ville").val(item.ville)
         }
     },
     dataFormat: function(form) {
         if (form.length) {
             data = {
                 'id': GlobalScript.checkBlank(form.find("#item-id").val()),
-                'libelle': GlobalScript.checkBlank(form.find("#libelle").val()),
+                'name': GlobalScript.checkBlank(form.find("#name").val()),
+                'ifu': GlobalScript.checkBlank(form.find("#ifu").val()),
+                'rcm': GlobalScript.checkBlank(form.find("#rcm").val()),
+                'telephone': GlobalScript.checkBlank(form.find("#telephone").val()),
+                'email': GlobalScript.checkBlank(form.find("#email").val()),
+                'address': GlobalScript.checkBlank(form.find("#address").val()),
+                'ville': GlobalScript.checkBlank(form.find("#ville").val()),
             };
             return JSON.stringify(data);
         }
@@ -223,29 +275,35 @@ let categorieArticle = {
     setShowingTable: function(itemObj) {
         var $showClasseTable = $('table.item-show-table');
         $showClasseTable.find('.td-reference').text(itemObj.id);
-        $showClasseTable.find('.td-libelle').text(itemObj.libelle);
-    },    
+        $showClasseTable.find('.td-name').text(itemObj.name ? itemObj.name : "-");
+        $showClasseTable.find('.td-ifu').text(itemObj.ifu ? itemObj.ifu : "-");
+        $showClasseTable.find('.td-rcm').text(itemObj.rcm ? itemObj.rcm : "-");
+        $showClasseTable.find('.td-telephone').text(itemObj.telephone ? itemObj.telephone : "-");
+        $showClasseTable.find('.td-email').text(itemObj.email ? itemObj.email : "-");
+        $showClasseTable.find('.td-address').text(itemObj.address ? itemObj.address : "-");
+        $showClasseTable.find('.td-ville').text(itemObj.ville ? itemObj.ville : "-");
+    },
 };
 $(document).ready(function() {
-    categorieArticle.listInitalizer();
+    client.listInitalizer();
     // Edit record
     datatable.on('click', '.edit-item', function(e) {
         e.preventDefault();
         formChange = false;
-        categorieArticle.editItem($(this));
+        client.editItem($(this));
     });
 
     // Delete a record
     datatable.on('click', '.remove-item', function(e) {
         e.preventDefault();
-        // categorieArticle.removeItem($(this));
-        categorieArticle.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer cette catégorie d'articles ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimée !", "Catégorie d'articles supprimée avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
+        // client.removeItem($(this));
+        client.saRemoveParams($(this), "Êtes-vous sûr de vouloir supprimer ce client ?", "Cette opération est irréversible !", "Oui, supprimer !", "Non, annuller !", "Supprimé !", "Client supprimé avec succès.", "Annullée !", "Opération annullée, rien n'a changé.");
     });
 
     //Show record
     datatable.on('click', '.show-item', function(e) {
         e.preventDefault();
-        categorieArticle.showItem($(this));
+        client.showItem($(this));
     });
 
     //Show Action
@@ -260,5 +318,11 @@ $(document).ready(function() {
             $(".dropdown-menu-end").css("position", position);
         });
         // console.log(count + ' column(s) are hidden');
+    });
+
+    // Input mask pour l'ifu du client
+    $("div.add-new-modal").find('form').find("#ifu").inputmask({
+        mask: "*************",
+        casing: "upper",
     });
 });

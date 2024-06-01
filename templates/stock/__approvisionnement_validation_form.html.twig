@@ -1,0 +1,33 @@
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <form method="post" class="" onsubmit="approvisionnement.customMessageOnValidationFormSubmit(event)">
+            <div class="modal-header">
+                <h5 class="modal-title">Validation de la facture</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12">
+                        <h5 class="font-size-14 mt-2">
+                            <i class="mdi mdi-arrow-right text-primary me-1"></i>Formulaire de validation</h5>
+                        
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="mb-3 position-relative">
+                                    <label class="form-label font-size-13 text-muted" for="reference-facture">Référence de la facture</label>
+                                    <input type="text" class="form-control" id="reference-facture" name="reference-facture" placeholder="Référence de la facture de l'approvisionnement" value="" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="reset" class="btn btn-light btn-sm" data-bs-dismiss="modal">Annuler</button>
+                <button type="submit" class="btn btn-primary">Valider</button>
+            </div>
+        </form>
+    </div>
+    <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

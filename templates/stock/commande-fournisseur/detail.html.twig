@@ -1,0 +1,183 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- Détail Bon de commande
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="invoice-title">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-grow-1">
+                                <div class="mb-4">
+                                    <img src="{{ asset('assets/uploads/' ~ param.logo) }}" alt="" height="50"><span class="logo-txt font-size-18">{{param.name}}</span>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="mb-4">
+                                    <h2 class="float-end">
+                                        Bon de commande
+                                        <div class="badge badge-soft-{{cmdf.valid ? 'success' : 'warning'}} font-size-12">{{cmdf.valid ? 'Validé' : 'En attente'}}</div>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>  
+                        <dl class="row mb-0">
+                            <div class="row justify-content-end"> 
+                                <dt class="col-sm-2  text-end">N° Bon de commande :</dt>
+                                <dd class="col-sm-2  text-end">{{ "#" ~ cmdf.numero }}</dd>
+                            </div> 
+                            <div class="row justify-content-end"> 
+                                <dt class="col-sm-2  text-end">Date de création :</dt>
+                                <dd class="col-sm-2  text-end">{{ cmdf.dateCreation|date('d/m/Y') }}</dd>
+                            </div>
+                            <div class="row justify-content-end"> 
+                                <dt class="col-sm-2  text-end">Date de livraison :</dt>
+                                <dd class="col-sm-2  text-end">{{ cmdf.dateLivraison ? cmdf.dateLivraison|date('d/m/Y') : "-" }}</dd>
+                            </div>
+                            <div class="row justify-content-end"> 
+                                <dt class="col-sm-2  text-end text-truncate">Références extermes :</dt>
+                                <dd class="col-sm-2  text-end">{{ cmdf.referenceExterne ? ("#" ~ cmdf.referenceExterne) : "-" }}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div>
+                                <h5 class="font-size-15 mb-3">Adresse de livraison :</h5>
+                                <h5 class="font-size-14 mb-2">{{param.name}}</h5>
+                                <p class="mb-1">{{ param.addressContact }}</p>
+                                <p class="mb-1">{{ param.telephone }}</p>
+                                <p class="mb-1">{{ param.email }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div>
+                                <h5 class="font-size-15 mb-3">Fournisseur :</h5>
+                                <h5 class="font-size-14 mb-2">{{cmdf.fournisseur.name}}</h5>
+                                <p class="mb-1">{{ cmdf.fournisseur.addressContact }}</p>
+                                <p class="mb-1">{{ cmdf.fournisseur.telephone }}</p>
+                                <p class="mb-1">{{ cmdf.fournisseur.email }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-2 mt-3">
+                        <h5 class="font-size-15">Récapitulatif du bon de commande</h5>
+                    </div>
+                    <div class="p-4 border rounded">
+                        <div class="table-responsive">
+                            <table class="table table-nowrap align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 70px;">Référence</th>
+                                        <th>Désignation</th>
+                                        <th>Qté</th>
+                                        <th>Prix U</th>
+                                        <th>Remise</th>
+                                        <th>Taxe</th>
+                                        <th class="text-end" style="width: 120px;">Total HT</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set detailExpedition = null %}   
+                                    {% for detail in cmdf.details %}
+                                        {% if detail.expedition == true %}
+                                            {% set detailExpedition = detail %}                                             
+                                        {% else %} 
+                                            <tr>
+                                                <th scope="row">{{ detail.reference }}</th>
+                                                <td>{{ detail.name }}</td>
+                                                <td>{{ detail.quantite }}</td>
+                                                <td>{{ detail.remise ? detail.discount.originalPrice : detail.prixUht }}</td>
+                                                <td>{{ detail.remise ? (detail.discount.taux ~ '%') : '0%' }}</td>
+                                                <td>{{ detail.taxe ? (detail.taxe.valeur ~ '%') : '0%'}}</td>
+                                                <td class="text-end">{{ detail.montantHt }}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if detailExpedition != null %}
+                                        <tr>
+                                            <th scope="row">{{ detailExpedition.reference ? detailExpedition.reference : '-' }}</th>
+                                            <td>{{ detailExpedition.name }}</td>
+                                            <td>{{ detailExpedition.quantite }}</td>
+                                            <td>{{ detailExpedition.remise ? detailExpedition.discount.originalPrice : detailExpedition.prixUht }}</td>
+                                            <td>{{ detailExpedition.remise ? (detailExpedition.discount.taux ~ '%') : '0%' }}</td>
+                                            <td>{{ detailExpedition.taxe ? (detailExpedition.taxe.valeur ~ '%') : '0%'}}</td>
+                                            <td class="text-end">{{ detailExpedition.montantHt }}</td>
+                                        </tr>  
+                                    {% endif %}
+                                    <tr>
+                                        <th scope="row" colspan="6" class="border-0 text-end">Quantité totale : </th>
+                                        <td class="border-0 text-end">{{ cmdf.qteTotal }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" colspan="2" style="width: 35%;" class="border-b-2 font-size-18 text-start">
+                                            NOTES
+                                        </th>
+                                        <th scope="row" colspan="4" class="border-0 text-end">Montant Remise (FCFA) : </th>
+                                        <td class="border-0 text-end">{{ cmdf.montantRemise }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row" colspan="2" rowspan="2" class="border-0 text-start">
+                                            <p class="w-10" style="width: 320px;white-space: break-spaces;">{{ cmdf.notes ? cmdf.notes : "Ajoutez les conditions d'achat, de paiement terms (i.e. Net 30 jours) et les détails de la livraison." }}</p>
+                                        </td>
+                                        <th scope="row" colspan="4" class="border-0 text-end"> Sous-total (FCFA) :  </th>
+                                        <td class="border-0 text-end">{{ cmdf.montantHt}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" colspan="4" class="border-0 text-end"> Montant TVA (FCFA) : </th>
+                                        <td class="border-0 text-end">{{ cmdf.montantTva }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" colspan="6" class="border-0 text-end">Total (FCFA) : </th>
+                                        <td class="border-0 text-end"><h4 class="m-0">{{ cmdf.montantTtc }}</h4></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="d-print-none mt-3">
+                        <div class="float-end">
+                            <a href="javascript:window.print()" class="btn btn-success cmdf-printer waves-effect waves-light me-1"><i class="fa fa-print"></i></a>
+                            {% if cmdf.valid == false %}  
+                                <a href="#" class="btn btn-primary edit-item w-md waves-effect waves-light">Modifier et/ou Valider</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+{% endblock %}
+
+{% block page_custom_scripts %}
+	<script>
+		const URL_IMPRIMER_CMD_FOURNISSEUR = "{{ url_imprimer_item }}";
+        <!-- initialisation de l'object commande fournisseur pour les fonctions javascript -->
+        const cmdf = {
+            id: {{cmdf.id}},
+            numero: "{{cmdf.numero}}", 
+            valid: {{cmdf.valid ? 1 : 0}},           
+        };
+        <!-- Gestion de click sur le bouton d'impression -->
+        $("a.cmdf-printer").on("click", function(e) {
+            printer.printCmdFournisseur(e, cmdf);
+        });
+        <!-- Gestion de click sur le bouton de mise à jour/validation -->
+        $("a.edit-item").on("click", function(e) {
+            GlobalScript.run_waitMe($('body'), 1, 'stretch');
+            location.href = URL_GLOBAL_UPDATE_CMD_FOURNISSEUR.replace("__id__", cmdf.id);
+            setTimeout(()=>{
+                $('body').waitMe('hide');
+            }, 10000);
+        });
+	</script>
+	<!-- printer init js -->
+	<script src="{{ asset('assets/js/custom/stock/commande-fournisseur/printer.init.js') }}"></script>
+{% endblock %}

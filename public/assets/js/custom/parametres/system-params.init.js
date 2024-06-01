@@ -65,10 +65,10 @@ let systemParamsWizard = {
     },
     submitFormDataNew: function() {
         var data = systemParamsWizard.dataFormat()
-        console.log(data)
+        // console.log(data)
         GlobalScript.request(URL_PUT_ITEM, 'PUT', data).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
                 //datatable.ajax.reload();
                 // categorieArticle.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
@@ -86,7 +86,7 @@ let systemParamsWizard = {
         let dataId = JSON.parse(data).id;
         GlobalScript.request(URL_PUT_ITEM.replace("__id__", dataId), 'PUT', data).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             if (societeForm.find("input#logo").val()) systemParamsWizard.submitFormDataLogo(data);
             else systemParamsWizard.saSuccesSystemParams("Succès !", "Enregistrement effectué avec succès.")
         }).catch(function(err) {
@@ -104,7 +104,7 @@ let systemParamsWizard = {
         formData.append("url", URL_PUT_SYSTEM_PARAMS_LOGO.replace("__id__", param.id));
         GlobalScript.requestFile(formData).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             systemParamsWizard.saSuccesSystemParams("Succès !", "Enregistrement effectué avec succès.")
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
@@ -136,11 +136,11 @@ let systemParamsWizard = {
         var data = systemParamsWizard.dataFormat();
         // Vérification du changement dans le formulaire
         if (GlobalScript.traceUserProfileAndParamsFormChange(JSON.parse(data).id)) return;
-        console.log(data);
+        // console.log(data);
         if (data) {
             $.each(JSON.parse(data), function(key, value) {
                 if (!value && !($.inArray(key, ['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'rcm', 'tokenTmp']) > -1)) {
-                    console.log(key)
+                    // console.log(key)
                     systemParamsWizard.saError("Erreur !", "L'enregistrement ne peut aboutir pour manque d'informations")
                     save = false;
                     return save;
@@ -165,7 +165,7 @@ let systemParamsWizard = {
     printConfigReport: function(event = null) {
         if (event) event.preventDefault();
         var sendMail = $("div.configReportModal").find("form").find("input#sendMail").is(":checked");
-        console.log("sendMail = " + sendMail);
+        // console.log("sendMail = " + sendMail);
         // Url d'impression et nom du fichier
         var printPdfUrl = URL_PRINT_CONFIG_REPORT.replace("__status__", sendMail);
         var reportName = CONFIG_REPORT_NAME;
@@ -181,10 +181,10 @@ let systemParamsWizard = {
     setFormatFactureRequest: function(oktitle, oktext) {
         // Récupération de l'id de l'objet
         var format = $("#format-facture").val();
-        // console.log(format);
+        // // console.log(format);
         GlobalScript.request(URL_PUT_SYSTEM_PARAMS_FORMAT_FACTURE.replace("__format__", format), 'PUT', null).then(function(data) {
             // Run this when your request was successful
-            console.log(data)
+            // console.log(data)
             systemParamsWizard.saSuccesSystemParams(oktitle, oktext)
         }).catch(function(err) {
             // Run this when promise was rejected via reject()
