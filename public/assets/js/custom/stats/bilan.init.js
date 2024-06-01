@@ -7,6 +7,7 @@ let statsPayload = {
     "fin": null,
     "debutAt": null,
     "finAt": null,
+    "tauxImpot": null,
 };
 let filtreForm = null;
 let url_list = null;
@@ -209,7 +210,10 @@ let bilan = {
             GlobalScript.ajxRqtErrHandler(err, "sweet", "l'affichage de l'interface de modification");
         });
     },
-    printBilan: function () {
+    printBilan: function (event) {
+        if(event)
+            event.preventDefault();
+        //
         var debut = filtreForm.find("input#date-debut").val();
         var fin = filtreForm.find("input#date-fin").val();
         // console.log(debut)
@@ -218,7 +222,12 @@ let bilan = {
         dateDebut = GlobalScript.textMultipleReplace(debut, obj);
         dateFin = GlobalScript.textMultipleReplace(fin, obj);
 		reportName = "bilan_du_" + dateDebut + "_au_" + dateFin + ".pdf";
-        // console.log(reportName);
+        // Récupération du formulaire de validation
+        form = $("div.validation-modal").find("form");
+        // Récupération du taux d'imposition
+        statsPayload.tauxImpot = GlobalScript.checkBlank(form.find("#taux-impot").val()) ?? 0;
+        // Fermeture du modal
+        $("div.validation-modal").modal("hide")
         //
         GlobalScript.showPrintedBilan(URL_IMPRESSION_BILAN, 'GET', JSON.stringify(statsPayload), reportName);
     },
@@ -541,7 +550,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     filtreForm.on("click", "button.print-bilan", function(event){
         event.preventDefault();
-        // Récupération des dates de début et de fin
+        // Récupération et vérification des dates de début et de fin
+        var date_debut = filtreForm.find("input#date-debut").val();
+        var date_fin = filtreForm.find("input#date-fin").val();
+        if(!date_debut || !date_fin) {
+            alertify.error("Veuillez renseigner les dates de début et de fin de la période !");
+            return;
+        }
+        // Formatage des dates de début et de fin
         var debut = new Date(filtreForm.find("input#date-debut").val());
         var fin = new Date(filtreForm.find("input#date-fin").val());
         // Comparaison des dates, la date de fin doit être supérieure à la date de début
@@ -553,9 +569,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // statsPayload.fin = filtreForm.find("input#date-fin").val();
             statsPayload.debut = (debut.toISOString()).slice(0, 19);
             statsPayload.fin = (fin.toISOString()).slice(0, 19);
-            // console.log(statsPayload);
-            // Lancement de l'impression du rapport du bilant
-            bilan.printBilan();
+            // Ouverture du modal contenant le formulaire de validation du taux d'imposition
+            $("div.validation-modal").modal("show")
             return;
         }
     })
