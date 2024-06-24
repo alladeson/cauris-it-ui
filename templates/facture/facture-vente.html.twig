@@ -214,7 +214,7 @@
 						</div>
 					</th>
 					<th scope="col">N°</th>
-					<th scope="col">Réf.</th>
+					{# <th scope="col">Réf.</th> #}
 					<th scope="col">Désignation</th>
 					<th scope="col">Quantité</th>
 					<th scope="col">Taxe</th>
@@ -254,7 +254,7 @@
 									<tbody>
 										<tr>
 											<th scope="row">
-												N°
+												Référence Article
 											</th>
 											<td class="text-center td-detail-reference"></td>
 										</tr>
@@ -407,7 +407,7 @@
 								<div class="row"> #}
 									<div class="col-lg-12 col-sm-6">
 										<div class="mb-3">
-											<label for="type-paiement" class="form-label font-size-13 text-muted">Type de paiement</label>
+											<label for="type-paiement" class="form-label font-size-13 text-muted">Type de paiement <span class="text-danger">*</span></label>
 											<select class="form-control form-select" data-trigger name="type-paiement" id="type-paiement" placeholder="chercher..."></select>
 										</div>
 									</div>
@@ -415,19 +415,19 @@
 								<div class="row">
 									<div class="col-sm-4">
 										<div class="mb-3 position-relative">
-											<label class="form-label font-size-13 text-muted" for="montant-recu">Montant reçu</label>
+											<label class="form-label font-size-13 text-muted" for="montant-recu">Montant reçu <span class="text-danger">*</span></label>
 											<input onchange="facturation.setValidationForm(event)" type="number" step="1" min="1" class="form-control" id="montant-recu" name="montant-recu" placeholder="" value="" required>
 										</div>
 									</div>
 									<div class="col-sm-4">
 										<div class="mb-3 position-relative">
-											<label class="form-label font-size-13 text-muted" for="montant-payer">Montant payé</label>
+											<label class="form-label font-size-13 text-muted" for="montant-payer">Montant payé <span class="text-danger">*</span></label>
 											<input onchange="facturation.setValidationForm(event)" type="number" step="0.01" min="0.01" class="form-control" id="montant-payer" name="montant-payer" placeholder="" value="" required>
 										</div>
 									</div>
 									<div class="col-sm-4">
 										<div class="mb-3 position-relative">
-											<label class="form-label font-size-13 text-muted" for="montant-rendu">Montant rendu</label>
+											<label class="form-label font-size-13 text-muted" for="montant-rendu">Montant rendu <span class="text-danger">*</span></label>
 											<input onchange="facturation.setValidationForm(event)" type="number" step="0.01" min="0" class="form-control" id="montant-rendu" name="montant-rendu" placeholder="" value="" required>
 										</div>
 									</div>
