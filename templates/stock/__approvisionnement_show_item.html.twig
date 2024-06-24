@@ -1,0 +1,128 @@
+<div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Affichage</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-6 col-sm-12">
+                    <h5 class="font-size-14 mt-2">
+                        <i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif générale</h5>
+                    <div class="table-responsive">
+                        <table class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" colspan="2"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">
+                                        Réf. Article
+                                    </th>
+                                    <td class="text-center td-detail-reference"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        Désignation
+                                    </th>
+                                    <td class="text-center td-detail-designation"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        Quantité
+                                    </th>
+                                    <td class="text-center td-detail-quantite"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        Taxe
+                                    </th>
+                                    <td class="text-center td-detail-taxe"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- end table -->
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    <h5 class="font-size-14 mt-lg-2 mt-4">
+                        <i class="mdi mdi-arrow-right text-primary me-1"></i>Récapitulatif des montants</h5>
+                    <div class="table-responsive">
+                        <table class="table table-nowrap align-middle justify-content-center mb-0 detail-recap-montant-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" colspan="2" class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>										
+                                <tr>
+                                    <th scope="row">
+                                        Prix Unitaire HT
+                                    </th>
+                                    <td class="text-center td-detail-prixUnitaire"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        Montant Total HT
+                                    </th>
+                                    <td class="text-center td-detail-mht"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">
+                                        Montant Total TVA
+                                    </th>
+                                    <td class="text-center td-detail-mtva"></td>
+                                </tr>										
+                                <tr>
+                                    <th scope="row">
+                                        Montant Total T.T.C
+                                    </th>
+                                    <td class="text-center td-detail-mttc"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- end table -->
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="font-size-14 mt-4">
+                        <i class="mdi mdi-arrow-right text-primary me-1"></i>Remise</h5>
+                    <div class="table-responsive">
+                        <table class="table table-nowrap align-middle justify-content-center mb-0 ts-remise-show-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-center">Remise</th>
+                                    <th scope="col" class="text-center tr-detail-remise">Taux</th>
+                                    <th scope="col" class="text-center tr-detail-remise">Prix originale</th>
+                                    <th scope="col" class="text-center tr-detail-remise">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center td-detail-remise"></td>
+                                    <td class="text-center td-detail-remise-taux tr-detail-remise"></td>
+                                    <td class="text-center td-detail-remise-prix-u tr-detail-remise"></td>
+                                    <td class="text-center td-detail-remise-description tr-detail-remise"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- end table -->
+                        <!-- No remise message -->
+                        <p id="remise-false-text">
+                            Pas de remise définie.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-info" data-bs-dismiss="modal">Fermer</button>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

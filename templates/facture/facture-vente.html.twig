@@ -21,14 +21,14 @@
 							<div class="col-md-4 col-sm-6">
 								<div class="mb-3">
 									<input type="hidden" id="item-id" name="item-id" value="">
-									<label for="type" class="form-label font-size-13 text-muted">Type de facture</label>
+									<label for="type" class="form-label font-size-13 text-muted">Type de facture <span class="text-danger">*</span></label>
 									<select onchange="facturation.reloadDatatable(event)" class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher..."></select>
 								</div>
 							</div>
 							<div class="col-md-4 col-sm-6">
 								<div class="row gx-3 gy-2 align-items-center mb-3">
 									<div class="col-10">
-										<label for="client" class="form-label font-size-13 text-muted">Client</label>
+										<label for="client" class="form-label font-size-13 text-muted">Client <span class="text-danger">*</span></label>
 										<select {{ facture_id ? "disabled": "" }} onchange="facturation.reloadDatatable(event)" class="form-control form-select" data-trigger name="client" id="client" placeholder="chercher..."></select>
 									</div>
 									<div class="col-2" onclick="facturation.clientNewItemEvent(event)">
@@ -41,7 +41,7 @@
 							<div class="col-md-4 col-sm-6">
 								<div class="row gx-3 gy-2 align-items-center mb-3">
 									<div class="col-10">
-										<label for="article" class="form-label font-size-13 text-muted">Article</label>
+										<label for="article" class="form-label font-size-13 text-muted">Article <span class="text-danger">*</span></label>
 										<select onchange="facturation.getArticle(event)" class="form-control form-select" data-trigger name="article" id="article" placeholder="chercher..."></select>
 									</div>
 									<div class="col-2" onclick="facturation.articleNewItemEvent(event)">
@@ -55,25 +55,25 @@
 						<div class="row"> #}
 							<div class="col-md-4 col-sm-6">
 								<div class="mb-3">
-									<label for="taxe" class="form-label font-size-13 text-muted">Taxe</label>
+									<label for="taxe" class="form-label font-size-13 text-muted">Taxe <span class="text-danger">*</span></label>
 									<select class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher..."></select>
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-4">
 								<div class="mb-3 position-relative">
-									<label class="form-label font-size-13 text-muted" for="prix_u">Prix Unitaire</label>
+									<label class="form-label font-size-13 text-muted" for="prix_u">Prix Unitaire <span class="text-danger">*</span></label>
 									<input onchange="facturation.setRemiseFormOnPricesChange(event, true)" type="number" step="1" min="1" class="form-control" id="prix_u" name="prix_u" placeholder="" value="" required>
 								</div>
 							</div>
 							<div class="col-md-2 col-sm-4">
 								<div class="mb-3 position-relative">
-									<label class="form-label font-size-13 text-muted" for="quantite">Quantité</label>
+									<label class="form-label font-size-13 text-muted" for="quantite">Quantité <span class="text-danger">*</span></label>
 									<input onchange="facturation.setMontant(event)" type="number" step="0.01" min="0.01" class="form-control" id="quantite" name="quantite" placeholder="" value="" required>
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-4">
 								<div class="mb-3 position-relative">
-									<label class="form-label font-size-13 text-muted" for="montant">Montant</label>
+									<label class="form-label font-size-13 text-muted" for="montant">Montant <span class="text-danger">*</span></label>
 									<input type="number" step="0.01" min="0.01" class="form-control" id="montant" name="montant" placeholder="" value="" required>
 								</div>
 							</div>
@@ -93,13 +93,13 @@
 								<div class="row" id="tsInputsToggle">
 									<div class="col-sm-9 col-12">
 										<div class="mb-3 position-relative">
-											<label class="form-label font-size-13 text-muted" for="taxe-specifique">Taxe spécifique</label>
+											<label class="form-label font-size-13 text-muted" for="taxe-specifique">Taxe spécifique <span class="text-danger">*</span></label>
 											<input type="number" step="0.001" min="0" class="form-control" id="taxe-specifique" name="taxe-specifique" placeholder="" value="">
 										</div>
 									</div>
 									<div class="col-sm-9 col-12 taxe-specifique">
 										<div class="mb-3 position-relative">
-											<label class="form-label font-size-13 text-muted" for="ts-name">Nom de la taxe spécifique</label>
+											<label class="form-label font-size-13 text-muted" for="ts-name">Nom de la taxe spécifique <span class="text-danger">*</span></label>
 											<input type="texte" class="form-control" id="ts-name" name="ts-name" placeholder="Le nom de la taxe spécifique" value="">
 										</div>
 									</div>
@@ -120,26 +120,26 @@
 								<div class="row" id="remiseInputsToggle">
 									<div class="col-sm-6">
 										<div class="mb-3 position-relative">
-											<label class="form-label font-size-13 text-muted" for="remise_taux">Taux (en %)</label>
+											<label class="form-label font-size-13 text-muted" for="remise_taux">Taux (en %) <span class="text-danger">*</span></label>
 											<input type="number" onchange="facturation.setRemiseFormOnTauxChange(event)" step="1" min="1" class="form-control" id="remise_taux" name="remise_taux" placeholder="" value="">
 										</div>
 									</div>
 									<div class="col-sm-6">
 										<div class="mb-3 position-relative">
-											<label class="form-label font-size-13 text-muted" for="remise_prix_u">Prix Unitaire Originale</label>
-											<input onchange="facturation.setRemiseFormOnPricesChange(event)" type="number" step="0.001" min="0" class="form-control" id="remise_prix_u" name="remise_prix_u" placeholder="" value="">
+											<label class="form-label font-size-13 text-muted" for="remise_prix_u">Prix Unitaire Originale <span class="text-danger">*</span></label>
+											<input onchange="facturation.setRemiseFormOnTauxChange(event)" type="number" step="0.001" min="0" class="form-control" id="remise_prix_u" name="remise_prix_u" placeholder="" value="">
 										</div>
 									</div>
 									<div class="col-12">
 										<div class="mb-3 position-relative">
-											<label class="form-label font-size-13 text-muted" for="remise_description">Description remise</label>
+											<label class="form-label font-size-13 text-muted" for="remise_description">Description remise <span class="text-danger">*</span></label>
 											<input type="texte" class="form-control" id="remise_description" name="remise_description" placeholder="" value="">
 										</div>
 									</div>
 								</div>
 							</div>
+							<!-- End Remise -->
 						</div>
-						<!-- End Remise -->
 						<div class="modal-footer d-flex justify-content-center">
 							<button type="submit" class="btn btn-outline-info waves-effect waves-light">Ajouter</button>
 							<button type="reset" class="btn btn-outline-danger waves-effect waves-light btn-sm">Annuler</button>
@@ -162,19 +162,19 @@
 			<div
 				class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
 				{# <div>
-																																																																																																													<ul class="nav nav-pills">
-																																																																																																														<li class="nav-item">
-																																																																																																															<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
-																																																																																																																<i class="bx bx-list-ul"></i>
-																																																																																																															</a>
-																																																																																																														</li>
-																																																																																																														<li class="nav-item">
-																																																																																																															<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
-																																																																																																																<i class="bx bx-grid-alt"></i>
-																																																																																																															</a>
-																																																																																																														</li>
-																																																																																																													</ul>
-																																																																																																												</div> #}
+					<ul class="nav nav-pills">
+						<li class="nav-item">
+							<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
+								<i class="bx bx-list-ul"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
+								<i class="bx bx-grid-alt"></i>
+							</a>
+						</li>
+					</ul>
+				</div> #}
 				<div>
 					<a href="javascript:void(0);" class="btn btn-outline-success waves-effect waves-light validate-facture">
 						<i class="bx bx-list-check me-1"></i>
@@ -182,21 +182,21 @@
 				</div>
 
 				{# <div class="dropdown">
-																																																																																																													<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-																																																																																																														<i class="bx bx-dots-horizontal-rounded"></i>
-																																																																																																													</a>
-																																																																																																													<ul class="dropdown-menu dropdown-menu-end">
-																																																																																																														<li>
-																																																																																																															<a class="dropdown-item" href="javascript:void(0);">Actualiser</a>
-																																																																																																														</li>
-																																																																																																														<li>
-																																																																																																															<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
-																																																																																																														</li>
-																																																																																																														<li>
-																																																																																																															<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
-																																																																																																														</li>
-																																																																																																													</ul>
-																																																																																																												</div> #}
+					<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bx bx-dots-horizontal-rounded"></i>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Actualiser</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
+						</li>
+					</ul>
+				</div> #}
 			</div>
 
 		</div>
@@ -213,8 +213,8 @@
 							<label class="form-check-label" for="checkAll"></label>
 						</div>
 					</th>
+					<th scope="col">N°</th>
 					<th scope="col">Réf.</th>
-					{# <th scope="col">N° Article</th> #}
 					<th scope="col">Désignation</th>
 					<th scope="col">Quantité</th>
 					<th scope="col">Taxe</th>
@@ -254,7 +254,7 @@
 									<tbody>
 										<tr>
 											<th scope="row">
-												Référence
+												N°
 											</th>
 											<td class="text-center td-detail-reference"></td>
 										</tr>
@@ -480,7 +480,7 @@
 												</th>
 												<td class="text-center td-invoice-mttc"></td>
 											</tr>
-											<tr id="tr-invoice-aib">
+											<tr id="tr-invoice-status">
 												<th scope="row">
 													Statut
 												</th>
@@ -508,7 +508,7 @@
 
 	{# client new form #}
 	<div class="modal fade client-new-modal" id="client-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		{% include "stock/__client_form.html.twig" %}
+		{% include "facture/__client_form.html.twig" %}
 	</div>
 	<!-- /.modal -->
 

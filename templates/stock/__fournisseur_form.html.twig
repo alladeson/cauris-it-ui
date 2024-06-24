@@ -1,6 +1,6 @@
 <div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
-				<form method="post" class="" onsubmit="client.submitFormData(event)" >
+				<form method="post" class="" onsubmit="fournisseur.submitFormData(event)" >
 					<div class="modal-header">
 						<h5 class="modal-title">Nouvel ajout</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -10,7 +10,7 @@
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
 									<label class="form-label" for="name">Nom ou Raison sociale</label>
-									<input type="text" id="name" name="name" class="form-control" placeholder="Le nom du client" required>
+									<input type="text" id="name" name="name" class="form-control" placeholder="Le nom du fournisseur" required>
 								</div>
 							</div>							
 						</div>
@@ -19,7 +19,7 @@
 								<div class="mb-3 position-relative">
 									<label class="form-label" for="ifu">IFU</label>
 									<input type="hidden" id="item-id" name="item-id" value="">
-									<input type="text" pattern="[0-9]{13}" class="form-control" id="ifu" name="ifu" placeholder="L'IFU du client" value="">
+									<input type="text" pattern="[0-9]{13}" class="form-control" id="ifu" name="ifu" placeholder="L'IFU du fournisseur" value="">
 								</div>
 							</div>														
 						</div>
@@ -27,7 +27,7 @@
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
 									<label class="form-label" for="rcm">RCCM</label>
-									<input type="text" id="rcm" name="rcm" class="form-control" placeholder="Le numéro rcm du client">
+									<input type="text" id="rcm" name="rcm" class="form-control" placeholder="Le numéro rcm du fournisseur">
 								</div>
 							</div>							
 						</div>
@@ -37,7 +37,7 @@
 									<label for="telephone" class="form-label">Téléphone</label>
 									<div class="input-group">
 										<span class="input-group-text" id="telephonePrepend"><i class="mdi mdi-phone"></i></span>
-										<input type="tel" pattern="[5-9]{1}[0-9]{1}[0-9]{2}[0-9]{2}[0-9]{2}" class="form-control" id="telephone" name="telephone" placeholder="Le téléphone de l'utilisateur" value="" aria-describedby="telephonePrepend">
+										<input required type="tel" pattern="[5-9]{1}[0-9]{1}[0-9]{2}[0-9]{2}[0-9]{2}" class="form-control" id="telephone" name="telephone" placeholder="Le téléphone de l'utilisateur" value="" aria-describedby="telephonePrepend">
 									</div>
 								</div>
 							</div>
@@ -46,7 +46,7 @@
 									<label class="form-label" for="email">E-mail</label>
 									<div class="input-group">
 										<span class="input-group-text" id="emailPrepend"><i class="mdi mdi-email"></i></span>
-										<input data-inputmask="'alias': 'email'" id="email" name="email" class="form-control" placeholder="l'e-mail du client" aria-describedby="emailPrepend">
+										<input data-inputmask="'alias': 'email'" id="email" name="email" class="form-control" placeholder="l'e-mail du fournisseur" aria-describedby="emailPrepend">
 									</div>
 								</div>
 							</div>
@@ -55,7 +55,7 @@
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
 									<label class="form-label" for="address">Adresse</label>
-									<input type="text" id="address" name="address" class="form-control" placeholder="L'adresse du client">
+									<input required type="text" id="address" name="address" class="form-control" placeholder="L'adresse du fournisseur">
 								</div>
 							</div>							
 						</div>
@@ -63,7 +63,7 @@
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
 									<label class="form-label" for="ville">Ville</label>
-									<input type="text" id="ville" name="ville" class="form-control" placeholder="La ville du client">
+									<input required type="text" id="ville" name="ville" class="form-control" placeholder="La ville du fournisseur">
 								</div>
 							</div>							
 						</div>

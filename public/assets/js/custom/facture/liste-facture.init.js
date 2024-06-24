@@ -114,9 +114,9 @@ let listeFacture = {
             $(".dataTables_length select").addClass("form-select form-select-sm");
     },
     choicesJsInit: function () {
-        var e = document.querySelectorAll("[data-trigger]");
+        let e = document.querySelectorAll("[data-trigger]");
         for (i = 0; i < e.length; ++i) {
-            var a = e[i];
+            let a = e[i];
             choices[i] = new Choices(a, {
                 loadingText: 'Chargement...',
                 noResultsText: 'Aucun résultat trouvé',
@@ -203,7 +203,6 @@ let listeFacture = {
         //// console.log(id);
         GlobalScript.request(URL_GET_ITEM.replace("__id__", id), 'GET', null).then(function (data) {
             // Run this when your request was successful
-            // console.log(data)
             if (data.type.groupe == "FV") {
                 location.href = URL_GLOBAL_UPDATE_FACTURE_VENTE.replace("__id__", data.id);
             } else if (data.type.groupe == "FA") {
@@ -247,7 +246,7 @@ let listeFacture = {
     },
     setDetailsFactureRecapTable: function (facture) {
         // Tableau des données de validation
-        var $validationDataFormTable = $("div#facture-details-modal table.invoice-validation-data-table");
+        let $validationDataFormTable = $("div#facture-details-modal table.invoice-validation-data-table");
         $validationDataFormTable.find(".td-invoice-type-facture").text(facture.type ? facture.type.description : "-");
         $validationDataFormTable.find(".td-invoice-aib").text(facture.aib ? facture.montantAib : "-");
         $validationDataFormTable.find(".td-invoice-type-paiement").text(facture.reglement ? facture.reglement.typePaiement.description : "-");
@@ -257,7 +256,7 @@ let listeFacture = {
         $validationDataFormTable.find(".td-invoice-description").text(facture.reglement ? facture.reglement.description : "-");
 
         // Tableau recap des montants
-        var $validationFormRecpaTable = $("div#facture-details-modal table.invoice-validation-table");
+        let $validationFormRecpaTable = $("div#facture-details-modal table.invoice-validation-table");
         $validationFormRecpaTable
             .find(".td-invoice-mht")
             .text(facture.montantHt ? facture.montantHt : "-");
@@ -329,10 +328,10 @@ $(document).ready(function () {
     //Show Action
     datatable.on('responsive-resize', function (e, datatable, columns) {
         e.preventDefault();
-        var count = columns.reduce(function (a, b) {
+        let count = columns.reduce(function (a, b) {
             return b === false ? a + 1 : a;
         }, 0);
-        var position = count ? "relative" : "absolute";
+        let position = count ? "relative" : "absolute";
         datatable.on('click', 'button.dropdown-toggle', function (e) {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);
@@ -369,7 +368,7 @@ document.addEventListener("DOMContentLoaded", function () {
     filtreForm.submit(function (event) {
         event.preventDefault();
         // Récupération du type de la facture sélectionné
-        var typeFactureId = filtreForm.find("select#type").val();
+        let typeFactureId = filtreForm.find("select#type").val();
         // Si "Toutes" est coché, on récupère toutes les facture, ou en fonction du type de facture
         if (filtreForm.find("input#getAll").is(":checked")) {
             // alertify.success("'Toutes' coché");
@@ -390,10 +389,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             // Ici les date sont renseignées
             // Récupération du type de date sélectionné
-            var typeDate = filtreForm.find("input[name='dateRadios']:checked").val();
+            let typeDate = filtreForm.find("input[name='dateRadios']:checked").val();
             // Récupération des dates de début et de fin
-            var debut = new Date(filtreForm.find("input#date-debut").val());
-            var fin = new Date(filtreForm.find("input#date-fin").val());
+            let debut = new Date(filtreForm.find("input#date-debut").val());
+            let fin = new Date(filtreForm.find("input#date-fin").val());
             // Comparaison des dates, la date de fin doit être supérieure à la date de début
             if (fin.getTime() <= debut.getTime()) {
                 alertify.error("La date de fin doit être supérieure à la date de début");

@@ -2,21 +2,21 @@
 
 {% block title %}
 	{{appName}}
-	- Catégories des articles
+	- Fournisseurs
 {% endblock %}
 
 {% block page_content %}
 
 	<div class="row align-items-center">
-		<div class="col-md-6 col-5">
+		<div class="col-md-6 col-4">
 			<div class="mb-3">
-				<h5 class="card-title">Liste des catégories d'articles
+				<h5 class="card-title">Liste des fournisseurs
 					<span class="text-muted fw-normal ms-2"></span>
 				</h5>
 			</div>
 		</div>
 
-		<div class="col-md-6 col-7">
+		<div class="col-md-6 col-8">
 			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
 				{# <div>
 					<ul class="nav nav-pills">
@@ -32,7 +32,7 @@
 						</li>
 					</ul>
 				</div> #}
-				<div onclick="categorieArticle.newItemEvent(event)">
+				<div onclick="fournisseur.newItemEvent(event)">
 					<a href="javascript:void(0);" class="btn btn-light" data-bs-toggle="modal" data-bs-target=".add-new-modal">
 						<i class="bx bx-plus me-1"></i>
 						Nouvel Ajout</a>
@@ -45,7 +45,7 @@
 
 					<ul class="dropdown-menu dropdown-menu-end">
 						<li>
-							<a class="dropdown-item" onclick="categorieArticle.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+							<a class="dropdown-item" onclick="fournisseur.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
 						</li>
 						{# <li>
 							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
@@ -71,9 +71,14 @@
 							<label class="form-check-label" for="checkAll"></label>
 						</div>
 					</th>
-					<th>N°</th>
-					<th>Libellé</th>
-					{# <th>Montant</th> #}
+					<th>Réf.</th>
+					<th>Nom</th>
+					<th>IFU</th>
+					<th>RCCM</th>
+					<th>Téléphone</th>
+					<th>Email</th>
+					<th>Adresse</th>
+					<th>Ville</th>
 					<th style="width: 80px; min-width: 80px;">Action</th>
 				</tr>
 			</thead>
@@ -85,51 +90,7 @@
 	<!-- end table responsive -->
 
 	<div class="modal fade add-new-modal" id="add-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<form method="post" class="" onsubmit="categorieArticle.submitFormData(event)" >
-					<div class="modal-header">
-						<h5 class="modal-title">Nouvel ajout</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						{# <div class="row">
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="reference">N°</label>
-									<input type="text" class="form-control" id="reference" name="reference" placeholder="N° de la chambre" value="" required>
-									<div class="valid-tooltip">
-										Parfait !
-									</div>
-								</div>
-							</div>														
-						</div> #}
-						<div class="row">						
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label class="form-label" for="libelle">Libellé <span class="text-danger">*</span></label>
-									<div class="input-group">
-										{# <span class="input-group-text" id="libellePrepend"><i class="mdi mdi-money"></i></span> #}
-										<input type="hidden" id="item-id" name="item-id" value="">
-										<input type="text" id="libelle" name="libelle" class="form-control" placeholder="Catégorie des articles" aria-describedby="libellePrepend" required>
-										{# <div class="invalid-tooltip">
-											Please choose a unique and valid username.
-										</div> #}
-									</div>
-								</div>
-							</div>							
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
-						{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
-						<button type="submit" class="btn btn-primary">Enregistrer</button>
-					</div>
-				</form>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
+		{% include "stock/__fournisseur_form.html.twig" %}
 	</div>
 	<!-- /.modal -->
 
@@ -156,17 +117,58 @@
                             <tbody>                                                    
                                 <tr>
                                     <th scope="row">
-                                        N°
+                                        Référence
                                     </th>
                                     <td class="text-center td-reference">
                                     </td>
                                 </tr>                                                    
                                 <tr>
                                     <th scope="row">
-                                        Libellé
+                                        Nom
                                     </th>
-                                    <td class="text-center td-libelle">
-										{# <a href="#" class="badge badge-soft-primary"></a> #}
+                                    <td class="text-center td-name">
+                                    </td>
+                                </tr>                                                    
+                                <tr>
+                                    <th scope="row">
+                                        IFU
+                                    </th>
+                                    <td class="text-center td-ifu">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        RCM
+                                    </th>
+                                    <td class="text-center td-rcm">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        Téléphone
+                                    </th>
+                                    <td class="text-center td-telephone">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        Email
+                                    </th>
+                                    <td class="text-center td-email">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        Adresse
+                                    </th>
+                                    <td class="text-center td-address">
+                                    </td>
+                                </tr>                                                
+                                <tr>
+                                    <th scope="row">
+                                        Ville
+                                    </th>
+                                    <td class="text-center td-ville">
                                     </td>
                                 </tr>                                                
                             </tbody>
@@ -188,5 +190,5 @@
 
 {% block page_custom_scripts %}
 	<!-- init js -->
-	<script src="{{ asset('assets/js/custom/stock/categorie-article.init.js') }}"></script>
+	<script src="{{ asset('assets/js/custom/stock/fournisseur.init.js') }}"></script>
 {% endblock %}

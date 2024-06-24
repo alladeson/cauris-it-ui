@@ -320,6 +320,7 @@
   <script>
     const URL_PUT_SYSTEM_PARAMS_LOGO = "{{ url_put_item_logo }}";
     const URL_PUT_SYSTEM_PARAMS_FORMAT_FACTURE = "{{ url_put_item_format_facture | replace({'__id__': param.id}) }}";
+    const URL_PUT_SYSTEM_PARAMS_GESTION_STOCK_PROPERTIES = "{{ url_put_item_gestion_stock_properties | replace({'__id__': param.id}) }}";
     const URL_GET_EMCEF_INFOS = "{{ url_get_emcef_infos }}";
     const URL_PRINT_CONFIG_REPORT = "{{ url_print_config_report | replace({'__id__': param.id}) }}";
     const CONFIG_REPORT_NAME = "{{'rapport_configuration_' ~ param.serialKey|slice(0, 10) ~ '.pdf'}}";

@@ -155,11 +155,11 @@ var dashboard = {
             // console.log(bilanData);
             // Mise à jour des données des charts
             dashboard.apexchartsDataFormatter();
-            dashboard.echartsDataFormatter(0);
+            dashboard.echartsDataFormatter(11);
             // formatage du select des mois
             var selectOptions = ``;
             statsMonths.forEach((month, index) => {
-                selectOptions += `<option value="${index}" ${index == 0 ? "selected": "" }>${month}</option>`;
+                selectOptions += `<option value="${index}" ${index == 11 ? "selected": "" }>${month}</option>`;
             });
             $("#date-select-wrapper").find("select").html(selectOptions);
         }).catch(function(err) {

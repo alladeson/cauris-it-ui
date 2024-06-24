@@ -73,6 +73,11 @@ let facturation = {
                                         },
                                     },
                                     { data: "id" },
+                                    { data: "article",
+                                        render: function(data, type, row, meta) {
+                                            return data.reference ? data.reference : '-';
+                                        },
+                                    },
                                     {
                                         data: "article",
                                         render: function(data, type, row, meta) {
@@ -127,14 +132,13 @@ let facturation = {
                                                                 <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                             </li>
                                                             ${!row.valid ?
-                            `<li>
+                                                                `<li>
                                                                     <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier</a>
                                                                 </li> 
                                                                 <li>
                                                                     <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
                                                                 </li>`
-                            : ""
-                        }
+                                                            : "" }
                                                         </ul>
                                                     </div>`;
                     return html;
