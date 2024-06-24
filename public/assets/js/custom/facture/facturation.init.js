@@ -73,6 +73,11 @@ let facturation = {
                                         },
                                     },
                                     { data: "id" },
+                                    { data: "article",
+                                        render: function(data, type, row, meta) {
+                                            return data.reference ? data.reference : '-';
+                                        },
+                                    },
                                     {
                                         data: "article",
                                         render: function(data, type, row, meta) {

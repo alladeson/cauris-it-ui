@@ -10,7 +10,7 @@
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
 									<input type="hidden" id="item-id" name="item-id" value="">
-									<label for="categorie" class="form-label">Catégorie</label>
+									<label for="categorie" class="form-label">Catégorie <span class="text-danger">*</span></label>
 									<select required class="form-control form-select" data-trigger name="categorie" id="categorie" placeholder="chercher...">
 									</select>
 								</div>
@@ -21,7 +21,7 @@
 								<div class="mb-3 position-relative">
 									<label class="form-label" for="reference">Référence</label>
 									<div class="input-group">
-										<input type="text" id="reference" name="reference" class="form-control" placeholder="La référence de l'article" value="" required>
+										<input type="text" id="reference" name="reference" class="form-control" placeholder="La référence de l'article" value="">
 										{# <div class="invalid-tooltip">
 											
 										</div> #}
@@ -32,7 +32,7 @@
 						<div class="row">						
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
-									<label class="form-label" for="designation">Désignation</label>
+									<label class="form-label" for="designation">Désignation <span class="text-danger">*</span></label>
 									<div class="input-group">
 										<input type="text" id="designation" name="designation" class="form-control" placeholder="Le nom de l'article" value="" required>
 										{# <div class="invalid-tooltip">
@@ -45,7 +45,7 @@
 						<div class="row">						
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
-									<label for="taxe" class="form-label">Taxe</label>
+									<label for="taxe" class="form-label">Taxe <span class="text-danger">*</span></label>
 									<select required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher...">
 									</select>
 								</div>								
@@ -54,7 +54,7 @@
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
 								<div class="mb-3 position-relative">
-									<label class="form-label" for="prix">Prix</label>
+									<label class="form-label" for="prix">Prix <span class="text-danger">*</span></label>
 									<div class="input-group">
 										<span class="input-group-text" id="prixPrepend">FCFA</i></span>
 										<input type="number" id="prix" name="prix" min="0" class="form-control" placeholder="Le prix T.T.C de l'article" aria-describedby="prixPrepend" required>

@@ -139,7 +139,7 @@ let systemParamsWizard = {
         // console.log(data);
         if (data) {
             $.each(JSON.parse(data), function(key, value) {
-                if (!value && !($.inArray(key, ['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'rcm', 'tokenTmp']) > -1)) {
+                if (!value && !($.inArray(key, ['createdAt', 'updatedAt', 'createdBy', 'updatedBy', 'rcm', 'tokenTmp', 'gestionStock', 'stockEtFacture']) > -1)) {
                     // console.log(key)
                     systemParamsWizard.saError("Erreur !", "L'enregistrement ne peut aboutir pour manque d'informations")
                     save = false;
