@@ -12,6 +12,7 @@ let factureReglement = null;
 let taxeSpecifique = null;
 let originalPrice = null;
 let typeFactureId = 0;
+let itemNumber = 0;
 let facturation = {
         listInitalizer: function() {
                 // $(".datatable").DataTable({ responsive: !1 }),
@@ -72,7 +73,16 @@ let facturation = {
                                             );
                                         },
                                     },
-                                    { data: "id" },
+                                    { data: "id",
+                                        render: function(data, type, row, meta) {
+                                            return ++itemNumber;
+                                        },
+                                    },
+                                    // { data: "article",
+                                    //     render: function(data, type, row, meta) {
+                                    //         return data.reference ? data.reference : '-';
+                                    //     },
+                                    // },
                                     {
                                         data: "article",
                                         render: function(data, type, row, meta) {
@@ -327,6 +337,7 @@ let facturation = {
                 if (facture.aib) factureMontantTtc = facture.montantTtc - facture.montantAib;
                 //
                 // console.log(facture);
+                itemNumber = 0;
                 datatable.ajax.reload();
                 alertify.success("Ajout effectué avec succès.");
                 // Mise à jour des articles (les services internes)
@@ -428,6 +439,7 @@ let facturation = {
                 // Run this when your request was successful
                 // console.log(data);
                 alertify.success(oktext);
+                itemNumber = 0;
                 datatable.ajax.reload();
             })
             .catch(function (err) {
@@ -514,6 +526,7 @@ let facturation = {
                 // Run this when your request was successful
                 // console.log(data);
                 alertify.success(oktext);
+                itemNumber = 0;
                 datatable.ajax.reload();
             })
             .catch(function (err) {
@@ -544,6 +557,7 @@ let facturation = {
                 //
                 // console.log(facture);
                 alertify.success(oktext);
+                itemNumber = 0;
                 datatable.ajax.reload();
                 facturation.saSuccesFactureValider(
                     "Validée !",
@@ -605,6 +619,7 @@ let facturation = {
         if (clientId) facturation.getEntity(URL_GET_CLIENT, clientId, "client");
         else {
             client = null;
+            itemNumber = 0;
             datatable.ajax.reload();
         }
         facturation.getEntity(
@@ -663,6 +678,7 @@ let facturation = {
                 // console.log(dataJson);
                 if (dataname == "client") {
                     client = dataJson;
+                    itemNumber = 0;
                     datatable.ajax.reload();
                 }
                 if (dataname == "l'article") {
@@ -695,7 +711,7 @@ let facturation = {
 
         //Affichage générale
         var $showClasseTable = $("table.item-show-table");
-        $showClasseTable.find(".td-detail-reference").text(itemObj.id);
+        $showClasseTable.find(".td-detail-reference").text(itemObj.article.reference ?? '-');
         $showClasseTable
             .find(".td-detail-designation")
             .text(itemObj.name);
@@ -744,6 +760,7 @@ let facturation = {
                 client = facture.client;
                 choices[0].setChoiceByValue(facture.type.id);
                 choices[1].setChoiceByValue(client.id);
+                itemNumber = 0;
                 datatable.ajax.reload();
                 // Récupération de règlement de la facture : utilise pour mettre à jour le formulaire de la validation
                 factureReglement = facture.reglement;
@@ -1005,6 +1022,7 @@ let facturation = {
             // Mise à jour du champ de selection du client
             choices[1].setChoices([{ value: data.id, label: data.name, selected: true }])
             //
+            itemNumber = 0;
             datatable.ajax.reload();
             // facturation.saSucces("Succès !", "Enregistrement effectué avec succès.")
             alertify.success("Enregistrement effectué avec succès")
