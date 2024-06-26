@@ -40,7 +40,12 @@ let article = {
                                                 `</div>`;
                                         }
                                     },
-                                    { data: 'reference' },
+                                    { data: 'id' },
+                                    { data: 'reference',
+                                        "render": function(data, type, row, meta) {
+                                            return data ? data : '-';
+                                        }
+                                    },
                                     {
                                         data: 'categorie',
                                         "render": function(data, type, row, meta) {
@@ -290,12 +295,13 @@ let article = {
     },
     setShowingTable: function(itemObj) {
         var $showClasseTable = $('table.item-show-table');
-        $showClasseTable.find('.td-reference').text(itemObj.reference);
+        $showClasseTable.find('.td-numero').text(itemObj.id);
+        $showClasseTable.find('.td-reference').text(itemObj.reference ?? '-');
         $showClasseTable.find('.td-categorie').text(itemObj.categorie.libelle);
         $showClasseTable.find('.td-designation').text(itemObj.designation);
         $showClasseTable.find('.td-prix').text(itemObj.prix);
         $showClasseTable.find('.td-taxe').text(itemObj.taxe.string);
-        $showClasseTable.find('.td-ts').text(itemObj.taxeSpecifique ? itemObj.taxeSpecifique : "-");
+        $showClasseTable.find('.td-ts').text(itemObj.taxeSpecifique ?? "-");
         $showClasseTable.find('.td-stock').text(itemObj.stock);
         $showClasseTable.find('.td-stock-securite').text(itemObj.stockSecurite);
     },

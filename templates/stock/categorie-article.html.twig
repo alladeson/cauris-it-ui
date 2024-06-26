@@ -71,7 +71,7 @@
 							<label class="form-check-label" for="checkAll"></label>
 						</div>
 					</th>
-					<th>Référence</th>
+					<th>N°</th>
 					<th>Libellé</th>
 					{# <th>Montant</th> #}
 					<th style="width: 80px; min-width: 80px;">Action</th>
@@ -96,8 +96,8 @@
 						{# <div class="row">
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
-									<label class="form-label" for="reference">Référence</label>
-									<input type="text" class="form-control" id="reference" name="reference" placeholder="Référence de la chambre" value="" required>
+									<label class="form-label" for="reference">N°</label>
+									<input type="text" class="form-control" id="reference" name="reference" placeholder="N° de la chambre" value="" required>
 									<div class="valid-tooltip">
 										Parfait !
 									</div>
@@ -107,7 +107,7 @@
 						<div class="row">						
 							<div class="col-md-12">
 								<div class="mb-3 position-relative">
-									<label class="form-label" for="libelle">Libellé</label>
+									<label class="form-label" for="libelle">Libellé <span class="text-danger">*</span></label>
 									<div class="input-group">
 										{# <span class="input-group-text" id="libellePrepend"><i class="mdi mdi-money"></i></span> #}
 										<input type="hidden" id="item-id" name="item-id" value="">
@@ -156,7 +156,7 @@
                             <tbody>                                                    
                                 <tr>
                                     <th scope="row">
-                                        Référence
+                                        N°
                                     </th>
                                     <td class="text-center td-reference">
                                     </td>

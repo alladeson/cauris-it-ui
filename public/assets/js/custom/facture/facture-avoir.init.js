@@ -9,6 +9,7 @@ let articles;
 let article;
 let factureMontantTtc = 0;
 let taxeSpecifique = null;
+let itemNumber = 0;
 let factureAvoir = {
         listInitalizer: function() {
                 // $(".datatable").DataTable({ responsive: !1 }),
@@ -55,7 +56,11 @@ let factureAvoir = {
                                             );
                                         },
                                     },
-                                    { data: "id" },
+                                    { data: "id",
+                                        render: function(data, type, row, meta) {
+                                            return ++itemNumber;
+                                        },
+                                    },
                                     {
                                         data: "article",
                                         render: function(data, type, row, meta) {
@@ -297,6 +302,7 @@ let factureAvoir = {
                 // Run this when your request was successful
                 facture = data;
                 // console.log(facture);
+                itemNumber = 0;
                 datatable.ajax.reload();
                 alertify.success("Ajout effectué avec succès.");
                 // Mise à jour des articles (les servicies internes)
@@ -388,6 +394,7 @@ let factureAvoir = {
                 // Run this when your request was successful
                 // console.log(data);
                 alertify.success(oktext);
+                itemNumber = 0;
                 datatable.ajax.reload();
             })
             .catch(function(err) {
@@ -463,6 +470,7 @@ let factureAvoir = {
                 // Run this when your request was successful
                 // console.log(data);
                 alertify.success(oktext);
+                itemNumber = 0;
                 datatable.ajax.reload();
             })
             .catch(function(err) {
@@ -484,6 +492,7 @@ let factureAvoir = {
                 facture = data;
                 // console.log(facture);
                 alertify.success(oktext);
+                itemNumber = 0;
                 datatable.ajax.reload();
                 factureAvoir.saSuccesFactureValider(
                     "Validée !",
@@ -529,7 +538,8 @@ let factureAvoir = {
         if (clientId) factureAvoir.getEntity(URL_GET_CLIENT, clientId, "client");
         else {
             client = null;
-            datatable.ajax.reload();
+            itemNumber = 0;
+                datatable.ajax.reload();
         }
         factureAvoir.getEntity(
             URL_GET_FACTURE_CLIENT.replace("__clientId__", clientId ? clientId : 0),
@@ -583,7 +593,8 @@ let factureAvoir = {
                 // console.log(dataJson);
                 if (dataname == "client") {
                     client = dataJson;
-                    datatable.ajax.reload();
+                    itemNumber = 0;
+                datatable.ajax.reload();
                 }
                 if (dataname == "l'article") {
                     article = dataJson;
@@ -608,7 +619,7 @@ let factureAvoir = {
 
         //Affichage générale
         var $showClasseTable = $("table.item-show-table");
-        $showClasseTable.find(".td-detail-reference").text(itemObj.id);
+        $showClasseTable.find(".td-detail-reference").text(itemObj.article.reference ?? '-');
         $showClasseTable
             .find(".td-detail-designation")
             .text(itemObj.name);
