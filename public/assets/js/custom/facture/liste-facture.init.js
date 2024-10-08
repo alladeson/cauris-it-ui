@@ -254,6 +254,7 @@ let listeFacture = {
         $validationDataFormTable.find(".td-invoice-mpayer").text(facture.reglement ? facture.reglement.montantPayer : "-");
         $validationDataFormTable.find(".td-invoice-mrendu").text(facture.reglement ? facture.reglement.montantRendu : "-");
         $validationDataFormTable.find(".td-invoice-description").text(facture.reglement ? facture.reglement.description : "-");
+        $validationDataFormTable.find(".td-invoice-nb").text(facture.reglement ? facture.reglement.nb : "-");
 
         // Tableau recap des montants
         let $validationFormRecpaTable = $("div#facture-details-modal table.invoice-validation-table");

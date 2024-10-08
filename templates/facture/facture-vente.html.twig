@@ -59,7 +59,7 @@
 									<select class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher..."></select>
 								</div>
 							</div>
-							<div class="col-md-3 col-sm-4">
+							<div class="col-md-2 col-sm-4">
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="prix_u">Prix Unitaire <span class="text-danger">*</span></label>
 									<input onchange="facturation.setRemiseFormOnPricesChange(event, true)" type="number" step="1" min="1" class="form-control" id="prix_u" name="prix_u" placeholder="" value="" required>
@@ -69,6 +69,15 @@
 								<div class="mb-3 position-relative">
 									<label class="form-label font-size-13 text-muted" for="quantite">Quantité <span class="text-danger">*</span></label>
 									<input onchange="facturation.setMontant(event)" type="number" step="0.01" min="0.01" class="form-control" id="quantite" name="quantite" placeholder="" value="" required>
+								</div>
+							</div>
+							<div class="col-md-1 col-sm-4">
+								<div class="mb-3">
+									<label for="taxe" class="form-label font-size-13 text-muted">Unité <span class="text-danger">*</span></label>
+									<select class="form-control form-select" name="unite" id="unite">
+										<option value="KG" selected="selected">Kg</option>
+										<option value="U">U</option>
+									</select>
 								</div>
 							</div>
 							<div class="col-md-3 col-sm-4">
@@ -389,10 +398,16 @@
 									<i class="mdi mdi-arrow-right text-primary me-1"></i>Formulaire de validation</h5>
 								
 								<div class="row">
-									<div class="col-12">
+									<div class="col-6">
 										<div class="mb-3 position-relative">
 											<label class="form-label" for="description">Objet de la facture</label>
 											<textarea id="description" name="description" rows="2" class="form-control" placeholder="Entrez une description pour la facture"></textarea>
+										</div>
+									</div>
+									<div class="col-6">
+										<div class="mb-3 position-relative">
+											<label class="form-label" for="nb">NB</label>
+											<textarea id="nb" name="nb" rows="2" class="form-control" placeholder="Entrer la NB de la facture"></textarea>
 										</div>
 									</div>
 								</div>
