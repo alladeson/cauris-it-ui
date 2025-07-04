@@ -89,22 +89,34 @@ let facturation = {
                                             return data.designation;
                                         },
                                     },
-                                    { data: "quantite" },
+                                    { data: "quantite" },                                    
+                                    { data: "prixUnitaire" },
                                     {
                                         data: "taxe",
                                         render: function(data, type, row, meta) {
                                             return data.groupe + " (" + data.valeur + "%)";
                                         },
                                     },
-                                    { data: "prixUnitaire" },
                                     {
-                                        data: "montantHt",
+                                        data: "montantHtTaxable",
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : 0;
+                                        },
+                                    },                                    
+                                    {
+                                        data: "montantTva",
                                         render: function(data, type, row, meta) {
                                             return data ? data : 0;
                                         },
                                     },
                                     {
-                                        data: "montantTva",
+                                        data: "montantHtExonore",
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : 0;
+                                        },
+                                    },
+                                    {
+                                        data: "montantHt",
                                         render: function(data, type, row, meta) {
                                             return data ? data : 0;
                                         },
@@ -115,12 +127,12 @@ let facturation = {
                                             return data ? data : 0;
                                         },
                                     },
-                                    {
-                                        data: "taxeSpecifique",
-                                        render: function(data, type, row, meta) {
-                                            return data ? data : "-";
-                                        },
-                                    },
+                                    // {
+                                    //     data: "taxeSpecifique",
+                                    //     render: function(data, type, row, meta) {
+                                    //         return data ? data : "-";
+                                    //     },
+                                    // },
                                     {
                                         data: "id",
                                         class: "",
@@ -735,14 +747,20 @@ let facturation = {
             .find(".td-detail-mht")
             .text(itemObj.montantHt ? itemObj.montantHt : "-");
         $detailRecpMontantTable
+            .find(".td-detail-mt-exonere")
+            .text(itemObj.montantHtExonore ? itemObj.montantHtExonore : "-");
+        $detailRecpMontantTable
+            .find(".td-detail-mht-taxable")
+            .text(itemObj.montantHtTaxable ? itemObj.montantHtTaxable : "-");
+        $detailRecpMontantTable
             .find(".td-detail-mtva")
             .text(itemObj.montantTva ? itemObj.montantTva : "-");
-        $detailRecpMontantTable
-            .find(".td-detail-tsHt")
-            .text(itemObj.taxeSpecifique ? itemObj.taxeSpecifique : "-");
-        $detailRecpMontantTable
-            .find(".td-detail-tsTtc")
-            .text(itemObj.tsTtc ? itemObj.tsTtc : "-");
+        // $detailRecpMontantTable
+        //     .find(".td-detail-tsHt")
+        //     .text(itemObj.taxeSpecifique ? itemObj.taxeSpecifique : "-");
+        // $detailRecpMontantTable
+        //     .find(".td-detail-tsTtc")
+        //     .text(itemObj.tsTtc ? itemObj.tsTtc : "-");
         $detailRecpMontantTable
             .find(".td-detail-mttc")
             .text(itemObj.montantTtc ? itemObj.montantTtc : "-");
@@ -799,7 +817,7 @@ let facturation = {
             factureValidationForm.find("#montant-rendu").val(null);
             return false;
         }
-        var montantRendu = montantRecu - facture.montantTtc;
+        var montantRendu = montantRecu - facture.montantTtc;        
 
         factureValidationForm.find("#montant-recu").val(montantRecu);
         factureValidationForm.find("#montant-payer").val(facture.montantTtc);
@@ -811,14 +829,20 @@ let facturation = {
             .find(".td-invoice-mht")
             .text(facture.montantHt ? facture.montantHt : "-");
         $validationFormRecpaTable
+            .find(".td-invoice-mt-exonere")
+            .text(facture.montantHtExonore ? facture.montantHtExonore : "-");
+        $validationFormRecpaTable
+            .find(".td-invoice-mht-taxable")
+            .text(facture.montantHtTaxable ? facture.montantHtTaxable : "-");
+        $validationFormRecpaTable
             .find(".td-invoice-mtva")
             .text(facture.montantTva ? facture.montantTva : "-");
-        $validationFormRecpaTable
-            .find(".td-invoice-tsHt")
-            .text(facture.tsHt ? facture.tsHt : "-");
-        $validationFormRecpaTable
-            .find(".td-invoice-tsTtc")
-            .text(facture.tsTtc ? facture.tsTtc : "-");
+        // $validationFormRecpaTable
+        //     .find(".td-invoice-tsHt")
+        //     .text(facture.tsHt ? facture.tsHt : "-");
+        // $validationFormRecpaTable
+        //     .find(".td-invoice-tsTtc")
+        //     .text(facture.tsTtc ? facture.tsTtc : "-");
         $validationFormRecpaTable
             .find(".td-invoice-aib")
             .text(facture.montantAib ? facture.montantAib : "-");
@@ -832,16 +856,20 @@ let facturation = {
 
         // Mise à jour du formulaire de validation  en fonction de la valeur du règlement de la facture
         if (factureReglement) {
-            factureValidationForm.find("#montant-recu").val(factureReglement.montantRecu);
-            factureValidationForm.find("#montant-payer").val(factureReglement.montantPayer);
-            factureValidationForm.find("#montant-rendu").val(factureReglement.montantRendu);
+            // factureValidationForm.find("#montant-recu").val(factureReglement.montantRecu);
+            // factureValidationForm.find("#montant-payer").val(factureReglement.montantPayer);
+            // factureValidationForm.find("#montant-rendu").val(factureReglement.montantRendu);
             factureValidationForm.find("#description").val(factureReglement.description);
             factureValidationForm.find("#nb").val(factureReglement.nb);
         }
+
+        // Mise à jour du montant de reglèment: les champas étant cachés
+        factureValidationForm.find("#montant-recu").val(facture.montantTtc);
+        facturation.setValidationForm();
     },
     setRecapTableOnAibChange: function (event = null) {
         if (event) event.preventDefault();
-        var aibId = factureValidationForm.find("#aib").val();
+            var aibId = factureValidationForm.find("#aib").val();
         if (aibId) {
             GlobalScript.request(URL_GET_TAXE.replace("__id__", aibId), "GET", null)
                 .then(function (data) {
@@ -1201,8 +1229,12 @@ $(document).ready(function () {
                 URL_LIST_TYPE_PAIEMENT,
                 ["types de paiement", "id", "description"],
                 5,
-                factureReglement && factureReglement.typePaiement ? factureReglement.typePaiement.id : null
+                factureReglement && factureReglement.typePaiement ? factureReglement.typePaiement.id : 7
             );
+            // Mise à jour du montant de reglèment: les champas étant cachés
+            factureValidationForm.find("#montant-recu").val(facture.montantTtc);
+            facturation.setValidationForm();
+            // Affichage du modal du formulaire de validation
             $("#validate-invoice-modal").modal("toggle");
         } else {
             alertify.warning(

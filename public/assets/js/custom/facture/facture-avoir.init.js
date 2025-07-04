@@ -68,21 +68,33 @@ let factureAvoir = {
                                         },
                                     },
                                     { data: "quantite" },
+                                    { data: "prixUnitaire" },
                                     {
                                         data: "taxe",
                                         render: function(data, type, row, meta) {
                                             return data.groupe + " (" + data.valeur + "%)";
                                         },
                                     },
-                                    { data: "prixUnitaire" },
                                     {
-                                        data: "montantHt",
+                                        data: "montantHtTaxable",
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : 0;
+                                        },
+                                    },                                    
+                                    {
+                                        data: "montantTva",
                                         render: function(data, type, row, meta) {
                                             return data ? data : 0;
                                         },
                                     },
                                     {
-                                        data: "montantTva",
+                                        data: "montantHtExonore",
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : 0;
+                                        },
+                                    },
+                                    {
+                                        data: "montantHt",
                                         render: function(data, type, row, meta) {
                                             return data ? data : 0;
                                         },
@@ -93,12 +105,12 @@ let factureAvoir = {
                                             return data ? data : 0;
                                         },
                                     },
-                                    {
-                                        data: "taxeSpecifique",
-                                        render: function(data, type, row, meta) {
-                                            return data ? data : "-";
-                                        },
-                                    },
+                                    // {
+                                    //     data: "taxeSpecifique",
+                                    //     render: function(data, type, row, meta) {
+                                    //         return data ? data : "-";
+                                    //     },
+                                    // },
                                     {
                                         data: "id",
                                         class: "",
@@ -449,6 +461,7 @@ let factureAvoir = {
                 montantPayer: form.find("#montant-payer").val(),
                 montantRendu: form.find("#montant-rendu").val(),
                 description: $.trim(form.find("#description").val()),
+                nb: $.trim(form.find("#nb").val()),
             };
             return JSON.stringify(data);
         }
@@ -642,14 +655,20 @@ let factureAvoir = {
             .find(".td-detail-mht")
             .text(itemObj.montantHt ? itemObj.montantHt : "-");
         $detailRecpMontantTable
+            .find(".td-detail-mt-exonere")
+            .text(itemObj.montantHtExonore ? itemObj.montantHtExonore : "-");
+        $detailRecpMontantTable
+            .find(".td-detail-mht-taxable")
+            .text(itemObj.montantHtTaxable ? itemObj.montantHtTaxable : "-");
+        $detailRecpMontantTable
             .find(".td-detail-mtva")
             .text(itemObj.montantTva ? itemObj.montantTva : "-");
-        $detailRecpMontantTable
-            .find(".td-detail-tsHt")
-            .text(itemObj.taxeSpecifique ? itemObj.taxeSpecifique : "-");
-        $detailRecpMontantTable
-            .find(".td-detail-tsTtc")
-            .text(itemObj.tsTtc ? itemObj.tsTtc : "-");
+        // $detailRecpMontantTable
+        //     .find(".td-detail-tsHt")
+        //     .text(itemObj.taxeSpecifique ? itemObj.taxeSpecifique : "-");
+        // $detailRecpMontantTable
+        //     .find(".td-detail-tsTtc")
+        //     .text(itemObj.tsTtc ? itemObj.tsTtc : "-");
         $detailRecpMontantTable
             .find(".td-detail-mttc")
             .text(itemObj.montantTtc ? itemObj.montantTtc : "-");
@@ -730,14 +749,20 @@ let factureAvoir = {
             .find(".td-invoice-mht")
             .text(facture.montantHt ? facture.montantHt : "-");
         $validationFormRecpaTable
+            .find(".td-invoice-mt-exonere")
+            .text(facture.montantHtExonore ? facture.montantHtExonore : "-");
+        $validationFormRecpaTable
+            .find(".td-invoice-mht-taxable")
+            .text(facture.montantHtTaxable ? facture.montantHtTaxable : "-");
+        $validationFormRecpaTable
             .find(".td-invoice-mtva")
             .text(facture.montantTva ? facture.montantTva : "-");
-        $validationFormRecpaTable
-            .find(".td-invoice-tsHt")
-            .text(facture.tsHt ? facture.tsHt : "-");
-        $validationFormRecpaTable
-            .find(".td-invoice-tsTtc")
-            .text(facture.tsTtc ? facture.tsTtc : "-");
+        // $validationFormRecpaTable
+        //     .find(".td-invoice-tsHt")
+        //     .text(facture.tsHt ? facture.tsHt : "-");
+        // $validationFormRecpaTable
+        //     .find(".td-invoice-tsTtc")
+        //     .text(facture.tsTtc ? facture.tsTtc : "-");
         $validationFormRecpaTable
             .find(".td-invoice-aib")
             .text(facture.montantAib ? facture.montantAib : "-");

@@ -106,11 +106,22 @@ class ApiConstant
     public const URL_DELETE_CLIENT = "stock/client/__id__";
     // Facturation et liste des factures
     public const URL_LIST_FACTURE = "factures";
+    // Filtre par type de facture
     public const URL_LIST_FACTURE_BY_TYPE = "factures/type/__typeId__";
     public const URL_LIST_FACTURE_BY_TYPE_CREATED_DATE = "factures/type/__typeId__/created-at";
     public const URL_LIST_FACTURE_BY_TYPE_CONFIRMED_DATE = "factures/type/__typeId__/confirmed-at";
+    // Filtre par client
+    public const URL_LIST_FACTURE_BY_CLIENT = "factures/client/__clientId__";
+    public const URL_LIST_FACTURE_BY_CLIENT_CREATED_DATE = "factures/client/__clientId__/created-at";
+    public const URL_LIST_FACTURE_BY_CLIENT_CONFIRMED_DATE = "factures/client/__clientId__/confirmed-at";
+    // Filtre par client et par type de factrue
+    public const URL_LIST_FACTURE_BY_CLIENT_AND_TYPE = "factures/client/__clientId__/type/__typeId__/all";
+    public const URL_LIST_FACTURE_BY_CLIENT_AND_TYPE_CREATED_DATE = "factures/client/__clientId__/type/__typeId__/created-at";
+    public const URL_LIST_FACTURE_BY_CLIENT_AND_TYPE_CONFIRMED_DATE = "factures/client/__clientId__/type/__typeId__/confirmed-at";
+    // Filtre par date
     public const URL_LIST_FACTURE_BY_CREATED_DATE = "factures/list/created-at";
     public const URL_LIST_FACTURE_BY_CONFIRMED_DATE = "factures/list/confirmed-at";
+    //
     public const URL_POST_FACTURE = "factures/client/__clientId__/article/__articleId__";
     public const URL_VALIDER_FACTURE = "factures/__id__/valider";
     public const URL_IMPRIMER_FACTURE = "public/facture/__id__/imprimer";

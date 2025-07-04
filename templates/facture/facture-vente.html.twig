@@ -75,8 +75,8 @@
 								<div class="mb-3">
 									<label for="taxe" class="form-label font-size-13 text-muted">Unité <span class="text-danger">*</span></label>
 									<select class="form-control form-select" name="unite" id="unite">
-										<option value="KG" selected="selected">Kg</option>
-										<option value="U">U</option>
+										<option value="KG">Kg</option>
+										<option value="U" selected="selected">U</option>
 									</select>
 								</div>
 							</div>
@@ -224,14 +224,16 @@
 					</th>
 					<th scope="col">N°</th>
 					{# <th scope="col">Réf.</th> #}
-					<th scope="col">Désignation</th>
-					<th scope="col">Quantité</th>
-					<th scope="col">Taxe</th>
+					<th scope="col">Désign.</th>
+					<th scope="col">Qté</th>
 					<th scope="col">Prix U</th>
-					<th scope="col">Mt HT</th>
+					<th scope="col">Taxe</th>
+					<th scope="col">Mt HT Taxable</th>
 					<th scope="col">Mt TVA</th>
+					<th scope="col">Mt Exonéré</th>
+					<th scope="col">Mt Total HT </th>
 					<th scope="col">Mt TTC</th>
-					<th scope="col">TS</th>
+					{# <th scope="col">TS</th> #}
 					<th style="width: 80px; min-width: 80px;">Action</th>
 				</tr>
 			</thead>
@@ -315,11 +317,23 @@
 										</tr>
 										<tr>
 											<th scope="row">
+												Montant Exonéré
+											</th>
+											<td class="text-center td-detail-mt-exonere"></td>
+										</tr>
+										<tr>
+											<th scope="row">
+												Montant HT Taxable
+											</th>
+											<td class="text-center td-detail-mht-taxable"></td>
+										</tr>										
+										<tr>
+											<th scope="row">
 												Montant Total TVA
 											</th>
 											<td class="text-center td-detail-mtva"></td>
 										</tr>
-										<tr id="tr-detail-ts">
+										{# <tr id="tr-detail-ts">
 											<th scope="row">
 												Montant Total TS H.T
 											</th>
@@ -330,7 +344,7 @@
 												Montant Total TS T.T.C
 											</th>
 											<td class="text-center td-detail-tsTtc"></td>
-										</tr>
+										</tr> #}
 										<tr>
 											<th scope="row">
 												Montant Total T.T.C
@@ -398,52 +412,52 @@
 									<i class="mdi mdi-arrow-right text-primary me-1"></i>Formulaire de validation</h5>
 								
 								<div class="row">
-									<div class="col-6">
+									<div class="col-12">
 										<div class="mb-3 position-relative">
 											<label class="form-label" for="description">Objet de la facture</label>
-											<textarea id="description" name="description" rows="2" class="form-control" placeholder="Entrez une description pour la facture"></textarea>
-										</div>
-									</div>
-									<div class="col-6">
-										<div class="mb-3 position-relative">
-											<label class="form-label" for="nb">NB</label>
-											<textarea id="nb" name="nb" rows="2" class="form-control" placeholder="Entrer la NB de la facture"></textarea>
+											<textarea id="description" name="description" rows="3" class="form-control" placeholder="Entrez une description pour la facture"></textarea>
 										</div>
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-lg-12 col-sm-6">
+									<div class="col-12">
+										<div class="mb-3 position-relative">
+											<label class="form-label" for="nb">NB</label>
+											<textarea id="nb" name=""nb rows="3" class="form-control" placeholder="Entrer la NB de la facture"></textarea>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-12">
 										<div class="mb-3">
 											<label for="aib" class="form-label font-size-13 text-muted">Aib</label>
 											<select onchange="facturation.setRecapTableOnAibChange(event)" class="form-control form-select" data-trigger name="aib" id="aib" placeholder="chercher..."></select>
 										</div>
 									</div>
-								{# </div>
-								<div class="row"> #}
-									<div class="col-lg-12 col-sm-6">
+								</div>
+								<div class="row d-none">
+									<div class="col-sm-12">
 										<div class="mb-3">
 											<label for="type-paiement" class="form-label font-size-13 text-muted">Type de paiement <span class="text-danger">*</span></label>
 											<select class="form-control form-select" data-trigger name="type-paiement" id="type-paiement" placeholder="chercher..."></select>
 										</div>
 									</div>
-								</div>
-								<div class="row">
 									<div class="col-sm-4">
 										<div class="mb-3 position-relative">
 											<label class="form-label font-size-13 text-muted" for="montant-recu">Montant reçu <span class="text-danger">*</span></label>
-											<input onchange="facturation.setValidationForm(event)" type="number" step="1" min="1" class="form-control" id="montant-recu" name="montant-recu" placeholder="" value="" required>
+											<input {#onchange="facturation.setValidationForm(event)"#} type="number" step="0.01" min="0.01" class="form-control" id="montant-recu" name="montant-recu" placeholder="" value="" required>
 										</div>
 									</div>
 									<div class="col-sm-4">
 										<div class="mb-3 position-relative">
 											<label class="form-label font-size-13 text-muted" for="montant-payer">Montant payé <span class="text-danger">*</span></label>
-											<input onchange="facturation.setValidationForm(event)" type="number" step="0.01" min="0.01" class="form-control" id="montant-payer" name="montant-payer" placeholder="" value="" required>
+											<input {#onchange="facturation.setValidationForm(event)"#} type="number" step="0.01" min="0.01" class="form-control" id="montant-payer" name="montant-payer" placeholder="" value="" required>
 										</div>
 									</div>
 									<div class="col-sm-4">
 										<div class="mb-3 position-relative">
 											<label class="form-label font-size-13 text-muted" for="montant-rendu">Montant rendu <span class="text-danger">*</span></label>
-											<input onchange="facturation.setValidationForm(event)" type="number" step="0.01" min="0" class="form-control" id="montant-rendu" name="montant-rendu" placeholder="" value="" required>
+											<input {#onchange="facturation.setValidationForm(event)"#} type="number" step="0.01" min="0" class="form-control" id="montant-rendu" name="montant-rendu" placeholder="" value="" required>
 										</div>
 									</div>
 								</div>
@@ -467,11 +481,23 @@
 											</tr>
 											<tr>
 												<th scope="row">
+													Montant Total Exonéré
+												</th>
+												<td class="text-center td-invoice-mt-exonere"></td>
+											</tr>
+											<tr>
+												<th scope="row">
+													Montant Total HT Taxable
+												</th>
+												<td class="text-center td-invoice-mht-taxable"></td>
+											</tr>
+											<tr>
+												<th scope="row">
 													Montant Total TVA
 												</th>
 												<td class="text-center td-invoice-mtva"></td>
 											</tr>
-											<tr id="tr-invoice-ts">
+											{# <tr id="tr-invoice-ts">
 												<th scope="row">
 													Montant Total TS H.T
 												</th>
@@ -482,7 +508,7 @@
 													Montant Total TS T.T.C
 												</th>
 												<td class="text-center td-invoice-tsTtc"></td>
-											</tr>
+											</tr> #}
 											<tr id="tr-invoice-aib">
 												<th scope="row">
 													Montant Aib

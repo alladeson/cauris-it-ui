@@ -94,7 +94,7 @@
                                     <div class="col-md-12">
                                         <div class="mb-3 position-relative">
                                             <label class="form-label" for="rcm">RCM</label>
-                                            <input type="text" id="rcm" name="rcm" class="form-control" placeholder="Le numéro rcm du de la société" value="{{param.rcm}}">
+                                            <input {{ authUser.sa ? "" : "disabled" }} type="text" id="rcm" name="rcm" class="form-control" placeholder="Le numéro rcm du de la société" value="{{param.rcm}}">
                                         </div>
                                     </div>							
                                 </div>

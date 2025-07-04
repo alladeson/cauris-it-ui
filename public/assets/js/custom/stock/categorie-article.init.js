@@ -55,11 +55,11 @@ let categorieArticle = {
                                                     <li>
                                                         <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                     </li>
-                                                    ${ITEM_WRITABLE ?
+                                                    ${ITEM_WRITABLE && $.inArray(data, [1, 2]) == -1 ?
                                                     `<li>
                                                         <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier</a>
                                                     </li>` : ""}
-                                                    ${ITEM_DELETABLE ? 
+                                                    ${ITEM_DELETABLE  && $.inArray(data, [1, 2]) == -1 ? 
                                                     `<li>
                                                         <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
                                                     </li>` : "" }

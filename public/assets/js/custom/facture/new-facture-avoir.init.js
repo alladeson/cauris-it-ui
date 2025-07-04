@@ -155,7 +155,7 @@ $(document).ready(function() {
     newFactureAvoir.getForeignsData(
         URL_LIST_TYPE_FACTURE_AVOIR, ["types de facture", "id", "description"],
         0,
-        null
+        2
     );
     // Remettre à null la valeur du code MECeF/DGI si le type de la facture change
     facturationForm.find("#type").change(function(event) {
