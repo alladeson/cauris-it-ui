@@ -9,6 +9,7 @@ let articles;
 let article;
 let factureMontantTtc = 0;
 let taxeSpecifique = null;
+let ItemTsHT = null;
 let itemNumber = 0;
 let factureAvoir = {
         listInitalizer: function() {
@@ -80,12 +81,6 @@ let factureAvoir = {
                                         render: function(data, type, row, meta) {
                                             return data ? data : 0;
                                         },
-                                    },                                    
-                                    {
-                                        data: "montantTva",
-                                        render: function(data, type, row, meta) {
-                                            return data ? data : 0;
-                                        },
                                     },
                                     {
                                         data: "montantHtExonore",
@@ -98,6 +93,18 @@ let factureAvoir = {
                                         render: function(data, type, row, meta) {
                                             return data ? data : 0;
                                         },
+                                    },                                    
+                                    {
+                                        data: "montantTva",
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : 0;
+                                        },
+                                    },
+                                    {
+                                        data: "taxeSpecifique",
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        },
                                     },
                                     {
                                         data: "montantTtc",
@@ -105,12 +112,6 @@ let factureAvoir = {
                                             return data ? data : 0;
                                         },
                                     },
-                                    // {
-                                    //     data: "taxeSpecifique",
-                                    //     render: function(data, type, row, meta) {
-                                    //         return data ? data : "-";
-                                    //     },
-                                    // },
                                     {
                                         data: "id",
                                         class: "",
@@ -357,6 +358,7 @@ let factureAvoir = {
                 // console.log(itemObj);
                 // Sauvegarde la taxe spécifique si existante sinon null
                 taxeSpecifique = itemObj.ts ? itemObj.ts.tsUnitaire : null;
+                ItemTsHT = itemObj.ts ? itemObj.taxeSpecifique : null;
                 factureAvoir.setformData(facturationForm, itemObj);
             })
             .catch(function(err) {
@@ -382,6 +384,7 @@ let factureAvoir = {
                 // console.log(itemObj);
                 // Sauvegarde la taxe spécifique si existante sinon null
                 taxeSpecifique = itemObj.ts ? itemObj.ts.tsUnitaire : null;
+                ItemTsHT = itemObj.ts ? itemObj.taxeSpecifique : null;
                 factureAvoir.setShowingTable(itemObj);
                 $(".show-item-modal").modal("show");
             })
@@ -595,7 +598,8 @@ let factureAvoir = {
         if (prixU && quantite) montant = prixU * quantite;
         facturationForm.find("#montant").val(montant);
         // Gestion de la taxe spécifique
-        var montantTs = taxeSpecifique ? (taxeSpecifique * quantite) : null;
+        // var montantTs = taxeSpecifique ? (taxeSpecifique * quantite) : null;
+        var montantTs = ItemTsHT ? ItemTsHT : null;
         facturationForm.find("#taxe-specifique").val(montantTs);
     },
     getEntity: function(url, id, dataname = "donnée", reloadDatatable = false) {
@@ -642,7 +646,8 @@ let factureAvoir = {
 
         // Affichage taxe spécifique et remise
         var $tsRemmiseShowTable = $("table.ts-remise-show-table");
-        $tsRemmiseShowTable.find(".td-detail-ts").text(taxeSpecifique ? taxeSpecifique : "-");
+        // $tsRemmiseShowTable.find(".td-detail-ts").text(taxeSpecifique ? taxeSpecifique : "-");
+        $tsRemmiseShowTable.find(".td-detail-ts").text(itemObj.taxeSpecifique ? itemObj.taxeSpecifique : "-");
         $tsRemmiseShowTable.find(".td-detail-remise").text(itemObj.remise ? "Oui" : "Non");
         $tsRemmiseShowTable.find(".td-detail-remise-taux").text(itemObj.remise ? itemObj.discount.taux + "%" : "-");
         $tsRemmiseShowTable.find(".td-detail-remise-prix-u").text(itemObj.remise ? itemObj.discount.originalPrice : "-");
@@ -666,9 +671,9 @@ let factureAvoir = {
         // $detailRecpMontantTable
         //     .find(".td-detail-tsHt")
         //     .text(itemObj.taxeSpecifique ? itemObj.taxeSpecifique : "-");
-        // $detailRecpMontantTable
-        //     .find(".td-detail-tsTtc")
-        //     .text(itemObj.tsTtc ? itemObj.tsTtc : "-");
+        $detailRecpMontantTable
+            .find(".td-detail-tsTtc")
+            .text(itemObj.tsTtc ? itemObj.tsTtc : "-");
         $detailRecpMontantTable
             .find(".td-detail-mttc")
             .text(itemObj.montantTtc ? itemObj.montantTtc : "-");
@@ -760,9 +765,9 @@ let factureAvoir = {
         // $validationFormRecpaTable
         //     .find(".td-invoice-tsHt")
         //     .text(facture.tsHt ? facture.tsHt : "-");
-        // $validationFormRecpaTable
-        //     .find(".td-invoice-tsTtc")
-        //     .text(facture.tsTtc ? facture.tsTtc : "-");
+        $validationFormRecpaTable
+            .find(".td-invoice-tsTtc")
+            .text(facture.tsTtc ? facture.tsTtc : "-");
         $validationFormRecpaTable
             .find(".td-invoice-aib")
             .text(facture.montantAib ? facture.montantAib : "-");

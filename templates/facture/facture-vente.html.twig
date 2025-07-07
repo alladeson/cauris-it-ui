@@ -229,11 +229,11 @@
 					<th scope="col">Prix U</th>
 					<th scope="col">Taxe</th>
 					<th scope="col">Mt HT Taxable</th>
-					<th scope="col">Mt TVA</th>
 					<th scope="col">Mt Exonéré</th>
 					<th scope="col">Mt Total HT </th>
+					<th scope="col">Mt TVA</th>
+					<th scope="col">TS</th>
 					<th scope="col">Mt TTC</th>
-					{# <th scope="col">TS</th> #}
 					<th style="width: 80px; min-width: 80px;">Action</th>
 				</tr>
 			</thead>
@@ -415,7 +415,7 @@
 									<div class="col-12">
 										<div class="mb-3 position-relative">
 											<label class="form-label" for="description">Objet de la facture</label>
-											<textarea id="description" name="description" rows="3" class="form-control" placeholder="Entrez une description pour la facture"></textarea>
+											<textarea id="description" name="description" rows="4" class="form-control" placeholder="Entrez une description pour la facture"></textarea>
 										</div>
 									</div>
 								</div>
@@ -423,7 +423,7 @@
 									<div class="col-12">
 										<div class="mb-3 position-relative">
 											<label class="form-label" for="nb">NB</label>
-											<textarea id="nb" name=""nb rows="3" class="form-control" placeholder="Entrer la NB de la facture"></textarea>
+											<textarea id="nb" name=""nb rows="4" class="form-control" placeholder="Entrer la NB de la facture"></textarea>
 										</div>
 									</div>
 								</div>
@@ -473,11 +473,23 @@
 											</tr>
 										</thead>
 										<tbody>
+											<tr id="tr-invoice-aib">
+												<th scope="row">
+													Montant Total T.T.C
+												</th>
+												<td class="text-center td-invoice-mttc"></td>
+											</tr>
 											<tr>
 												<th scope="row">
 													Montant Total HT
 												</th>
 												<td class="text-center td-invoice-mht"></td>
+											</tr>
+											<tr>
+												<th scope="row">
+													Montant Total TVA
+												</th>
+												<td class="text-center td-invoice-mtva"></td>
 											</tr>
 											<tr>
 												<th scope="row">
@@ -490,37 +502,25 @@
 													Montant Total HT Taxable
 												</th>
 												<td class="text-center td-invoice-mht-taxable"></td>
-											</tr>
-											<tr>
-												<th scope="row">
-													Montant Total TVA
-												</th>
-												<td class="text-center td-invoice-mtva"></td>
-											</tr>
+											</tr>											
 											{# <tr id="tr-invoice-ts">
 												<th scope="row">
 													Montant Total TS H.T
 												</th>
 												<td class="text-center td-invoice-tsHt"></td>
-											</tr>
+											</tr> #}
 											<tr id="tr-invoice-ts">
 												<th scope="row">
 													Montant Total TS T.T.C
 												</th>
 												<td class="text-center td-invoice-tsTtc"></td>
-											</tr> #}
+											</tr>
 											<tr id="tr-invoice-aib">
 												<th scope="row">
 													Montant Aib
 												</th>
 												<td class="text-center td-invoice-aib"></td>
-											</tr>
-											<tr id="tr-invoice-aib">
-												<th scope="row">
-													Montant Total T.T.C
-												</th>
-												<td class="text-center td-invoice-mttc"></td>
-											</tr>
+											</tr>											
 											<tr id="tr-invoice-status">
 												<th scope="row">
 													Statut

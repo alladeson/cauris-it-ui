@@ -10,6 +10,7 @@ let article;
 let factureMontantTtc = 0;
 let factureReglement = null;
 let taxeSpecifique = null;
+let ItemTsHT = null;
 let originalPrice = null;
 let typeFactureId = 0;
 let itemNumber = 0;
@@ -102,12 +103,6 @@ let facturation = {
                                         render: function(data, type, row, meta) {
                                             return data ? data : 0;
                                         },
-                                    },                                    
-                                    {
-                                        data: "montantTva",
-                                        render: function(data, type, row, meta) {
-                                            return data ? data : 0;
-                                        },
                                     },
                                     {
                                         data: "montantHtExonore",
@@ -120,19 +115,25 @@ let facturation = {
                                         render: function(data, type, row, meta) {
                                             return data ? data : 0;
                                         },
+                                    },                                                                                                            
+                                    {
+                                        data: "montantTva",
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : 0;
+                                        },
+                                    },
+                                    {
+                                        data: "taxeSpecifique",
+                                        render: function(data, type, row, meta) {
+                                            return data ? data : "-";
+                                        },
                                     },
                                     {
                                         data: "montantTtc",
                                         render: function(data, type, row, meta) {
                                             return data ? data : 0;
                                         },
-                                    },
-                                    // {
-                                    //     data: "taxeSpecifique",
-                                    //     render: function(data, type, row, meta) {
-                                    //         return data ? data : "-";
-                                    //     },
-                                    // },
+                                    },                                    
                                     {
                                         data: "id",
                                         class: "",
@@ -397,6 +398,7 @@ let facturation = {
                 article = data.article;
                 // Sauvegarde la taxe spécifique si existante sinon null
                 taxeSpecifique = itemObj.ts ? itemObj.ts.tsUnitaire : null;
+                ItemTsHT = itemObj.ts ? itemObj.taxeSpecifique : null;
                 //Mise à jour du prix originale de l'article
                 originalPrice = itemObj.remise ? itemObj.discount.originalPrice : itemObj.prixUnitaire;
                 // Mise à jour du formulaire de facturation
@@ -427,6 +429,7 @@ let facturation = {
                 // console.log(itemObj);
                 // Sauvegarde la taxe spécifique si existante sinon null
                 taxeSpecifique = itemObj.ts ? itemObj.ts.tsUnitaire : null;
+                ItemTsHT = itemObj.ts ? itemObj.taxeSpecifique : null;
                 facturation.setShowingTable(itemObj);
                 $(".show-item-modal").modal("show");
             })
@@ -680,7 +683,8 @@ let facturation = {
         if (prixU && quantite) montant = prixU * quantite;
         facturationForm.find("#montant").val(montant);
         // Gestion de la taxe spécifique
-        var montantTs = taxeSpecifique ? (taxeSpecifique * quantite) : null;
+        // var montantTs = taxeSpecifique ? (taxeSpecifique * quantite) : null;
+        var montantTs = ItemTsHT ? ItemTsHT : null;
         facturationForm.find("#taxe-specifique").val(montantTs);
     },
     getEntity: function (url, id, dataname = "donnée", reloadDatatable = false) {
@@ -734,7 +738,8 @@ let facturation = {
 
         // Affichage taxe spécifique et remise
         var $tsRemmiseShowTable = $("table.ts-remise-show-table");
-        $tsRemmiseShowTable.find(".td-detail-ts").text(taxeSpecifique ? taxeSpecifique : "-");
+        // $tsRemmiseShowTable.find(".td-detail-ts").text(taxeSpecifique ? taxeSpecifique : "-");
+        $tsRemmiseShowTable.find(".td-detail-ts").text(itemObj.taxeSpecifique ? itemObj.taxeSpecifique : "-");
         $tsRemmiseShowTable.find(".td-detail-remise").text(itemObj.remise ? "Oui" : "Non");
         $tsRemmiseShowTable.find(".td-detail-remise-taux").text(itemObj.remise ? itemObj.discount.taux + "%" : "-");
         $tsRemmiseShowTable.find(".td-detail-remise-prix-u").text(itemObj.remise ? itemObj.discount.originalPrice : "-");
@@ -758,9 +763,9 @@ let facturation = {
         // $detailRecpMontantTable
         //     .find(".td-detail-tsHt")
         //     .text(itemObj.taxeSpecifique ? itemObj.taxeSpecifique : "-");
-        // $detailRecpMontantTable
-        //     .find(".td-detail-tsTtc")
-        //     .text(itemObj.tsTtc ? itemObj.tsTtc : "-");
+        $detailRecpMontantTable
+            .find(".td-detail-tsTtc")
+            .text(itemObj.tsTtc ? itemObj.tsTtc : "-");
         $detailRecpMontantTable
             .find(".td-detail-mttc")
             .text(itemObj.montantTtc ? itemObj.montantTtc : "-");
@@ -840,9 +845,9 @@ let facturation = {
         // $validationFormRecpaTable
         //     .find(".td-invoice-tsHt")
         //     .text(facture.tsHt ? facture.tsHt : "-");
-        // $validationFormRecpaTable
-        //     .find(".td-invoice-tsTtc")
-        //     .text(facture.tsTtc ? facture.tsTtc : "-");
+        $validationFormRecpaTable
+            .find(".td-invoice-tsTtc")
+            .text(facture.tsTtc ? facture.tsTtc : "-");
         $validationFormRecpaTable
             .find(".td-invoice-aib")
             .text(facture.montantAib ? facture.montantAib : "-");
