@@ -93,8 +93,10 @@ let newSystemParamsWizard = {
                 'ville': GlobalScript.checkBlank(societeForm.find("#ville").val()),
                 'nim': GlobalScript.checkBlank(emecefForm.find("#nim").val()),
                 'typeSystem': GlobalScript.checkBlank(emecefForm.find("#type").val()),
-                'formatFacture': GlobalScript.checkBlank(emecefForm.find("#format-facture").val()),
                 'tokenTmp': GlobalScript.checkBlank($.trim(emecefForm.find("#token").val())),
+                'formatFacture': GlobalScript.checkBlank(emecefForm.find("#format-facture").val()),
+                'gestionStock': GlobalScript.checkBlank(emecefForm.find("#gestion-stock").val()),
+                'stockEtFacture': GlobalScript.checkBlank(emecefForm.find("#stock-et-facture").val()),
                 'serialKey': GlobalScript.checkBlank($.trim(serialKeyForm.find("#serial-key").val())),
             };
             return JSON.stringify(data);
@@ -122,8 +124,10 @@ let newSystemParamsWizard = {
         var emecefForm = $("form#emecef-form")
         $showClasseTable.find('.td-nim').html(emecefForm.find("#nim").val() ? emecefForm.find("#nim").val() : errorHtml);
         $showClasseTable.find('.td-type').html(emecefForm.find("#type").val() ? emecefForm.find("#type").val() : errorHtml);
-        $showClasseTable.find('.td-format-facture').html(emecefForm.find("#format-facture").val() ? emecefForm.find("#format-facture").val() : errorHtml);
         $showClasseTable.find('.td-token').html(emecefForm.find("#token").val() ? `<span class="text-success badge badge-soft-success font-size-14">Fourni</span>` : errorHtml);
+        $showClasseTable.find('.td-format-facture').html(emecefForm.find("#format-facture").val() ? emecefForm.find("#format-facture").val() : errorHtml);
+        $showClasseTable.find('.td-gestion-stock').html(emecefForm.find("#gestion-stock").val() ? emecefForm.find("#gestion-stock").val() : errorHtml);
+        $showClasseTable.find('.td-stock-et-facture').html(emecefForm.find("#stock-et-facture").val() ? emecefForm.find("#stock-et-facture").val() : errorHtml);
         // Clé d'activation
         var serialKeyForm = $("form#serialKey-form")
         $showClasseTable.find('.td-serial-key').html(serialKeyForm.find("#serial-key").val() ? `<span class="text-success badge badge-soft-success font-size-14">Fourni</span>` : errorHtml);
