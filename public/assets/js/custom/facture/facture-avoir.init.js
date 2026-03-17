@@ -425,7 +425,7 @@ let factureAvoir = {
             data = {
                 id: form.find("#item-id").val(),
                 quantite: form.find("#quantite").val(),
-                unite: "U",
+                unite: form.find("#unite").val(),
                 prixUnitaire: form.find("#prix_u").val(),
                 taxeSpecifique: form.find("#taxe-specifique").val(),
                 remise: form.find("#remise-check").is(":checked"),
@@ -722,6 +722,7 @@ let factureAvoir = {
         $validationDataFormTable.find(".td-invoice-mpayer").text(facture.reglement ? facture.reglement.montantPayer : "-");
         $validationDataFormTable.find(".td-invoice-mrendu").text(facture.reglement ? facture.reglement.montantRendu : "-");
         $validationDataFormTable.find(".td-invoice-description").text(facture.reglement ? facture.reglement.description : "-");
+        $validationDataFormTable.find(".td-invoice-nb").text(facture.reglement ? facture.reglement.nb : "-");
 
         // Tableau recap des montants
         var $validationFormRecpaTable = $("table.invoice-validation-table");
