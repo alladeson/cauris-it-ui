@@ -113,7 +113,7 @@
 													<span class="input-group-text" id="telephonePrepend">
 														<i class="mdi mdi-phone"></i>
 													</span>
-													<input onchange="newSystemParamsWizard.setRecapTable(event)" type="tel" pattern="[0-9]*" class="form-control" id="telephone" name="telephone" placeholder="Numéro de téléphone" aria-describedby="telephonePrepend" required>
+													<input onchange="newSystemParamsWizard.setRecapTable(event)" type="text"  class="form-control" id="telephone" name="telephone" placeholder="Numéro de téléphone" aria-describedby="telephonePrepend" required>
 												</div>
 											</div>
 										</div>
@@ -171,13 +171,13 @@
 									</div>
 									<form class="form-wizard" id="emecef-form" onsubmit="newSystemParamsWizard.submitFormData(event)">
 										<div class="row">
-											<div class="col-sm-4">
+											<div class="col-sm-3">
 												<div class="mb-3">
 													<label for="nim" class="form-label font-size-13 text-muted">NIM</label>
 													<input onchange="newSystemParamsWizard.setRecapTable(event)" type="text" id="nim" name="nim" class="form-control" placeholder="Le nim de l'e-MECeF">
 												</div>
 											</div>
-											<div class="col-sm-4">
+											<div class="col-sm-3">												
 												<div class="mb-3">
 													<label for="type" class="form-label font-size-13 text-muted">Type de Système</label>
 													<select onchange="newSystemParamsWizard.setRecapTable(event)" required class="form-control form-select" data-trigger name="type" id="type" placeholder="chercher...">
@@ -185,8 +185,16 @@
 														<option value="Test">Test</option>
 														<option value="Production">Production</option>
 													</select>
+												</div>						
+											</div>						
+											<div class="col-sm-6">
+												<div class="mb-3 position-relative">
+													<label class="form-label font-size-13 text-muted" for="token">Token</label>
+													<textarea onchange="newSystemParamsWizard.setRecapTable(event)" id="token" name="token" rows="1" class="form-control" placeholder="Le token d'authentification à l'e-MECef"></textarea>
 												</div>
-											</div>
+											</div>							
+										</div>
+										<div class="row">																						
 											<div class="col-sm-4">
 												<div class="mb-3">
 													<label for="format-facture" class="form-label font-size-13 text-muted">Format de la facture</label>
@@ -197,15 +205,28 @@
 													</select>
 												</div>
 											</div>
-										</div>
-										<div class="row">						
-											<div class="col-12">
-												<div class="mb-3 position-relative">
-													<label class="form-label font-size-13 text-muted" for="token">Token</label>
-													<textarea onchange="newSystemParamsWizard.setRecapTable(event)" id="token" name="token" rows="4" class="form-control" placeholder="Le token d'authentification à l'e-MECef"></textarea>
+											<div class="col-sm-4">
+												<div class="mb-3">
+													<label for="gestion-stock" class="form-label font-size-13 text-muted">Gestion du stock</label>
+													<select onchange="newSystemParamsWizard.setRecapTable(event)" required class="form-control form-select" data-trigger name="gestion-stock" id="gestion-stock" placeholder="chercher...">
+														<option value="">Sélectionner</option>		
+														<option value="true">Oui</option>
+														<option value="false">Non</option>
+													</select>
 												</div>
-											</div>							
+											</div>
+											<div class="col-sm-4">
+												<div class="mb-3">
+													<label for="stock-et-facture" class="form-label font-size-13 text-muted">Stock et Facture</label>
+													<select onchange="newSystemParamsWizard.setRecapTable(event)" required class="form-control form-select" data-trigger name="stock-et-facture" id="stock-et-facture" placeholder="chercher...">
+														<option value="">Sélectionner</option>		
+														<option value="true">Oui</option>
+														<option value="false">Non</option>
+													</select>
+												</div>
+											</div>
 										</div>
+										
 									</form>
 									<ul class="pager wizard twitter-bs-wizard-pager-link">
 										<li class="previous">
@@ -383,6 +404,22 @@
 														Token
 													</th>
 													<td class="text-center td-token">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>
+												<tr>
+													<th scope="row">
+														Gestion du stock
+													</th>
+													<td class="text-center td-gestion-stock">
+														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
+													</td>
+												</tr>												
+												<tr>
+													<th scope="row">
+														Stock et facture
+													</th>
+													<td class="text-center td-stock-et-facture">
 														<span class="text-danger badge badge-soft-danger font-size-14">Doit contenir une valeur</span>
 													</td>
 												</tr>												

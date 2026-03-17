@@ -481,7 +481,7 @@ let facturation = {
             data = {
                 id: form.find("#item-id").val(),
                 quantite: form.find("#quantite").val(),
-                unite: "U",
+                unite: form.find("#unite").val(),
                 prixUnitaire: form.find("#prix_u").val(),
                 taxeSpecifique: ts ? form.find("#taxe-specifique").val() : null,
                 tsName: ts ? form.find("#ts-name").val() : null,
@@ -505,6 +505,7 @@ let facturation = {
                 montantPayer: Math.round(parseFloat(form.find("#montant-payer").val())),
                 montantRendu: Math.round(parseFloat(form.find("#montant-recu").val())) - Math.round(parseFloat(form.find("#montant-payer").val())),
                 description:  GlobalScript.checkBlank($.trim(form.find("#description").val())),
+                nb:  GlobalScript.checkBlank($.trim(form.find("#nb").val())),
             };
             return JSON.stringify(data);
         }
@@ -835,6 +836,7 @@ let facturation = {
             factureValidationForm.find("#montant-payer").val(factureReglement.montantPayer);
             factureValidationForm.find("#montant-rendu").val(factureReglement.montantRendu);
             factureValidationForm.find("#description").val(factureReglement.description);
+            factureValidationForm.find("#nb").val(factureReglement.nb);
         }
     },
     setRecapTableOnAibChange: function (event = null) {
