@@ -342,12 +342,20 @@ $(document).ready(function () {
 });
 document.addEventListener("DOMContentLoaded", function () {
     // Initialisation des champs de séléction avec choices.js
-    listeFacture.choicesJsInit();
+    listeFacture.choicesJsInit();    
+    // Récupératon des clients
+    GlobalScript.getForeignsData(
+        URL_LIST_CLIENT,
+        ["clients", "id", "name"],
+        0,
+        null,
+        false,
+    );
     // Récupératon des types de facture
     GlobalScript.getForeignsData(
         URL_LIST_TYPE_FACTURE,
         ["types de facture", "id", "description"],
-        0,
+        1,
         null,
         false,
     );
@@ -370,13 +378,24 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
         // Récupération du type de la facture sélectionné
         let typeFactureId = filtreForm.find("select#type").val();
+        // Récupération du client sélectionné
+        let clientId = filtreForm.find("select#client").val();
         // Si "Toutes" est coché, on récupère toutes les facture, ou en fonction du type de facture
         if (filtreForm.find("input#getAll").is(":checked")) {
             // alertify.success("'Toutes' coché");
             url_list = URL_LIST_ITEM;
-            // Si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
-            if (typeFactureId)
+
+            // Si le client n'est pas vide, on récupère la liste en fonction du client
+            if (clientId)
+                url_list = URL_LIST_FACTURE_BY_CLIENT.replace("__clientId__", clientId);
+            // Sinon si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
+            else if (typeFactureId)
                 url_list = URL_LIST_FACTURE_BY_TYPE.replace("__typeId__", typeFactureId);
+
+            // Si le client et le type de facture ne sont pas vide, on récupère la liste en fonction du client et du type de la facture
+            if(clientId && typeFactureId)
+                url_list = URL_LIST_FACTURE_BY_CLIENT_AND_TYPE.replace("__clientId__", clientId).replace("__typeId__", typeFactureId);
+
             // Réchargement du tableau de liste de la facture
             datatable.ajax.reload();
             return;
@@ -408,9 +427,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 statsPayload.finAt = fin.toISOString();
                 // console.log(statsPayload);
                 url_list = URL_LIST_FACTURE_BY_CREATED_DATE;
-                // Si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
-                if (typeFactureId)
+
+                // Si le client n'est pas vide, on récupère la liste en fonction du client
+                if (clientId)
+                    url_list = URL_LIST_FACTURE_BY_CLIENT_CREATED_DATE.replace("__clientId__", clientId);
+                // Sinon si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
+                else if (typeFactureId)
                     url_list = URL_LIST_FACTURE_BY_TYPE_CREATED_DATE.replace("__typeId__", typeFactureId);
+
+                // Si le client et le type de facture ne sont pas vide, on récupère la liste en fonction du client et du type de la facture
+                if(clientId && typeFactureId)
+                    url_list = URL_LIST_FACTURE_BY_CLIENT_AND_TYPE_CREATED_DATE.replace("__clientId__", clientId).replace("__typeId__", typeFactureId);
+                
                 // Réchargement du tableau de liste de la facture
                 datatable.ajax.reload();
                 return;
@@ -426,9 +454,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 statsPayload.fin = (fin.toISOString()).slice(0, 19);
                 // console.log(statsPayload);
                 url_list = URL_LIST_FACTURE_BY_CONFIRMED_DATE;
-                // Si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
-                if (typeFactureId)
+
+                // Si le client n'est pas vide, on récupère la liste en fonction du client
+                if (clientId)
+                    url_list = URL_LIST_FACTURE_BY_CLIENT_CONFIRMED_DATE.replace("__clientId__", clientId);
+                // Sinon si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
+                else if (typeFactureId)
                     url_list = URL_LIST_FACTURE_BY_TYPE_CONFIRMED_DATE.replace("__typeId__", typeFactureId);
+
+                // Si le client et le type de facture ne sont pas vide, on récupère la liste en fonction du client et du type de la facture
+                if(clientId && typeFactureId)
+                    url_list = URL_LIST_FACTURE_BY_CLIENT_AND_TYPE_CONFIRMED_DATE.replace("__clientId__", clientId).replace("__typeId__", typeFactureId);
+                
                 // Réchargement du tableau de liste de la facture
                 datatable.ajax.reload();
                 return;

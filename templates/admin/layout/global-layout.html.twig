@@ -7,6 +7,7 @@
 {% set gestStockFournisseur = 14000 %}
 {% set gestStockCmdFournisseur = 15000 %}
 {% set gestStockInventaire = 16000 %}
+{% set gestStockDestockage = 17000 %}
 {% set facturation = 20000 %}
 {% set facturationFV = 21000 %}
 {% set facturationFA = 22000 %}
@@ -74,6 +75,15 @@
 				title: "Approvisionnement",
 				dataKey: "t-approvisionnement",
 				active: sidebar_code[1] == "APPR" ? true : false,
+				children: [],
+			},
+			{
+				readable: menu_readable(gestStockDestockage),
+				id: "gstk-destockage",
+				pathName: "gstk_destockage",
+				title: "Destockage",
+				dataKey: "t-destockage",
+				active: sidebar_code[1] == "DEST" ? true : false,
 				children: [],
 			},
 			{

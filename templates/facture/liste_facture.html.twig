@@ -39,18 +39,22 @@
 				</div>
             </div>
 			<div class="row">
-				<div class="col-md-3 col-sm-3 mb-sm-0 mb-2">
+				<div class="col-md-3 col-sm-4 mb-sm-0 mb-2">
+					<label for="client" class="form-label font-size-13 text-muted">Client</label>
+					<select class="form-control form-select" data-trigger name="client" id="client" placeholder=""></select>
+				</div>
+				<div class="col-md-2 col-sm-3 mb-sm-0 mb-2">
 					<label class="form-label font-size-13 text-muted" for="date-debut">Début</label>
 					<input type="datetime-local" class="form-control" id="date-debut" name="date-debut" placeholder="" value="" step=1>
 				</div>
-				<div class="col-md-3 col-sm-3 mb-sm-0 mb-2">
+				<div class="col-md-2 col-sm-3 mb-sm-0 mb-2">
 					<label class="form-label font-size-13 text-muted" for="date-fin">Fin</label>
 					<input type="datetime-local" class="form-control" id="date-fin" name="date-fin" placeholder="" value="" step=1>
 				</div>
-				<div class="col-lg-4 col-md-5 col-sm-4 mb-sm-0 mb-2">
+				<div class="col-md-4 col-sm-4 mb-sm-0 mb-2">
 					<label for="type" class="form-label font-size-13 text-muted">Type de facture</label>
 					<select class="form-control form-select" data-trigger name="type" id="type" placeholder=""></select>
-				</div>
+				</div>				
 				<div class="col-auto mt-sm-4 mt-2 mb-sm-0 mb-2">
 					<button type="submit" class="btn btn-primary" style="margin-bottom: -22px;">
 						<i class="bx bx-search-alt align-middle"></i>
@@ -133,12 +137,24 @@
 
 {% block page_custom_scripts %}
 	<script>
+		// Champs de séléction
 		const URL_LIST_TYPE_FACTURE = "{{ url_list_type_facture }}";
+		const URL_LIST_CLIENT = "{{ url_list_client }}";
+		// Filtre par date
+		const URL_LIST_FACTURE_BY_CREATED_DATE = "{{ url_list_item_by_created_date }}";
+		const URL_LIST_FACTURE_BY_CONFIRMED_DATE = "{{ url_list_item_confirmed_date }}";
+		// Filtre par type de facture
 		const URL_LIST_FACTURE_BY_TYPE = "{{ url_list_item_by_type }}";
 		const URL_LIST_FACTURE_BY_TYPE_CREATED_DATE = "{{ url_list_item_by_type_created_date }}";
 		const URL_LIST_FACTURE_BY_TYPE_CONFIRMED_DATE = "{{ url_list_item_by_type_confirmed_date }}";
-		const URL_LIST_FACTURE_BY_CREATED_DATE = "{{ url_list_item_by_created_date }}";
-		const URL_LIST_FACTURE_BY_CONFIRMED_DATE = "{{ url_list_item_confirmed_date }}";
+		// Filtre par client
+		const URL_LIST_FACTURE_BY_CLIENT = "{{ url_list_item_by_client }}";
+		const URL_LIST_FACTURE_BY_CLIENT_CREATED_DATE = "{{ url_list_item_by_client_created_date }}";
+		const URL_LIST_FACTURE_BY_CLIENT_CONFIRMED_DATE = "{{ url_list_item_by_client_confirmed_date }}";
+		// Filtre par client et par type de facture
+		const URL_LIST_FACTURE_BY_CLIENT_AND_TYPE = "{{ url_list_item_by_client_and_type }}";
+		const URL_LIST_FACTURE_BY_CLIENT_AND_TYPE_CREATED_DATE = "{{ url_list_item_by_client_and_type_created_date }}";
+		const URL_LIST_FACTURE_BY_CLIENT_AND_TYPE_CONFIRMED_DATE = "{{ url_list_item_by_client_and_type_confirmed_date }}";
 	</script>
 	<!-- init js -->
 	<script src="{{ asset('assets/js/custom/facture/liste-facture.init.js') }}"></script>

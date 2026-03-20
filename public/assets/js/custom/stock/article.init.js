@@ -260,8 +260,9 @@ let article = {
             // Gestion du nom de la taxe
             article.setTsName(form.find("#taxe-specifique"));
             //
-            form.find("#stock").val(item.stock)
-            form.find("#stock-securite").val(item.stockSecurite)
+            form.find("#stock").attr("disabled", true);
+            form.find("#stock").val(item.stock);
+            form.find("#stock-securite").val(item.stockSecurite);
         }
     },
     dataFormat: function(form) {
@@ -286,6 +287,7 @@ let article = {
         var form = $("div.add-new-modal").find('form');
         form[0].reset();
         form.find("#item-id").val("");
+        form.find("#stock").attr("disabled", false);
         GlobalScript.getForeignsData(URL_LIST_CATEGORIE_ARTICLE, ['catégories', 'id', 'libelle'], 0, null);
         GlobalScript.getForeignsData(URL_LIST_TAXE, ['taxes', 'id', 'string'], 1, null);
     },

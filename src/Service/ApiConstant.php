@@ -80,6 +80,14 @@ class ApiConstant
     public const URL_PUT_APPROVISIONNEMENT_VALIDER = "stock/approvisionnement/__id__/valider";
     public const URL_GET_APPROVISIONNEMENT = "stock/approvisionnement/__id__";
     public const URL_DELETE_APPROVISIONNEMENT = "stock/approvisionnement/__id__";
+    // Les destockages
+    public const URL_LIST_DESTOCKAGE = "stock/destockage";
+    public const URL_LIST_DESTOCKAGE_PAR_ARTICLE = "stock/destockage/article/__artId__";
+    public const URL_POST_DESTOCKAGE = "stock/destockage/article/__artId__";
+    public const URL_PUT_DESTOCKAGE = "stock/destockage/__id__/article/__artId__";
+    public const URL_PUT_DESTOCKAGE_VALIDER = "stock/destockage/__id__/valider";
+    public const URL_GET_DESTOCKAGE = "stock/destockage/__id__";
+    public const URL_DELETE_DESTOCKAGE = "stock/destockage/__id__";
     // CommandeFournisseur et liste des commandes
     public const URL_LIST_CMD_FOURNISSEUR = "stock/commande-fournisseur";
     public const URL_LIST_CMD_BY_FOURNISSEUR = "stock/commande-fournisseur/fournisseur/__fId__/list";
@@ -106,11 +114,22 @@ class ApiConstant
     public const URL_DELETE_CLIENT = "stock/client/__id__";
     // Facturation et liste des factures
     public const URL_LIST_FACTURE = "factures";
+    // Filtre par type de facture
     public const URL_LIST_FACTURE_BY_TYPE = "factures/type/__typeId__";
     public const URL_LIST_FACTURE_BY_TYPE_CREATED_DATE = "factures/type/__typeId__/created-at";
     public const URL_LIST_FACTURE_BY_TYPE_CONFIRMED_DATE = "factures/type/__typeId__/confirmed-at";
+    // Filtre par client
+    public const URL_LIST_FACTURE_BY_CLIENT = "factures/client/__clientId__";
+    public const URL_LIST_FACTURE_BY_CLIENT_CREATED_DATE = "factures/client/__clientId__/created-at";
+    public const URL_LIST_FACTURE_BY_CLIENT_CONFIRMED_DATE = "factures/client/__clientId__/confirmed-at";
+    // Filtre par client et par type de factrue
+    public const URL_LIST_FACTURE_BY_CLIENT_AND_TYPE = "factures/client/__clientId__/type/__typeId__/all";
+    public const URL_LIST_FACTURE_BY_CLIENT_AND_TYPE_CREATED_DATE = "factures/client/__clientId__/type/__typeId__/created-at";
+    public const URL_LIST_FACTURE_BY_CLIENT_AND_TYPE_CONFIRMED_DATE = "factures/client/__clientId__/type/__typeId__/confirmed-at";
+    // Filtre par date
     public const URL_LIST_FACTURE_BY_CREATED_DATE = "factures/list/created-at";
     public const URL_LIST_FACTURE_BY_CONFIRMED_DATE = "factures/list/confirmed-at";
+    // CRUD ET VALIDAION DES FACTURES
     public const URL_POST_FACTURE = "factures/client/__clientId__/article/__articleId__";
     public const URL_VALIDER_FACTURE = "factures/__id__/valider";
     public const URL_IMPRIMER_FACTURE = "public/facture/__id__/imprimer";
@@ -192,6 +211,7 @@ class ApiConstant
 	public const gestStockFournisseur = 14000;
 	public const gestStockCmdFournisseur = 15000;
 	public const gestStockInventaire = 16000;
+	public const gestStockDestockage = 17000;
 	// Emission des factures
 	public const facturation = 20000;
 	public const facturationFV = 21000;

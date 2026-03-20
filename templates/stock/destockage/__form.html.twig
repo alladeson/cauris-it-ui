@@ -1,0 +1,54 @@
+<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<form method="post" class="" onsubmit="destockage.submitFormData(event)" >
+					<div class="modal-header">
+						<h5 class="modal-title">Nouvel ajout</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="mb-3 position-relative">
+									<input type="hidden" id="item-id" name="item-id" value="">
+									<label for="article" class="form-label">Article</label>
+									<select required data-trigger class="form-control form-select" name="article" id="article" placeholder="chercher...">
+									</select>
+								</div>
+							</div>
+						</div>						
+						<div class="row">
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label for="stock" class="form-label">Quantité</label>
+									<input required type="number" min="0" class="form-control" id="quantite" name="quantite" placeholder="La quantité de l'article" value="">
+									</select>
+								</div>
+							</div>
+							<div class="col-md-6 col-lg-6">
+								<div class="mb-3 position-relative">
+									<label for="motif" class="form-label">Motif</label>
+									<select data-trigger required class="form-control form-select" name="motif" id="motif" placeholder="chercher...">
+										<option value="Déplacement d'article">Déplacement d'article</option>
+										<option value="Action commerciale">Action commerciale</option>
+										<option value="Article endommagé">Article endommagé</option>
+										<option value="Article périmé">Article périmé</option>
+										<option value="Vente non facturée">Vente non facturée</option>
+										<option value="Perte">Perte</option>
+										<option value="Casse">Casse</option>
+										<option value="Vol">Vol</option>
+										<option value="Autre Motif">Autre</option>
+									</select>
+								</div>								
+							</div>	
+						</div>					
+					</div>
+					<div class="modal-footer">
+						<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
+						{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
+						<button type="submit" class="btn btn-primary">Enregistrer</button>
+					</div>
+				</form>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
