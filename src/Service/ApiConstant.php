@@ -104,6 +104,10 @@ class ApiConstant
     public const URL_IMPRIMER_CMD_FOURNISSEUR = "public/commande-fournisseur/__id__/imprimer";
    // Inventaire de stock 
     public const URL_IMPRIMER_FICHE_INVENTAIRE = "public/inventaire-stock/imprimer";
+    // Rapport : Liste Mouvement des articles
+    public const URL_LIST_MOUVEMENT_ARTICLES = "stock/mouvement-article";
+    // Rapport : Liste Mouvement Article Filtre par date
+    public const URL_LIST_MOUVEMENT_ARTICLES_BY_CREATED_DATE = "stock/mouvement-article/list/created-at";
 
     /*** Module Caisse ***/
     //Les clients
@@ -201,6 +205,8 @@ class ApiConstant
     public const URL_LIST_FACTURE_RECAP_BY_CONFIRMED_DATE = "stats/bilan-periodique/facture-recap";
     public const URL_IMPRESSION_BILAN_PERIODIQUE_BY_CONFIRMED_DATE = "stats/bilan-periodique/report";
     public const URL_BILAN_DASHBOARD = "stats/bilan-periodique/dashboard";
+    // Mouvement des articles
+    public const URL_IMPRESSION_MOUVEMENT_ARTICLES_BY_CREATED_DATE = "stats/mouvement-article/report";
 
     // Les codes des fonctionnalités
     // Gestion de stock
@@ -236,4 +242,5 @@ class ApiConstant
     // Les statistiques
 	public const stats = 60000;
 	public const statsBilanPeriodique = 61000;
+	public const statsMouvementArticle = 62000;
 }

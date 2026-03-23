@@ -498,6 +498,10 @@ $(document).ready(function () {
             // console.log(count + ' column(s) are hidden');
         });
     });
+    // Set the default dateDebut to the start of the current day
+    GlobalScript.setDateDebutDefaultValue();
+    // Set the default dateFin to the end of the current day
+    document.getElementById("date-fin").value = GlobalScript.getDateFinJour();
 });
 document.addEventListener("DOMContentLoaded", function () {
     // Initialisation des champs de séléction avec choices.js

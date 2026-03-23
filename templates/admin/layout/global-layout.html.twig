@@ -27,6 +27,7 @@
 {% set audit = 50000 %}
 {% set stats = 60000 %}
 {% set statsBilanPeriodique = 61000 %}
+{% set statsMouvementArticle = 62000 %}
 {# endset #}
 	
 {# Menu format #}
@@ -179,6 +180,15 @@
 				title: "Bilan Périodique",
 				dataKey: "t-stats-bilan",
 				active: sidebar_code[1] == "BP" ? true : false,
+				children: [],
+			},            
+			{
+				readable: menu_readable(statsMouvementArticle),
+				id: "stats-mouvement-article",
+				pathName: "stats_mouvement_article",
+				title: "Rapport de ventes et de stock",
+				dataKey: "t-stats-mouvement-article",
+				active: sidebar_code[1] == "RMAS" ? true : false,
 				children: [],
 			},            
 		],

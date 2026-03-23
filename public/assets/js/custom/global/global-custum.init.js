@@ -347,7 +347,7 @@ let GlobalScript = {
      * @param {String} errTopic L'opération qui a suscité l'erreur
      */
     ajxRqtErrHandler: function(err, alert, errTopic) {
-        // console.log(err);
+        console.log(err);
         // Meessage d'erreur par défaut
         let defaultErrMessage = "Une erreur s'est produite lors de " + errTopic + ". Si cela persiste, veuillez contacter votre administrateur ou votre fournisseur du SFE. Merci !";
         // Les erreur du serveur : backend (spring-boot)  ou frontend (symfony)
@@ -604,7 +604,30 @@ let GlobalScript = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                GlobalScript.ajxRqtErrHandler(err, "alertify", "la génération du rapport du bilan");
+                GlobalScript.ajxRqtErrHandler(err, "sweet", "la génération du rapport du bilan");
+            });
+    },
+
+    /**
+     * Afficher le bilan imprimé sur l'écran de l'application
+     * @param {String} fileName Le nom du fichier pdf à afficher
+     */
+    showPrintedMvtArticle: function(printPdfUrl, method, data, fileName) {
+        // let printPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
+        // let dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", fileName);
+        let dowloadPdfUrl = downloadPdfBaseUrl + fileName;
+        // Envoie de la requête d'impression
+        GlobalScript.requestGetFile(printPdfUrl, method, fileName, data).then(function(data) {
+                // Run this when your request was successful
+                // console.log(data);
+                // Mise à jour du titre du modal d'affichage
+                $pdfWebviwerModal.find('h5.card-title').text("Bilan périodique");
+                // Affichage
+                GlobalScript.pdfwebviewer(dowloadPdfUrl, dowloadPdfUrl, fileName)
+            })
+            .catch(function(err) {
+                // Run this when promise was rejected via reject()
+                GlobalScript.ajxRqtErrHandler(err, "sweet", "la génération du rapport de vente et de stock");
             });
     },
 
@@ -632,5 +655,34 @@ let GlobalScript = {
                 // Run this when promise was rejected via reject()
                 GlobalScript.ajxRqtErrHandler(err, errorAlertType, errorMessage);
             });
-    }
-}
+    },
+    setDateDebutDefaultValue: function(){
+        var input = document.getElementById("date-debut");
+
+        var now = new Date();
+        now.setHours(0, 0, 0, 0);
+
+        // Format local avec secondes
+        var year = now.getFullYear();
+        var month = String(now.getMonth() + 1).padStart(2, '0');
+        var day = String(now.getDate()).padStart(2, '0');
+
+        var hours = "00";
+        var minutes = "00";
+        var seconds = "00";
+
+        var formatted = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+
+        input.value = formatted;
+    },
+    getDateFinJour: function(){
+        var now = new Date();
+        now.setHours(23, 59, 59, 0);
+
+        return `${now.getFullYear()}-${
+            String(now.getMonth() + 1).padStart(2, '0')
+        }-${
+            String(now.getDate()).padStart(2, '0')
+        }T23:59:59`;
+    },
+};

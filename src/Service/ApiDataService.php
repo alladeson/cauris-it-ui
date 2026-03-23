@@ -453,6 +453,8 @@ class ApiDataService extends AbstractController
 
             //fermeture du fichier créé
             fclose($fileHandler);
+        } else {
+            $respContent = $response->getContent(false);            
         }
         // Envoie du nom du fichier à la vue
         return new Response($respContent, $response->getStatusCode(false));

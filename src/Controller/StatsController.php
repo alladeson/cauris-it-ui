@@ -27,4 +27,16 @@ class StatsController extends AbstractController
             "url_impression_bilan" => ApiConstant::URL_IMPRESSION_BILAN_PERIODIQUE_BY_CONFIRMED_DATE,
         ]);
     }
+
+    #[Route('/mouvement-article', name: 'stats_mouvement_article')]
+    public function mouvementArticle(): Response
+    {
+        return $this->render('stats/mouvement-article.html.twig', [
+            'page_title' => 'Mouvement des articles',
+            'breadcrumb' => ['Statistiques', 'Mouvement des articles'],
+            "sidebar_code" => ['STATS', 'MA', ''],
+            'menu_code' =>  ApiConstant::statsMouvementArticle,
+             "url_impression_mouvement_article" => ApiConstant::URL_IMPRESSION_MOUVEMENT_ARTICLES_BY_CREATED_DATE,
+        ]);
+    }
 }
