@@ -301,6 +301,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('url_get_file', [$this, 'urlGetFile']),
             new TwigFunction('url_print_invoice', [$this, 'urlPrintInvoice']),
             new TwigFunction('url_print_bilan_periodique', [$this, 'urlPrintBilanPeriodique']),
+            new TwigFunction('url_print_mouvement_article', [$this, 'urlPrintMouvementArticle']),
             new TwigFunction('url_details_invoice', [$this, 'urlDetailsInvoice']),
             new TwigFunction('api_base_url', [$this, 'ApiBaseUrl']),
         ];
@@ -367,6 +368,11 @@ class AppExtension extends AbstractExtension
     public function urlPrintBilanPeriodique()
     {
         return $_ENV["API_BASE_URL"].ApiConstant::URL_IMPRESSION_BILAN_PERIODIQUE_BY_CONFIRMED_DATE;
+    }
+
+    public function urlPrintMouvementArticle()
+    {
+        return $_ENV["API_BASE_URL"].ApiConstant::URL_IMPRESSION_MOUVEMENT_ARTICLES_BY_CREATED_DATE;
     }
 
     public function urlDetailsInvoice()

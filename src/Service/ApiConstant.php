@@ -201,6 +201,8 @@ class ApiConstant
     public const URL_LIST_FACTURE_RECAP_BY_CONFIRMED_DATE = "stats/bilan-periodique/facture-recap";
     public const URL_IMPRESSION_BILAN_PERIODIQUE_BY_CONFIRMED_DATE = "stats/bilan-periodique/report";
     public const URL_BILAN_DASHBOARD = "stats/bilan-periodique/dashboard";
+    // Mouvement des articles
+    public const URL_IMPRESSION_MOUVEMENT_ARTICLES_BY_CREATED_DATE = "stats/mouvement-article/report";
 
     // Les codes des fonctionnalités
     // Gestion de stock
@@ -239,4 +241,5 @@ class ApiConstant
     // Les statistiques
 	public const stats = 60000;
 	public const statsBilanPeriodique = 61000;
+	public const statsMouvementArticle = 62000;
 }
