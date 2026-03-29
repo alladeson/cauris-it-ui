@@ -1,0 +1,134 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- Approvisionnement
+{% endblock %}
+
+{% block page_content %}
+
+	{# Filtre #}
+	<div class="mt-2">
+		<h5 class="font-size-14 mb-2">
+			<i class="mdi mdi-arrow-right text-primary me-1"></i>
+			Filtre : </h5>
+
+		<form class="row gx-3 gy-2 align-items-center filtre-form">
+			<div class="row mt-3">
+				<div class="col-lg-4 col-md-5 col-sm-4 mb-sm-0 mb-2">
+					<label for="filtre-article" class="form-label font-size-13 text-muted">Article</label>
+					<select onchange="approvisionnement.reloadDatatable(event)" class="form-control form-select" data-trigger name="filtre-article" id="filtre-article" placeholder=""></select>
+				</div>
+			</div>
+		</form>
+	</div>
+	<br>
+	{# End Filtre #}
+
+	<div class="row align-items-center">
+		<div class="col-md-6 col-5">
+			<div class="mb-3">
+				<h5 class="card-title">Liste des approvisionnements
+					<span class="text-muted fw-normal ms-2"></span>
+				</h5>
+			</div>
+		</div>
+
+		<div class="col-md-6 col-7">
+			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+				<div>
+					<ul class="nav nav-pills">
+						<li class="nav-item">
+							<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
+								<i class="bx bx-list-ul"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
+								<i class="bx bx-grid-alt"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div onclick="approvisionnement.newItemEvent(event)">
+					<a href="javascript:void(0);" class="btn btn-light" data-bs-toggle="modal" data-bs-target=".add-new-modal">
+						<i class="bx bx-plus me-1"></i>
+						Nouvel Ajout</a>
+				</div>
+
+				<div class="dropdown">
+					<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bx bx-dots-horizontal-rounded"></i>
+					</a>
+
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li>
+							<a class="dropdown-item" onclick="approvisionnement.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- end row -->
+
+	<div class="table-responsive mb-4">
+		<table data-order='[[1, "desc"]]' class="table align-middle datatable dt-responsive table-check nowrap" style="border-collapse: collapse; border-spacing: 0 8px; width: 100%;">
+			<thead>
+				<tr>
+					<th>
+						<div class="form-check font-size-16">
+							<input type="checkbox" class="form-check-input" id="checkAll">
+							<label class="form-check-label" for="checkAll"></label>
+						</div>
+					</th>
+					<th>Réf. Article</th>
+					<th>Désignation</th>
+					<th>Prix HT</th>
+					<th>Qte</th>
+					<th>Remise</th>
+					<th>Taxe</th>
+					<th>Mnt HT</th>
+					{#<th>Mnt TTC</th>#}
+					<th>Statut</th>
+					<th style="width: 80px; min-width: 80px;">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+		<!-- end table -->
+	</div>
+	<!-- end table responsive -->
+
+	<div class="modal fade add-new-modal" id="add-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		{% include "stock/approvisionnement/__form.html.twig" %}
+	</div>
+
+	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		{% include "stock/approvisionnement/__show_item.html.twig" %}
+	</div>
+	<!-- /.modal -->
+
+	<div class="modal fade validation-modal" id="validation-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+		{% include "stock/approvisionnement/__validation_form.html.twig" %}
+	</div>
+
+{% endblock %}
+
+{% block page_custom_scripts %}
+	<script>
+		const URL_LIST_ITEM_PAR_ARTICLE = "{{ url_list_item_per_article }}";
+		const URL_PUT_ITEM_VALIDER = "{{ url_put_item_valider }}";
+		<!-- Foreign Data -->
+		const URL_LIST_ARTICLE = "{{ url_list_article }}";
+		const URL_GET_ARTICLE = "{{ url_get_article }}";
+		const URL_POST_ARTICLE = "{{ url_post_article }}";
+		const URL_PUT_ARTICLE = "{{ url_put_article }}";
+		const URL_LIST_TAXE = "{{ url_list_taxe }}";
+		const URL_GET_TAXE = "{{ url_get_taxe }}";
+	</script>
+	<!-- init js -->
+	<script src="{{ asset('assets/js/custom/stock/approvisionnement.init.js') }}"></script>
+{% endblock %}

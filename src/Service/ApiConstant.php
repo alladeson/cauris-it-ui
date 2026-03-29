@@ -80,6 +80,14 @@ class ApiConstant
     public const URL_PUT_APPROVISIONNEMENT_VALIDER = "stock/approvisionnement/__id__/valider";
     public const URL_GET_APPROVISIONNEMENT = "stock/approvisionnement/__id__";
     public const URL_DELETE_APPROVISIONNEMENT = "stock/approvisionnement/__id__";
+    // Les destockages
+    public const URL_LIST_DESTOCKAGE = "stock/destockage";
+    public const URL_LIST_DESTOCKAGE_PAR_ARTICLE = "stock/destockage/article/__artId__";
+    public const URL_POST_DESTOCKAGE = "stock/destockage/article/__artId__";
+    public const URL_PUT_DESTOCKAGE = "stock/destockage/__id__/article/__artId__";
+    public const URL_PUT_DESTOCKAGE_VALIDER = "stock/destockage/__id__/valider";
+    public const URL_GET_DESTOCKAGE = "stock/destockage/__id__";
+    public const URL_DELETE_DESTOCKAGE = "stock/destockage/__id__";
     // CommandeFournisseur et liste des commandes
     public const URL_LIST_CMD_FOURNISSEUR = "stock/commande-fournisseur";
     public const URL_LIST_CMD_BY_FOURNISSEUR = "stock/commande-fournisseur/fournisseur/__fId__/list";
@@ -203,6 +211,8 @@ class ApiConstant
 	public const gestStockFournisseur = 14000;
 	public const gestStockCmdFournisseur = 15000;
 	public const gestStockInventaire = 16000;
+    public const gestStockDestockage = 17000;
+	// Emission des factures
 	// Emission des factures
 	public const facturation = 20000;
 	public const facturationFV = 21000;

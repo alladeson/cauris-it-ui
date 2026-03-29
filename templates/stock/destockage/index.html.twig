@@ -2,7 +2,7 @@
 
 {% block title %}
 	{{appName}}
-	- Approvisionnement
+	- Destockage
 {% endblock %}
 
 {% block page_content %}
@@ -17,7 +17,7 @@
 			<div class="row mt-3">
 				<div class="col-lg-4 col-md-5 col-sm-4 mb-sm-0 mb-2">
 					<label for="filtre-article" class="form-label font-size-13 text-muted">Article</label>
-					<select onchange="approvisionnement.reloadDatatable(event)" class="form-control form-select" data-trigger name="filtre-article" id="filtre-article" placeholder=""></select>
+					<select onchange="destockage.reloadDatatable(event)" class="form-control form-select" data-trigger name="filtre-article" id="filtre-article" placeholder=""></select>
 				</div>
 			</div>
 		</form>
@@ -28,7 +28,7 @@
 	<div class="row align-items-center">
 		<div class="col-md-6 col-5">
 			<div class="mb-3">
-				<h5 class="card-title">Liste des approvisionnements
+				<h5 class="card-title">Liste des destockages
 					<span class="text-muted fw-normal ms-2"></span>
 				</h5>
 			</div>
@@ -50,7 +50,7 @@
 						</li>
 					</ul>
 				</div>
-				<div onclick="approvisionnement.newItemEvent(event)">
+				<div onclick="destockage.newItemEvent(event)">
 					<a href="javascript:void(0);" class="btn btn-light" data-bs-toggle="modal" data-bs-target=".add-new-modal">
 						<i class="bx bx-plus me-1"></i>
 						Nouvel Ajout</a>
@@ -63,7 +63,7 @@
 
 					<ul class="dropdown-menu dropdown-menu-end">
 						<li>
-							<a class="dropdown-item" onclick="approvisionnement.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
+							<a class="dropdown-item" onclick="destockage.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
 						</li>
 					</ul>
 				</div>
@@ -85,12 +85,8 @@
 					</th>
 					<th>Réf. Article</th>
 					<th>Désignation</th>
-					<th>Prix HT</th>
 					<th>Qte</th>
-					<th>Remise</th>
-					<th>Taxe</th>
-					<th>Mnt HT</th>
-					{#<th>Mnt TTC</th>#}
+					<th>Motif</th>
 					<th>Statut</th>
 					<th style="width: 80px; min-width: 80px;">Action</th>
 				</tr>
@@ -103,16 +99,16 @@
 	<!-- end table responsive -->
 
 	<div class="modal fade add-new-modal" id="add-new-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		{% include "stock/__approvisionnement_form.html.twig" %}
+		{% include "stock/destockage/__form.html.twig" %}
 	</div>
 
 	<div class="modal fade show-item-modal" id="show-item-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		{% include "stock/__approvisionnement_show_item.html.twig" %}
+		{% include "stock/destockage/__show_item.html.twig" %}
 	</div>
 	<!-- /.modal -->
 
 	<div class="modal fade validation-modal" id="validation-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-		{% include "stock/__approvisionnement_validation_form.html.twig" %}
+		{% include "stock/destockage/__validation_form.html.twig" %}
 	</div>
 
 {% endblock %}
@@ -130,5 +126,5 @@
 		const URL_GET_TAXE = "{{ url_get_taxe }}";
 	</script>
 	<!-- init js -->
-	<script src="{{ asset('assets/js/custom/stock/approvisionnement.init.js') }}"></script>
+	<script src="{{ asset('assets/js/custom/stock/destockage.init.js') }}"></script>
 {% endblock %}

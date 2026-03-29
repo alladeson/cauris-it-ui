@@ -54,7 +54,7 @@ class StockController extends AbstractController
     #[Route('/approvisionnement', name: 'gstk_approvisionnement')]
     function approvisionnement(): Response
     {
-        return $this->render('stock/approvisionnement.html.twig', [
+        return $this->render('stock/approvisionnement/index.html.twig', [
             'page_title' => 'Approvisionnement',
             'breadcrumb' => ['Gestion de Stock', 'Approvisionnement'],
             "sidebar_code" => ['GSTK', 'APPR', ''],
@@ -66,6 +66,30 @@ class StockController extends AbstractController
             "url_delete_item" => ApiConstant::URL_DELETE_APPROVISIONNEMENT,
             "url_list_item_per_article" => ApiConstant::URL_LIST_APPROVISIONNEMENT_PAR_ARTICLE,
             "url_put_item_valider" => ApiConstant::URL_PUT_APPROVISIONNEMENT_VALIDER,
+            "url_list_article" => ApiConstant::URL_LIST_ARTICLE,
+            "url_get_article" => ApiConstant::URL_GET_ARTICLE,
+            "url_post_article" => ApiConstant::URL_POST_ARTICLE,
+            "url_put_article" => ApiConstant::URL_PUT_ARTICLE,
+            "url_list_taxe" => ApiConstant::URL_LIST_TAXE_IMPOT,
+            "url_get_taxe" => ApiConstant::URL_GET_TAXE,
+        ]);
+    }
+
+    #[Route('/destockage', name: 'gstk_destockage')]
+    function destockage(): Response
+    {
+        return $this->render('stock/destockage/index.html.twig', [
+            'page_title' => 'Destockage',
+            'breadcrumb' => ['Gestion de Stock', 'Destockage'],
+            "sidebar_code" => ['GSTK', 'DEST', ''],
+            "menu_code" => ApiConstant::gestStockDestockage,
+            "url_list_item" => ApiConstant::URL_LIST_DESTOCKAGE,
+            "url_post_item" => ApiConstant::URL_POST_DESTOCKAGE,
+            "url_put_item" => ApiConstant::URL_PUT_DESTOCKAGE,
+            "url_get_item" => ApiConstant::URL_GET_DESTOCKAGE,
+            "url_delete_item" => ApiConstant::URL_DELETE_DESTOCKAGE,
+            "url_list_item_per_article" => ApiConstant::URL_LIST_DESTOCKAGE_PAR_ARTICLE,
+            "url_put_item_valider" => ApiConstant::URL_PUT_DESTOCKAGE_VALIDER,
             "url_list_article" => ApiConstant::URL_LIST_ARTICLE,
             "url_get_article" => ApiConstant::URL_GET_ARTICLE,
             "url_post_article" => ApiConstant::URL_POST_ARTICLE,
