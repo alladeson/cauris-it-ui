@@ -6,7 +6,7 @@ let statsPayload = {
     "fin": null,
     "debutAt": null,
     "finAt": null,
-    "confirm": true,
+    "confirm": false,
     "typeId": null,
     "clientId": null,
     "search": "vide",
@@ -93,21 +93,18 @@ let listeFacture = {
                                                 <i class="bx bx-dots-horizontal-rounded"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                            ${row.confirm ?
-                                                `<li>
+                                                <li>
                                                     <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item print-item" href="javascript:void(0);" data-item-id="${data}">Générer Facture</a>
-                                                </li>` : 
-                                                ITEM_WRITABLE ?
-                                                `<li>
+                                                </li>
+                                                <li>
                                                     <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier et/ou valider</a>
-                                                </li>` : `` }
-                                                ${(!row.confirm && ITEM_DELETABLE /*&& !row.details.length*/) ?
-                                                    `<li>
-                                                        <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
-                                                    </li>` : `` }
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
+                                                </li>
                                             </ul>
                                         </div>`;
                     return html;
@@ -227,7 +224,7 @@ let listeFacture = {
             GlobalScript.showPrintedInvoice(data);
         }).catch(function (err) {
             // Run this when promise was rejected via reject()
-            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'impression de la facture");
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'affichage de l'interface de modification");
         });
     },
     removeItem: function (el, oktitle, oktext) {
@@ -345,7 +342,6 @@ $(document).ready(function () {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);
         });
-        // console.log(count + ' column(s) are hidden');
     });
 });
 document.addEventListener("DOMContentLoaded", function () {
@@ -393,12 +389,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Si les dates sont renseignées, alors mettre à jour le payload des dates
         if (filtreForm.find("input#date-debut").val() && filtreForm.find("input#date-fin").val()) {
             // Récupération des dates de début et de fin
-            // Récupération des dates de début et de fin
             let debut = new Date(filtreForm.find("input#date-debut").val());
             let fin = new Date(filtreForm.find("input#date-fin").val());
             // Mise à jour du payload
-            statsPayload.debut = (debut.toISOString()).slice(0, 19);
-            statsPayload.fin = (fin.toISOString()).slice(0, 19);
+            statsPayload.debutAt = debut.toISOString();
+            statsPayload.finAt = fin.toISOString();
             // Comparaison des dates, la date de fin doit être supérieure à la date de début
             if (fin.getTime() <= debut.getTime()) {
                 alertify.error("La date de fin doit être supérieure à la date de début");
@@ -409,99 +404,6 @@ document.addEventListener("DOMContentLoaded", function () {
         // Réchargement du tableau de liste de la facture
         datatable.ajax.reload();
         return;
-        /*// Si "Toutes" est coché, on récupère toutes les facture, ou en fonction du type de facture
-        if (filtreForm.find("input#getAll").is(":checked")) {
-            // alertify.success("'Toutes' coché");
-            url_list = URL_LIST_ITEM + "?search=vide&confirm=true";
-
-            // Si le client n'est pas vide, on récupère la liste en fonction du client
-            if (clientId)
-                url_list = URL_LIST_FACTURE_BY_CLIENT.replace("__clientId__", clientId).replace("__confirm__", true);
-            // Sinon si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
-            else if (typeFactureId)
-                url_list = URL_LIST_FACTURE_BY_TYPE.replace("__typeId__", typeFactureId).replace("__confirm__", true);
-            console.log(url_list);
-            // Si le client et le type de facture ne sont pas vide, on récupère la liste en fonction du client et du type de la facture
-            if(clientId && typeFactureId)
-                url_list = URL_LIST_FACTURE_BY_CLIENT_AND_TYPE.replace("__clientId__", clientId).replace("__typeId__", typeFactureId).replace("__confirm__", true);
-
-            // Réchargement du tableau de liste de la facture
-            datatable.ajax.reload();
-            return;
-        }
-        // Si un des boutons radios de dates est coché, alors le filtre sera fait en fonction des dates
-        if (filtreForm.find("input[name='dateRadios']").is(":checked")) {
-            // Si les dates ne sont pas renseignées, alors un avertissement est renvoyer et le code s'arrête là
-            if (!filtreForm.find("input#date-debut").val() || !filtreForm.find("input#date-fin").val()) {
-                alertify.warning("Veuillez bien renseigner les date de début et de fin svp. Merci !");
-                return
-            }
-            // Ici les date sont renseignées
-            // Récupération du type de date sélectionné
-            let typeDate = filtreForm.find("input[name='dateRadios']:checked").val();
-            // Récupération des dates de début et de fin
-            let debut = new Date(filtreForm.find("input#date-debut").val());
-            let fin = new Date(filtreForm.find("input#date-fin").val());
-            // Comparaison des dates, la date de fin doit être supérieure à la date de début
-            if (fin.getTime() <= debut.getTime()) {
-                alertify.error("La date de fin doit être supérieure à la date de début");
-                return;
-            }
-            // Ici les dates sont renseignées et valides
-            // Si le type de date est la date de création (émission) de la facture, 
-            // alors récupération de la liste en fonction de la date de création qui est une date de type Instant
-            if (typeDate == "createdAt") {
-                // alertify.success("Date d'émission des facture coché");
-                statsPayload.debutAt = debut.toISOString();
-                statsPayload.finAt = fin.toISOString();
-                // console.log(statsPayload);
-                url_list = URL_LIST_FACTURE_BY_CREATED_DATE;
-
-                // Si le client n'est pas vide, on récupère la liste en fonction du client
-                if (clientId)
-                    url_list = URL_LIST_FACTURE_BY_CLIENT_CREATED_DATE.replace("__clientId__", clientId);
-                // Sinon si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
-                else if (typeFactureId)
-                    url_list = URL_LIST_FACTURE_BY_TYPE_CREATED_DATE.replace("__typeId__", typeFactureId);
-
-                // Si le client et le type de facture ne sont pas vide, on récupère la liste en fonction du client et du type de la facture
-                if(clientId && typeFactureId)
-                    url_list = URL_LIST_FACTURE_BY_CLIENT_AND_TYPE_CREATED_DATE.replace("__clientId__", clientId).replace("__typeId__", typeFactureId);
-                
-                // Réchargement du tableau de liste de la facture
-                datatable.ajax.reload();
-                return;
-            }
-            // Si le type de date est la date de confirmation (validation) de la facture,
-            // alors récupération de la liste en fonction de la date de confirmation qui est une date de type Date,
-            // pas besoin de la transformer, on peut utiliser directement la valeur des champ
-            else if (typeDate == "confirmedAt") {
-                // alertify.success("Date de confirmation des facture coché");
-                // statsPayload.debut = filtreForm.find("input#date-debut").val();
-                // statsPayload.fin = filtreForm.find("input#date-fin").val();
-                statsPayload.debut = (debut.toISOString()).slice(0, 19);
-                statsPayload.fin = (fin.toISOString()).slice(0, 19);
-                // console.log(statsPayload);
-                url_list = URL_LIST_FACTURE_BY_CONFIRMED_DATE;
-
-                // Si le client n'est pas vide, on récupère la liste en fonction du client
-                if (clientId)
-                    url_list = URL_LIST_FACTURE_BY_CLIENT_CONFIRMED_DATE.replace("__clientId__", clientId);
-                // Sinon si le type de facture n'est pas vide, on récupère la liste en fonction du type de la facture
-                else if (typeFactureId)
-                    url_list = URL_LIST_FACTURE_BY_TYPE_CONFIRMED_DATE.replace("__typeId__", typeFactureId);
-
-                // Si le client et le type de facture ne sont pas vide, on récupère la liste en fonction du client et du type de la facture
-                if(clientId && typeFactureId)
-                    url_list = URL_LIST_FACTURE_BY_CLIENT_AND_TYPE_CONFIRMED_DATE.replace("__clientId__", clientId).replace("__typeId__", typeFactureId);
-                
-                // Réchargement du tableau de liste de la facture
-                datatable.ajax.reload();
-                return;
-            }
-        }
-        // Si aucun critère n'est choisi, alors un avertissement est renvoyé
-        alertify.warning("Veuillez choisir un critère pour le filtre svp. Merci !");*/
     })
 
 });

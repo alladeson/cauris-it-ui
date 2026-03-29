@@ -121,15 +121,49 @@ class FactureController extends AbstractController {
     }
 
     /**
-     * @Route("/liste-factures", name="liste_facture")
+     * @Route("/liste-factures", name="liste_facture_normalisee")
      */
     public function listeFacture(): Response
     {
         return $this->render('facture/liste_facture.html.twig', [
-            'page_title' => 'Liste des Factures',
+            'page_title' => 'Liste des Factures Normalisées',
             'breadcrumb' => ['Facture', 'Liste Factures'],
-            "sidebar_code" => ['FACT', 'LSTF', ''],
-            'menu_code' =>  ApiConstant::facturationListe,
+            "sidebar_code" => ['FACT', 'LSTF', 'LSTFN'],
+            'menu_code' =>  ApiConstant::facturationListeNormalisee,
+            "url_list_item" => ApiConstant::URL_LIST_FACTURE,
+            // filtre par date
+            "url_list_item_by_created_date" => ApiConstant::URL_LIST_FACTURE_BY_CREATED_DATE,
+            "url_list_item_confirmed_date" => ApiConstant::URL_LIST_FACTURE_BY_CONFIRMED_DATE,
+            // Filtre par type de facture
+            "url_list_item_by_type" => ApiConstant::URL_LIST_FACTURE_BY_TYPE,
+            "url_list_item_by_type_created_date" => ApiConstant::URL_LIST_FACTURE_BY_TYPE_CREATED_DATE,
+            "url_list_item_by_type_confirmed_date" => ApiConstant::URL_LIST_FACTURE_BY_TYPE_CONFIRMED_DATE,
+            // Filtre par client
+            "url_list_item_by_client" => ApiConstant::URL_LIST_FACTURE_BY_CLIENT,
+            "url_list_item_by_client_created_date" => ApiConstant::URL_LIST_FACTURE_BY_CLIENT_CREATED_DATE,
+            "url_list_item_by_client_confirmed_date" => ApiConstant::URL_LIST_FACTURE_BY_CLIENT_CONFIRMED_DATE,
+            // Filtre par client et par type de facture
+            "url_list_item_by_client_and_type" => ApiConstant::URL_LIST_FACTURE_BY_CLIENT_AND_TYPE,
+            "url_list_item_by_client_and_type_created_date" => ApiConstant::URL_LIST_FACTURE_BY_CLIENT_AND_TYPE_CREATED_DATE,
+            "url_list_item_by_client_and_type_confirmed_date" => ApiConstant::URL_LIST_FACTURE_BY_CLIENT_AND_TYPE_CONFIRMED_DATE,
+            //
+            "url_get_item" => ApiConstant::URL_GET_FACTURE,
+            "url_delete_item" => ApiConstant::URL_DELETE_FACTURE,
+            "url_list_type_facture" => ApiConstant::URL_LIST_TYPE_FACTURE,
+            'url_list_client' => ApiConstant::URL_LIST_CLIENT,
+        ]);
+    }
+
+    /**
+     * @Route("/liste-facture-proformas", name="liste_facture_proforma")
+     */
+    public function listeFactureProforma(): Response
+    {
+        return $this->render('facture/liste_facture_proforma.html.twig', [
+            'page_title' => 'Liste des Proforma',
+            'breadcrumb' => ['Facture', 'Liste des Factures', 'Proforma'],
+            "sidebar_code" => ['FACT', 'LSTF', 'LSTFP'],
+            'menu_code' =>  ApiConstant::facturationListeProforma,
             "url_list_item" => ApiConstant::URL_LIST_FACTURE,
             // filtre par date
             "url_list_item_by_created_date" => ApiConstant::URL_LIST_FACTURE_BY_CREATED_DATE,

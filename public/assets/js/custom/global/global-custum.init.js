@@ -564,7 +564,13 @@ let GlobalScript = {
      */
     showPrintedInvoice: function(facture) {
         let printPdfUrl = URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id);
-        let pdfName = "facture-" + facture.numero + ".pdf";
+        let pdfName = "";
+        if(facture.confirm) {
+            pdfName = "facture-" + facture.numero + ".pdf"
+        } else {
+            numero = "FP" + String(facture.id).padStart(6, '0');
+            pdfName = "facture-proforma-" + numero + ".pdf"
+        }
         // let dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", pdfName);
         let dowloadPdfUrl = downloadPdfBaseUrl + pdfName;
         // GlobalScript.pdfwebviewer(printPdfUrl, dowloadPdfUrl, pdfName)
@@ -656,7 +662,7 @@ let GlobalScript = {
                 GlobalScript.ajxRqtErrHandler(err, errorAlertType, errorMessage);
             });
     },
-    setDateDebutDefaultValue: function(){
+    setDateDebutDefaultValue: function(){ 
         var input = document.getElementById("date-debut");
 
         var now = new Date();
@@ -675,7 +681,7 @@ let GlobalScript = {
 
         input.value = formatted;
     },
-    getDateFinJour: function(){
+    getDateFinJour: function(){ 
         var now = new Date();
         now.setHours(23, 59, 59, 0);
 
