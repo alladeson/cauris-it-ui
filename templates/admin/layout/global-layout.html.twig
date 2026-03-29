@@ -11,6 +11,8 @@
 {% set facturationFV = 21000 %}
 {% set facturationFA = 22000 %}
 {% set facturationListe = 23000 %}
+{% set facturationListeNormalisee = 23010 %}
+{% set facturationListeProforma = 23020 %}
 {% set facturationClient = 24000 %}
 {% set parametre = 30000 %}
 {% set parametreTaxe = 31000 %}
@@ -136,11 +138,30 @@
 			{
 				readable: menu_readable(facturationListe),
 				id: "liste-factures",
-				pathName: "liste_facture",
+				pathName: "",
 				title: "Liste des Factures",
 				dataKey: "t-liste-factures",
 				active: sidebar_code[1] == "LSTF" ? true : false,
-				children: [],
+				children: [
+					{
+						readable: menu_readable(facturationListeNormalisee),
+						id: "liste-factures-normalisee",
+						pathName: "liste_facture_normalisee",
+						title: "Factures normalisées",
+						dataKey: "t-liste-factures-normalisee",
+						active: sidebar_code[2] == "LSTFN" ? true : false,
+						children: [],
+					},
+					{
+						readable: menu_readable(facturationListeProforma),
+						id: "liste-factures-proforma",
+						pathName: "liste_facture_proforma",
+						title: "Factures proforma",
+						dataKey: "t-liste-factures-proforma",
+						active: sidebar_code[2] == "LSTFP" ? true : false,
+						children: [],
+					},
+				],
 			},
 			{
 				readable: menu_readable(facturationClient),

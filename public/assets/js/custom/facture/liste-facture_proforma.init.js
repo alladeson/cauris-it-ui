@@ -6,7 +6,7 @@ let statsPayload = {
     "fin": null,
     "debutAt": null,
     "finAt": null,
-    "confirm": true,
+    "confirm": false,
     "typeId": null,
     "clientId": null,
     "search": "vide",
@@ -93,21 +93,18 @@ let listeFacture = {
                                                 <i class="bx bx-dots-horizontal-rounded"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                            ${row.confirm ?
-                                                `<li>
+                                                <li>
                                                     <a class="dropdown-item show-item" href="javascript:void(0);" data-item-id="${data}">Afficher</a>
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item print-item" href="javascript:void(0);" data-item-id="${data}">Générer Facture</a>
-                                                </li>` : 
-                                                ITEM_WRITABLE ?
-                                                `<li>
+                                                </li>
+                                                <li>
                                                     <a class="dropdown-item edit-item" href="javascript:void(0);" data-item-id="${data}">Modifier et/ou valider</a>
-                                                </li>` : `` }
-                                                ${(!row.confirm && ITEM_DELETABLE /*&& !row.details.length*/) ?
-                                                    `<li>
-                                                        <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
-                                                    </li>` : `` }
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item remove-item" href="javascript:void(0);" data-item-id="${data}">Supprimer</a>
+                                                </li>
                                             </ul>
                                         </div>`;
                     return html;
@@ -227,7 +224,7 @@ let listeFacture = {
             GlobalScript.showPrintedInvoice(data);
         }).catch(function (err) {
             // Run this when promise was rejected via reject()
-            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'impression de la facture");
+            GlobalScript.ajxRqtErrHandler(err, "sweet", "l'affichage de l'interface de modification");
         });
     },
     removeItem: function (el, oktitle, oktext) {
@@ -266,20 +263,14 @@ let listeFacture = {
             .find(".td-invoice-mht")
             .text(facture.montantHt ? facture.montantHt : "-");
         $validationFormRecpaTable
-            .find(".td-invoice-mt-exonere")
-            .text(facture.montantHtExonore ? facture.montantHtExonore : "-");
-        $validationFormRecpaTable
-            .find(".td-invoice-mht-taxable")
-            .text(facture.montantHtTaxable ? facture.montantHtTaxable : "-");
-        $validationFormRecpaTable
             .find(".td-invoice-mtva")
             .text(facture.montantTva ? facture.montantTva : "-");
-        // $validationFormRecpaTable
-        //     .find(".td-invoice-tsHt")
-        //     .text(facture.tsHt ? facture.tsHt : "-");
-        // $validationFormRecpaTable
-        //     .find(".td-invoice-tsTtc")
-        //     .text(facture.tsTtc ? facture.tsTtc : "-");
+        $validationFormRecpaTable
+            .find(".td-invoice-tsHt")
+            .text(facture.tsHt ? facture.tsHt : "-");
+        $validationFormRecpaTable
+            .find(".td-invoice-tsTtc")
+            .text(facture.tsTtc ? facture.tsTtc : "-");
         $validationFormRecpaTable
             .find(".td-invoice-aib")
             .text(facture.montantAib ? facture.montantAib : "-");
@@ -351,25 +342,24 @@ $(document).ready(function () {
             e.preventDefault();
             $(".dropdown-menu-end").css("position", position);
         });
-        // console.log(count + ' column(s) are hidden');
     });
 });
 document.addEventListener("DOMContentLoaded", function () {
     // Initialisation des champs de séléction avec choices.js
-    listeFacture.choicesJsInit();
-    // Récupératon des types de facture
-    GlobalScript.getForeignsData(
-        URL_LIST_TYPE_FACTURE,
-        ["types de facture", "id", "description"],
-        1,
-        null,
-        false,
-    );
+    listeFacture.choicesJsInit();    
     // Récupératon des clients
     GlobalScript.getForeignsData(
         URL_LIST_CLIENT,
         ["clients", "id", "name"],
         0,
+        null,
+        false,
+    );
+    // Récupératon des types de facture
+    GlobalScript.getForeignsData(
+        URL_LIST_TYPE_FACTURE,
+        ["types de facture", "id", "description"],
+        1,
         null,
         false,
     );
@@ -399,12 +389,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Si les dates sont renseignées, alors mettre à jour le payload des dates
         if (filtreForm.find("input#date-debut").val() && filtreForm.find("input#date-fin").val()) {
             // Récupération des dates de début et de fin
-            // Récupération des dates de début et de fin
             let debut = new Date(filtreForm.find("input#date-debut").val());
             let fin = new Date(filtreForm.find("input#date-fin").val());
             // Mise à jour du payload
-            statsPayload.debut = (debut.toISOString()).slice(0, 19);
-            statsPayload.fin = (fin.toISOString()).slice(0, 19);
+            statsPayload.debutAt = debut.toISOString();
+            statsPayload.finAt = fin.toISOString();
             // Comparaison des dates, la date de fin doit être supérieure à la date de début
             if (fin.getTime() <= debut.getTime()) {
                 alertify.error("La date de fin doit être supérieure à la date de début");
@@ -416,4 +405,5 @@ document.addEventListener("DOMContentLoaded", function () {
         datatable.ajax.reload();
         return;
     })
+
 });

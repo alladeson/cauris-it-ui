@@ -564,7 +564,13 @@ let GlobalScript = {
      */
     showPrintedInvoice: function(facture) {
         let printPdfUrl = URL_GLOBAL_IMPRIMER_FACTURE.replace("__id__", facture.id);
-        let pdfName = "facture-" + facture.numero + ".pdf";
+        let pdfName = "";
+        if(facture.confirm) {
+            pdfName = "facture-" + facture.numero + ".pdf"
+        } else {
+            numero = "FP" + String(facture.id).padStart(6, '0');
+            pdfName = "facture-proforma-" + numero + ".pdf"
+        }
         // let dowloadPdfUrl = URL_GET_FILE.replace("__fileName__", pdfName);
         let dowloadPdfUrl = downloadPdfBaseUrl + pdfName;
         // GlobalScript.pdfwebviewer(printPdfUrl, dowloadPdfUrl, pdfName)
@@ -632,5 +638,34 @@ let GlobalScript = {
                 // Run this when promise was rejected via reject()
                 GlobalScript.ajxRqtErrHandler(err, errorAlertType, errorMessage);
             });
-    }
+    },
+    setDateDebutDefaultValue: function(){ 
+        var input = document.getElementById("date-debut");
+
+        var now = new Date();
+        now.setHours(0, 0, 0, 0);
+
+        // Format local avec secondes
+        var year = now.getFullYear();
+        var month = String(now.getMonth() + 1).padStart(2, '0');
+        var day = String(now.getDate()).padStart(2, '0');
+
+        var hours = "00";
+        var minutes = "00";
+        var seconds = "00";
+
+        var formatted = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+
+        input.value = formatted;
+    },
+    getDateFinJour: function(){ 
+        var now = new Date();
+        now.setHours(23, 59, 59, 0);
+
+        return `${now.getFullYear()}-${
+            String(now.getMonth() + 1).padStart(2, '0')
+        }-${
+            String(now.getDate()).padStart(2, '0')
+        }T23:59:59`;
+    },
 }
