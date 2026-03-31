@@ -647,10 +647,10 @@ let cmdFournisseur = {
         let quantite = cmdFournisseurForm.find("#quantite").val();
         // Gestion du montant
         let montant = 0;
-        if (prixU && quantite) montant = prixU * quantite;
+        if (prixU && quantite) montant = GlobalScript.financialToFixed(prixU * quantite, 3);
         cmdFournisseurForm.find("#montant").val(montant);
         // Gestion de la taxe spécifique
-        let montantTs = taxeSpecifique ? (taxeSpecifique * quantite) : null;
+        let montantTs = taxeSpecifique ? GlobalScript.financialToFixed(taxeSpecifique * quantite, 3) : null;
         cmdFournisseurForm.find("#taxe-specifique").val(montantTs);
     },
     getEntity: function (url, id, dataname = "donnée", reloadDatatable = false) {
@@ -944,8 +944,10 @@ let cmdFournisseur = {
         // Récupération du prix unitaire : utile pour la remise
         let prixUht = cmdFournisseurForm.find("#prix_u").val() ? cmdFournisseurForm.find("#prix_u").val() : 0;
         if (remise) {
-            let prixUnitaire = parseInt(prixUht);
-            let prixOriginale = parseInt(cmdFournisseurForm.find("#remise_prix_u").val());
+            // let prixUnitaire = parseInt(prixUht);
+            let prixUnitaire = prixUht;
+            // let prixOriginale = parseInt(cmdFournisseurForm.find("#remise_prix_u").val());
+            let prixOriginale = cmdFournisseurForm.find("#remise_prix_u").val();
             let taux = ((prixOriginale && prixUnitaire) && prixUnitaire < prixOriginale) ? Math.round(((prixOriginale - prixUnitaire) * 100) / prixOriginale) : 0;
             cmdFournisseurForm.find("#remise_taux").val(taux);
             cmdFournisseurForm.find("#remise_description").val("Une remise de " + taux + "%");
@@ -959,9 +961,11 @@ let cmdFournisseur = {
         if (event) event.preventDefault()
         let remise = cmdFournisseurForm.find("#remise-check").is(":checked");
         if (remise) {
-            let prixOriginale = parseInt(cmdFournisseurForm.find("#remise_prix_u").val());
+            // let prixOriginale = parseInt(cmdFournisseurForm.find("#remise_prix_u").val());
+            let prixOriginale = cmdFournisseurForm.find("#remise_prix_u").val();
             let taux = parseInt(cmdFournisseurForm.find("#remise_taux").val());
-            let prixUnitaire = prixOriginale ? (prixOriginale - Math.round((prixOriginale * taux) / 100)) : 0;
+            // let prixUnitaire = prixOriginale ? (prixOriginale - Math.round((prixOriginale * taux) / 100)) : 0;
+            let prixUnitaire = prixOriginale ? GlobalScript.financialToFixed(prixOriginale * (1 - taux / 100), 3) : 0;
             cmdFournisseurForm.find("#prix_u").val(prixUnitaire);
             cmdFournisseurForm.find("#remise_description").val("Une remise de " + taux + "%");
             cmdFournisseur.setMontant();

@@ -691,4 +691,7 @@ let GlobalScript = {
             String(now.getDate()).padStart(2, '0')
         }T23:59:59`;
     },
+    financialToFixed: function(x, decimalPlaces = 2) {
+        return Number.parseFloat(x).toFixed(decimalPlaces);
+    }
 };

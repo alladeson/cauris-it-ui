@@ -313,7 +313,7 @@ $(document).ready(function () {
     GlobalScript.setDateDebutDefaultValue();
     // Set the default dateFin to the end of the current day
     document.getElementById("date-fin").value = GlobalScript.getDateFinJour();
-    // Mise de l'url de liste des facture pour récupérer une liste vide
+    // Mise à jourde l'url de liste des facture pour récupérer une liste vide
     url_list = URL_LIST_ITEM + "?search=vide&confirm=true";
     // Initialisation du table de liste de facture avec datatable
     listeFacture.listInitalizer();
