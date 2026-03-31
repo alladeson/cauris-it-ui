@@ -7,6 +7,10 @@ let statsPayload = {
     "fin": null,
     "debutAt": null,
     "finAt": null,
+    "confirm": true,
+    "typeId": null,
+    "clientId": null,
+    "search": "bilan",
 };
 let filtreForm = null;
 let url_list = null;
@@ -461,8 +465,12 @@ let bilan = {
     },
 };
 $(document).ready(function () {
-    // Mise de l'url de liste des facture pour récupérer une liste vide
-    url_list = URL_LIST_ITEM + "?search=vide";
+    // Set the default dateDebut to the start of the current day
+    GlobalScript.setDateDebutDefaultValue();
+    // Set the default dateFin to the end of the current day
+    document.getElementById("date-fin").value = GlobalScript.getDateFinJour();
+    // Mise à jour de l'url de liste des facture pour récupérer une liste vide
+    url_list = URL_LIST_ITEM + "?search=bilan";
     // Initialisation des tableaux de liste de facture avec datatable
     dtSelector.forEach(selector => {
         bilan.listInitalizer(selector);
