@@ -15,30 +15,35 @@ class GlobalController extends AbstractController
     private $apiService;
     public function __construct(ApiDataService $apiService)
     {
+        set_time_limit(300);
         $this->apiService = $apiService;
     }
 
-    #[Route('/__request/api', name:'global_request_api', methods:['POST'])]
+    #[Route('/__request/api', name: 'global_request_api', methods: ['POST'])]
     function requestApi(Request $request): Response
-        {
+    {
+        set_time_limit(300);
         return $this->apiService->execute($request);
     }
 
-    #[Route('/__request/file/api', name:'global_request_file_api', methods:['POST'])]
+    #[Route('/__request/file/api', name: 'global_request_file_api', methods: ['POST'])]
     function requestFileApi(Request $request): Response
-        {
+    {
+        set_time_limit(300);
         return $this->apiService->executeFile($request);
     }
 
-    #[Route('/__request/api/layout-settings', name:'global_request_layout_settings', methods:['POST'])]
+    #[Route('/__request/api/layout-settings', name: 'global_request_layout_settings', methods: ['POST'])]
     function requestLayoutSettings(Request $request): Response
-        {
+    {
+        set_time_limit(300);
         return $this->apiService->executeLayoutSettings($request);
     }
 
-    #[Route('/__get/file/api', name:'global_get_file_api', methods:['POST'])]
+    #[Route('/__get/file/api', name: 'global_get_file_api', methods: ['POST'])]
     function getFileApi(Request $request): Response
     {
+        set_time_limit(300);
         return $this->apiService->getFileApi($request);
     }
 }

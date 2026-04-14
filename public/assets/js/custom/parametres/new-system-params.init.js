@@ -97,6 +97,7 @@ let newSystemParamsWizard = {
                 'formatFacture': GlobalScript.checkBlank(emecefForm.find("#format-facture").val()),
                 'gestionStock': GlobalScript.checkBlank(emecefForm.find("#gestion-stock").val()),
                 'stockEtFacture': GlobalScript.checkBlank(emecefForm.find("#stock-et-facture").val()),
+                'gestionProfit': GlobalScript.checkBlank(emecefForm.find("#gestion-profit").val()),
                 'serialKey': GlobalScript.checkBlank($.trim(serialKeyForm.find("#serial-key").val())),
             };
             return JSON.stringify(data);
@@ -128,6 +129,7 @@ let newSystemParamsWizard = {
         $showClasseTable.find('.td-format-facture').html(emecefForm.find("#format-facture").val() ? emecefForm.find("#format-facture").val() : errorHtml);
         $showClasseTable.find('.td-gestion-stock').html(emecefForm.find("#gestion-stock").val() ? emecefForm.find("#gestion-stock").val() : errorHtml);
         $showClasseTable.find('.td-stock-et-facture').html(emecefForm.find("#stock-et-facture").val() ? emecefForm.find("#stock-et-facture").val() : errorHtml);
+        $showClasseTable.find('.td-gestion-profit').html(emecefForm.find("#gestion-profit").val() ? emecefForm.find("#gestion-profit").val() : errorHtml);
         // Clé d'activation
         var serialKeyForm = $("form#serialKey-form")
         $showClasseTable.find('.td-serial-key').html(serialKeyForm.find("#serial-key").val() ? `<span class="text-success badge badge-soft-success font-size-14">Fourni</span>` : errorHtml);

@@ -1063,6 +1063,7 @@ let cmdFournisseur = {
                 'reference': GlobalScript.checkBlank(form.find("#reference").val()),
                 'designation': GlobalScript.checkBlank(form.find("#designation").val()),
                 'prix': GlobalScript.checkBlank(form.find("#prix").val()),
+                'prixAchat': GlobalScript.checkBlank(form.find("#prix-achat").val()),
                 'taxeSpecifique': GlobalScript.checkBlank(form.find("#taxe-specifique").val()),
                 'tsName': GlobalScript.checkBlank(form.find("#ts-name").val()),
                 'stock': GlobalScript.checkBlank(form.find("#stock").val()),

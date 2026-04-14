@@ -39,26 +39,39 @@
 								</div>
 							</div>							
 						</div>
-						<div class="row">						
-							<div class="col-md-12">
-								<div class="mb-3 position-relative">
-									<label for="taxe" class="form-label">Taxe <span class="text-danger">*</span></label>
-									<select required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher...">
-									</select>
-								</div>								
-							</div>							
-						</div>
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
 								<div class="mb-3 position-relative">
-									<label class="form-label" for="prix">Prix <span class="text-danger">*</span></label>
+									<label class="form-label" for="prix">Prix Unitaire TTC <span class="text-danger">*</span></label>
 									<div class="input-group">
 										<span class="input-group-text" id="prixPrepend">FCFA</i></span>
 										<input type="number" id="prix" name="prix" min="0" class="form-control" placeholder="Le prix T.T.C de l'article" aria-describedby="prixPrepend" required>
 									</div>
 								</div>
+							</div>						
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label for="taxe" class="form-label">Taxe <span class="text-danger">*</span></label>
+									<select required class="form-control form-select" data-trigger name="taxe" id="taxe" placeholder="chercher...">
+									</select>
+								</div>								
+							</div>														
+						</div>
+						<div class="row">
+							{% if params.gestionProfit %}
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3 position-relative">
+									<label class="form-label" for="prix-achat">Prix d'achat<span class="text-danger">*</span></label>
+									<div class="input-group">
+										<span class="input-group-text" id="prixPrepend">FCFA</i></span>
+										<input type="number" id="prix-achat" name="prix-achat" min="0" class="form-control" placeholder="Le prix d'achat de l'article" aria-describedby="prixPrepend" required>
+									</div>
+								</div>
 							</div>
 							<div class="col-lg-6 col-md-6">
+							{% else %}
+							<div class="col-lg-12 col-md-12">
+							{% endif %}
 								<div class="mb-3 position-relative">
 									<label class="form-label" for="taxe-specifique">Taxe spécifique</label>
 									<input type="number" min="0" class="form-control" id="taxe-specifique" name="taxe-specifique" placeholder="La taxe spécifique si existante" value="">

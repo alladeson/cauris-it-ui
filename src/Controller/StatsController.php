@@ -39,4 +39,32 @@ class StatsController extends AbstractController
              "url_impression_mouvement_article" => ApiConstant::URL_IMPRESSION_MOUVEMENT_ARTICLES_BY_CREATED_DATE,
         ]);
     }
+
+    #[Route('/marge-beneficiaire', name: 'stats_marge_beneficiaire')]
+    public function margeBeneficiaire(): Response
+    {
+        return $this->render('stats/marge-beneficiaire.html.twig', [
+            'page_title' => 'Marge bénéficiaire',
+            'breadcrumb' => ['Statistiques', 'Marge bénéficiaire'],
+            "sidebar_code" => ['STATS', 'MBFC', ''],
+            'menu_code' =>  ApiConstant::statsMargeBenefice,
+             "url_get_montants" => ApiConstant::URL_GET_MONTANTS_MARGE_BENEFICIAIRE_BY_DATE,
+             "url_impression_depenses" => ApiConstant::URL_IMPRESSION_DEPENSES_BY_DATE_PAYEMENT,
+             "url_impression_benefices" => ApiConstant::URL_IMPRESSION_BENEFICES_BY_DATE_FACTURE,
+        ]);
+    }
+
+    #[Route('/marge-beneficiaire-send', name: 'stats_marge_beneficiaire_send')]
+    public function margeBeneficiaireSend(): Response
+    {
+        return $this->render('stats/marge-beneficiaire-send.html.twig', [
+            'page_title' => 'Envoi Rapport Vente',
+            'breadcrumb' => ['Statistiques', 'Envoi Rapport Vente'],
+            "sidebar_code" => ['STATS', 'MBFCS', ''],
+            'menu_code' =>  ApiConstant::statsEnvoiMargeBenefice,
+             "url_send_marge_beneficiaire_by_date" => ApiConstant::URL_SEND_RAPPORT_MARGE_BENEFICIAIRE_BY_DATE,
+             "url_print_rapport_depense_by_date" => ApiConstant::URL_PRINT_RAPPORT_DEPENSE_BY_DATE,
+             "url_print_rapport_benefice_by_date" => ApiConstant::URL_PRINT_RAPPORT_BENEFICE_BY_DATE,
+        ]);
+    }
 }

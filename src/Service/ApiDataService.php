@@ -421,7 +421,7 @@ class ApiDataService extends AbstractController
         $data = $request->request->get('data');
 
         $response = $this->request($method, $route, $data);
-        return new Response($response->getContent(false), $response->getStatusCode(false));
+        return new Response($response->getContent(false), $response->getStatusCode());
     }
 
     /**
@@ -438,7 +438,7 @@ class ApiDataService extends AbstractController
         //
         $respContent = $fileName;
         //
-        if($response->getStatusCode(false) == Response::HTTP_OK){            
+        if($response->getStatusCode() == Response::HTTP_OK){            
             // Récupération de la destination temporaire du fichier
             $destination = $this->getParameter('kernel.project_dir').'/public/assets/downloads/';
             // Création du fichier
@@ -457,7 +457,7 @@ class ApiDataService extends AbstractController
             $respContent = $response->getContent(false);            
         }
         // Envoie du nom du fichier à la vue
-        return new Response($respContent, $response->getStatusCode(false));
+        return new Response($respContent, $response->getStatusCode());
     }
 
     /**
@@ -473,7 +473,7 @@ class ApiDataService extends AbstractController
         $fileName = $request->request->get('fileName');
         $file = $request->files->get('file');
         $response = $this->requestFile($method, $route, $file, $fileName);
-        return new Response($response->getContent(false), $response->getStatusCode(false));
+        return new Response($response->getContent(false), $response->getStatusCode());
     }
     /**
      * Envoie une requête pour la mise à jour des paramètres de mise en forme de la vue
@@ -499,12 +499,12 @@ class ApiDataService extends AbstractController
         // Exécution de la requête vers l'api
         $response = $this->request(Request::METHOD_POST, ApiConstant::URL_POST_LAYOUT, $layout);
         // Si tout se passe, l'api renvoie l'utilisateur contenant son layout déjà en base
-        if ($response->getStatusCode(false) == Response::HTTP_OK){
+        if ($response->getStatusCode() == Response::HTTP_OK){
             // Mise à jour de l'utilisateur en session
             $session->set("user", json_decode($response->getContent(false)));
         }
         // Renvoie de la réponse à la vue
-        return new Response($response->getContent(false), $response->getStatusCode(false));
+        return new Response($response->getContent(false), $response->getStatusCode());
     }
 
     /**

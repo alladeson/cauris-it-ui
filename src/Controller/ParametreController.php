@@ -72,6 +72,22 @@ class ParametreController extends AbstractController
         ]);
     }
 
+    #[Route('/clients', name: 'parametre_client')]
+    function client(): Response
+    {
+        return $this->render('facture/client.html.twig', [
+            'page_title' => 'Clients',
+            'breadcrumb' => ['Paramètres', 'Clients'],
+            "sidebar_code" => ['PARAMS', 'CLT', ''],
+            'menu_code' => ApiConstant::facturationClient,
+            "url_list_item" => ApiConstant::URL_LIST_CLIENT,
+            "url_post_item" => ApiConstant::URL_POST_CLIENT,
+            "url_put_item" => ApiConstant::URL_PUT_CLIENT,
+            "url_get_item" => ApiConstant::URL_GET_CLIENT,
+            "url_delete_item" => ApiConstant::URL_DELETE_CLIENT,
+        ]);
+    }
+
     /**
      * Afficher l'interface de création du paramètre de système
      *

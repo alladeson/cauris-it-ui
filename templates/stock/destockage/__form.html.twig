@@ -11,7 +11,7 @@
 								<div class="mb-3 position-relative">
 									<input type="hidden" id="item-id" name="item-id" value="">
 									<label for="article" class="form-label">Article</label>
-									<select required data-trigger class="form-control form-select" name="article" id="article" placeholder="chercher...">
+									<select required onchange="destockage.getArticle(event)" data-trigger class="form-control form-select" name="article" id="article" placeholder="chercher...">
 									</select>
 								</div>
 							</div>

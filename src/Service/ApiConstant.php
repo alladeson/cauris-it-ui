@@ -156,6 +156,14 @@ class ApiConstant
     // Les fichiers
     public const URL_GET_FILE = "public/downloadFile/__fileName__";
 
+    // Gestion des dépenses
+    public const URL_LIST_DEPENSE = "factures/depenses";
+    public const URL_POST_DEPENSE = "factures/depenses";
+    public const URL_PUT_DEPENSE = "factures/depenses/__id__";
+    public const URL_PUT_DEPENSE_VALIDER = "factures/depenses/__id__/valider";
+    public const URL_GET_DEPENSE = "factures/depenses/__id__";
+    public const URL_DELETE_DEPENSE = "factures/depenses/__id__";
+
     /*** Contrôle d'accès et Audit ***/
     //Les utilisateurs
     public const URL_LIST_USER = "parametre/users/admin";
@@ -207,6 +215,14 @@ class ApiConstant
     public const URL_BILAN_DASHBOARD = "stats/bilan-periodique/dashboard";
     // Mouvement des articles
     public const URL_IMPRESSION_MOUVEMENT_ARTICLES_BY_CREATED_DATE = "stats/mouvement-article/report";
+    // Dépenses
+    public const URL_IMPRESSION_DEPENSES_BY_DATE_PAYEMENT = "stats/depenses/report";
+    public const URL_IMPRESSION_BENEFICES_BY_DATE_FACTURE = "stats/benefices/report";
+    // Marge bénéficiaire
+     public const URL_GET_MONTANTS_MARGE_BENEFICIAIRE_BY_DATE = "stats/marge-beneficiaire/montants";
+      public const URL_SEND_RAPPORT_MARGE_BENEFICIAIRE_BY_DATE = "stats/marge-beneficiaire/report/send";
+      public const URL_PRINT_RAPPORT_DEPENSE_BY_DATE = "stats/marge-beneficiaire/report/depense";
+      public const URL_PRINT_RAPPORT_BENEFICE_BY_DATE = "stats/marge-beneficiaire/report/benefice";
 
     // Les codes des fonctionnalités
     // Gestion de stock
@@ -226,6 +242,7 @@ class ApiConstant
     public const facturationListeNormalisee = 23010;
 	public const facturationListeProforma = 23020;
 	public const facturationClient = 24000;
+    public const facturationDepense = 25000;
 	// Les données de base et paramètre du système
 	public const parametre = 30000;
 	public const parametreTaxe = 31000;
@@ -245,4 +262,6 @@ class ApiConstant
 	public const stats = 60000;
 	public const statsBilanPeriodique = 61000;
 	public const statsMouvementArticle = 62000;
+    public const statsMargeBenefice = 63000;
+    public const statsEnvoiMargeBenefice = 64000;
 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\ApiConstant;
+use App\Service\ApiDataService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,6 +11,11 @@ use Symfony\Component\Routing\Annotation\Route;
 #[ Route( '/factures' ) ]
 
 class FactureController extends AbstractController {
+    private $apiService;
+    public function __construct(ApiDataService $apiService)
+    {
+        $this->apiService = $apiService;
+    }
 
     /**
      * Affichage de l'interface d'établissement d'une facture
@@ -33,6 +39,7 @@ class FactureController extends AbstractController {
      * @return Response
      */
     function fvRender($id = null): Response {
+        $params = $this->apiService->getSystemParams();
         return $this->render( 'facture/facture-vente.html.twig', [
             'page_title' => 'Facture Ventes',
             'breadcrumb' => [ 'Facture', 'Facture Ventes' ],
@@ -65,7 +72,10 @@ class FactureController extends AbstractController {
              // Taxe
             'url_list_taxe' => ApiConstant::URL_LIST_TAXE_IMPOT,
             'url_get_taxe' => ApiConstant::URL_GET_TAXE,
-            'url_list_taxe_aib' => ApiConstant::URL_LIST_TAXE_AIB,            
+            'url_list_taxe_aib' => ApiConstant::URL_LIST_TAXE_AIB,   
+            //
+            'gestion_stock_et_facture' => isset($params) && $params->gestionStock && $params->stockEtFacture ? 1 : 0,
+
         ] );
     }
 
@@ -188,19 +198,20 @@ class FactureController extends AbstractController {
         ]);
     }
 
-    #[Route('/clients', name: 'facture_client')]
-    function client(): Response
+    #[Route('/depense', name: 'facture_depense')]
+    function depense(): Response
     {
-        return $this->render('facture/client.html.twig', [
-            'page_title' => 'Clients',
-            'breadcrumb' => ['Gestion de Stock', 'Clients'],
-            "sidebar_code" => ['FACT', 'CLT', ''],
-            'menu_code' => ApiConstant::facturationClient,
-            "url_list_item" => ApiConstant::URL_LIST_CLIENT,
-            "url_post_item" => ApiConstant::URL_POST_CLIENT,
-            "url_put_item" => ApiConstant::URL_PUT_CLIENT,
-            "url_get_item" => ApiConstant::URL_GET_CLIENT,
-            "url_delete_item" => ApiConstant::URL_DELETE_CLIENT,
+        return $this->render('facture/depense/index.html.twig', [
+            'page_title' => 'Depense',
+            'breadcrumb' => ['Facture', 'Depense'],
+            "sidebar_code" => ['FACT', 'DPNS', ''],
+            "menu_code" => ApiConstant::facturationDepense,
+            "url_list_item" => ApiConstant::URL_LIST_DEPENSE,
+            "url_post_item" => ApiConstant::URL_POST_DEPENSE,
+            "url_put_item" => ApiConstant::URL_PUT_DEPENSE,
+            "url_get_item" => ApiConstant::URL_GET_DEPENSE,
+            "url_delete_item" => ApiConstant::URL_DELETE_DEPENSE,
+            "url_put_item_valider" => ApiConstant::URL_PUT_DEPENSE_VALIDER,
         ]);
     }
 }

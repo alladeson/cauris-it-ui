@@ -1,0 +1,53 @@
+<div class="modal-dialog modal-dialog-centered">
+	<div class="modal-content">
+		<form method="post" class="" onsubmit="depense.submitFormData(event)" >
+			<div class="modal-header">
+				<h5 class="modal-title">Nouvel ajout</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="mb-3 position-relative">
+							<input type="hidden" id="item-id" name="item-id" value="">
+							<label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
+							<input required type="text" class="form-control" id="nom" name="nom" placeholder="Le nom de la dépense" value="">
+						</div>
+					</div>
+				</div>						
+				<div class="row">
+					<div class="col-lg-6 col-md-6">
+						<div class="mb-3 position-relative">
+							<label for="montant" class="form-label">Montant <span class="text-danger">*</span></label>
+							<div class="input-group">
+								<span class="input-group-text" id="montantPrepend">FCFA</i></span>
+								<input type="number" id="montant" name="montant" min="0" class="form-control" placeholder="Le montant de la dépense" aria-describedby="montantPrepend" required>
+							</div>								
+						</div>
+					</div>
+					<div class="col-lg-6 col-md-6">
+						<div class="mb-3 position-relative">
+							<label class="form-label" for="date-paiement">Date de Paiement <span class="text-danger">*</span></label>
+							<input type="datetime-local" class="form-control" id="date-paiement" name="date-paiement" placeholder="" value="" step=1 required>
+						</div>
+					</div>
+				</div>
+				<div class="row">						
+					<div class="col-md-12">
+						<div class="mb-3 position-relative">
+							<label class="form-label font-size-13 text-muted" for="description">Description</label>
+							<textarea class="form-control" id="description" name="description" placeholder="Une description de la dépense" rows="3"></textarea>
+						</div>								
+					</div>							
+				</div>						
+			</div>
+			<div class="modal-footer">
+				<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
+				{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
+				<button type="submit" class="btn btn-primary">Enregistrer</button>
+			</div>
+		</form>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

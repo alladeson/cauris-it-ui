@@ -15,6 +15,7 @@
 {% set facturationListeNormalisee = 23010 %}
 {% set facturationListeProforma = 23020 %}
 {% set facturationClient = 24000 %}
+{% set facturationDepense = 25000 %}
 {% set parametre = 30000 %}
 {% set parametreTaxe = 31000 %}
 {% set parametreTypeFacture = 32000 %}
@@ -30,6 +31,8 @@
 {% set stats = 60000 %}
 {% set statsBilanPeriodique = 61000 %}
 {% set statsMouvementArticle = 62000 %}
+{% set statsMargeBenefice = 63000 %}
+{% set statsEnvoiMargeBenefice = 64000 %}
 {# endset #}
 	
 {# Menu format #}
@@ -175,14 +178,14 @@
 				],
 			},
 			{
-				readable: menu_readable(facturationClient),
-				id: "facture-client",
-				pathName: "facture_client",
-				title: "Clients",
-				dataKey: "t-clients",
-				active: sidebar_code[1] == "CLT" ? true : false,
+				readable: menu_readable(facturationDepense),
+				id: "facture-depense",
+				pathName: "facture_depense",
+				title: "Dépenses",
+				dataKey: "t-facture-depense",
+				active: sidebar_code[1] == "DPNS" ? true : false,
 				children: [],
-			},                           
+			},                         
 		],
 	},
 	{
@@ -209,7 +212,25 @@
 				pathName: "stats_mouvement_article",
 				title: "Rapport de ventes et de stock",
 				dataKey: "t-stats-mouvement-article",
-				active: sidebar_code[1] == "RMAS" ? true : false,
+				active: sidebar_code[1] == "MA" ? true : false,
+				children: [],
+			},            
+			{
+				readable: menu_readable(statsMargeBenefice),
+				id: "stats-marge-beneficiaire",
+				pathName: "stats_marge_beneficiaire",
+				title: "Marge bénéficiaire",
+				dataKey: "t-stats-marge-beneficiaire",
+				active: sidebar_code[1] == "MBFC" ? true : false,
+				children: [],
+			}, 
+			{
+				readable: menu_readable(statsEnvoiMargeBenefice),
+				id: "stats-marge-beneficiaire-send",
+				pathName: "stats_marge_beneficiaire_send",
+				title: "Envoi Rapport Vente",
+				dataKey: "t-stats-marge-beneficiaire-send",
+				active: sidebar_code[1] == "MBFCS" ? true : false,
 				children: [],
 			},            
 		],
@@ -248,6 +269,15 @@
 				title: "Type de paiement",
 				dataKey: "t-params-type-paiement",
 				active: sidebar_code[1] == "TPP" ? true : false,
+				children: [],
+			},
+			{
+				readable: menu_readable(facturationClient),
+				id: "parametre-client",
+				pathName: "parametre_client",
+				title: "Clients",
+				dataKey: "t-clients",
+				active: sidebar_code[1] == "CLT" ? true : false,
 				children: [],
 			},
 			{

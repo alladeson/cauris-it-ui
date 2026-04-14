@@ -15,29 +15,13 @@
 				</h5>
 			</div>
 		</div>
-
 		<div class="col-md-6 col-7">
 			<div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
-				{# <div>
-					<ul class="nav nav-pills">
-						<li class="nav-item">
-							<a class="nav-link active" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="List">
-								<i class="bx bx-list-ul"></i>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Grid">
-								<i class="bx bx-grid-alt"></i>
-							</a>
-						</li>
-					</ul>
-				</div> #}
 				<div onclick="article.newItemEvent(event)">
 					<a href="javascript:void(0);" class="btn btn-light" data-bs-toggle="modal" data-bs-target=".add-new-modal">
 						<i class="bx bx-plus me-1"></i>
 						Nouvel Ajout</a>
 				</div>
-
 				<div class="dropdown">
 					<a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						<i class="bx bx-dots-horizontal-rounded"></i>
@@ -47,12 +31,6 @@
 						<li>
 							<a class="dropdown-item" onclick="article.reloadDatatable(event)" href="javascript:void(0);">Actualiser</a>
 						</li>
-						{# <li>
-							<a class="dropdown-item" href="javascript:void(0);">Autre action</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="javascript:void(0);">Quelque chose d'autre ici</a>
-						</li> #}
 					</ul>
 				</div>
 			</div>
@@ -105,16 +83,6 @@
 				<div class="modal-body">
 					<div class="table-responsive">
                         <table class="table table-nowrap align-middle justify-content-center mb-0 item-show-table">
-                            {# <thead>
-                                <tr>
-                                    <th scope="col" style="width: 50%;">
-                                        Sweet Alert Type
-                                    </th>
-                                    <th scope="col" class="text-center">
-                                        Sweet Alert Examples
-                                    </th>
-                                </tr>
-                            </thead> #}
                             <tbody>
 								<tr>
                                     <th scope="row">
@@ -158,6 +126,15 @@
                                     <td class="text-center td-taxe">
                                     </td>
                                 </tr>
+								{% if params.gestionProfit %}
+									<tr>
+										<th scope="row">
+											Prix d'achat
+										</th>
+										<td class="text-center td-prix-achat">
+										</td>
+									</tr>
+								{% endif %}
 								<tr>
                                     <th scope="row">
                                         Taxe Spécifique
@@ -165,20 +142,22 @@
                                     <td class="text-center td-ts">
                                     </td>
                                 </tr>
-								<tr>
-                                    <th scope="row">
-                                        Stock
-                                    </th>
-                                    <td class="text-center td-stock">
-                                    </td>
-                                </tr>
-								<tr>
-                                    <th scope="row">
-                                        Stock de sécurité
-                                    </th>
-                                    <td class="text-center td-stock-securite">
-                                    </td>
-                                </tr>                                                      
+								{% if params.gestionStock %}
+									<tr>
+										<th scope="row">
+											Stock
+										</th>
+										<td class="text-center td-stock">
+										</td>
+									</tr>
+									<tr>
+										<th scope="row">
+											Stock de sécurité
+										</th>
+										<td class="text-center td-stock-securite">
+										</td>
+									</tr>  
+								{% endif %}                                                    
                             </tbody>
                         </table>
                         <!-- end table -->

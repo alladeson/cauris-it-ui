@@ -1,0 +1,110 @@
+{% extends "admin/layout/crud-layout.html.twig" %}
+
+{% block title %}
+	{{appName}}
+	- Liste Factures
+{% endblock %}
+
+{% block page_content %}
+
+	{# Filtre #}
+	<div class="mt-2">
+		<h5 class="font-size-14 mb-2">
+			<i class="mdi mdi-arrow-right text-primary me-1"></i>
+			Filtre <span class="text-danger">*</span> : </h5>
+
+		<form class="row gx-3 gy-2 align-items-center filtre-form">
+			<div class="row mb-3 mt-3">
+				<div class="col-lg-3 col-md-3 col-sm-3 mb-sm-0 mb-2">
+					<label class="form-label font-size-13 text-muted" for="date-debut">Début</label>
+					<input type="datetime-local" class="form-control" id="date-debut" name="date-debut" placeholder="" value="" step=1>
+				</div>
+				<div class="col-lg-3 col-md-3 col-sm-3 mb-sm-0 mb-2">
+					<label class="form-label font-size-13 text-muted" for="date-fin">Fin</label>
+					<input type="datetime-local" class="form-control" id="date-fin" name="date-fin" placeholder="" value="" step=1>
+				</div>
+				<div class="col-sm-6 mt-sm-4 mt-2 mb-sm-0 mb-2">
+					<div class="row">						
+						<div class="d-flex flex-wrap justify-content-between justify-content-center">
+							<button type="submit" class="btn btn-primary" style="margin-top: 5px;">
+								<i class="bx bx-search-alt align-middle"></i>
+								<span class="d-sm-none">Rechercher</span>
+							</button>
+							<button type="button" class="btn btn-success print-bilan" style="margin-top: 5px;">
+								<i class="bx bx-printer align-middle"></i>
+								<span class="d-sm-none">Imprimer</span>
+							</button>
+						</div>							
+					</div>					
+				</div>
+			</div>
+		</form>
+	</div>
+	<br>
+	{# End Filtre #}	
+
+	<div class="table-responsive" id="bilan-recapitulatif">
+		<table class="table mb-0">
+			<thead class="table-light text-center">
+				<tr>
+					<th>Total des bénéfices</th>
+					<th>Total des dépenses</th>
+					<th>Marge bénéficiaire</th>
+				</tr>
+			</thead>
+			<tbody>    
+				<tr class="text-center">
+					<td colspan="5">Aucune donnée disponible dans le tableau</td>
+				</tr>             
+			</tbody>
+			<tfoot class="table-light">            
+			</tfoot>
+		</table>
+	</div>
+
+<div class="modal fade print-bilan-modal" id="print-bilan-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<form method="post" class="" onsubmit="margeBeneficiaire.submitPrintFormModal(event)" >
+				<div class="modal-header">
+					<h5 class="modal-title">Impression</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="mb-3 position-relative">
+								<input type="hidden" id="item-id" name="item-id" value="">
+								<label for="type-impression" class="form-label">Type de rapport <span class="text-danger">*</span></label>
+								<select required class="form-control form-select" data-trigger name="type-impression" id="type-impression" placeholder="chercher...">
+									<option value="">Sélectionner un type</option>
+									<option value="benefice">Rapport des Bénéfices</option>
+									<option value="depense">Rapport des Dépenses</option>
+								</select>
+							</div>
+						</div>
+					</div>						
+				</div>
+				<div class="modal-footer">
+					<button type="reset" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
+					{# <button class="btn btn-primary" type="submit">Enregistrer</button> #}
+					<button type="submit" class="btn btn-primary">Valider</button>
+				</div>
+			</form>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+</div>
+<!-- /.modal-dialog -->
+
+{% endblock %}
+
+{% block page_custom_scripts %}
+	<script>
+		const URL_GET_MONTANTS = "{{ url_get_montants }}";
+		const URL_IMPRESSION_DEPENSE = "{{ url_print_depense() }}";
+		const URL_IMPRESSION_BENEFICE = "{{ url_print_benefice() }}";
+	</script>
+	<!-- init js -->
+	<script src="{{ asset('assets/js/custom/stats/marge-beneficiaire.init.js') }}"></script>
+{% endblock %}

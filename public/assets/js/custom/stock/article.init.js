@@ -255,6 +255,7 @@ let article = {
             form.find("#reference").val(item.reference)
             form.find("#designation").val(item.designation)
             form.find("#prix").val(item.prix)
+            form.find("#prix-achat").val(item.prixAchat)
             form.find("#taxe-specifique").val(item.taxeSpecifique)
             form.find("#ts-name").val(item.tsName);
             // Gestion du nom de la taxe
@@ -272,6 +273,7 @@ let article = {
                 'reference': GlobalScript.checkBlank(form.find("#reference").val()),
                 'designation': GlobalScript.checkBlank(form.find("#designation").val()),
                 'prix': GlobalScript.checkBlank(form.find("#prix").val()),
+                'prixAchat': GlobalScript.checkBlank(form.find("#prix-achat").val()),
                 'taxeSpecifique': GlobalScript.checkBlank(form.find("#taxe-specifique").val()),
                 'tsName': GlobalScript.checkBlank(form.find("#ts-name").val()),
                 'stock': GlobalScript.checkBlank(form.find("#stock").val()) ?? 0,
@@ -302,6 +304,7 @@ let article = {
         $showClasseTable.find('.td-categorie').text(itemObj.categorie.libelle);
         $showClasseTable.find('.td-designation').text(itemObj.designation);
         $showClasseTable.find('.td-prix').text(itemObj.prix);
+        $showClasseTable.find('.td-prix-achat').text(itemObj.prixAchat);
         $showClasseTable.find('.td-taxe').text(itemObj.taxe.string);
         $showClasseTable.find('.td-ts').text(itemObj.taxeSpecifique ?? "-");
         $showClasseTable.find('.td-stock').text(itemObj.stock);
@@ -316,6 +319,7 @@ let article = {
         form.find("#reference").val("")
         form.find("#designation").val("")
         form.find("#prix").val("")
+        form.find("#prix-achat").val("")
         form.find("#taxe-specifique").val("")
         form.find("#stock").val("")
         form.find("#stock-securite").val("")

@@ -642,6 +642,9 @@ let facturation = {
     setFormOnArticleChange: function () {
         facturationForm.find("#prix_u").val(article ? article.prix : null);
         facturationForm.find("#quantite").val(article ? 1 : null);
+        if(GESTION_STOCK_ET_FACTURE == 1) { 
+            facturationForm.find("#quantite").attr("max", article && article.stock > 0 ? article.stock : 0);
+        }
         facturationForm.find("#montant").val(article ? article.prix : null);
         // Gestion de la taxe spécifique
         facturationForm.find("#ts-check").prop("checked", article && article.taxeSpecifique ? true : false);
@@ -1096,6 +1099,7 @@ let facturation = {
                 'id': GlobalScript.checkBlank(form.find("#item-id").val()),
                 'designation': GlobalScript.checkBlank(form.find("#designation").val()),
                 'prix': GlobalScript.checkBlank(form.find("#prix").val()),
+                'prixAchat': GlobalScript.checkBlank(form.find("#prix-achat").val()),
                 'taxeSpecifique': GlobalScript.checkBlank(form.find("#taxe-specifique").val()),
                 'tsName': GlobalScript.checkBlank(form.find("#ts-name").val()),
                 'stock': GlobalScript.checkBlank(form.find("#stock").val()),
