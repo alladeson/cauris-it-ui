@@ -610,7 +610,7 @@ let GlobalScript = {
             })
             .catch(function(err) {
                 // Run this when promise was rejected via reject()
-                GlobalScript.ajxRqtErrHandler(err, "sweet", "la génération du rapport du bilan");
+                GlobalScript.ajxRqtErrHandler(err, "sweet", "la génération du rapport");
             });
     },
 

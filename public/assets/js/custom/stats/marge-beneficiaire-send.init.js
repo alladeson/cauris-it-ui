@@ -65,7 +65,8 @@ let margeBeneficiaireSend = {
         GlobalScript.request(URL_PRINT_BENEFICE_BY_DATE, 'GET', JSON.stringify(statsPayload)).then(function (data) {
             // Response data is already a string message from the server, so we can directly display it
             statsPayload.rapportBenefice = data.response;
-            margeBeneficiaireSend.printRapportDepense();           
+            // margeBeneficiaireSend.printRapportDepense();
+            margeBeneficiaireSend.sendRapportMarge();           
         }).catch(function (err) {
             // Run this when promise was rejected via reject()
             GlobalScript.ajxRqtErrHandler(err, "alertify", "l'envoi du rapport");

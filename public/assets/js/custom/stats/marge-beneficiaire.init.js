@@ -88,8 +88,8 @@ let margeBeneficiaire = {
         var tfootRef = $(tableSelector).find("tfoot");
         var body = ``;
         body += `<tr class="text-center">                    
-                <td>${GlobalScript.numberFormat(data.totalBenefice, 0)}</td>
-                <td>${GlobalScript.numberFormat(data.totalDepense, 0)}</td>
+                <td>${GlobalScript.numberFormat(data.totalAchat, 0)}</td>
+                <td>${GlobalScript.numberFormat(data.totalVente, 0)}</td>
                 <td>${GlobalScript.numberFormat(data.margeBeneficiaire, 0)}</td>
             </tr>`
         if(body)
@@ -124,7 +124,7 @@ let margeBeneficiaire = {
             margeBeneficiaire.printBenefice();
         }
         // Réinitialisation du champ de sélection du type d'impression
-        $("#type-impression").val("");
+        // $("#type-impression").val("");
     },
 };
 $(document).ready(function () {
