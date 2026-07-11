@@ -88,9 +88,9 @@ let margeBeneficiaire = {
         var tfootRef = $(tableSelector).find("tfoot");
         var body = ``;
         body += `<tr class="text-center">                    
-                <td>${GlobalScript.numberFormat(data.totalAchat, 0)}</td>
-                <td>${GlobalScript.numberFormat(data.totalVente, 0)}</td>
-                <td>${GlobalScript.numberFormat(data.margeBeneficiaire, 0)}</td>
+                <td>${GlobalScript.numberFormat(data.totalAchat, 2)}</td>
+                <td>${GlobalScript.numberFormat(data.totalVente, 2)}</td>
+                <td>${GlobalScript.numberFormat(data.margeBeneficiaire, 2)}</td>
             </tr>`
         if(body)
             tbodyRef.html(body);
@@ -105,7 +105,7 @@ let margeBeneficiaire = {
                 <td colspan="3" class=""> 
                     <dl class="row mb-0 d-flex justify-content-center">
                         <dt class="col-lg-2 col-sm-3 col-6 text-end">Marge Bénéficiaire : </dt>
-                        <dd class="col-md-3 col-sm-4 col-6">${GlobalScript.numberFormat(data.margeBeneficiaire, 0)} FCFA</dd>
+                        <dd class="col-md-3 col-sm-4 col-6">${GlobalScript.numberFormat(data.margeBeneficiaire, 2)} FCFA</dd>
                     </dl>                    
                 </td>
             </tr>`

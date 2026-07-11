@@ -67,4 +67,16 @@ class StatsController extends AbstractController
              "url_print_rapport_benefice_by_date" => ApiConstant::URL_PRINT_RAPPORT_BENEFICE_BY_DATE,
         ]);
     }
+
+    #[Route('/calcul-marge-beneficiaire', name: 'stats_calcul_marge_beneficiaire')]
+    public function calculmargeBeneficiaire(): Response
+    {
+        return $this->render('stats/calcul-marge-beneficiaire.html.twig', [
+            'page_title' => 'Calcul Marge Bénéficiaire',
+            'breadcrumb' => ['Statistiques', 'Calcul Marge Bénéficiaire'],
+            "sidebar_code" => ['STATS', 'CMBFC', ''],
+            'menu_code' =>  ApiConstant::statsCalculMargeBenefice,
+             "url_calcul_benefice_by_date" => ApiConstant::URL_CALCUL_BENEFICE_BY_DATE,
+        ]);
+    }
 }

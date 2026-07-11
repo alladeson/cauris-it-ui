@@ -33,6 +33,7 @@
 {% set statsMouvementArticle = 62000 %}
 {% set statsMargeBenefice = 63000 %}
 {% set statsEnvoiMargeBenefice = 64000 %}
+{% set statsCalculMargeBenefice = 65000 %}
 {# endset #}
 	
 {# Menu format #}
@@ -231,6 +232,15 @@
 				title: "Envoi Rapport Vente",
 				dataKey: "t-stats-marge-beneficiaire-send",
 				active: sidebar_code[1] == "MBFCS" ? true : false,
+				children: [],
+			}, 
+			{
+				readable: menu_readable(statsCalculMargeBenefice),
+				id: "stats-calcul-marge-beneficiaire-send",
+				pathName: "stats_calcul_marge_beneficiaire",
+				title: "Calcul Marge bénéficiaire",
+				dataKey: "t-stats-calcul-marge-beneficiaire",
+				active: sidebar_code[1] == "CMBFC" ? true : false,
 				children: [],
 			},            
 		],

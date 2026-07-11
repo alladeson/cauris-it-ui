@@ -223,6 +223,7 @@ class ApiConstant
       public const URL_SEND_RAPPORT_MARGE_BENEFICIAIRE_BY_DATE = "stats/marge-beneficiaire/report/send";
       public const URL_PRINT_RAPPORT_DEPENSE_BY_DATE = "stats/marge-beneficiaire/report/depense";
       public const URL_PRINT_RAPPORT_BENEFICE_BY_DATE = "stats/marge-beneficiaire/report/benefice";
+      public const URL_CALCUL_BENEFICE_BY_DATE = "factures/benefice/calcul";
 
     // Les codes des fonctionnalités
     // Gestion de stock
@@ -264,4 +265,5 @@ class ApiConstant
 	public const statsMouvementArticle = 62000;
     public const statsMargeBenefice = 63000;
     public const statsEnvoiMargeBenefice = 64000;
+    public const statsCalculMargeBenefice = 65000;
 }
