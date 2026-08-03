@@ -132,6 +132,7 @@ class ApiConstant
     // CRUD ET VALIDAION DES FACTURES
     public const URL_POST_FACTURE = "factures/client/__clientId__/article/__articleId__";
     public const URL_VALIDER_FACTURE = "factures/__id__/valider";
+    public const URL_SAVE_VALIDATION_DATA = "factures/__id__/save-validation-data";
     public const URL_IMPRIMER_FACTURE = "public/facture/__id__/imprimer";
     public const URL_PUT_FACTURE = "factures/__id__/detail/__detailId__";
     public const URL_GET_FACTURE = "factures/__id__";
