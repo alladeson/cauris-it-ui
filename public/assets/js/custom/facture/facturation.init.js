@@ -570,6 +570,37 @@ let facturation = {
                 GlobalScript.ajxRqtErrHandler(err, "sweet", "la validation");
             });
     },
+    saveValidationData: function (event = null) {
+        if (event) event.preventDefault();
+        var data = facturation.validationDataFormat(factureValidationForm);
+        // console.log(data);
+        GlobalScript.request(
+            URL_SAVE_VALIDATION_DATA.replace(
+                "__id__",
+                facture ? (facture.id ? facture.id : 0) : 0
+            ),
+            "PUT",
+            data
+        )
+            .then(function (data) {
+                // Run this when your request was successful
+                facture = data;
+                // Récupération de règlement de la facture : utilise pour mettre à jour le formulaire de la validation
+                factureReglement = facture.reglement;
+                // Récupération du montant TTC de la facture
+                factureMontantTtc = facture.montantTtc;
+                // Le montant ttc réel est le montant ttc sans aib : utile lors de la mises à jour du formulaire de validation
+                if (facture.aib) factureMontantTtc = facture.montantTtc - facture.montantAib;
+                // Hide the validation form
+                $("#validate-invoice-modal").modal("toggle");
+                // console.log(facture);
+                alertify.success("Données enregistrées avec succès !");
+            })
+            .catch(function (err) {
+                // Run this when promise was rejected via reject()
+                GlobalScript.ajxRqtErrHandler(err, "sweet", "l'enregistrement des données de la validation");
+            });
+    },
     // Récupération de la liste des articles ou des clients
     getForeignsData: function (url, selectData = [], choicePosition, itemId) {
         GlobalScript.request(url, "GET", null)
@@ -791,7 +822,7 @@ let facturation = {
             "Opération annullée, rien n'a changé."
         );
     },
-    setValidationForm: function (event = null) {
+    setValidationForm: function (event = null, btnId = null) {
         if (event) event.preventDefault();
         var montantRecu = factureValidationForm.find("#montant-recu").val();
         if (!montantRecu || montantRecu < facture.montantTtc) {
@@ -807,6 +838,10 @@ let facturation = {
         factureValidationForm.find("#montant-recu").val(montantRecu);
         factureValidationForm.find("#montant-payer").val(facture.montantTtc);
         factureValidationForm.find("#montant-rendu").val(montantRendu);
+
+        factureValidationForm.find("button[type='submit']").text(btnId=== "validate-facture" ? "Valider" : "Enregistrer");
+
+        factureValidationForm.attr("onsubmit", btnId === "validate-facture" ? "facturation.customMessageOnValidationFormSubmit(event)" : "facturation.saveValidationData(event)");
     },
     setValidatonFormRecapTable: function () {
         var $validationFormRecpaTable = $("table.invoice-validation-table");
@@ -1131,6 +1166,56 @@ let facturation = {
             $("div.article-new-modal").find('form').find("input#ts-name").removeAttr("required");
         }
     },
+    validateFactureButtonCtrl: function (btnId) {
+        // console.log("ici");
+        if (facture && facture.valid) {
+            alertify.warning("Cette facture est déjà validée");
+        } else if (facture && facture.details.length) {
+            // Mise à jour du montant ttc de la facture et remise à null du montant aib
+            if (factureMontantTtc && !facture.aib) facture.montantTtc = factureMontantTtc;
+            // Mise à jour du modal de validation
+            facturation.setValidatonFormRecapTable();
+            // Récupération des aib
+            choices[4].removeActiveItems();
+            facturation.getForeignsData(
+                URL_LIST_TAXE_AIB,
+                ["taux aib", "id", "string"],
+                4,
+                facture.aib ? facture.aib.id : null
+            );
+            // Récupération des types de paiement
+            facturation.getForeignsData(
+                URL_LIST_TYPE_PAIEMENT,
+                ["types de paiement", "id", "description"],
+                5,
+                factureReglement && factureReglement.typePaiement ? factureReglement.typePaiement.id : 1
+            );
+            // Mise à jour du montant de reglèment: les champas étant cachés
+            factureValidationForm.find("#montant-recu").val(facture.montantTtc);
+            facturation.setValidationForm(null, btnId);
+            // Affichage du modal du formulaire de validation
+            $("#validate-invoice-modal").modal("toggle");
+        } else {
+            alertify.warning(
+                "Veuillez ajouter un article à la facture en remplissant le formulaire de facturation"
+            );
+            // Scroller la page vers le haut
+            GlobalScript.scrollToTop();
+        }
+    },
+    confirmReloadDatatable: function (event) {
+        event.preventDefault();
+        facturation.saValidateFactureParams(
+            "Êtes-vous sûr de vouloir valider cette facture ?",
+            "Cette opération est irréversible !",
+            "Oui, valider !",
+            "Non, annuller !",
+            "Validée !",
+            "Validation effectuée avec succès.",
+            "Annullée !",
+            "Opération annullée, rien n'a changé."
+        );
+    },
 };
 $(document).ready(function () {
     facturation.listInitalizer();
@@ -1184,37 +1269,12 @@ $(document).ready(function () {
     //Validate facture
     $("a.validate-facture").click(function (e) {
         e.preventDefault();
-        // console.log("ici");
-        if (facture && facture.valid) {
-            alertify.warning("Cette facture est déjà validée");
-        } else if (facture && facture.details.length) {
-            // Mise à jour du montant ttc de la facture et remise à null du montant aib
-            if (factureMontantTtc && !facture.aib) facture.montantTtc = factureMontantTtc;
-            // Mise à jour du modal de validation
-            facturation.setValidatonFormRecapTable();
-            // Récupération des aib
-            choices[4].removeActiveItems();
-            facturation.getForeignsData(
-                URL_LIST_TAXE_AIB,
-                ["taux aib", "id", "string"],
-                4,
-                facture.aib ? facture.aib.id : null
-            );
-            // Récupération des types de paiement
-            facturation.getForeignsData(
-                URL_LIST_TYPE_PAIEMENT,
-                ["types de paiement", "id", "description"],
-                5,
-                factureReglement && factureReglement.typePaiement ? factureReglement.typePaiement.id : null
-            );
-            $("#validate-invoice-modal").modal("toggle");
-        } else {
-            alertify.warning(
-                "Veuillez ajouter un article à la facture en remplissant le formulaire de facturation"
-            );
-            // Scroller la page vers le haut
-            GlobalScript.scrollToTop();
-        }
+        facturation.validateFactureButtonCtrl("validate-facture");
+    });
+    //Details facture
+    $("a.details-facture").click(function (e) {
+        e.preventDefault();
+        facturation.validateFactureButtonCtrl("details-facture");
     });
     //Show Action
     datatable.on('responsive-resize', function (e, datatable, columns) {
