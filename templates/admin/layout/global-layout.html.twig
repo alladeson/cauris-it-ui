@@ -34,6 +34,8 @@
 {% set statsMargeBenefice = 63000 %}
 {% set statsEnvoiMargeBenefice = 64000 %}
 {% set statsCalculMargeBenefice = 65000 %}
+{% set statsMouvementAchatArticle = 66000 %}
+{% set statsMouvementVenteArticle = 67000 %}
 {# endset #}
 	
 {# Menu format #}
@@ -211,9 +213,27 @@
 				readable: menu_readable(statsMouvementArticle),
 				id: "stats-mouvement-article",
 				pathName: "stats_mouvement_article",
-				title: "Rapport de ventes et de stock",
+				title: "Rapport détaillé vente & stock",
 				dataKey: "t-stats-mouvement-article",
 				active: sidebar_code[1] == "MA" ? true : false,
+				children: [],
+			},            
+			{
+				readable: menu_readable(statsMouvementAchatArticle),
+				id: "stats-mouvement-achat-article",
+				pathName: "stats_mouvement_achat_article",
+				title: "Rapport des achats",
+				dataKey: "t-stats-mouvement-achat-article",
+				active: sidebar_code[1] == "MACH" ? true : false,
+				children: [],
+			},            
+			{
+				readable: menu_readable(statsMouvementVenteArticle),
+				id: "stats-mouvement-vente-article",
+				pathName: "stats_mouvement_vente_article",
+				title: "Rapport des ventes",
+				dataKey: "t-stats-mouvement-vente-article",
+				active: sidebar_code[1] == "MVEN" ? true : false,
 				children: [],
 			},            
 			{

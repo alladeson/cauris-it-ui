@@ -604,7 +604,7 @@ let GlobalScript = {
                 // Run this when your request was successful
                 // console.log(data);
                 // Mise à jour du titre du modal d'affichage
-                $pdfWebviwerModal.find('h5.card-title').text("Bilan périodique");
+                $pdfWebviwerModal.find('h5.card-title').text("Rapport");
                 // Affichage
                 GlobalScript.pdfwebviewer(dowloadPdfUrl, dowloadPdfUrl, fileName)
             })
@@ -627,7 +627,7 @@ let GlobalScript = {
                 // Run this when your request was successful
                 // console.log(data);
                 // Mise à jour du titre du modal d'affichage
-                $pdfWebviwerModal.find('h5.card-title').text("Bilan périodique");
+                $pdfWebviwerModal.find('h5.card-title').text("Rapport");
                 // Affichage
                 GlobalScript.pdfwebviewer(dowloadPdfUrl, dowloadPdfUrl, fileName)
             })

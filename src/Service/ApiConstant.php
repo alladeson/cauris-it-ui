@@ -216,6 +216,8 @@ class ApiConstant
     public const URL_BILAN_DASHBOARD = "stats/bilan-periodique/dashboard";
     // Mouvement des articles
     public const URL_IMPRESSION_MOUVEMENT_ARTICLES_BY_CREATED_DATE = "stats/mouvement-article/report";
+    public const URL_IMPRESSION_MOUVEMENT_ACHAT_ARTICLES_BY_CREATED_DATE = "stats/mouvement-achat-article/report";
+    public const URL_IMPRESSION_MOUVEMENT_VENTE_ARTICLES_BY_CREATED_DATE = "stats/mouvement-vente-article/report";
     // Dépenses
     public const URL_IMPRESSION_DEPENSES_BY_DATE_PAYEMENT = "stats/depenses/report";
     public const URL_IMPRESSION_BENEFICES_BY_DATE_FACTURE = "stats/benefices/report";
@@ -267,4 +269,6 @@ class ApiConstant
     public const statsMargeBenefice = 63000;
     public const statsEnvoiMargeBenefice = 64000;
     public const statsCalculMargeBenefice = 65000;
-}
+	public const statsMouvementAchatArticle = 66000;
+	public const statsMouvementVenteArticle = 67000;
+    }

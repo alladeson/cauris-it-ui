@@ -302,6 +302,8 @@ class AppExtension extends AbstractExtension
             new TwigFunction('url_print_invoice', [$this, 'urlPrintInvoice']),
             new TwigFunction('url_print_bilan_periodique', [$this, 'urlPrintBilanPeriodique']),
             new TwigFunction('url_print_mouvement_article', [$this, 'urlPrintMouvementArticle']),
+            new TwigFunction('url_print_mouvement_achat_article', [$this, 'urlPrintMouvementAchatArticle']),
+            new TwigFunction('url_print_mouvement_vente_article', [$this, 'urlPrintMouvementVenteArticle']),
             new TwigFunction('url_print_depense', [$this, 'urlPrintDepense']),
             new TwigFunction('url_print_benefice', [$this, 'urlPrintBenefice']),
             new TwigFunction('url_details_invoice', [$this, 'urlDetailsInvoice']),
@@ -375,6 +377,16 @@ class AppExtension extends AbstractExtension
     public function urlPrintMouvementArticle()
     {
         return $_ENV["API_BASE_URL"].ApiConstant::URL_IMPRESSION_MOUVEMENT_ARTICLES_BY_CREATED_DATE;
+    }
+
+    public function urlPrintMouvementAchatArticle()
+    {
+        return $_ENV["API_BASE_URL"].ApiConstant::URL_IMPRESSION_MOUVEMENT_ACHAT_ARTICLES_BY_CREATED_DATE;
+    }
+
+    public function urlPrintMouvementVenteArticle()
+    {
+        return $_ENV["API_BASE_URL"].ApiConstant::URL_IMPRESSION_MOUVEMENT_VENTE_ARTICLES_BY_CREATED_DATE;
     }
 
     public function urlPrintDepense()

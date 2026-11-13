@@ -32,11 +32,35 @@ class StatsController extends AbstractController
     public function mouvementArticle(): Response
     {
         return $this->render('stats/mouvement-article.html.twig', [
-            'page_title' => 'Mouvement des articles',
+            'page_title' => 'Rapport détaillé vente & stock',
             'breadcrumb' => ['Statistiques', 'Mouvement des articles'],
             "sidebar_code" => ['STATS', 'MA', ''],
             'menu_code' =>  ApiConstant::statsMouvementArticle,
              "url_impression_mouvement_article" => ApiConstant::URL_IMPRESSION_MOUVEMENT_ARTICLES_BY_CREATED_DATE,
+        ]);
+    }
+
+    #[Route('/mouvement-achat-article', name: 'stats_mouvement_achat_article')]
+    public function mouvementAchatArticle(): Response
+    {
+        return $this->render('stats/mouvement-achat-article.html.twig', [
+            'page_title' => 'Rapport des achats',
+            'breadcrumb' => ['Statistiques', 'Rapport des achats'],
+            "sidebar_code" => ['STATS', 'MACH', ''],
+            'menu_code' =>  ApiConstant::statsMouvementAchatArticle,
+             "url_impression_mouvement_achat_article" => ApiConstant::URL_IMPRESSION_MOUVEMENT_ACHAT_ARTICLES_BY_CREATED_DATE,
+        ]);
+    }
+
+    #[Route('/mouvement-vente-article', name: 'stats_mouvement_vente_article')]
+    public function mouvementVenteArticle(): Response
+    {
+        return $this->render('stats/mouvement-vente-article.html.twig', [
+            'page_title' => 'Rapport des ventes',
+            'breadcrumb' => ['Statistiques', 'Rapport des ventes'],
+            "sidebar_code" => ['STATS', 'MVEN', ''],
+            'menu_code' =>  ApiConstant::statsMouvementVenteArticle,
+             "url_impression_mouvement_vente_article" => ApiConstant::URL_IMPRESSION_MOUVEMENT_VENTE_ARTICLES_BY_CREATED_DATE,
         ]);
     }
 
