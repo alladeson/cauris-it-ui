@@ -42,8 +42,8 @@ let facturation = {
                                         // Si le client à déjà une facture en cours, alors le système la récupère, 
                                         // Sinon, le système récupère la nouvelle facture du client qui peut-être null selon
                                         // que l'utilisateur ait déjà ajouté un article pour le client ou pas.
-                                        url: FACTURE_ID ?
-                                            URL_GET_ITEM.replace("__id__", FACTURE_ID) : url_facture_client,
+                                        url: /*FACTURE_ID ?*/
+                                            URL_GET_ITEM.replace("__id__", FACTURE_ID ? FACTURE_ID : 0) /*: url_facture_client*/,
                                         method: "GET",
                                     });
                                 },
@@ -329,6 +329,8 @@ let facturation = {
             .then(function (data) {
                 // Run this when your request was successful
                 facture = data;
+                // Mise à jour de l'ID de la  facture
+                FACTURE_ID = facture.id;
                 // Récupération de règlement de la facture : utilise pour mettre à jour le formulaire de la validation
                 factureReglement = facture.reglement;
                 // Récupération du montant TTC de la facture
@@ -491,6 +493,7 @@ let facturation = {
                 priceModification: remise ? form.find("#remise_description").val() : null,
                 taxeId: form.find("#taxe").val(),
                 tfId: form.find("#type").val(),
+                fId: FACTURE_ID,
             };
             return JSON.stringify(data);
         }
@@ -654,11 +657,11 @@ let facturation = {
             itemNumber = 0;
             datatable.ajax.reload();
         }
-        facturation.getEntity(
-            URL_GET_FACTURE_CLIENT.replace("__clientId__", clientId ? clientId : 0).replace("__typeId__", typeFactureId),
-            clientId,
-            "facture"
-        );
+        // facturation.getEntity(
+        //     URL_GET_FACTURE_CLIENT.replace("__clientId__", clientId ? clientId : 0).replace("__typeId__", typeFactureId),
+        //     clientId,
+        //     "facture"
+        // );
     },
     getArticle: function (event = null) {
         if (event) event.preventDefault();
@@ -915,6 +918,10 @@ let facturation = {
 
                     // Mise à jour du montant ttc de la facture en y ajoutant le montantAib;
                     facture.montantTtc = factureMontantTtc + facture.montantAib;
+                    // Mise à jour la valeur du règlement dans le formulaire de validation de la facture
+                    factureValidationForm.find("#montant-recu").val(facture.montantTtc);
+                    factureReglement = null;
+                    facturation.setValidationForm();
                     // Mise à jour du tableau récapitulatif pour la validation de la facture
                     facturation.setValidatonFormRecapTable();
                 })
@@ -928,6 +935,10 @@ let facturation = {
             facture.montantAib = null;
             // Réinialisation du montant ttc de la facture
             facture.montantTtc = factureMontantTtc;
+            // Mise à jour la valeur du règlement dans le formulaire de validation de la facture
+            factureValidationForm.find("#montant-recu").val(facture.montantTtc);
+            factureReglement = null;
+            facturation.setValidationForm();
             // Mise à jour du tableau récapitulatif pour la validation de la facture
             facturation.setValidatonFormRecapTable();
         }

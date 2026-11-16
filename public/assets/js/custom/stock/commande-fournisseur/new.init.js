@@ -32,8 +32,8 @@ let cmdFournisseur = {
                                         // Si le fournisseur à déjà une commande en cours, alors le système la récupère, 
                                         // Sinon, le système récupère la nouvelle commande du fournisseur qui peut-être null selon
                                         // que l'utilisateur ait déjà ajouté un article pour le fournisseur ou pas.
-                                        url: CMDF_ID ?
-                                            URL_GET_CMD_FOURNISSEUR.replace("__id__", CMDF_ID) : url_cmd_fournisseur,
+                                        url: /*CMDF_ID ?*/
+                                            URL_GET_CMD_FOURNISSEUR.replace("__id__", CMDF_ID ? CMDF_ID : 0) /*: url_cmd_fournisseur*/,
                                         method: "GET",
                                     });
                                 },
@@ -319,6 +319,8 @@ let cmdFournisseur = {
             .then(function (data) {
                 // Run this when your request was successful
                 commande = data;
+                // Mise à jour de l'ID de la commande
+                CMDF_ID = commande.id;
                 // Mise à jour des sections du forumulaire du bon de commande
                 cmdFournisseur.resetFormSection();
                 // Mise à jour des infos générale de la commande dans le formulaire
@@ -512,6 +514,7 @@ let cmdFournisseur = {
                 // Pour les données d'expédition
                 expedition: sectionFormCmdFournisseur == "expedition" ? true : false,
                 name: form.find("#expedition-description").val(),
+                cId: CMDF_ID,
             };
             return JSON.stringify(data);
         }
@@ -608,11 +611,11 @@ let cmdFournisseur = {
             datatable.ajax.reload();
         }
         // Récupération de la commande fournisseur
-        cmdFournisseur.getEntity(
-            URL_GET_ITEM_BY_FOURNISSEUR.replace("__fId__", fournisseurId ? fournisseurId : 0),
-            fournisseurId,
-            "le bon de commande"
-        );        
+        // cmdFournisseur.getEntity(
+        //     URL_GET_ITEM_BY_FOURNISSEUR.replace("__fId__", fournisseurId ? fournisseurId : 0),
+        //     fournisseurId,
+        //     "le bon de commande"
+        // );        
     },
     getArticle: function (event = null) {
         if (event) event.preventDefault();
